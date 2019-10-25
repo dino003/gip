@@ -60,7 +60,13 @@ class Personnel extends Model
       public function vehicules_amendes()
       {
           return $this->hasMany(VehiculeAmende::class, 'conducteur', 'id');
-      }  
+      } 
+      
+        // commandes 
+        public function commandes()
+        {
+            return $this->hasMany(Commande::class, 'personne', 'id');
+        }
     
     
 }

@@ -50,5 +50,17 @@ class Entite extends Model
          return $this->hasMany(BudgetEntite::class, 'entite', 'id');
      }
 
+         // commandes 
+         public function commandes_entite_livraison()
+         {
+             return $this->hasMany(Commande::class, 'livraison_entite', 'id');
+         }
+
+            // commandes 
+            public function commandes_entites_facturation()
+            {
+                return $this->hasMany(Commande::class, 'facturation_entite', 'id');
+            }
+
    
 }

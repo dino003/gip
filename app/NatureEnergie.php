@@ -13,4 +13,10 @@ class NatureEnergie extends Model
     public $timestamps = false;
 
     protected $guarded = ['id'];
+
+     // contenu de commande
+     public function contenu_commandes()
+     {
+         return $this->hasMany(ContenuCommande::class, 'energie', 'id');
+     }
 }

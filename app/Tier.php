@@ -49,4 +49,10 @@ class Tier extends Model
          {
              return $this->hasMany(ContratAssurance::class, 'courtier', 'id');
          }
+
+         // commandes 
+         public function commandes()
+         {
+             return $this->hasMany(Commande::class, 'fournisseur', 'id');
+         }
 }

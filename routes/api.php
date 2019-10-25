@@ -385,6 +385,23 @@ Route::post('modifier_contrat_assurance/{id}', 'ContratAssuranceController@updat
 Route::delete('supprimer_contrat_assurance/{id}', 'ContratAssuranceController@destroy');
 //*********** fin contrat_assurance ********************************************************* 
 
+//****************** commande  ********************************************************/
+Route::get('commandes', 'CommandeController@index');
+// voir
+Route::get('voir_commande/{id}', 'CommandeController@show');
+
+// ajouter 
+Route::post('ajouter_commande', 'CommandeController@store');
+// modifier
+Route::post('modifier_commande/{id}', 'CommandeController@update');
+
+// supprimer
+Route::delete('supprimer_commande/{id}', 'CommandeController@destroy');
+//*********** fin commande ********************************************************* 
+
 Route::get('tt', 'UserController@index');
+
+//var dt = new Date( "12-18-1995" );
+//document.write("getMonth() : " + parseFloat(dt.getMonth() + 1) ); 
 
 

@@ -18,4 +18,10 @@ class Marque extends Model
     {
         return $this->hasMany(ModeleVehicule::class, 'marque');
     }
+
+    // contenu de commande
+    public function contenu_commandes()
+    {
+        return $this->hasMany(ContenuCommande::class, 'marque', 'id');
+    }
 }
