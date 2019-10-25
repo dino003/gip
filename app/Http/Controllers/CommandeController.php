@@ -88,7 +88,7 @@ class CommandeController extends Controller
         $commande->facturation_interlocuteur_telephonne = $request->get('facturation_interlocuteur_telephonne');
         
             $commande->save();
-
+        // bonjour
             
             $contenu = new ContenuCommande;
        
