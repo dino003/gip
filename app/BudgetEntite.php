@@ -8,7 +8,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class BudgetEntite extends Model
 {
-    use UsesTenantConnection;
+   // use UsesTenantConnection;
 
     protected $table = 'budgets_entites';
 

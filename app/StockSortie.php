@@ -7,6 +7,6 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class StockSortie extends Model
 {
-    use UsesTenantConnection;
+  //  use UsesTenantConnection;
 
 }

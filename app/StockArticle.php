@@ -8,7 +8,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class StockArticle extends Model
 {
-    use UsesTenantConnection;
+    //use UsesTenantConnection;
 
     //
 }

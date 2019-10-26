@@ -12,7 +12,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class User extends Authenticatable
 {
-    use Notifiable, UsesTenantConnection, Billable;
+    use Notifiable, Billable;
 
     /**
      * The attributes that are mass assignable.

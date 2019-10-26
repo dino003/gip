@@ -8,7 +8,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class AnneeBudgetaire extends Model
 {
-    use UsesTenantConnection;
+   // use UsesTenantConnection;
     
     protected $table = 'annee_budgetaires';
 

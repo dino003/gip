@@ -8,5 +8,5 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class Etiquette extends Model
 {
-    use UsesTenantConnection;
+   // use UsesTenantConnection;
 }

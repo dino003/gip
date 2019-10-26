@@ -7,7 +7,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class Marque extends Model
 {
-    use UsesTenantConnection;
+   // use UsesTenantConnection;
     protected $table = 'marques';
 
     public $timestamps = false;

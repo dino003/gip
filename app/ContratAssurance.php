@@ -7,7 +7,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class ContratAssurance extends Model
 {
-    use UsesTenantConnection;
+   // use UsesTenantConnection;
     
     protected $table = 'contrat_assurances';
 

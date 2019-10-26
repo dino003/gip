@@ -8,7 +8,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class ModeleVehicule extends Model
 {
-    use UsesTenantConnection;
+   // use UsesTenantConnection;
     protected $table = 'parametrage_codifications_modele_vehicules';
 
     protected $guarded = ['id'];

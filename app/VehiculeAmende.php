@@ -7,7 +7,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class VehiculeAmende extends Model
 {
-    use UsesTenantConnection;
+   // use UsesTenantConnection;
 
     protected $table = 'vehicule_amendes';
 

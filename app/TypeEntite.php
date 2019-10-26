@@ -7,7 +7,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class TypeEntite extends Model
 {
-    use UsesTenantConnection;
+  //  use UsesTenantConnection;
 
     protected $table = 'parametrage_codification_types_entites';
 

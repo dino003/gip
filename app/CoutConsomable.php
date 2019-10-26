@@ -7,7 +7,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class CoutConsomable extends Model
 {
-    use UsesTenantConnection;
+   // use UsesTenantConnection;
     protected $table = 'parametrage_cout_consomables';
 
     public $timestamps = false;

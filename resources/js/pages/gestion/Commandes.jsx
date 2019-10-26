@@ -99,7 +99,7 @@ import CommandeItem from '../../components/gestion/CommandeItem';
             <div className="app-main__inner">
             <div className="main-card card" >
                        <div className="card-body ">
-                           <h5 className="card-title">Gestion des Contrats d'assurance
+                           <h5 className="card-title">Gestion des Commandes
                           
                             <span className="pull-right">
                         

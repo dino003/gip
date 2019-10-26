@@ -7,7 +7,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class ContenuCommande extends Model
 {
-    use UsesTenantConnection;
+    //use UsesTenantConnection;
     
     protected $table = 'commandes_contenu_commandes';
 

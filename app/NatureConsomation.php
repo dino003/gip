@@ -7,7 +7,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class NatureConsomation extends Model
 {
-    use UsesTenantConnection;
+   // use UsesTenantConnection;
     protected $table = 'parametrage_natures_consomation';
 
     protected $guarded = ['id'];

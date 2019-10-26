@@ -69,6 +69,8 @@ import ModifierBudgetEntite from '../pages/forms/Vehicules/ModifierBudgetEntite'
 import ContratAssurances from '../pages/gestion/ContratAssurances'
 import AjouterContratAssurance from '../pages/forms/AjouterContratAssurance';
 import ModifierContratAssurance from '../pages/forms/ModifierContratAssurance';
+import Commandes from '../pages/gestion/Commandes'
+import AjouterCommande from '../pages/forms/AjouterCommande';
 
 
 
@@ -161,6 +163,8 @@ const NavBack = () => (
   <MasterGestion path="/gestion_du_parc_automobile/creation-contrat-assurance" component={AjouterContratAssurance} />
   <MasterGestion path="/gestion_du_parc_automobile/modification-contrat-assurance/:contrat_assurance_id" component={ModifierContratAssurance} />
 
+  <MasterGestion path="/gestion_du_parc_automobile/gestion-des-commandes" component={Commandes} />
+  <MasterGestion path="/gestion_du_parc_automobile/creation-commande" component={AjouterCommande} />
 
 
     

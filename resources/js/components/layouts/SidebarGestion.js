@@ -72,7 +72,7 @@ export default class SidebarGestion extends Component {
                                             </NavLink>
                                         </li>
                                         <li>
-                                            <NavLink activeStyle={active} to="/gestion_du_parc_automobile/r">
+                                            <NavLink activeStyle={active} to="/gestion_du_parc_automobile/gestion-des-commandes">
                                             <i className="metismenu-icon pe-7s-target"></i>
                                                 Les Commandes
                                             </NavLink>

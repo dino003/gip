@@ -7,7 +7,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class Tier extends Model
 {
-    use UsesTenantConnection;
+    //use UsesTenantConnection;
 
     protected $table = 'tiers';
 
