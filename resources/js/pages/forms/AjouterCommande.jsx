@@ -12,7 +12,10 @@ import inputStyle from '../../utils/inputStyle'
  class AjouterCommande extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            contenu_commandes: [],
+            objet_commande: undefined
+        }
       
     }
 
@@ -69,6 +72,36 @@ import inputStyle from '../../utils/inputStyle'
          '-' + jour1.padStart(2, 0);
 
          this.periode_date_fin.value = date_fin
+    }
+
+    setContenuCommande = () => {
+        const obj = {
+            contenu_libelle_commande: this.contenu_libelle_commande.value,
+            contenu_etat_commande: this.contenu_etat_commande.value,
+            contenu_date_livraison_souhaite: this.contenu_date_livraison_souhaite.value,
+            contenu_date_livraison: this.contenu_date_livraison.value,
+            marque: this.marque.value,
+            contenu_modele_vehicule: this.contenu_modele_vehicule.value,
+            energie: this.energie.value,
+            cv_fiscaux: this.cv_fiscaux.value,
+            places: this.places.value,
+            couleur: this.couleur.value,
+            climatisation: this.climatisation.value,
+            pneu_neige: this.pneu_neige.value,
+            radio_cd: this.radio_cd.value,
+            gps: this.gps.value,
+            contenu_quantite_commande: this.contenu_quantite_commande.value,
+            contenu_quantite_livree: this.contenu_quantite_livree.value,
+            contenu_montant_commande: this.contenu_montant_commande.value,
+            taux_tva: this.taux_tva.value,
+            tva: this.tva.value,
+            contenu_montant_ttc: this.contenu_montant_ttc.value,
+
+        }
+
+        this.setState({
+            contenu_commandes: this.state.contenu_commandes.push(obj)
+        })
     }
 
 
@@ -164,9 +197,9 @@ import inputStyle from '../../utils/inputStyle'
                                         <select name="etat_commande" onChange={this.setField}
                                             ref={etat_commande => this.etat_commande = etat_commande}
                                           className="form-control">
-                                        <option value="0">En préparation</option>
-                                        <option value="1">En Attente de livraison</option>
-                                        <option value="2">Terminée</option>
+                                        <option value={0}>En préparation</option>
+                                        <option value={1}>En Attente de livraison</option>
+                                        <option value={2}>Terminée</option>
 
 
                                        
@@ -179,10 +212,10 @@ import inputStyle from '../../utils/inputStyle'
                                         <select name="type_commande" onChange={this.setField}
                                             ref={type_commande => this.type_commande = type_commande}
                                           className="form-control">
-                                        <option value="0">Achat de véhicule</option>
-                                        <option value="1">Location longue durée</option>
-                                        <option value="2">Location courte durée</option>
-                                        <option value="2">Leasing</option>
+                                        <option value={0}>Achat de véhicule</option>
+                                        <option value={1}>Location longue durée</option>
+                                        <option value={2}>Location courte durée</option>
+                                        <option value={3}>Leasing</option>
                                         </select>
                                 
                                         </div>
@@ -380,8 +413,8 @@ import inputStyle from '../../utils/inputStyle'
                                                 className="form-control">
                                                 <option defaultValue={null}></option>
 
-                                                {this.props.tiers.map(tier => 
-                                                        <option key={tier.id} value={tier.id}>{tier.code} </option>
+                                                {this.props.entites.map(entite => 
+                                                        <option key={entite.id} value={entite.id}>{entite.entite} </option>
 
                                                         )}
                                                 </select>
@@ -395,8 +428,8 @@ import inputStyle from '../../utils/inputStyle'
                                                 className="form-control">
                                                 <option defaultValue={null}></option>
 
-                                                {this.props.tiers.map(tier => 
-                                                        <option key={tier.id} value={tier.id}>{tier.code} </option>
+                                                {this.props.personnels.map(personne => 
+                                                        <option key={personne.id} value={personne.id}>{personne.nom} </option>
 
                                                         )}
                                                 </select>
@@ -524,8 +557,8 @@ import inputStyle from '../../utils/inputStyle'
                                                 className="form-control">
                                                 <option defaultValue={null}></option>
 
-                                                {this.props.tiers.map(tier => 
-                                                        <option key={tier.id} value={tier.id}>{tier.code} </option>
+                                                {this.props.entites.map(entite => 
+                                                        <option key={entite.id} value={entite.id}>{entite.entite} </option>
 
                                                         )}
                                                 </select>
@@ -617,51 +650,51 @@ import inputStyle from '../../utils/inputStyle'
                                                     <table className="mb-0 table">
                                             <thead>
                                             <tr>
-                                                <th>#</th>
-                                                <th>First Name</th>
-                                                <th>Last Name</th>
-                                                <th>Username</th>
+                                                <th>Libéllé</th>
+                                                <th>Liv. Souhaitée</th>
+                                                <th>Etat</th>
+                                                <th>Quantité</th>
+                                                <th>Quantité livrée</th>
+                                                <th>Date livraison</th>
+                                                <th>Montant TTC</th>
+
+
+
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>Mark</td>
-                                                <td>Otto</td>
-                                                <td>@mdo</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">2</th>
-                                                <td>Jacob</td>
-                                                <td>Thornton</td>
-                                                <td>@fat</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">3</th>
-                                                <td>Larry</td>
-                                                <td>the Bird</td>
-                                                <td>@twitter</td>
-                                            </tr>
+                                            {this.state.contenu_commandes.map(contenu =>  <tr>
+                                                <th scope="row">{contenu.contenu_libelle_commande}</th>
+                                                <td>{contenu.contenu_date_livraison_souhaite}</td>
+                                                <td>{contenu.contenu_etat_commande}</td>
+                                                <td>{contenu.contenu_quantite_commande}</td>
+                                                <td>{contenu.contenu_quantite_livree}</td>
+                                                <td>{contenu.contenu_date_livraison}</td>
+                                                <td>{contenu.contenu_montant_ttc}</td>
+
+                                            </tr>)}
+                                          
+                                          
                                             </tbody>
                                         </table>
 
                                         <div className="form-row">
                                         <div className="col-md-3">
                                                     <label  className="">Libéllé de la commande</label>
-                                                    <input name="periode_date_fin"  type="text"
+                                                    <input name="contenu_libelle_commande"  type="text"
                                                         onChange={this.setField}
-                                                     ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                     ref={contenu_libelle_commande => this.contenu_libelle_commande = contenu_libelle_commande}
                                                         className="form-control" />
 
                                                     </div>
                                                     <div className="col-md-2">
                                                     <label  className="">Etat de la ligne</label>
-                                                    <select name="courtier" onChange={this.setField}
-                                                    ref={courtier => this.courtier = courtier}
+                                                    <select name="contenu_etat_commande" onChange={this.setField}
+                                                    ref={contenu_etat_commande => this.contenu_etat_commande = contenu_etat_commande}
                                                 className="form-control">
-                                                <option defaultValue={null}>En Attente</option>
+                                                <option value={0}>En Attente</option>
 
-                                                <option defaultValue={null}>Livrée</option>
+                                                <option value={1}>Livrée</option>
 
                                                 </select>
                                                     </div>
@@ -670,18 +703,18 @@ import inputStyle from '../../utils/inputStyle'
 
                                                     <div className="col-md-3">
                                                     <label  className="">date de livraison souhaitée</label>
-                                                    <input name="periode_date_fin"  type="date"
+                                                    <input name="contenu_date_livraison_souhaite"  type="date"
                                                                                 onChange={this.setField}
-                                                                                ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                                                ref={contenu_date_livraison_souhaite => this.contenu_date_livraison_souhaite = contenu_date_livraison_souhaite}
                                                                                 className="form-control" />
 
                                                     </div>
 
                                                     <div className="col-md-3">
                                                     <label  className="">Date de livraison</label>
-                                                    <input name="periode_date_fin"  type="date"
+                                                    <input name="contenu_date_livraison"  type="date"
                                                                                 onChange={this.setField}
-                                                                                ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                                                ref={contenu_date_livraison => this.contenu_date_livraison = contenu_date_livraison}
                                                                                 className="form-control" />
 
                                                     </div>
@@ -694,13 +727,13 @@ import inputStyle from '../../utils/inputStyle'
                                         <div className="form-row">
                                         <div className="col-md-3">
                                                     <label  className="">Marque du véhicule</label>
-                                                    <select name="courtier" onChange={this.setField}
-                                                    ref={courtier => this.courtier = courtier}
+                                                    <select name="marque" onChange={this.setField}
+                                                    ref={marque => this.marque = marque}
                                                 className="form-control">
-                                                <option defaultValue={null}>En Attente</option>
+                                                <option defaultValue={null}></option>
 
-                                                {this.props.tiers.map(tier => 
-                                                        <option key={tier.id} value={tier.id}>{tier.code} </option>
+                                                {this.props.marques.map(marque => 
+                                                        <option key={marque.id} value={marque.id}>{marque.nom_marque} </option>
 
                                                         )}
 
@@ -708,22 +741,22 @@ import inputStyle from '../../utils/inputStyle'
                                                     </div>
                                         <div className="col-md-2">
                                                     <label  className="">Modèle du véhicule</label>
-                                                    <input name="periode_date_fin"  type="text"
+                                                    <input name="contenu_modele_vehicule"  type="text"
                                                         onChange={this.setField}
-                                                     ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                     ref={contenu_modele_vehicule => this.contenu_modele_vehicule = contenu_modele_vehicule}
                                                         className="form-control" />
 
                                                     </div>
 
                                                     <div className="col-md-2">
                                                     <label  className="">Energie</label>
-                                                    <select name="courtier" onChange={this.setField}
-                                                    ref={courtier => this.courtier = courtier}
+                                                    <select name="energie" onChange={this.setField}
+                                                    ref={energie => this.energie = energie}
                                                 className="form-control">
-                                                <option defaultValue={null}>En Attente</option>
+                                                <option defaultValue={null}></option>
 
-                                                {this.props.tiers.map(tier => 
-                                                        <option key={tier.id} value={tier.id}>{tier.code} </option>
+                                                {this.props.natures_energies.map(nat => 
+                                                        <option key={nat.id} value={nat.id}>{nat.nom_energie} </option>
 
                                                         )}
 
@@ -735,27 +768,27 @@ import inputStyle from '../../utils/inputStyle'
 
                                                     <div className="col-md-2">
                                                     <label  className="">Cv Fiscaux</label>
-                                                    <input name="periode_date_fin"  type="text"
+                                                    <input name="cv_fiscaux"  type="text"
                                                                                 onChange={this.setField}
-                                                                                ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                                                ref={cv_fiscaux => this.cv_fiscaux = cv_fiscaux}
                                                                                 className="form-control" />
 
                                                     </div>
 
                                                     <div className="col-md-1">
                                                     <label  className="">Place</label>
-                                                    <input name="periode_date_fin"  type="text"
+                                                    <input name="places"  type="text"
                                                                                 onChange={this.setField}
-                                                                                ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                                                ref={places => this.places = places}
                                                                                 className="form-control" />
 
                                                     </div>
 
                                                     <div className="col-md-2">
                                                     <label  className="">Couleur</label>
-                                                    <input name="periode_date_fin"  type="text"
+                                                    <input name="couleur"  type="text"
                                                                                 onChange={this.setField}
-                                                                                ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                                                ref={couleur => this.couleur = couleur}
                                                                                 className="form-control" />
 
                                                     </div>
@@ -764,84 +797,12 @@ import inputStyle from '../../utils/inputStyle'
 
                                             </div>
 
-                                            <div className="form-row">
-                                        <div className="col-md-3">
-                                                    <label  className="">Marque du véhicule</label>
-                                                    <select name="courtier" onChange={this.setField}
-                                                    ref={courtier => this.courtier = courtier}
-                                                className="form-control">
-                                                <option defaultValue={null}>En Attente</option>
-
-                                                {this.props.tiers.map(tier => 
-                                                        <option key={tier.id} value={tier.id}>{tier.code} </option>
-
-                                                        )}
-
-                                                </select>
-                                                    </div>
-                                        <div className="col-md-2">
-                                                    <label  className="">Modèle du véhicule</label>
-                                                    <input name="periode_date_fin"  type="text"
-                                                        onChange={this.setField}
-                                                     ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
-                                                        className="form-control" />
-
-                                                    </div>
-
-                                                    <div className="col-md-2">
-                                                    <label  className="">Energie</label>
-                                                    <select name="courtier" onChange={this.setField}
-                                                    ref={courtier => this.courtier = courtier}
-                                                className="form-control">
-                                                <option defaultValue={null}>En Attente</option>
-
-                                                {this.props.tiers.map(tier => 
-                                                        <option key={tier.id} value={tier.id}>{tier.code} </option>
-
-                                                        )}
-
-                                                </select>
-                                                    </div>
-                                                  
-
-                                                  
-
-                                                    <div className="col-md-2">
-                                                    <label  className="">Cv Fiscaux</label>
-                                                    <input name="periode_date_fin"  type="text"
-                                                                                onChange={this.setField}
-                                                                                ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
-                                                                                className="form-control" />
-
-                                                    </div>
-
-                                                    <div className="col-md-1">
-                                                    <label  className="">Place</label>
-                                                    <input name="periode_date_fin"  type="text"
-                                                                                onChange={this.setField}
-                                                                                ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
-                                                                                className="form-control" />
-
-                                                    </div>
-
-                                                    <div className="col-md-2">
-                                                    <label  className="">Couleur</label>
-                                                    <input name="periode_date_fin"  type="text"
-                                                                                onChange={this.setField}
-                                                                                ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
-                                                                                className="form-control" />
-
-                                                    </div>
-
-     
-
-                                            </div>
 
                                             <div className="form-row">
                                         <div className="col-md-2">
                                                     <label  className="">Climatisation ?</label>
-                                                    <select name="courtier" onChange={this.setField}
-                                                    ref={courtier => this.courtier = courtier}
+                                                    <select name="climatisation" onChange={this.setField}
+                                                    ref={climatisation => this.climatisation = climatisation}
                                                 className="form-control">
                                               <option value={0}>Non</option>
                                                 <option value={1}>Oui</option>
@@ -851,8 +812,8 @@ import inputStyle from '../../utils/inputStyle'
 
                                                     <div className="col-md-2">
                                                     <label  className="">Pneus neige ?</label>
-                                                    <select name="courtier" onChange={this.setField}
-                                                    ref={courtier => this.courtier = courtier}
+                                                    <select name="pneu_neige" onChange={this.setField}
+                                                    ref={pneu_neige => this.pneu_neige = pneu_neige}
                                                 className="form-control">
                                                <option value={0}>Non</option>
                                                 <option value={1}>Oui</option>
@@ -861,8 +822,8 @@ import inputStyle from '../../utils/inputStyle'
                                                     </div>
                                                     <div className="col-md-2">
                                                     <label  className="">Radio/Cd</label>
-                                                    <select name="courtier" onChange={this.setField}
-                                                    ref={courtier => this.courtier = courtier}
+                                                    <select name="radio_cd" onChange={this.setField}
+                                                    ref={radio_cd => this.radio_cd = radio_cd}
                                                 className="form-control">
                                                 <option value={0}>Non</option>
                                                 <option value={1}>Oui</option>
@@ -872,8 +833,8 @@ import inputStyle from '../../utils/inputStyle'
 
                                                     <div className="col-md-2">
                                                     <label  className="">Gps</label>
-                                                    <select name="courtier" onChange={this.setField}
-                                                    ref={courtier => this.courtier = courtier}
+                                                    <select name="gps" onChange={this.setField}
+                                                    ref={gps => this.gps = gps}
                                                 className="form-control">
                                                 <option value={0}>Non</option>
                                                 <option value={1}>Oui</option>
@@ -883,17 +844,17 @@ import inputStyle from '../../utils/inputStyle'
                                                     </div>
                                         <div className="col-md-2">
                                                     <label  className="">Quantité commandée</label>
-                                                    <input name="periode_date_fin"  type="number"
+                                                    <input name="contenu_quantite_commande"  type="number"
                                                         onChange={this.setField}
-                                                     ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                     ref={contenu_quantite_commande => this.contenu_quantite_commande = contenu_quantite_commande}
                                                         className="form-control" />
 
                                                     </div>
                                                     <div className="col-md-2">
                                                     <label  className="">Quantité livrée</label>
-                                                    <input name="periode_date_fin"  type="number"
+                                                    <input name="contenu_quantite_livree"  type="number"
                                                         onChange={this.setField}
-                                                     ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                     ref={contenu_quantite_livree => this.contenu_quantite_livree = contenu_quantite_livree}
                                                         className="form-control" />
 
                                                     </div>
@@ -904,38 +865,40 @@ import inputStyle from '../../utils/inputStyle'
 
                                         <div className="col-md-3">
                                                     <label  className="">Montant de la commande</label>
-                                                    <input name="periode_date_fin"  type="number"
+                                                    <input name="contenu_montant_commande"  type="number"
                                                         onChange={this.setField}
-                                                     ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                     ref={contenu_montant_commande => this.contenu_montant_commande = contenu_montant_commande}
                                                         className="form-control" />
 
                                                     </div>
                                                     <div className="col-md-2">
                                                     <label  className="">Taux de TVA</label>
-                                                    <input name="periode_date_fin"  type="number"
+                                                    <input name="taux_tva"  type="number"
                                                         onChange={this.setField}
-                                                     ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                     ref={taux_tva => this.taux_tva = taux_tva}
                                                         className="form-control" />
 
                                                     </div>
                                                     <div className="col-md-2">
                                                     <label  className=""> TVA</label>
-                                                    <input name="periode_date_fin"  type="number"
+                                                    <input name="tva"  type="number"
                                                         onChange={this.setField}
-                                                     ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                     ref={tva => this.tva = tva}
                                                         className="form-control" />
 
                                                     </div>
 
                                                     <div className="col-md-2">
                                                     <label  className="">Montant TTC</label>
-                                                    <input name="periode_date_fin"  type="number"
+                                                    <input name="contenu_montant_ttc"  type="number"
                                                         onChange={this.setField}
-                                                     ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                     ref={contenu_montant_ttc => this.contenu_montant_ttc = contenu_montant_ttc}
                                                         className="form-control" />
 
                                                     </div>
                                             </div>
+                                            <button type="submit" className="mt-2 btn btn-success">Valider</button>
+
 
 
                                  </div>
@@ -946,13 +909,13 @@ import inputStyle from '../../utils/inputStyle'
 
                                       <div className="col-md-3">
                                                   <label  className="">Nom</label>
-                                                  <select name="courtier" onChange={this.setField}
-                                                    ref={courtier => this.courtier = courtier}
+                                                  <select name="nom" onChange={this.setField}
+                                                    ref={nom => this.nom = nom}
                                                 className="form-control">
-                                                <option defaultValue={null}>En Attente</option>
+                                                <option defaultValue={null}></option>
 
-                                                {this.props.tiers.map(tier => 
-                                                        <option key={tier.id} value={tier.id}>{tier.code} </option>
+                                                {this.props.personnels.map(tier => 
+                                                        <option key={tier.id} value={tier.id}>{tier.nom} </option>
 
                                                         )}
 
@@ -960,35 +923,35 @@ import inputStyle from '../../utils/inputStyle'
                                                   </div>
                                                   <div className="col-md-2">
                                                   <label  className="">Télephonne</label>
-                                                  <input name="periode_date_fin"  type="text"
+                                                  <input name="telephonne"  type="text"
                                                       onChange={this.setField}
-                                                   ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                   ref={telephonne => this.telephonne = telephonne}
                                                       className="form-control" />
 
                                                   </div>
                                                   <div className="col-md-2">
                                                   <label  className=""> N° de fax</label>
-                                                  <input name="periode_date_fin"  type="text"
+                                                  <input name="fax"  type="text"
                                                       onChange={this.setField}
-                                                   ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                   ref={fax => this.fax = fax}
                                                       className="form-control" />
 
                                                   </div>
 
                                                   <div className="col-md-2">
                                                   <label  className="">Messagerie</label>
-                                                  <input name="periode_date_fin"  type="text"
+                                                  <input name="messagerie"  type="text"
                                                       onChange={this.setField}
-                                                   ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                   ref={messagerie => this.messagerie = messagerie}
                                                       className="form-control" />
 
                                                   </div>
 
                                                   <div className="col-md-3">
                                                   <label  className="">Entité/Service</label>
-                                                  <input name="periode_date_fin"  type="text"
+                                                  <input name="entite_service"  type="text"
                                                       onChange={this.setField}
-                                                   ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                   ref={entite_service => this.entite_service = entite_service}
                                                       className="form-control" />
 
                                                   </div>
@@ -1023,7 +986,12 @@ const mapStateToProps = state => {
     return {
         vehicules: state.vehicules.items,
         tiers: state.tiers.items,
-        vehiculeSeleted: state.vehiculeSeleted.vehicule
+        vehiculeSeleted: state.vehiculeSeleted.vehicule,
+        personnels: state.personnels.items,
+        entites: state.entites.items,
+        marques: state.marques.items,
+        natures_energies: state.natures_energies.items,
+
     }
   }
 
