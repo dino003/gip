@@ -394,11 +394,51 @@ import inputStyle from '../../utils/inputStyle'
                           
 
                                 <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
+                           
+                                <div className="tab-content">
+                        <div className="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
+                            <div className="row">
+                                <div className="main-card mb-3 card">
+                                    <div className="card-header"><i className="header-icon lnr-license icon-gradient bg-plum-plate"> </i>Header with Tabs
+                                                <div className="btn-actions-pane-right">
+                                                    <div role="group" className="btn-group-sm nav btn-group">
+                                                        <a data-toggle="tab" href="#tab-eg1-0" className="btn-shadow active btn btn-primary">Tab 1</a>
+                                                        <a data-toggle="tab" href="#tab-eg1-1" className="btn-shadow  btn btn-primary">Tab 2</a>
+                                                        <a data-toggle="tab" href="#tab-eg1-2" className="btn-shadow  btn btn-primary">Tab 3</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="card-body">
+                                                <div className="tab-content">
+                                                    <div className="tab-pane active" id="tab-eg1-0" role="tabpanel"><p>It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
+                                                        software like Aldus PageMaker
+                                                        including versions of Lorem Ipsum.</p></div>
+                                                    <div className="tab-pane" id="tab-eg1-1" role="tabpanel"><p>Like Aldus PageMaker including versions of Lorem. It has survived not only five centuries, but also the leap into electronic typesetting, remaining
+                                                        essentially unchanged. </p></div>
+                                                    <div className="tab-pane" id="tab-eg1-2" role="tabpanel"><p>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
+                                                        type specimen book. It has
+                                                        survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. </p></div>
+                                                </div>
+                                            </div>  
+
+                                             <div className="d-block text-right card-footer">
+                                                <a href="javascript:void(0);" className="btn-wide btn btn-success">Save</a>
+                                            </div> 
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
                             </form>
                         </div>
                     </div>
                 
                     <ToastContainer autoClose={4000} />
+
+                   
+
        </div>
         )
     }
