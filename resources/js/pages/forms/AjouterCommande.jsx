@@ -140,10 +140,10 @@ import inputStyle from '../../utils/inputStyle'
                                     <div className="col-md-3">
                                         <div className="position-relative form-group">
                                             <label >N° de la commande * </label>
-                                            <input name="numero_contrat_police" type="number"
+                                            <input name="numero_commande" type="number"
                                             onChange={this.setField}
                                             style={inputStyle}
-                                            ref={numero_contrat_police => this.numero_contrat_police = numero_contrat_police}
+                                            ref={numero_commande => this.numero_commande = numero_commande}
                                              className="form-control" />
                                              </div>
                                     </div>
@@ -151,18 +151,18 @@ import inputStyle from '../../utils/inputStyle'
                                     <div className="col-md-3">
                                         <div className="position-relative form-group">
                                             <label >Date *</label>
-                                            <input name="date_contrat"  type="date"
+                                            <input name="date"  type="date"
                                             style={inputStyle}
                                             defaultValue={today}
-                                            ref={date_contrat => this.date_contrat = date_contrat}
+                                            ref={date => this.date = date}
                                              className="form-control" />
                                              </div>
                                     </div>
 
                                     <div className="col-md-3">
                                          <label  className="">Etat de la commande</label>
-                                        <select name="vehicule" onChange={this.setField}
-                                            ref={vehicule => this.vehicule = vehicule}
+                                        <select name="etat_commande" onChange={this.setField}
+                                            ref={etat_commande => this.etat_commande = etat_commande}
                                           className="form-control">
                                         <option value="0">En préparation</option>
                                         <option value="1">En Attente de livraison</option>
@@ -195,17 +195,17 @@ import inputStyle from '../../utils/inputStyle'
                                     <div className="col-md-3">
                                         <div className="position-relative form-group">
                                             <label >Libéllé de la commande</label>
-                                            <input name="periode_date_debut"  type="text"
+                                            <input name="libelle_commande"  type="text"
                                             onChange={this.setField}
-                                            ref={periode_date_debut => this.periode_date_debut = periode_date_debut}
+                                            ref={libelle_commande => this.libelle_commande = libelle_commande}
                                              className="form-control" />
                                              </div>
                                     </div>
 
                                     <div className="col-md-3">
                                          <label  className="">Fournisseur</label>
-                                        <select name="compagnie_assurance" onChange={this.setFieldCompagnieEtCourtier}
-                                            ref={compagnie_assurance => this.compagnie_assurance = compagnie_assurance}
+                                        <select name="fournisseur" onChange={this.setFieldCompagnieEtCourtier}
+                                            ref={fournisseur => this.fournisseur = fournisseur}
                                             style={inputStyle}
                                           className="form-control">
                                         <option defaultValue={null}></option>
@@ -221,17 +221,17 @@ import inputStyle from '../../utils/inputStyle'
                                     <div className="col-md-3">
                                         <div className="position-relative form-group">
                                             <label >Commande expédiée le</label>
-                                            <input name="periode_date_fin"  type="date"
+                                            <input name="date_expedition"  type="date"
                                             onChange={this.setField}
-                                            ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                            ref={date_expedition => this.date_expedition = date_expedition}
                                              className="form-control" />
                                              </div>
                                     </div>
 
                                     <div className="col-md-3">
                                          <label  className="">Mode d'expédition</label>
-                                        <select name="type_commande" onChange={this.setField}
-                                            ref={type_commande => this.type_commande = type_commande}
+                                        <select name="mode_expedition" onChange={this.setField}
+                                            ref={mode_expedition => this.mode_expedition = mode_expedition}
                                           className="form-control">
                                         <option value="0">Courrier</option>
                                         <option value="1">Fax</option>
@@ -250,9 +250,9 @@ import inputStyle from '../../utils/inputStyle'
                                     <div className="col-md-3">
                                         <div className="position-relative form-group">
                                             <label >Livraison souhaitée</label>
-                                            <input name="periode_date_debut"  type="date"
+                                            <input name="date_livraison_souhaite"  type="date"
                                             onChange={this.setField}
-                                            ref={periode_date_debut => this.periode_date_debut = periode_date_debut}
+                                            ref={date_livraison_souhaite => this.date_livraison_souhaite = date_livraison_souhaite}
                                              className="form-control" />
                                              </div>
                                     </div>
@@ -262,9 +262,9 @@ import inputStyle from '../../utils/inputStyle'
                                     <div className="col-md-3">
                                         <div className="position-relative form-group">
                                             <label >Livraison</label>
-                                            <input name="periode_date_fin"  type="date"
+                                            <input name="date_livraison"  type="date"
                                             onChange={this.setField}
-                                            ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                            ref={date_livraison => this.date_livraison = date_livraison}
                                              className="form-control" />
                                              </div>
                                     </div>
@@ -272,9 +272,9 @@ import inputStyle from '../../utils/inputStyle'
                                     <div className="col-md-2">
                                         <div className="position-relative form-group">
                                             <label >Montant HT</label>
-                                            <input name="periode_date_fin"  type="number"
+                                            <input name="montant_ht"  type="number"
                                             onChange={this.setField}
-                                            ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                            ref={montant_ht => this.montant_ht = montant_ht}
                                              className="form-control" />
                                              </div>
                                     </div>
@@ -282,9 +282,9 @@ import inputStyle from '../../utils/inputStyle'
                                     <div className="col-md-2">
                                         <div className="position-relative form-group">
                                             <label >TVA</label>
-                                            <input name="periode_date_fin"  type="number"
+                                            <input name="tva"  type="number"
                                             onChange={this.setField}
-                                            ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                            ref={tva => this.tva = tva}
                                              className="form-control" />
                                              </div>
                                     </div>
@@ -292,9 +292,9 @@ import inputStyle from '../../utils/inputStyle'
                                     <div className="col-md-2">
                                         <div className="position-relative form-group">
                                             <label >TTC</label>
-                                            <input name="periode_date_fin"  type="number"
+                                            <input name="montant_ttc"  type="number"
                                             onChange={this.setField}
-                                            ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                            ref={montant_ttc => this.montant_ttc = montant_ttc}
                                              className="form-control" />
                                              </div>
                                     </div>
@@ -306,9 +306,9 @@ import inputStyle from '../../utils/inputStyle'
                               <div className="col-md-3">
                                   <div className="position-relative form-group">
                                       <label >Facture N°</label>
-                                      <input name="periode_date_debut"  type="text"
+                                      <input name="numero_facture"  type="text"
                                       onChange={this.setField}
-                                      ref={periode_date_debut => this.periode_date_debut = periode_date_debut}
+                                      ref={numero_facture => this.numero_facture = numero_facture}
                                        className="form-control" />
                                        </div>
                               </div>
@@ -318,19 +318,19 @@ import inputStyle from '../../utils/inputStyle'
                               <div className="col-md-3">
                                   <div className="position-relative form-group">
                                       <label >Date</label>
-                                      <input name="periode_date_fin"  type="date"
+                                      <input name="date_facture"  type="date"
                                       onChange={this.setField}
-                                      ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                      ref={date_facture => this.date_facture = date_facture}
                                        className="form-control" />
                                        </div>
                               </div>
 
                               <div className="col-md-3">
                                   <div className="position-relative form-group">
-                                      <label >Régléee le</label>
-                                      <input name="periode_date_fin"  type="date"
+                                      <label >Réglée le</label>
+                                      <input name="date_facture_reglee"  type="date"
                                       onChange={this.setField}
-                                      ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                      ref={date_facture_reglee => this.date_facture_reglee = date_facture_reglee}
                                        className="form-control" />
                                        </div>
                               </div>
@@ -375,8 +375,8 @@ import inputStyle from '../../utils/inputStyle'
 
                                                 <div className="col-md-3">
                                                 <label  className="">Entité</label>
-                                                <select name="courtier" onChange={this.setField}
-                                                    ref={courtier => this.courtier = courtier}
+                                                <select name="livraison_entite" onChange={this.setField}
+                                                    ref={livraison_entite => this.livraison_entite = livraison_entite}
                                                 className="form-control">
                                                 <option defaultValue={null}></option>
 
@@ -390,8 +390,8 @@ import inputStyle from '../../utils/inputStyle'
 
                                                 <div className="col-md-3">
                                                 <label  className="">Personne</label>
-                                                <select name="courtier" onChange={this.setField}
-                                                    ref={courtier => this.courtier = courtier}
+                                                <select name="personne" onChange={this.setField}
+                                                    ref={personne => this.personne = personne}
                                                 className="form-control">
                                                 <option defaultValue={null}></option>
 
@@ -414,27 +414,27 @@ import inputStyle from '../../utils/inputStyle'
 
                                                 <div className="col-md-4">
                                                 <label  className="">Adresse</label>
-                                                <input name="periode_date_fin"  type="text"
+                                                <input name="livraison_adresse1"  type="text"
                                       onChange={this.setField}
-                                      ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                      ref={livraison_adresse1 => this.livraison_adresse1 = livraison_adresse1}
                                        className="form-control" />
 
                                                 </div>
 
                                                 <div className="col-md-2">
                                                 <label  className="">Code postal</label>
-                                                <input name="periode_date_fin"  type="text"
+                                                <input name="livraison_code_postal"  type="text"
                                       onChange={this.setField}
-                                      ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                      ref={livraison_code_postal => this.livraison_code_postal = livraison_code_postal}
                                        className="form-control" />
 
                                                 </div>
 
                                                 <div className="col-md-3">
                                                 <label  className="">Ville</label>
-                                                <input name="periode_date_fin"  type="text"
+                                                <input name="livraison_ville"  type="text"
                                       onChange={this.setField}
-                                      ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                      ref={livraison_ville => this.livraison_ville = livraison_ville}
                                        className="form-control" />
 
                                                 </div>
@@ -450,27 +450,27 @@ import inputStyle from '../../utils/inputStyle'
 
                                             <div className="col-md-3">
                                                     <label  className="">Telephonne</label>
-                                                    <input name="periode_date_fin"  type="text"
+                                                    <input name="livraison_telephonne"  type="text"
                                                                                 onChange={this.setField}
-                                                                                ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                                                ref={livraison_telephonne => this.livraison_telephonne = livraison_telephonne}
                                                                                 className="form-control" />
 
                                                     </div>
 
                                                     <div className="col-md-3">
                                                     <label  className="">Fax</label>
-                                                    <input name="periode_date_fin"  type="text"
+                                                    <input name="livraison_fax"  type="text"
                                                                                 onChange={this.setField}
-                                                                                ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                                                ref={livraison_fax => this.livraison_fax = livraison_fax}
                                                                                 className="form-control" />
 
                                                     </div>
 
                                                     <div className="col-md-3">
                                                     <label  className="">Mail</label>
-                                                    <input name="periode_date_fin"  type="text"
+                                                    <input name="livraison_mail"  type="text"
                                                                                 onChange={this.setField}
-                                                                                ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                                                ref={livraison_mail => this.livraison_mail = livraison_mail}
                                                                                 className="form-control" />
 
                                                     </div>
@@ -488,18 +488,18 @@ import inputStyle from '../../utils/inputStyle'
 
                                             <div className="col-md-3">
                                                     <label  className="">Nom Interlocuteur</label>
-                                                    <input name="periode_date_fin"  type="text"
+                                                    <input name="livraison_nom_interlocuteur"  type="text"
                                                                                 onChange={this.setField}
-                                                                                ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                                                ref={livraison_nom_interlocuteur => this.livraison_nom_interlocuteur = livraison_nom_interlocuteur}
                                                                                 className="form-control" />
 
                                                     </div>
 
                                                     <div className="col-md-3">
                                                     <label  className="">Portable</label>
-                                                    <input name="periode_date_fin"  type="text"
+                                                    <input name="livraison_potable"  type="text"
                                                                                 onChange={this.setField}
-                                                                                ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                                                ref={livraison_potable => this.livraison_potable = livraison_potable}
                                                                                 className="form-control" />
 
                                                     </div>
@@ -519,8 +519,8 @@ import inputStyle from '../../utils/inputStyle'
 
                                             <div className="col-md-3">
                                                     <label  className="">Nom de l'entité</label>
-                                                    <select name="courtier" onChange={this.setField}
-                                                    ref={courtier => this.courtier = courtier}
+                                                    <select name="facturation_entite" onChange={this.setField}
+                                                    ref={facturation_entite => this.facturation_entite = facturation_entite}
                                                 className="form-control">
                                                 <option defaultValue={null}></option>
 
@@ -534,27 +534,27 @@ import inputStyle from '../../utils/inputStyle'
 
                                                     <div className="col-md-3">
                                                     <label  className="">Adresse</label>
-                                                    <input name="periode_date_fin"  type="text"
+                                                    <input name="facturation_adresse1"  type="text"
                                                                                 onChange={this.setField}
-                                                                                ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                                                ref={facturation_adresse1 => this.facturation_adresse1 = facturation_adresse1}
                                                                                 className="form-control" />
 
                                                     </div>
 
                                                     <div className="col-md-2">
                                                     <label  className="">Code postal</label>
-                                                    <input name="periode_date_fin"  type="text"
+                                                    <input name="facturation_code_postal"  type="text"
                                                                                 onChange={this.setField}
-                                                                                ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                                                ref={facturation_code_postal => this.facturation_code_postal = facturation_code_postal}
                                                                                 className="form-control" />
 
                                                     </div>
 
                                                     <div className="col-md-2">
                                                     <label  className="">Ville</label>
-                                                    <input name="periode_date_fin"  type="text"
+                                                    <input name="facturation_ville"  type="text"
                                                                                 onChange={this.setField}
-                                                                                ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                                                ref={facturation_ville => this.facturation_ville = facturation_ville}
                                                                                 className="form-control" />
 
                                                     </div>
@@ -574,36 +574,36 @@ import inputStyle from '../../utils/inputStyle'
 
                                                     <div className="col-md-2">
                                                     <label  className="">Telephonne</label>
-                                                    <input name="periode_date_fin"  type="text"
+                                                    <input name="facturation_telephonne"  type="text"
                                                                                 onChange={this.setField}
-                                                                                ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                                                ref={facturation_telephonne => this.facturation_telephonne = facturation_telephonne}
                                                                                 className="form-control" />
 
                                                     </div>
 
                                                     <div className="col-md-2">
                                                     <label  className="">Fax</label>
-                                                    <input name="periode_date_fin"  type="text"
+                                                    <input name="facturation_fax"  type="text"
                                                                                 onChange={this.setField}
-                                                                                ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                                                ref={facturation_fax => this.facturation_fax = facturation_fax}
                                                                                 className="form-control" />
 
                                                     </div>
 
                                                     <div className="col-md-3">
                                                     <label  className="">Mail</label>
-                                                    <input name="periode_date_fin"  type="text"
+                                                    <input name="facturation_mail"  type="text"
                                                                                 onChange={this.setField}
-                                                                                ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                                                ref={facturation_mail => this.facturation_mail = facturation_mail}
                                                                                 className="form-control" />
 
                                                     </div>
 
                                                     <div className="col-md-3">
                                                     <label  className="">Nom Interlocuteur</label>
-                                                    <input name="periode_date_fin"  type="text"
+                                                    <input name="facturation_interlocuteur"  type="text"
                                                                                 onChange={this.setField}
-                                                                                ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                                                                ref={facturation_interlocuteur => this.facturation_interlocuteur = facturation_interlocuteur}
                                                                                 className="form-control" />
 
                                                     </div>
