@@ -647,7 +647,9 @@ import inputStyle from '../../utils/inputStyle'
                                                        
                                                         </div>
                                                     <div className="tab-pane" id="contenu_commande" role="tabpanel">
-                                                    <table className="mb-0 table">
+                                                    <span onClick={this.setContenuCommande} className="mt-2 btn btn-info pull-right" title="Ajouter le contenu de la commande">Ajouter</span>
+
+                                           {this.state.contenu_commandes.length > 0 ? <table className="mb-0 table">
                                             <thead>
                                             <tr>
                                                 <th>Libéllé</th>
@@ -676,7 +678,7 @@ import inputStyle from '../../utils/inputStyle'
                                           
                                           
                                             </tbody>
-                                        </table>
+                                        </table> : null  }
 
                                         <div className="form-row">
                                         <div className="col-md-3">
@@ -899,6 +901,7 @@ import inputStyle from '../../utils/inputStyle'
                                             </div>
                                             <button type="submit" className="mt-2 btn btn-success">Valider</button>
 
+                                            <span  className="mt-2 btn btn-danger">Fermer</span>
 
 
                                  </div>
