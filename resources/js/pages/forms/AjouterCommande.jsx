@@ -14,12 +14,17 @@ import inputStyle from '../../utils/inputStyle'
         super(props);
         this.state = {
             contenu_commandes: [],
-            objet_commande: undefined
+            objet_commande: undefined,
+            showContenuForm: false,
         }
       
     }
 
-   
+   toggleContenuCommande = () => {
+       this.setState({
+           showContenuForm: !this.state.showContenuForm
+       })
+   }
     setField = (event) => {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -99,9 +104,17 @@ import inputStyle from '../../utils/inputStyle'
 
         }
 
-        this.setState({
-            contenu_commandes: this.state.contenu_commandes.push(obj)
-        })
+        this.setState(() => ({
+            contenu_commandes: [
+                obj, 
+              ...this.state.contenu_commandes
+            ],
+            showContenuForm: false
+          }))
+
+        // this.setState({
+        //     contenu_commandes: [...this.state.contenu_commandes, ...obj]
+        // }, () => this.toggleContenuCommande())
     }
 
 
@@ -118,14 +131,14 @@ import inputStyle from '../../utils/inputStyle'
           }
       }
 
-      enregistrerIntervention = (e) => {
+      enregistrerCommande = (e) => {
         e.preventDefault()
 
           if(this.verificationFormulaire() == null){
-            axios.post('/api/ajouter_contrat_assurance', {
-                vehicule: this.vehicule.value,
-                numero_contrat_police: this.numero_contrat_police.value,
-                date_contrat: this.date_contrat.value,
+            axios.post('/api/ajouter_commande', {
+                etat_commande: this.etat_commande.value,
+                type_commande: this.type_commande.value,
+                libelle_commande: this.libelle_commande.value,
                 periode_date_debut: this.periode_date_debut.value ,
                 periode_date_fin: this.periode_date_fin.value,
                 date_prise_effet: this.date_prise_effet.value,
@@ -139,7 +152,7 @@ import inputStyle from '../../utils/inputStyle'
                
             })
             .then(response => { 
-               const action = {type: "ADD_CONTRAT_ASSURANCE", value: response.data}
+               const action = {type: "ADD_COMMANDE", value: response.data}
                  this.props.dispatch(action)
 
                this.props.history.goBack();
@@ -158,25 +171,71 @@ import inputStyle from '../../utils/inputStyle'
 
        // console.log(yea)
       }
+
+      numeroAutoDeCommande = () => {
+        const {commandes} = this.props
+        if (commandes.length == 0) return 1
+       // if (commandes.length == 1) return 2
+        let coms = commandes.map(a => a.numero_commande);
+        return Math.max(...coms)
+      }
+
+      setFieldTypeCommande = (event) => {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        this.setState({
+            [name]: value
+        }, () =>  {
+            this.libelle_commande.value = this.LibelleAutoDeCommannde()
+            this.contenu_libelle_commande.value = this.LibelleAutoDeCommannde()
+
+        });
+      }
+
+      LibelleAutoDeCommannde = () => {
+      //  this.libelle_commande.value = this.type_commande.value 
+        var res = this.type_commande.value
+        //   switch (res) {
+        //       case 0:
+        //          return "Commande d'achat de véhicule" 
+        //         case 1:
+        //             return "Commande de véhicule en location longue durée"
+        //         case 2:
+        //             return "Commande de véhicule en location courte durée" 
+        //         case 3:
+        //             return "Commande de véhicule en leasing"       
+        //       default:
+        //           break;
+        //   }
+        if(res == 0) return "Commande d'achat de véhicule"
+        else if(res == 1) return "Commande de véhicule en location longue durée"
+        else if(res == 2) return "Commande de véhicule en location courte durée"
+        else return "Commande de véhicule en leasing" 
+       // return "Commande d'achat de véhicule"
+
+      }
     
 
     render() {
-        
+        console.log(this.numero_commande)
         return (
             <div className="app-main__inner">
                     <div className="main-card mb-3 card">
                         <div className="card-body">
                             <h5 className="card-title">Création de commande</h5>
-                            <form className="" onChange={this.setField}  onSubmit={this.enregistrerIntervention}>
+                            <form className="" onChange={this.setField}  onSubmit={this.enregistrerCommande}>
                                 <div className="form-row">
 
-                                    <div className="col-md-3">
+                                    <div className="col-md-2">
                                         <div className="position-relative form-group">
                                             <label >N° de la commande * </label>
                                             <input name="numero_commande" type="number"
                                             onChange={this.setField}
+                                            defaultValue={this.numeroAutoDeCommande()}    
                                             style={inputStyle}
-                                            ref={numero_commande => this.numero_commande = numero_commande}
+                                            ref={(numero_commande) => { this.numero_commande = numero_commande }} 
                                              className="form-control" />
                                              </div>
                                     </div>
@@ -209,7 +268,7 @@ import inputStyle from '../../utils/inputStyle'
 
                                         <div className="col-md-3">
                                          <label  className="">Type de commande</label>
-                                        <select name="type_commande" onChange={this.setField}
+                                        <select name="type_commande" onChange={this.setFieldTypeCommande}
                                             ref={type_commande => this.type_commande = type_commande}
                                           className="form-control">
                                         <option value={0}>Achat de véhicule</option>
@@ -225,10 +284,11 @@ import inputStyle from '../../utils/inputStyle'
 
                                 <div className="form-row">
                               
-                                    <div className="col-md-3">
+                                    <div className="col-md-5">
                                         <div className="position-relative form-group">
                                             <label >Libéllé de la commande</label>
                                             <input name="libelle_commande"  type="text"
+                                            defaultValue="Commande d'achat de véhicule"
                                             onChange={this.setField}
                                             ref={libelle_commande => this.libelle_commande = libelle_commande}
                                              className="form-control" />
@@ -251,7 +311,7 @@ import inputStyle from '../../utils/inputStyle'
                                 
                                         </div>
 
-                                    <div className="col-md-3">
+                                    <div className="col-md-2">
                                         <div className="position-relative form-group">
                                             <label >Commande expédiée le</label>
                                             <input name="date_expedition"  type="date"
@@ -261,7 +321,7 @@ import inputStyle from '../../utils/inputStyle'
                                              </div>
                                     </div>
 
-                                    <div className="col-md-3">
+                                    <div className="col-md-2">
                                          <label  className="">Mode d'expédition</label>
                                         <select name="mode_expedition" onChange={this.setField}
                                             ref={mode_expedition => this.mode_expedition = mode_expedition}
@@ -647,9 +707,10 @@ import inputStyle from '../../utils/inputStyle'
                                                        
                                                         </div>
                                                     <div className="tab-pane" id="contenu_commande" role="tabpanel">
-                                                    <span onClick={this.setContenuCommande} className="mt-2 btn btn-info pull-right" title="Ajouter le contenu de la commande">Ajouter</span>
+                                                   {!this.state.showContenuForm &&  <span onClick={this.toggleContenuCommande} className="mt-2 btn btn-info pull-right"
+                                                     title="Ajouter le contenu de la commande">Ajouter</span>}
 
-                                           {this.state.contenu_commandes.length > 0 ? <table className="mb-0 table">
+                                           {!this.state.showContenuForm && <table className="mb-0 table">
                                             <thead>
                                             <tr>
                                                 <th>Libéllé</th>
@@ -678,12 +739,15 @@ import inputStyle from '../../utils/inputStyle'
                                           
                                           
                                             </tbody>
-                                        </table> : null  }
-
+                                        </table> }
+                                        {this.state.showContenuForm &&
+                                        <div>
                                         <div className="form-row">
-                                        <div className="col-md-3">
+                                        <div className="col-md-5">
                                                     <label  className="">Libéllé de la commande</label>
                                                     <input name="contenu_libelle_commande"  type="text"
+                                                        defaultValue="Commande d'achat de véhicule"
+
                                                         onChange={this.setField}
                                                      ref={contenu_libelle_commande => this.contenu_libelle_commande = contenu_libelle_commande}
                                                         className="form-control" />
@@ -712,7 +776,7 @@ import inputStyle from '../../utils/inputStyle'
 
                                                     </div>
 
-                                                    <div className="col-md-3">
+                                                    <div className="col-md-2">
                                                     <label  className="">Date de livraison</label>
                                                     <input name="contenu_date_livraison"  type="date"
                                                                                 onChange={this.setField}
@@ -770,7 +834,7 @@ import inputStyle from '../../utils/inputStyle'
 
                                                     <div className="col-md-2">
                                                     <label  className="">Cv Fiscaux</label>
-                                                    <input name="cv_fiscaux"  type="text"
+                                                    <input name="cv_fiscaux"  type="number"
                                                                                 onChange={this.setField}
                                                                                 ref={cv_fiscaux => this.cv_fiscaux = cv_fiscaux}
                                                                                 className="form-control" />
@@ -778,8 +842,8 @@ import inputStyle from '../../utils/inputStyle'
                                                     </div>
 
                                                     <div className="col-md-1">
-                                                    <label  className="">Place</label>
-                                                    <input name="places"  type="text"
+                                                    <label  className="">Places</label>
+                                                    <input name="places"  type="number"
                                                                                 onChange={this.setField}
                                                                                 ref={places => this.places = places}
                                                                                 className="form-control" />
@@ -899,9 +963,10 @@ import inputStyle from '../../utils/inputStyle'
 
                                                     </div>
                                             </div>
-                                            <button type="submit" className="mt-2 btn btn-success">Valider</button>
+                                            <span onClick={this.setContenuCommande} className="mt-2 btn btn-success">Valider</span>
 
-                                            <span  className="mt-2 btn btn-danger">Fermer</span>
+                                            <span onClick={this.toggleContenuCommande} className="mt-2 btn btn-danger">Fermer</span>
+                                            </div> }
 
 
                                  </div>
@@ -994,6 +1059,7 @@ const mapStateToProps = state => {
         entites: state.entites.items,
         marques: state.marques.items,
         natures_energies: state.natures_energies.items,
+        commandes: state.commandes.items
 
     }
   }
