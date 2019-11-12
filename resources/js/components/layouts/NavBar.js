@@ -26,14 +26,14 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
 
 
     fetchStructures(){
-        queue.push(() => axios.get('/api/structures_etablissements').then((response, body) => {
+        queue.push(() => axios.get('/api/structures_etablissements').then((response) => {
             // .
             const action = {type: "GET_STRUCTURE_ETABLISSEMENT", value: response.data}
             this.props.dispatch(action)
         }));
     } 
     fetchTypeEntites(){
-        queue.push(() => axios.get('/api/types_entites').then((response, body) => {
+        queue.push(() => axios.get('/api/types_entites').then((response) => {
             // .
             const action = {type: "GET_TYPE_ENTITE", value: response.data}
             this.props.dispatch(action)
@@ -41,7 +41,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     }
 
     fetchModeleVehicules(){
-        queue.push(() => axios.get('/api/modeles_vehicules').then((response, body) => {
+        queue.push(() => axios.get('/api/modeles_vehicules').then((response) => {
             // The eventual response of Twitter	
             const action = {type: "GET_MODELE_VEHICULE", value: response.data}
             this.props.dispatch(action)
@@ -51,7 +51,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     fetchUtilisateurs(){
         queue.push(() => { 
 
-            axios.get('/api/users').then((response, body) => {
+            axios.get('/api/users').then((response) => {
             // .
             const action = {type: "GET_UTILISATEUR", value: response.data}
             this.props.dispatch(action)
@@ -60,21 +60,21 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     }
 
     fetchTiers(){
-        queue.push(() => axios.get('/api/tiers').then((response, body) => {
+        queue.push(() => axios.get('/api/tiers').then((response) => {
             // .
             const action = {type: "GET_TIER", value: response.data}
             this.props.dispatch(action)
         }));
     }  
     fetchPersonnels(){
-        queue.push(() => axios.get('/api/personnels').then((response, body) => {
+        queue.push(() => axios.get('/api/personnels').then((response) => {
             // .
             const action = {type: "GET_PERSONNEL", value: response.data}
             this.props.dispatch(action)
         }));
     } 
     fetchEntites(){
-        queue.push(() => axios.get('/api/entites').then((response, body) => {
+        queue.push(() => axios.get('/api/entites').then((response) => {
             // .
             const action = {type: "GET_ENTITE", value: response.data}
             this.props.dispatch(action)
@@ -82,14 +82,14 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     } 
    
     fetchMarques(){
-        queue.push(() => axios.get('/api/marques').then((response, body) => {
+        queue.push(() => axios.get('/api/marques').then((response) => {
             // .
             const action = {type: "GET_MARQUE", value: response.data}
             this.props.dispatch(action)
         }));
     }
     fetchCategories_vehicules(){
-        queue.push(() => axios.get('/api/categories_vehicules').then((response, body) => {
+        queue.push(() => axios.get('/api/categories_vehicules').then((response) => {
             // .
             const action = {type: "GET_CATEGORIE_VEHICULE", value: response.data}
             this.props.dispatch(action)
@@ -97,7 +97,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     }
 
     fetchCodeIncidents(){
-        queue.push(() => axios.get('/api/code_incidents').then((response, body) => {
+        queue.push(() => axios.get('/api/code_incidents').then((response) => {
             // .
             const action = {type: "GET_CODE_INCIDENT", value: response.data}
             this.props.dispatch(action)
@@ -105,7 +105,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     }
 
     fetchNatureEnergies(){
-        queue.push(() => axios.get('/api/nature_energies').then((response, body) => {
+        queue.push(() => axios.get('/api/nature_energies').then((response) => {
             // .
             const action = {type: "GET_NATURE_ENERGIE", value: response.data}
             this.props.dispatch(action)
@@ -113,7 +113,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     }
 
     fetchAnneesBudgetaires(){
-        queue.push(() => axios.get('/api/annee_budgetaires').then((response, body) => {
+        queue.push(() => axios.get('/api/annee_budgetaires').then((response) => {
             // .
             const action = {type: "GET_ANNEE_BUDGETAIRE", value: response.data}
             this.props.dispatch(action)
@@ -122,7 +122,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
 
        
     fetchNatureConsommations(){
-        queue.push(() => axios.get('/api/nature_consommations').then((response, body) => {
+        queue.push(() => axios.get('/api/nature_consommations').then((response) => {
             // .
             const action = {type: "GET_NATURE_CONSOMMATION", value: response.data}
             this.props.dispatch(action)
@@ -130,7 +130,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     }
 
     fetchNatureInterventions(){
-        queue.push(() => axios.get('/api/nature_interventions').then((response, body) => {
+        queue.push(() => axios.get('/api/nature_interventions').then((response) => {
             // .
             const action = {type: "GET_NATURE_INTERVENTION", value: response.data}
             this.props.dispatch(action)
@@ -138,7 +138,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     }
 
     fetchOperationInterventions(){
-        queue.push(() => axios.get('/api/operation_intervention').then((response, body) => {
+        queue.push(() => axios.get('/api/operation_intervention').then((response) => {
             // .
             const action = {type: "GET_OPERATION_INTERVENTION", value: response.data}
             this.props.dispatch(action)
@@ -146,7 +146,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     }
 
     fetchNatureAmendes(){
-        queue.push(() => axios.get('/api/nature_amendes').then((response, body) => {
+        queue.push(() => axios.get('/api/nature_amendes').then((response) => {
             // .
             const action = {type: "GET_NATURE_AMENDE", value: response.data}
             this.props.dispatch(action)
@@ -154,7 +154,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     }
 
     fetchNatureSinistres(){
-        queue.push(() => axios.get('/api/nature_sinistres').then((response, body) => {
+        queue.push(() => axios.get('/api/nature_sinistres').then((response) => {
             // .
             const action = {type: "GET_NATURE_SINISTRE", value: response.data}
             this.props.dispatch(action)
@@ -162,7 +162,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     }
 
     fetchNatureDepenseRecettes(){
-        queue.push(() => axios.get('/api/nature_depense_recettes').then((response, body) => {
+        queue.push(() => axios.get('/api/nature_depense_recettes').then((response) => {
             // .
             const action = {type: "GET_NATURE_DEPENSE_RECETTE", value: response.data}
             this.props.dispatch(action)
@@ -170,7 +170,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     }
 
     fetchNatureReservations(){
-        queue.push(() => axios.get('/api/nature_reservations').then((response, body) => {
+        queue.push(() => axios.get('/api/nature_reservations').then((response) => {
             // .
             const action = {type: "GET_NATURE_RESERVATION", value: response.data}
             this.props.dispatch(action)
@@ -178,7 +178,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     }
 
     fetchFamillePiecesdetachees(){
-        queue.push(() => axios.get('/api/famille_pieces_detachees').then((response, body) => {
+        queue.push(() => axios.get('/api/famille_pieces_detachees').then((response) => {
             // .
             const action = {type: "GET_FAMILLE_PIECE_DETACHEE", value: response.data}
             this.props.dispatch(action)
@@ -186,7 +186,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     }
 
     fetchNatureTaxes(){
-        queue.push(() => axios.get('/api/nature_taxes').then((response, body) => {
+        queue.push(() => axios.get('/api/nature_taxes').then((response) => {
             // .
             const action = {type: "GET_NATURE_TAXE", value: response.data}
             this.props.dispatch(action)
@@ -194,7 +194,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     }
 
     fetchCoutConsommables(){
-        queue.push(() => axios.get('/api/couts_consomables').then((response, body) => {
+        queue.push(() => axios.get('/api/couts_consomables').then((response) => {
             // .
             const action = {type: "GET_COUT_CONSOMMABLE", value: response.data}
             this.props.dispatch(action)
@@ -202,7 +202,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     }
 
     fetchInterventions(){
-        queue.push(() => axios.get('/api/interventions').then((response, body) => {
+        queue.push(() => axios.get('/api/interventions').then((response) => {
             // .
             const action = {type: "GET_INTERVENTION", value: response.data}
             this.props.dispatch(action)
@@ -210,7 +210,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     }
 
     fetchTva(){
-        queue.push(() => axios.get('/api/taux_tvas').then((response, body) => {
+        queue.push(() => axios.get('/api/taux_tvas').then((response) => {
             // .
             const action = {type: "GET_TVA", value: response.data}
             this.props.dispatch(action)
@@ -218,7 +218,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     }
 
     fetchUtilisations(){
-        queue.push(() => axios.get('/api/utilisations').then((response, body) => {
+        queue.push(() => axios.get('/api/utilisations').then((response) => {
             // .
             const action = {type: "GET_UTILISATION", value: response.data}
             this.props.dispatch(action)
@@ -226,7 +226,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     }
 
     fetchContratAssurances(){
-        queue.push(() => axios.get('/api/contrat_assurances').then((response, body) => {
+        queue.push(() => axios.get('/api/contrat_assurances').then((response) => {
             // .
             const action = {type: "GET_CONTRAT_ASSURANCE", value: response.data}
             this.props.dispatch(action)
@@ -234,15 +234,23 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     }
 
     fetchConsommations(){
-        queue.push(() => axios.get('/api/consommations').then((response, body) => {
+        queue.push(() => axios.get('/api/consommations').then((response) => {
             // .
             const action = {type: "GET_CONSOMMATION", value: response.data}
             this.props.dispatch(action)
         }));
     }
 
+    fetchCommandes(){
+        queue.push(() => axios.get('/api/commandes').then((response) => {
+            // .
+            const action = {type: "GET_COMMANDE", value: response.data}
+            this.props.dispatch(action)
+        }));
+    }
+
     fetchAmendes(){
-        queue.push(() => axios.get('/api/amendes').then((response, body) => {
+        queue.push(() => axios.get('/api/amendes').then((response) => {
             // .
             const action = {type: "GET_AMENDE", value: response.data}
             this.props.dispatch(action)
@@ -250,7 +258,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     }
 
     fetchBudgetEntites(){
-        queue.push(() => axios.get('/api/budget_entites').then((response, body) => {
+        queue.push(() => axios.get('/api/budget_entites').then((response) => {
             // .
             const action = {type: "GET_BUDGET_ENTITE", value: response.data}
             this.props.dispatch(action)
@@ -258,7 +266,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     }
 
     fetchDepenseRecettes(){
-        queue.push(() => axios.get('/api/depense_recettes').then((response, body) => {
+        queue.push(() => axios.get('/api/depense_recettes').then((response) => {
             // .
             const action = {type: "GET_DR", value: response.data}
             this.props.dispatch(action)
@@ -266,7 +274,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     }
 
     fetchBudgetVehicules(){
-        queue.push(() => axios.get('/api/budget_vehicules').then((response, body) => {
+        queue.push(() => axios.get('/api/budget_vehicules').then((response) => {
             // .
             const action = {type: "GET_BUDGET_VEHICULE", value: response.data}
             this.props.dispatch(action)
@@ -274,7 +282,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     }
 
     fetchVehicules(){
-        queue.push(() => axios.get('/api/vehicules').then((response, body) => {
+        queue.push(() => axios.get('/api/vehicules').then((response) => {
             // .
             const action = {type: "GET_VEHICULE", value: response.data}
             this.props.dispatch(action)
@@ -323,6 +331,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
         this.fetchBudgetEntites();
         this.fetchInterventions();
         this.fetchConsommations();
+        this.fetchCommandes();
         this.fetchDepenseRecettes();
         this.fetchAmendes();
         this.fetchBudgetVehicules();

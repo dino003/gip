@@ -67,6 +67,12 @@ class Personnel extends Model
         {
             return $this->hasMany(Commande::class, 'personne', 'id');
         }
+
+        // reservations vehicule
+     public function reservations()
+     {
+         return $this->hasMany(VehiculeReservation::class, 'personne_reservant', 'id');
+     }
     
     
 }

@@ -53,3 +53,8 @@ class VehiculeUtilisation extends Model
         return $this->belongsTo(Personnel::class, 'chauffeur');
     }
 }
+
+
+
+
+

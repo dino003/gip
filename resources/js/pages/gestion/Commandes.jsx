@@ -35,7 +35,7 @@ import CommandeItem from '../../components/gestion/CommandeItem';
      
 
     onEdit = (id) => {
-        this.props.history.push('/gestion_du_parc_automobile/modification-commandes/' + id)
+        this.props.history.push('/gestion_du_parc_automobile/modification-commande/' + id)
     }
   
 
@@ -74,7 +74,6 @@ import CommandeItem from '../../components/gestion/CommandeItem';
             <th>Liv. réelle</th>
             <th>Montant HT</th>
             <th>Montant TTC</th>
-            <th>Montant HT</th>
 
         </tr>
         </thead>

@@ -71,6 +71,8 @@ import AjouterContratAssurance from '../pages/forms/AjouterContratAssurance';
 import ModifierContratAssurance from '../pages/forms/ModifierContratAssurance';
 import Commandes from '../pages/gestion/Commandes'
 import AjouterCommande from '../pages/forms/AjouterCommande';
+import ModifierCommande from '../pages/forms/ModifierCommande';
+import Reservations from '../pages/vehicules/Reservations';
 
 
 
@@ -150,6 +152,10 @@ const NavBack = () => (
   <Master path="/gestion_du_parc_automobile/parc/creation-budget-vehicules/:vehicule_id/:imma" component={AjouterBudgetVehicule} />
   <Master path="/gestion_du_parc_automobile/parc/modification-budget-vehicules/:vehicule_id/:imma/budget-vehicule/:budgetVehicule_id" component={ModifierBudgetVehicule} />
 
+  <Master path="/gestion_du_parc_automobile/parc/reservation-vehicules/:vehicule_id/:imma" component={Reservations} />
+
+
+
   <Master path="/gestion_du_parc_automobile/parc/depense-recettes-vehicules/:vehicule_id/:imma" component={DepenseRecettes} />
   <Master path="/gestion_du_parc_automobile/parc/creation-depense-recettes-vehicules/:vehicule_id/:imma" component={AjouterDepenseRecette} />
 
@@ -165,6 +171,7 @@ const NavBack = () => (
 
   <MasterGestion path="/gestion_du_parc_automobile/gestion-des-commandes" component={Commandes} />
   <MasterGestion path="/gestion_du_parc_automobile/creation-commande" component={AjouterCommande} />
+  <MasterGestion path="/gestion_du_parc_automobile/modification-commande/:commande_id" component={ModifierCommande} />
 
 
     

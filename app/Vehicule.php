@@ -93,6 +93,13 @@ class Vehicule extends Model
              return $this->hasMany(ContratAssurance::class, 'vehicule', 'id');
          }
 
+         
+         // reservations
+         public function reservations()
+         {
+             return $this->hasMany(VehiculeReservation::class, 'vehicule', 'id');
+         }
+
   
 
 }

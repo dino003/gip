@@ -21,4 +21,11 @@ class NatureReservationUtilisation extends Model
     {
         return $this->hasMany(VehiculeUtilisation::class, 'nature_utilisation', 'id');
     }
+
+
+    // reservations vehicule
+     public function reservations()
+     {
+         return $this->hasMany(VehiculeReservation::class, 'objet_reservation', 'id');
+     }
 }

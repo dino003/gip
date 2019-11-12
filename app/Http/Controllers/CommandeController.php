@@ -48,7 +48,7 @@ class CommandeController extends Controller
     {
        
         $commande = new Commande;
-        $creation = $commande->create($request->only($commande->fillable));
+       // $creation = $commande->create($request->only($commande->fillable));
         $commande->etat_commande = $request->get('etat_commande');
         $commande->type_commande = $request->get('type_commande');
         $commande->libelle_commande = $request->get('libelle_commande');
@@ -86,36 +86,47 @@ class CommandeController extends Controller
         $commande->facturation_mail = $request->get('facturation_mail');
         $commande->facturation_interlocuteur = $request->get('facturation_interlocuteur');
         $commande->facturation_interlocuteur_telephonne = $request->get('facturation_interlocuteur_telephonne');
-        
+        $commande->suivi_nom = $request->get('suivi_nom');
+        $commande->suivi_telephone = $request->get('suivi_telephone');
+        $commande->suivi_fax = $request->get('suivi_fax');
+        $commande->suivi_messagerie = $request->get('suivi_messagerie');
+        $commande->suivi_entite_service = $request->get('suivi_entite_service');
             $commande->save();
         // bonjour
+        if($request->contenu_commandes){
+            foreach ($request->contenu_commandes as $key => $value) {
+                $contenu = new ContenuCommande;
+              $val = json_decode( json_encode($value) );
+                //dd($val->contenu_libelle_commande);
+               $contenu->contenu_libelle_commande = $val->contenu_libelle_commande;
+                $contenu->contenu_etat_commande = $val->contenu_etat_commande;
+                $contenu->contenu_date_livraison = $val->contenu_date_livraison;
+                $contenu->contenu_date_livraison_souhaite = $val->contenu_date_livraison_souhaite;
+                $contenu->marque = $val->marque;
+                $contenu->commande = $commande->id;
+                $contenu->contenu_modele_vehicule = $val->contenu_modele_vehicule;
+                $contenu->energie = $val->energie;
+                $contenu->cv_fiscaux = $val->cv_fiscaux;
+                $contenu->places = $val->places;
+                $contenu->couleur = $val->couleur;
+                $contenu->climatisation = $val->climatisation;
+                $contenu->pneu_neige = $val->pneu_neige;
+                $contenu->radio_cd = $val->radio_cd;
+                $contenu->gps = $val->gps;
+                $contenu->contenu_quantite_commande = $val->contenu_quantite_commande;
+                $contenu->contenu_quantite_livree = $val->contenu_quantite_livree;
+                $contenu->contenu_montant_commande = $val->contenu_montant_commande;
+                $contenu->contenu_taux_tva = $val->contenu_taux_tva;
+                $contenu->contenu_montant_ttc = $val->contenu_montant_ttc;
+              
+                $contenu->save();
+            }
+        }
             
-            $contenu = new ContenuCommande;
-       
-        $contenu->libelle_commande = $request->get('libelle_commande');
-        $contenu->etat_commande = $request->get('etat_commande');
-        $contenu->date_livraison_souhaite = $request->get('date_livraison_souhaite');
-        $contenu->date_livraison = $request->get('date_livraison');
-        $contenu->marque = $request->get('marque');
-        $contenu->commande = $commande->id;
-        $contenu->modele_vehicule = $request->get('modele_vehicule');
-        $contenu->energie = $request->get('energie');
-        $contenu->cv_fiscaux = $request->get('cv_fiscaux');
-        $contenu->places = $request->get('places');
-        $contenu->couleur = $request->get('couleur');
-        $contenu->climatisation = $request->get('climatisation');
-        $contenu->pneu_neige = $request->get('pneu_neige');
-        $contenu->radio_cd = $request->get('radio_cd');
-        $contenu->gps = $request->get('gps');
-        $contenu->quantite_commande = $request->get('quantite_commande');
-        $contenu->quantite_livree = $request->get('quantite_livree');
-        $contenu->montant_commande = $request->get('montant_commande');
-        $contenu->taux_tva = $request->get('taux_tva');
-        $contenu->tva = $request->get('tva');
-        $contenu->montant_ttc = $request->get('montant_ttc');
+      
 
         return response()->json(Commande::with(['contenu_commandes', 'fournisseur', 'livraison_entite', 'personne', 'facturation_entite'])
-                                     ->find($creation->id));
+                                     ->find($commande->id));
     }
 
     /**

@@ -26,7 +26,7 @@ import {connect} from 'react-redux'
                 <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date || 'Non renseigné'}</td>
 
              <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.fournisseur ? item.fournisseur.code : 'Non renseigné'}</td>
-             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.type_commande || 'Non renseigné'}</td>
+             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.type_commande == 0 ? 'Achat' : item.type_commande == 1 ? 'Location longue durée' : item.type_commande == 2 ? 'Location courte durée' : 'Leasing'}</td>
              <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.libelle_commande  || 'Non renseigné'}</td>
              <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.etat_commande ? 'Terminée' : 'Préparation'}</td>
              <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_expedition  || 'Non renseigné'}</td>
@@ -35,7 +35,6 @@ import {connect} from 'react-redux'
              <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.montant_ht  || 'Non renseigné'}</td>
              <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.montant_ttc  || 'Non renseigné'}</td>
 
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.compagnie_assurance ? item.compagnie_assurance.code : 'Non renseigné'}</td>
 
             
             <td>

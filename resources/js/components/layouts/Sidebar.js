@@ -152,7 +152,12 @@ const active = {
                                         Réservations
                                         <i className="metismenu-state-icon "></i>
 
-                                    </a>:         <NavLink exact activeStyle={active} to="/reservations">
+                                    </a>: <NavLink exact activeStyle={active} 
+                                     to={{
+                                        pathname: `/gestion_du_parc_automobile/parc/reservation-vehicules/${vehiculeSeleted.id}/${vehiculeSeleted.immatriculation}`,
+                                        state: { veh: this.props.vehiculeSeleted }
+                                      }}
+                                     >
                                         <i className="metismenu-icon pe-7s-repeat"></i>
                                         Réservations
                                         <i className="metismenu-state-icon "></i>

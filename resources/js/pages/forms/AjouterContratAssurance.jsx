@@ -126,6 +126,7 @@ import inputStyle from '../../utils/inputStyle'
     
 
     render() {
+       // console.log(this.numero_contrat_police)
         return (
             <div className="app-main__inner">
               

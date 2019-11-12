@@ -133,6 +133,7 @@ import TableHeader from '../../components/TableHeader'
                            titre="Gestion des Tiers"
                            toggleSearchInput={this.toggleSearchInput}
                             isLink />
+                           
                            {/*
                            <h5 className="card-title">Gestion des entités
                            <span className="pull-right">

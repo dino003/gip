@@ -11,7 +11,7 @@ export default class ModifierOperationIntervention extends Component {
             // sinistre: false
 
         }
-    }
+    } 
 
     setField = (event) => {
         //  this.setState({[e.target.name]: e.target.value})

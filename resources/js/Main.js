@@ -18,8 +18,15 @@ export default class Main extends Component {
         )
     }
 }
+
+let $app = document.querySelector('#react')
+
+if($app) {
     ReactDOM.render( 
-    <Provider store={store}>
-        <Main />
-    </Provider>
-    , document.getElementById('app'))
+        <Provider store={store}>
+            <Main />
+        </Provider>
+        , document.getElementById('react'))
+}
+
+
