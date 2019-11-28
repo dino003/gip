@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
+import moment from 'moment'
+import {formatageSomme} from '../../utils/Repository'
 
  class CommandeItem extends Component {
 
@@ -23,17 +25,17 @@ import {connect} from 'react-redux'
             
              <tr > 
                 <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.numero_commande || 'Non renseigné'}</td>
-                <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date || 'Non renseigné'}</td>
+                <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date ? moment(item.date).format('DD/MM/YYYY')  : 'Non renseigné'}</td>
 
              <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.fournisseur ? item.fournisseur.code : 'Non renseigné'}</td>
              <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.type_commande == 0 ? 'Achat' : item.type_commande == 1 ? 'Location longue durée' : item.type_commande == 2 ? 'Location courte durée' : 'Leasing'}</td>
              <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.libelle_commande  || 'Non renseigné'}</td>
              <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.etat_commande ? 'Terminée' : 'Préparation'}</td>
-             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_expedition  || 'Non renseigné'}</td>
-             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_livraison_souhaite  || 'Non renseigné'}</td>
-             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_livraison  || 'Non renseigné'}</td>
-             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.montant_ht  || 'Non renseigné'}</td>
-             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.montant_ttc  || 'Non renseigné'}</td>
+             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_expedition ? moment(item.date_expedition).format('DD/MM/YYYY') : 'Non renseigné'}</td>
+             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_livraison_souhaite ? moment(item.date_livraison_souhaite).format('DD/MM/YYYY')  : 'Non renseigné'}</td>
+             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_livraison ? moment(item.date_livraison).format('DD/MM/YYYY') : 'Non renseigné'}</td>
+             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.montant_ht ? formatageSomme(item.montant_ht) : 'Non renseigné'}</td>
+             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.montant_ttc ? formatageSomme(item.montant_ttc) : 'Non renseigné'}</td>
 
 
             

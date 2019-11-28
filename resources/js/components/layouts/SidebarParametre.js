@@ -98,6 +98,8 @@ export default class SidebarParametre extends Component {
                                             </NavLink>
                                         </li>
 
+                                        
+
                                         <li className="app-sidebar__heading">Les Acteurs</li>
                                         <li>
                                             <NavLink activeStyle={active} to="/gestion_du_parc_automobile/gestion-des-utilisateurs">

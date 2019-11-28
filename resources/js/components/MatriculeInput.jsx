@@ -8,7 +8,7 @@ import {connect} from 'react-redux'
             <input
             style={{width: '30%', color: 'red', fontSize: '2em'}}
                readOnly
-            value={vehiculeSeleted != undefined ?  vehiculeSeleted.immatriculation :
+            defaultValue={vehiculeSeleted != undefined ?  vehiculeSeleted.immatriculation :
                  this.props.text_attente ? this.props.text_attente : 'Chargement....' }
             type="text" className="form-control pull-right" />
         )

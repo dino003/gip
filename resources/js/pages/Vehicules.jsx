@@ -39,22 +39,13 @@ import MatriculeInput from '../components/MatriculeInput'
             const itemIndex = this.state.personnelState.findIndex(item => item.id === id)
 
             this.setState({personnelState: this.state.personnelState.filter((item, index) => index !== itemIndex)})
-            axios.delete('api/supprimer_personnel/' + id)
+            axios.delete('/api/supprimer_personnel/' + id)
         }
        
     }
 
     onEdit = (id) => {
-    //     var entites = this.props.entites
-    //    // var str entites[index],uc = structures[index]
-
-
-    //     this.setState({
-    //         objetModif:
-    //         editIndex: index
-    //     }, () => this.passEdit())
-
-        
+   
         this.props.history.push('/gestion_du_personnel/' + id)
 
     }
@@ -74,7 +65,7 @@ import MatriculeInput from '../components/MatriculeInput'
   async handleSubmit(e){
         e.preventDefault();
 
-      const response =  await axios.post('api/ajouter_code_incident', {
+      const response =  await axios.post('/api/ajouter_code_incident', {
             libelle: this.libelle.value,
             code: this.code.value
         })

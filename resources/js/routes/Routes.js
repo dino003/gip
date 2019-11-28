@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 
 import Master from '../components/layouts/Master'
 import MasterParametre from '../components/layouts/MasterParametre'
@@ -73,6 +73,8 @@ import Commandes from '../pages/gestion/Commandes'
 import AjouterCommande from '../pages/forms/AjouterCommande';
 import ModifierCommande from '../pages/forms/ModifierCommande';
 import Reservations from '../pages/vehicules/Reservations';
+import AjouterReservation from '../pages/forms/Vehicules/AjouterReservation';
+import ModifierReservation from '../pages/forms/Vehicules/ModifierReservation';
 
 
 
@@ -153,6 +155,8 @@ const NavBack = () => (
   <Master path="/gestion_du_parc_automobile/parc/modification-budget-vehicules/:vehicule_id/:imma/budget-vehicule/:budgetVehicule_id" component={ModifierBudgetVehicule} />
 
   <Master path="/gestion_du_parc_automobile/parc/reservation-vehicules/:vehicule_id/:imma" component={Reservations} />
+  <Master path="/gestion_du_parc_automobile/parc/creation-reservation-vehicules/:vehicule_id/:imma" component={AjouterReservation} />
+  <Master path="/gestion_du_parc_automobile/parc/modification-reservation-vehicule/:vehicule_id/:imma/reservation/:reservation_id" component={ModifierReservation} />
 
 
 

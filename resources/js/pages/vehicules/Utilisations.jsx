@@ -11,6 +11,9 @@ import MatriculeInput from '../../components/MatriculeInput';
 import today from '../../utils/today'
 import inputStyle from '../../utils/inputStyle'
 
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+
 
   class Utilisations extends Component {
 
@@ -45,14 +48,36 @@ import inputStyle from '../../utils/inputStyle'
 
     onDelete = (id) => {
 
-        let conf = confirm('Voulez-vous vraiment supprimer ?')
-        if(conf === true){
-            const action = {type: "REMOVE_UTILISATION", value: id}
-            this.props.dispatch(action)
-           // this.setState({entitesState : this.state.entitesState.filter(ent => ent.id !== id)})
-            axios.delete('api/supprimer_vehicule_utilisation/' + id)
+        confirmAlert({
+            title: 'Suppression',
+            message: 'Voulez-vous vraiment supprimer ?',
+            buttons: [
+              {
+                label: 'OUI',
+                onClick: () => {
+                    const action = {type: "REMOVE_UTILISATION", value: id}
+                    this.props.dispatch(action)
+                   
+                    axios.delete('/api/supprimer_vehicule_utilisation/' + id).then(_ =>  toast.success("Supprimé avec succès !", {
+                        position: toast.POSITION.BOTTOM_CENTER
+                      }))
+                } 
+              },
+              {
+                label: 'ANNULER',
+                onClick: () => {}
+              }
+            ]
+          });
+
+        // let conf = confirm('Voulez-vous vraiment supprimer ?')
+        // if(conf === true){
+        //     const action = {type: "REMOVE_UTILISATION", value: id}
+        //     this.props.dispatch(action)
+        //    // this.setState({entitesState : this.state.entitesState.filter(ent => ent.id !== id)})
+        //     axios.delete('/api/supprimer_vehicule_utilisation/' + id)
             
-        }
+        // }
        
     }
 
@@ -99,6 +124,16 @@ import inputStyle from '../../utils/inputStyle'
 
     }
 
+    setFielDdateDebutUtilisation = (event) => {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        this.setState({
+            [name]: value
+        }, () => this.date_fin_utilisation.value = this.date_debut_utilisation.value);
+    }
+
     verificationFormulaire () {
         if(this.kilometres_parcourus.value < 0 && this.kilometres_parcourus.value.length){
             return "Le nombre de kilomètre parcourus ne peut être négatif !"
@@ -132,7 +167,7 @@ import inputStyle from '../../utils/inputStyle'
           });
         }
 
-        setField2 = (event) => {
+        setFieldKilometrageRetour = (event) => {
             //  this.setState({[e.target.name]: e.target.value})
               const target = event.target;
               const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -143,14 +178,47 @@ import inputStyle from '../../utils/inputStyle'
               }, () => {
                   //alert('ok')
                 this.kilometres_parcourus.value = this.kilometrage_compteur_retour.value - this.kilometrage_compteur_debut.value
-    
-                      
-                  
-               
+              //  this.kilometrage_compteur_retour.value = parseFloat(this.kilometres_parcourus.value) + parseFloat(this.kilometrage_compteur_debut.value)
+
               });
 
-
             }
+
+            setFieldKilometrageParcourus = (event) => {
+                //  this.setState({[e.target.name]: e.target.value})
+                  const target = event.target;
+                  const value = target.type === 'checkbox' ? target.checked : target.value;
+                  const name = target.name;
+              
+                  this.setState({
+                    [name]: value
+                  }, () => {
+                      //alert('ok')
+                   // this.kilometres_parcourus.value = this.kilometrage_compteur_retour.value - this.kilometrage_compteur_debut.value
+                    this.kilometrage_compteur_retour.value = parseFloat(this.kilometres_parcourus.value) + parseFloat(this.kilometrage_compteur_debut.value)
+    
+                  });
+    
+                }
+
+                checkIfUtilisationIsPossible = (debut, fin) => {
+                    var vehicule = this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
+                    var lesReservationsDuVehicule = this.props.reservations.filter(reser => reser.vehicule.id == vehicule.id && !reser.abandonne && !reser.transforme_en_utilisation)
+                   
+                    var tab = []
+                    var debut = Date.parse(debut)
+                    var fin = Date.parse(fin)
+            
+                    lesReservationsDuVehicule.map(veh => {
+                        let dateDebutDejaReserve = Date.parse(veh.date_debut_reservation)
+                        let dateFinDejaReserve = Date.parse(veh.date_fin_reservation)
+                        tab.push(debut >= dateDebutDejaReserve && debut <= dateFinDejaReserve)
+                        tab.push(fin >= dateDebutDejaReserve && fin <= dateFinDejaReserve)
+                        tab.push(debut <= dateDebutDejaReserve && fin >= dateFinDejaReserve)
+                    })
+             
+                    return (tab.includes(true)) ? 'Il y\'a déja une réservation pour ce véhicule et pour cette période' : null 
+                  }
 
       resetForm(){
           this.setState(this.base)
@@ -185,11 +253,12 @@ import inputStyle from '../../utils/inputStyle'
 
       enregistrerUtilisation = async (e) => {
           e.preventDefault()
+          var vehicule = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
 
           if(this.verificationFormulaire() == null){
            await axios.post('/api/ajouter_vehicule_utilisation', 
                {
-                   vehicule: this.props.vehiculeSeleted.id,
+                   vehicule: vehicule.id,
                    utilisatation_normal_ou_pret: this.utilisatation_normal_ou_pret.value,
                    utilisateur: this.utilisateur.value,
                    entite_utilisateur: this.props.vehiculeSeleted.entite_physique.id,
@@ -209,7 +278,15 @@ import inputStyle from '../../utils/inputStyle'
             ).then(response => {
                 const action = {type: "ADD_UTILISATION", value: response.data}
                 this.props.dispatch(action)
-               this.closeEdit();
+                const val = {id: vehicule.id, kilometrage_acquisition: response.data.kilometrage_compteur_retour }
+                const action2 = {type: "EDIT_VEHICULE_KILOMETRAGE", value: val}
+
+                this.props.dispatch(action2)
+                var vehicule2 = this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
+                const action3 = {type: "EDIT_SELECTED", value: vehicule2}
+                this.props.dispatch(action3)
+
+                this.closeEdit();
             })
              .catch(error => console.log(error));
         
@@ -466,8 +543,9 @@ import inputStyle from '../../utils/inputStyle'
                                             <label >Date début utilisation</label>
                                             <input name="date_debut_utilisation"
                                             defaultValue={today}
+                                            min={today}
                                             style={inputStyle}
-
+                                            onChange={this.setFielDdateDebutUtilisation}
                                             ref={date_debut_utilisation => this.date_debut_utilisation = date_debut_utilisation}
                                               type="date" className="form-control" /></div>
                                     </div>
@@ -503,9 +581,9 @@ import inputStyle from '../../utils/inputStyle'
                                             <label >Date fin utilisation</label>
 
                                             <input name="date_fin_utilisation"
-                                                defaultValue={today}
                                                 style={inputStyle}
-
+                                                min={this.date_debut_utilisation ? this.date_debut_utilisation.value : today}
+                                                defaultValue={this.date_debut_utilisation ? this.date_debut_utilisation.value : today}
                                             ref={date_fin_utilisation => this.date_fin_utilisation = date_fin_utilisation}
                                               type="date" className="form-control" /></div>
                                     </div>
@@ -532,6 +610,7 @@ import inputStyle from '../../utils/inputStyle'
                                         <div className="position-relative form-group">
                                             <label >Kilomètrage début</label>
                                             <input name="kilometrage_compteur_debut"
+                                            readOnly
                                             defaultValue={vehiculeSelect == undefined ?
                                                 null : vehiculeSelect.kilometrage_acquisition }
                                 ref={kilometrage_compteur_debut => this.kilometrage_compteur_debut = kilometrage_compteur_debut}
@@ -542,7 +621,7 @@ import inputStyle from '../../utils/inputStyle'
                                         <div className="position-relative form-group">
                                             <label > au retour </label>
                                             <input name="kilometrage_compteur_retour"
-                                            onBlur={this.setField2}
+                                            onChange={this.setFieldKilometrageRetour}
 
                                             ref={kilometrage_compteur_retour => this.kilometrage_compteur_retour = kilometrage_compteur_retour}
                                               type="number" className="form-control" /></div>
@@ -552,7 +631,8 @@ import inputStyle from '../../utils/inputStyle'
                                         <div className="position-relative form-group">
                                             <label > parcourus </label>
                                             <input name="kilometres_parcourus"
-                                            readOnly
+                                             onChange={this.setFieldKilometrageParcourus}
+
                                             ref={kilometres_parcourus => this.kilometres_parcourus = kilometres_parcourus}
                                               type="number" className="form-control" /></div>
                                     </div>

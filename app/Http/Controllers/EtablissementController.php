@@ -19,7 +19,10 @@ class EtablissementController extends Controller
      */
     public function index()
     {
-        return $this->model->all();
+        return response()->json(Etablissement::first(), 200);
+    //    $etabs = Etablissement::all();
+
+    //    return response()->json($etabs->isEmpty());
     }
 
     /**
@@ -38,10 +41,21 @@ class EtablissementController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function storeOuUpdate(Request $request)
     {
-       
-         return $this->model->create($request->only($this->model->getModel()->fillable));
+           $etabs = Etablissement::all();
+
+            if($etabs->isEmpty()){
+                return $this->model->create($request->only($this->model->getModel()->fillable));
+
+            }else{
+                $etablissement = Etablissement::first();
+                $this->model->update($request->only($this->model->getModel()->fillable), $etablissement->id);
+
+                return $this->model->show($etablissement->id);
+            } 
+
+     
 
     }
 

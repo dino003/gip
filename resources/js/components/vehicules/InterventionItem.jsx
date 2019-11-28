@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
+import { formatageSomme } from '../../utils/Repository';
+import moment from 'moment'
 
 
  class InterventionItem extends Component {
@@ -26,14 +28,14 @@ import {connect} from 'react-redux'
                    
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.vehicule.immatriculation || 'Non renseigné'}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.tiers.nom || 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_debut || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_debut ? moment(item.date_debut).format('DD/MM/YYYY') : 'Non renseigné'}</td>
 
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_fin_reele || 'Non Renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_fin_reele ? moment(item.date_fin_reele).format('DD/MM/YYYY') : 'Non Renseigné'}</td>
 
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.nature_intervention ? item.nature_intervention.nom_intervention : 'Non renseigné'}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.nature_intervention ? item.nature_intervention.categorie : 'Non renseigné'}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.kilometrage || 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.cout_ttc_intervention || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.cout_ttc_intervention ? formatageSomme(item.cout_ttc_intervention) : 'Non renseigné'}</td>
 
             <td>
 

@@ -34,6 +34,7 @@ import TauxTvaReducer from './TauxTvaReducer'
 import BudgetEntiteReducer from './BudgetEntiteReducer'
 import ContratAssuranceReducer from './ContratAssuranceReducer'
 import CommandesReducer from './CommandesReducer'
+import EtablissementInforeducer from './parametres_generaux/EtablissementInforeducer'
 
 const allReducers = combineReducers({
     types_entites: TypeEntiteReducer,
@@ -70,7 +71,8 @@ const allReducers = combineReducers({
     tva: TauxTvaReducer,
     budget_entites: BudgetEntiteReducer,
     contrat_assurances: ContratAssuranceReducer,
-    commandes: CommandesReducer
+    commandes: CommandesReducer,
+    info_societe: EtablissementInforeducer
 })
 
 

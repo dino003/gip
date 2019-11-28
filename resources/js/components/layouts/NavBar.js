@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import {Link, NavLink} from 'react-router-dom'
 import {connect} from 'react-redux'
-import api from '../../services/Api'
 
-import year from '../../utils/Year'
 
 var housecall = require('housecall');
 
@@ -24,17 +22,24 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     }
 
 
+    fetchInfoSociete(){
+        queue.push(() => axios.get('/api/infos_societe').then((response) => {
+            
+            const action = {type: "GET_INFO_SOCIETE", value: response.data}
+            this.props.dispatch(action)
+        }));
+    } 
 
     fetchStructures(){
         queue.push(() => axios.get('/api/structures_etablissements').then((response) => {
-            // .
+            
             const action = {type: "GET_STRUCTURE_ETABLISSEMENT", value: response.data}
             this.props.dispatch(action)
         }));
     } 
     fetchTypeEntites(){
         queue.push(() => axios.get('/api/types_entites').then((response) => {
-            // .
+            
             const action = {type: "GET_TYPE_ENTITE", value: response.data}
             this.props.dispatch(action)
         }));
@@ -225,6 +230,15 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
         }));
     }
 
+    fetchReservation(){
+        queue.push(() => axios.get('/api/reservations').then((response) => {
+            // .
+            const action = {type: "GET_RESERVATION", value: response.data}
+            this.props.dispatch(action)
+        }));
+    }
+    
+
     fetchContratAssurances(){
         queue.push(() => axios.get('/api/contrat_assurances').then((response) => {
             // .
@@ -303,6 +317,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
 
       //  const action2 = {type: "START_VEHICULE"}
       //  this.props.dispatch(action2)
+        this.fetchInfoSociete();
         this.fetchTypeEntites()
         this.fetchTva();
         this.fetchStructures()
@@ -320,6 +335,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
         this.fetchNatureInterventions();
         this.fetchOperationInterventions();
         this.fetchNatureConsommations();
+        this.fetchReservation();
         this.fetchNatureAmendes();
         this.fetchNatureSinistres();
         this.fetchNatureDepenseRecettes();

@@ -399,6 +399,19 @@ Route::post('modifier_commande/{id}', 'CommandeController@update');
 Route::delete('supprimer_commande/{id}', 'CommandeController@destroy');
 //*********** fin commande ********************************************************* 
 
+
+
+//****************** infos sur la societé  ********************************************************/
+Route::get('infos_societe', 'EtablissementController@index');
+
+// ajouter 
+Route::post('ajouter_ou_modifier_info_etablissement', 'EtablissementController@storeOuUpdate');
+// modifier
+//Route::post('modifier_info_etablissement/{id}', 'EtablissementController@update');
+
+
+//*********** fin infos sur la societé ********************************************************* 
+
 Route::get('tt', 'UserController@index');
 
 //var dt = new Date( "12-18-1995" );

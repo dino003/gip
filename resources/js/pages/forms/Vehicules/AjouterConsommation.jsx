@@ -55,6 +55,16 @@ import inputStyle from '../../../utils/inputStyle'
         })
     }
 
+    calculMontantTTC = () => {
+        if (this.type_commande && this.type_commande.value == 0) {
+            if (this.montant_ht.value == '') return null
+            if (this.tva.value == '') return this.montant_ht.value
+            var taux = (Number(this.montant_ht.value) * Number(this.tva.value)) / 100
+            return Number(this.montant_ht.value) + taux
+
+        }
+    }
+
 
       verificationFormulaire () {
           if(this.type_consomation.value == ''){
@@ -334,6 +344,8 @@ import inputStyle from '../../../utils/inputStyle'
                           
 
                                 <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
+                                <button type="submit" onClick={() => this.props.history.goBack()}
+                                 className="mt-2 btn btn-warning pull-right">Retour</button>
                             </form>
                         </div>
                     </div>

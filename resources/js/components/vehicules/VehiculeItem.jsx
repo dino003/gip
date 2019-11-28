@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
+import moment from 'moment'
 
  class VehiculeItem extends Component {
 
@@ -43,7 +44,7 @@ import {connect} from 'react-redux'
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.detenteur.nom || 'Non renseigné'}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.chauffeur_atitre ? item.chauffeur_atitre.nom : 'Non renseigné'}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.categorie.nom_type || 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_entree_au_parc || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_entree_au_parc ? moment(item.date_entree_au_parc).format('DD/MM/YYYY') : 'Non renseigné'}</td>
 
             <td>
 

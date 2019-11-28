@@ -16,10 +16,10 @@ class VehiculeUtilisation extends Model
     public $timestamps = false;
 
 
-     protected $casts = [
-        'date_debut_utilisation' => 'date:d/m/Y',
-        'date_fin_utilisation' => 'date:d/m/Y',
-    ];
+    //  protected $casts = [
+    //     'date_debut_utilisation' => 'date:d/m/Y',
+    //     'date_fin_utilisation' => 'date:d/m/Y',
+    // ];
 
     //  vehicule
 

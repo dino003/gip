@@ -100,3 +100,20 @@ Route::post('modifier_vehicule_depense_recette/{id}', 'VehiculeDepenseRecetteCon
 // supprimer
 Route::delete('supprimer_vehicule_depense_recette/{id}', 'VehiculeDepenseRecetteController@destroy');
 //*********** fin depense_recette vehicules********************************************************* 
+
+//****************** reservation de vehicules ********************************************************/
+Route::get('reservations', 'VehiculeReservationController@index');
+// voir
+Route::get('voir_vehicule_reservation/{id}', 'VehiculeReservationController@show');
+
+// ajouter 
+Route::post('ajouter_vehicule_reservation', 'VehiculeReservationController@store');
+// modifier
+Route::post('modifier_vehicule_reservation/{id}', 'VehiculeReservationController@update');
+
+// transformer en utilisation
+Route::get('transformation_en_utilisation/{id}', 'VehiculeReservationController@transformerReservationEnUtilisation');
+
+// supprimer
+Route::delete('supprimer_vehicule_reservation/{id}', 'VehiculeReservationController@destroy');
+//*********** fin reservation vehicules********************************************************* 

@@ -20,7 +20,13 @@ class VehiculeReservationController extends Controller
      */
     public function index()
     {
-        return $this->model->all();
+        $reservation_par_vehicules = VehiculeReservation::with(['vehicule',
+        'personne_reservant', 'objet_reservation'])
+       // ->with('utilisateur.entite_affectation')
+       ->where('transforme_en_utilisation', 0)
+       ->get();
+
+        return response()->json($reservation_par_vehicules);
     }
 
     /**
@@ -42,7 +48,13 @@ class VehiculeReservationController extends Controller
     public function store(Request $request)
     {
        
-         return $this->model->create($request->only($this->model->getModel()->fillable));
+         $reservation = new VehiculeReservation;
+         $creation = $reservation->create($request->only($reservation->fillable));
+  
+         return response()->json(VehiculeReservation::with(['vehicule',
+         'personne_reservant', 'objet_reservation'])
+         //->with('utilisateur.entite_affectation')
+         ->find($creation->id));
 
     }
 
@@ -79,9 +91,12 @@ class VehiculeReservationController extends Controller
     public function update(Request $request, $id)
     {
           // update model and only pass in the fillable fields
-        $this->model->update($request->only($this->model->getModel()->fillable), $id);
+     
 
-       return $this->model->show($id);
+       $this->model->update($request->only($this->model->getModel()->fillable), $id);
+
+       return response()->json(VehiculeReservation::with(['vehicule',
+       'personne_reservant', 'objet_reservation'])->find($id));
     }
 
     /**
@@ -93,6 +108,22 @@ class VehiculeReservationController extends Controller
     public function destroy( $id)
     {
         return $this->model->delete($id);
+
+    }
+
+     /**
+     *
+     * @param  \App\CoutConsomable  $coutConsomable
+     * @return \Illuminate\Http\Response
+     */
+    public function transformerReservationEnUtilisation( $id)
+    {
+        $reservation = VehiculeReservation::find($id);
+        $reservation->transforme_en_utilisation = !$reservation->transforme_en_utilisation;
+        $reservation->save();
+
+        return response()->json(VehiculeReservation::with(['vehicule',
+        'personne_reservant', 'objet_reservation'])->find($id));
 
     }
 }

@@ -45,6 +45,6 @@ class VehiculeReservation extends Model
           // nature interventions 
           public function objet_reservation()
           {
-              return $this->belongsTo(NatureIntervention::class, 'objet_reservation');
+              return $this->belongsTo(NatureReservationUtilisation::class, 'objet_reservation');
           }
 }

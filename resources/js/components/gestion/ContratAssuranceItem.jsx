@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
+import moment from 'moment'
 
  class ContratAssuranceItem extends Component {
 
@@ -28,10 +29,10 @@ import {connect} from 'react-redux'
 
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.compagnie_assurance ? item.compagnie_assurance.code : 'Non renseigné'}</td>
 
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_contrat || 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_prise_effet || 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.periode_date_debut  || 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.periode_date_fin  || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_contrat ? moment(item.date_contrat).format('DD/MM/YYYY') : 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_prise_effet ? moment(item.date_prise_effet).format('DD/MM/YYYY') : 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.periode_date_debut ? moment(item.periode_date_debut).format('DD/MM/YYYY')  : 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.periode_date_fin ? moment(item.periode_date_fin).format('DD/MM/YYYY')  : 'Non renseigné'}</td>
 
             <td>
 

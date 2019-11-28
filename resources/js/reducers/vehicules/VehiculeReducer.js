@@ -56,7 +56,22 @@ function VehiculeReducer(state = initialState, action){
                         return item;
                       })
                 } 
-                return nextState || state      
+                return nextState || state   
+                
+                case 'EDIT_VEHICULE_KILOMETRAGE':
+                    nextState = {
+                        ...state,
+                        items: state.items.map(item => {
+                            if (item.id === action.value.id) { // value ici est id de l'item
+                            let iEdit = action.value;
+                             // item = itemEdit
+                             item.kilometrage_acquisition =  iEdit.kilometrage_acquisition
+    
+                            }
+                            return item;
+                          })
+                    } 
+                    return nextState || state 
       
         default:
          return state;

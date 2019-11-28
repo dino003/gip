@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\VehiculeUtilisation;
 use Illuminate\Http\Request;
 use App\Repositories\Repository;
+use App\Vehicule;
 
 class VehiculeUtilisationController extends Controller
 {
@@ -24,6 +25,7 @@ class VehiculeUtilisationController extends Controller
        $utilisations_par_vehicules = VehiculeUtilisation::with(['vehicule',
                                                          'nature_utilisation', 'chauffeur'])
                                                          ->with('utilisateur.entite_affectation')
+                                                         ->orderBy('date_debut_utilisation', 'desc')
                                                         ->get();
 
        return response()->json($utilisations_par_vehicules);
@@ -53,6 +55,12 @@ class VehiculeUtilisationController extends Controller
 
          $utilisation = new VehiculeUtilisation;
          $creation = $utilisation->create($request->only($utilisation->fillable));
+
+         $vehicule = Vehicule::find($creation->vehicule);
+
+        $vehicule->kilometrage_acquisition = $creation->kilometrage_compteur_retour;
+
+        $vehicule->save();
   
          return response()->json(VehiculeUtilisation::with(['vehicule',
          'nature_utilisation', 'chauffeur'])

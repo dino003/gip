@@ -45,7 +45,7 @@ class VehiculeIntervention extends Model
           // nature interventions 
           public function nature_intervention()
           {
-              return $this->belongsTo(NatureReservationUtilisation::class, 'nature_intervention');
+              return $this->belongsTo(NatureIntervention::class, 'nature_intervention');
           }
 
 

@@ -49,7 +49,39 @@ function ReservationReducer(state = initialState, action){
                         return item;
                       })
                 } 
-                return nextState || state      
+                return nextState || state  
+                
+                case 'TRANSFORMATION_RESERVATION_UTILISATION':
+                    nextState = {
+                        ...state,
+                        items: state.items.map(item => {
+                            if (item.id === action.value.id) { 
+                           // item.transforme_en_utilisation = !item.transforme_en_utilisation
+                            let iEdit = action.value;
+                            // item = itemEdit
+                            item =  {...iEdit}
+   
+                            }
+                            return item;
+                          })
+                    } 
+                    return nextState || state 
+
+                    case 'ENREGISTRER_DEPART_RESERVATION_UTILISATION':
+                        nextState = {
+                            ...state,
+                            items: state.items.map(item => {
+                                if (item.id === action.value.id) { 
+                               // item.transforme_en_utilisation = !item.transforme_en_utilisation
+                                let iEdit = action.value;
+                                // item = itemEdit
+                                item =  {...iEdit}
+       
+                                }
+                                return item;
+                              })
+                        } 
+                        return nextState || state 
       
         default:
          return state;

@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
+import moment from 'moment'
+import {formatageSomme} from '../../utils/Repository'
 
 
  class AmendeItem extends Component {
@@ -25,9 +27,9 @@ import {connect} from 'react-redux'
              <tr > 
                    
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.vehicule.immatriculation || 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date ? moment(item.date).format('DD/MM/YYYY') : 'Non renseigné'}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.heure || 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_reception  || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_reception ? moment(item.date_reception).format('DD/MM/YYYY') : 'Non renseigné'}</td>
 
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.nature_amende ? item.nature_amende.nature_amende : 'Non renseigné'}</td>
 
@@ -35,10 +37,10 @@ import {connect} from 'react-redux'
 
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.lieu || 'Non renseigné'}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.regle_par_conducteur_ou_etablissement || 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.montant_amende || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.montant_amende ? formatageSomme(item.montant_amende) : 'Non renseigné'}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.vehicule_en_fouriere ? 'Oui' : 'Non'}</td>
 
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.montant_mise_en_fouriere || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.montant_mise_en_fouriere ? formatageSomme(item.montant_mise_en_fouriere) : 'Non renseigné'}</td>
 
 
             <td>

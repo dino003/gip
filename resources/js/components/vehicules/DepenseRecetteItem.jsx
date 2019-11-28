@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import moment from 'moment'
+import {formatageSomme} from '../../utils/Repository'
 
 
 export default class DepenseRecetteItem extends Component {
@@ -29,13 +31,13 @@ export default class DepenseRecetteItem extends Component {
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.imputation_interne || 'Non renseigné'}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.depense_ou_recette || 'Non renseigné'}</td>
 
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date ? moment(item.date).format('DD/MM/YYYY') : 'Non renseigné'}</td>
 
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.montant_ttc || 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.montant_ht || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.montant_ttc ? formatageSomme(item.montant_ttc) : 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.montant_ht ? formatageSomme(item.montant_ht) : 'Non renseigné'}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.tiers ? item.tiers.code : 'Non Renseigné'}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.numero_piece || 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_piece  || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_piece ? moment(item.date_piece).format('DD/MM/YYYY') : 'Non renseigné'}</td>
 
 
             <td>

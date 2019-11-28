@@ -97,9 +97,10 @@ export default class ModifierTauxTva extends Component {
                                 </div>
                             
 
-                             
-                            
                                 <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
+                       
+                                <button type="submit" onClick={() => this.props.history.goBack()}
+                                 className="mt-2 btn btn-warning pull-right">Retour</button>
                         </form>
                       
                     </div>
