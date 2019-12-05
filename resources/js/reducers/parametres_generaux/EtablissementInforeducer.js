@@ -5,7 +5,7 @@ const initialState = {
     error: null
 }
 
-function ConsommationReducer(state = initialState, action){
+function EtablissementInfoReducer(state = initialState, action){
     let nextState
 
     switch (action.type) {
@@ -34,4 +34,4 @@ function ConsommationReducer(state = initialState, action){
 
 }
 
-export default ConsommationReducer
+export default EtablissementInfoReducer

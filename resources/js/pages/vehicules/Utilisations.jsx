@@ -13,6 +13,7 @@ import inputStyle from '../../utils/inputStyle'
 
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
 
   class Utilisations extends Component {
@@ -227,11 +228,17 @@ import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
       onEditSubmit = ( utilisatation_normal_ou_pret, nature_utilisation, utilisateur, chauffeur,date_debut_utilisation, heure_debut,date_fin_utilisation, heure_de_fin, kilometrage_compteur_debut, kilometrage_compteur_retour, kilometres_parcourus, pourcentage_reservoire_debut, pourcentage_reservoire_retour) => {
        //  e.preventDefault()
         let modif = this.state.objetModif
+        const utili = this.props.personnels.find(per => per.id == utilisateur)
+
           axios.post('/api/modifier_vehicule_utilisation/' + modif.id, {
                   // vehicule: this.props.vehiculeSeleted.id,
+                 // vehicule_id: vehicule.id,
+                   utilisateur_id: utilisateur,
+                   chauffeur_id: chauffeur,
                    utilisatation_normal_ou_pret: utilisatation_normal_ou_pret,
                    utilisateur: utilisateur,
-                   entite_utilisateur: this.props.vehiculeSeleted.entite_physique.id,
+                   entite_utilisateur: utili.entite_affectation.entite,
+                   entite_utilisateur_id: utili.entite_affectation.entite,
                    nature_utilisation: nature_utilisation,
                    chauffeur: chauffeur,
                    date_debut_utilisation: date_debut_utilisation,
@@ -254,14 +261,19 @@ import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
       enregistrerUtilisation = async (e) => {
           e.preventDefault()
           var vehicule = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
+          const utili = this.props.personnels.find(per => per.id == this.utilisateur.value)
 
           if(this.verificationFormulaire() == null){
            await axios.post('/api/ajouter_vehicule_utilisation', 
                {
                    vehicule: vehicule.id,
+                   vehicule_id: vehicule.id,
+                   utilisateur_id: this.utilisateur.value,
+                   chauffeur_id: this.chauffeur.value,
                    utilisatation_normal_ou_pret: this.utilisatation_normal_ou_pret.value,
                    utilisateur: this.utilisateur.value,
-                   entite_utilisateur: this.props.vehiculeSeleted.entite_physique.id,
+                   entite_utilisateur: utili.entite_affectation.entite,
+                   entite_utilisateur_id: utili.entite_affectation.entite,
                    nature_utilisation: this.nature_utilisation.value,
                    chauffeur: this.chauffeur.value,
                    date_debut_utilisation: this.date_debut_utilisation.value,
@@ -328,7 +340,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
     renderList(){
         const utilis = this.props.utilisations.filter(util => util.vehicule.id == this.props.vehiculeSeleted.id)
-        return (  <table className="mb-0 table" >
+        return (  <table className="mb-0 table" id="table-to-xls" >
         <thead>
         <tr>
         <th>Véhicule</th>
@@ -399,6 +411,13 @@ import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
                                 
                             </h5>
                            <div className="table-responsive">
+                           <ReactHTMLTableToExcel
+                    id="test-table-xls-button"
+                    className="download-table-xls-button"
+                    table="table-to-xls"
+                    filename="tablexls"
+                    sheet="tablexls"
+                    buttonText="Download as XLS"/>
                            {this.state.loading ? this.renderLoading() : 
                             !this.state.utilisations.length ? this.renderEmpty() : this.renderList()}
 

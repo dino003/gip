@@ -66,7 +66,7 @@ class Vehicule extends Model
     // utilisations
     public function utilisations()
     {
-        return $this->hasMany(VehiculeUtilisation::class, 'vehicule', 'id');
+        return $this->hasMany(VehiculeUtilisation::class, 'vehicule_id', 'id');
     }
     
     // interventions

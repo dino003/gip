@@ -41,7 +41,7 @@ class Personnel extends Model
     // chauffeur pour utilisation
     public function chauffeur_utilisations()
     {
-        return $this->hasMany(VehiculeUtilisation::class, 'chauffeur', 'id');
+        return $this->hasMany(VehiculeUtilisation::class, 'chauffeur_id', 'id');
     }
 
       // utilisation vehicule

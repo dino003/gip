@@ -1,11 +1,35 @@
 import React, { Component } from 'react'
 
 class ReservationOrdreMissionForm extends Component {
+
+    constructor(props) {
+        super(props);
+        
+        
+    }
+
+    enregisterParamReservationOrdre = (e) =>{
+        e.preventDefault();
+        let objet = {
+            vehicule_fonction_reservable: this.vehicule_fonction_reservable.value,
+            admin_seul_modif: this.admin_seul_modif.value,
+            admin_seul_supp: this.admin_seul_supp.value,
+            edition_automatique: this.edition_automatique.value,
+            interdire_chevauchement: this.interdire_chevauchement.value,
+            nombre_jour_a_ne_pas_depasser: this.nombre_jour_a_ne_pas_depasser.value,
+            jour_par_date: this.jour_par_date.value,
+        }
+        this.props.onSubmitParamReservationOrdreMission( objet )
+     }
+    
+
+
     render() {
+        const {item} = this.props
         return (
             <div className="main-card mb-3 card">
             <div className="card-body">
-            <form className="" >
+            {item != {} && <form className="" onSubmit={this.enregisterParamReservationOrdre}>
                                 <div className="form-row">
                                    
                                     <div className="col-md-7">
@@ -18,7 +42,11 @@ class ReservationOrdreMissionForm extends Component {
 
                                     <div className="col-md-2">
                                       
-                                           <select name="" id="" className="form-control">
+                                           <select name="vehicule_fonction_reservable" 
+                                            ref={vehicule_fonction_reservable => this.vehicule_fonction_reservable = vehicule_fonction_reservable}
+                                            defaultValue={item.vehicule_fonction_reservable}
+                                            className="form-control">
+                                                
                                                <option value={0}>Non</option>
                                                <option value={1}>OUI</option>
 
@@ -39,7 +67,11 @@ class ReservationOrdreMissionForm extends Component {
 
                                    <div className="col-md-2">
                                      
-                                          <select name="" id="" className="form-control">
+                                          <select name="admin_seul_modif" 
+                                        ref={admin_seul_modif => this.admin_seul_modif = admin_seul_modif}
+                                        defaultValue={item.admin_seul_modif}
+
+                                           className="form-control">
                                               <option value={0}>Non</option>
                                               <option value={1}>OUI</option>
 
@@ -60,9 +92,13 @@ class ReservationOrdreMissionForm extends Component {
 
                                    <div className="col-md-2">
                                      
-                                          <select name="" id="" className="form-control">
-                                              <option value={0}>Non</option>
-                                              <option value={1}>OUI</option>
+                                          <select name="admin_seul_supp" 
+                                        ref={admin_seul_supp => this.admin_seul_supp = admin_seul_supp}
+                                        defaultValue={item.admin_seul_supp}
+
+                                           className="form-control">
+                                              <option value="0">Non</option>
+                                              <option value="1">OUI</option>
 
                                           </select>
                                    </div>
@@ -81,7 +117,11 @@ class ReservationOrdreMissionForm extends Component {
 
                                    <div className="col-md-2">
                                      
-                                          <select name="" id="" className="form-control">
+                                          <select name="edition_automatique" 
+                                        ref={edition_automatique => this.edition_automatique = edition_automatique}
+                                        defaultValue={item.edition_automatique}
+
+                                           className="form-control">
                                               <option value={0}>Non</option>
                                               <option value={1}>OUI</option>
 
@@ -103,7 +143,11 @@ class ReservationOrdreMissionForm extends Component {
 
                                    <div className="col-md-2">
                                      
-                                          <select name="" id="" className="form-control">
+                                          <select name="interdire_chevauchement" 
+                                        ref={interdire_chevauchement => this.interdire_chevauchement = interdire_chevauchement}
+                                        defaultValue={item.interdire_chevauchement}
+
+                                           className="form-control">
                                               <option value={0}>Interdire</option>
                                               <option value={1}>Autoriser</option>
 
@@ -125,8 +169,10 @@ class ReservationOrdreMissionForm extends Component {
 
                                    <div className="col-md-2">
                                      
-                                   <input name="code_postal"  type="number"
-                                            ref={code_postal => this.code_postal = code_postal}
+                                   <input name="nombre_jour_a_ne_pas_depasser"  type="number"
+
+                                            ref={nombre_jour_a_ne_pas_depasser => this.nombre_jour_a_ne_pas_depasser = nombre_jour_a_ne_pas_depasser}
+                                            defaultValue={item.nombre_jour_a_ne_pas_depasser}
 
                                              className="form-control" />
                                    </div>
@@ -146,8 +192,9 @@ class ReservationOrdreMissionForm extends Component {
 
                                    <div className="col-md-2">
                                      
-                                   <input name="code_postal"  type="number"
-                                            ref={code_postal => this.code_postal = code_postal}
+                                   <input name="jour_par_date"  type="number"
+                                            ref={jour_par_date => this.jour_par_date = jour_par_date}
+                                            defaultValue={item.jour_par_date}
 
                                              className="form-control" />
                                    </div>
@@ -156,7 +203,7 @@ class ReservationOrdreMissionForm extends Component {
 
                                  
 
-                                    <div className="form-row">
+                                    {/* <div className="form-row">
                                     <div className="col-md-2">
                                         <div className="position-relative form-group">
                                             <label >Code postal </label>
@@ -206,14 +253,13 @@ class ReservationOrdreMissionForm extends Component {
                                         </div>
                                     </div>
                                   
-                                </div>
+                                </div> */}
                                
                              
-                                <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
+                               {!this.props.isFormReservationOrdreSubmitted ? <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button> : <button disabled  className="mt-2 btn btn-warning">Merci de patienter ...</button>}
                            
-                                <button type="submit" onClick={() => this.props.history.goBack()}
-                                 className="mt-2 btn btn-warning pull-right">Retour</button>
-                            </form>
+                                
+                            </form>}
             </div>
         </div>
         )

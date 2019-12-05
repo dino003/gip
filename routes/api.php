@@ -412,9 +412,23 @@ Route::post('ajouter_ou_modifier_info_etablissement', 'EtablissementController@s
 
 //*********** fin infos sur la societé ********************************************************* 
 
+//****************** parametre generaux reservation ordre  ********************************************************/
+Route::get('parametre_generaux_reservation_ordre', 'ParamReservationOrdreMissionController@index');
+
+// ajouter 
+Route::post('ajouter_ou_modifier_parametre_generaux_reservation_ordre', 'ParamReservationOrdreMissionController@storeOuUpdate');
+// modifier
+//Route::post('modifier_info_etablissement/{id}', 'ParamReservationOrdreMissionController@update');
+
+
+//*********** fin parametre generaux reservation ordre ********************************************************* 
+
 Route::get('tt', 'UserController@index');
 
 //var dt = new Date( "12-18-1995" );
 //document.write("getMonth() : " + parseFloat(dt.getMonth() + 1) ); 
+
+Route::post('import', 'PersonnelController@import')->name('import');
+
 
 

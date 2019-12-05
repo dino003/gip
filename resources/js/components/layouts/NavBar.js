@@ -30,6 +30,14 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
         }));
     } 
 
+    fetchInfoParamGenerauxReservationOrdre(){
+        queue.push(() => axios.get('/api/parametre_generaux_reservation_ordre').then((response) => {
+            
+            const action = {type: "GET_PARAM_GENERAUX_RESERV", value: response.data}
+            this.props.dispatch(action)
+        }));
+    } 
+
     fetchStructures(){
         queue.push(() => axios.get('/api/structures_etablissements').then((response) => {
             
@@ -318,6 +326,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
       //  const action2 = {type: "START_VEHICULE"}
       //  this.props.dispatch(action2)
         this.fetchInfoSociete();
+        this.fetchInfoParamGenerauxReservationOrdre();
         this.fetchTypeEntites()
         this.fetchTva();
         this.fetchStructures()
@@ -454,10 +463,12 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
 
 
                         <li className="nav-item">
-                        <Link to="/gestion_du_parc_automobile/categories_véhicules" className="nav-link">
+                        <Link to="/gestion_du_parc_automobile/liste-etats" className="nav-link">
                                 <i className="nav-link-icon fa fa-database"> </i>
                                 Editions
                             </Link>
+
+
                         </li>
                     </ul>        
                     </div>
@@ -499,6 +510,12 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
                     </div>        
                 </div>
             </div>
+
+
+
+
+
+
         </div>
         )
     }

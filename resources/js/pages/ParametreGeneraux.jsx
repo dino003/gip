@@ -1,23 +1,50 @@
 import React, { Component } from 'react'
 import EtablissementForm from '../components/parametre_generaux_forms/EtablissementForm'
 import ReservationOrdreMissionForm from '../components/parametre_generaux_forms/ReservationOrdreMissionForm'
-
+import {connect} from  'react-redux'
 
 class ParametreGeneraux extends Component {
 
     constructor(props) {
         super(props);
-        
+        this.state = {
+            isFormEtablissementSubmitted: false,
+            isFormReservationOrdreSubmitted: false 
+ 
+        }
         this.onFormInfoEtablissemntSubmit = this.onFormInfoEtablissemntSubmit.bind(this)
+
+        this.onSubmitParamReservationOrdreMission = this.onSubmitParamReservationOrdreMission.bind(this)
     }
 
     onFormInfoEtablissemntSubmit(objet){
+        this.setState({isFormEtablissementSubmitted: true})
         axios.post('/api/ajouter_ou_modifier_info_etablissement', objet)
         .then(response => { 
            const action = {type: "ADD_INFO_SOCIETE", value: response.data}
              this.props.dispatch(action)
-         
-        }).catch(error => console.log(error))
+             this.setState({isFormEtablissementSubmitted: false})
+
+        }).catch(error => {
+            console.log(error)
+            this.setState({isFormEtablissementSubmitted: false})
+
+        })
+    }
+
+    onSubmitParamReservationOrdreMission(objet){
+        this.setState({isFormReservationOrdreSubmitted: true})
+        axios.post('/api/ajouter_ou_modifier_parametre_generaux_reservation_ordre', objet)
+        .then(response => { 
+           const action = {type: "ADD_PARAM_GENERAUX_RESERV", value: response.data}
+             this.props.dispatch(action)
+             this.setState({isFormReservationOrdreSubmitted: false})
+
+        }).catch(error => {
+            console.log(error)
+            this.setState({isFormReservationOrdreSubmitted: false})
+
+        })
     }
     
     render() {
@@ -123,6 +150,7 @@ class ParametreGeneraux extends Component {
                            <EtablissementForm 
                            item={this.props.info_societe}
                            onFormInfoEtablissemntSubmit={this.onFormInfoEtablissemntSubmit}
+                           isFormEtablissementSubmitted={this.state.isFormEtablissementSubmitted}
                              />
                         </div>
                     </div>
@@ -131,7 +159,10 @@ class ParametreGeneraux extends Component {
                 <div className="tab-pane tabs-animation fade" id="tab_reservation_ordre_mission" role="tabpanel">
                     <div className="main-card mb-3 card">
                         <div className="card-body">
-                         <ReservationOrdreMissionForm />
+                         <ReservationOrdreMissionForm
+                         item={this.props.param_generaux_reservation_ordre}
+                         onSubmitParamReservationOrdreMission={this.onSubmitParamReservationOrdreMission}
+                          />
                         </div>
                     </div>
                 </div>
@@ -147,7 +178,7 @@ class ParametreGeneraux extends Component {
 const mapStateToProps = state => {
     return {
         info_societe: state.info_societe.items,
-    
+        param_generaux_reservation_ordre: state.param_generaux_reservation_ordre.items
     }
   }
 

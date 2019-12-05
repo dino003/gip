@@ -3,7 +3,7 @@ import React, { Component } from 'react'
  class EtablissementForm extends Component {
      constructor(props) {
          super(props);
-         
+        
      }
 
      enregisterInfo = (e) =>{
@@ -130,7 +130,7 @@ import React, { Component } from 'react'
                                 </div>
                                
                              
-                                <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
+                                {!this.props.isFormEtablissementSubmitted ? <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button> : <button disabled  className="mt-2 btn btn-warning">Merci de patienter ...</button>}
                            
                                 
                             </form>

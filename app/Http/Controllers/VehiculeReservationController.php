@@ -23,7 +23,7 @@ class VehiculeReservationController extends Controller
         $reservation_par_vehicules = VehiculeReservation::with(['vehicule',
         'personne_reservant', 'objet_reservation'])
        // ->with('utilisateur.entite_affectation')
-       ->where('transforme_en_utilisation', 0)
+       //->where('transforme_en_utilisation', 0)
        ->get();
 
         return response()->json($reservation_par_vehicules);

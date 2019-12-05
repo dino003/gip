@@ -5,6 +5,11 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
 import VehiculeItem from '../components/vehicules/VehiculeItem'
 import MatriculeInput from '../components/MatriculeInput'
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import { CSVLink } from "react-csv";
+import {groupBy} from '../utils/Repository'
+
+
 
   class Vehicules extends Component {
 
@@ -128,7 +133,7 @@ import MatriculeInput from '../components/MatriculeInput'
     }
 
     renderList(){
-        return (  <table className="mb-0 table" >
+        return (  <table className="mb-0 table" id="table-to-xls" >
         <thead>
         <tr>
         <th>Affecté a</th>
@@ -143,6 +148,17 @@ import MatriculeInput from '../components/MatriculeInput'
             <th>Chauffeur</th>
             <th>Catégorie</th>
             <th>Acquis le</th>
+            <th>N° de carte grise</th>
+            <th>Kms compteur</th>
+            <th>Nb CV</th>
+            <th>Energie</th>
+            <th>N° de série</th>
+            <th>N° de moteur</th>
+            <th>N° contrat assurance</th>
+            <th>Assureur</th>
+            <th>Prime assurance</th>
+            <th>Franchise</th>
+
 
         </tr>
         </thead>
@@ -167,9 +183,22 @@ import MatriculeInput from '../components/MatriculeInput'
     render() {
         // console.log(Array.isArray(this.props.vehicule))
        // console.log(this.props.vehiculeSeleted)
+
+        const etat = this.props.utilisations.length ? groupBy(this.props.utilisations, 'utilisateur_id') : null
+     // const  etat2 = etat != null ? groupBy(etat, 'vehicule_id') : null
+        if(etat != null){
+            etat.forEach(currentItem => {
+                console.log(groupBy(currentItem, 'vehicule_id'))
+
+            });
+
+        }
         return (
             <div className="app-main__inner">
-            <div className="main-card card" >
+                <div className="row">
+                <div className={this.props.vehicules.length ? 'col-lg-8' : 'col-lg-12'}>
+                     <div className="main-card mb-3 card">
+
                        <div className="card-body ">
                            <h5 className="card-title">Gestion des véhicules 
                           
@@ -179,13 +208,28 @@ import MatriculeInput from '../components/MatriculeInput'
                         
                             <button title=" Ajouter un nouvel acteur"
                                       className="mb-2 mr-2 btn-transition btn btn-outline-primary"
-                                      onClick={() => this.props.history.push('/creation-de-vehicule')}
+                                      onClick={() => this.props.history.push('/gestion_du_parc_automobile/creation-de-vehicule')}
                                       >
                                       <i className="fa fa-plus"></i> {' '}
      
                                           Ajouter
                                              </button>
-                                </span>
+
+                                             <ReactHTMLTableToExcel
+                    id="test-table-xls-button"
+                    className="mb-2 mr-2 btn-transition btn btn-outline-success"
+                    table="table-to-xls"
+                    filename="Liste des véhicules"
+                    sheet="tablexls"
+                    buttonText="Ecran -> Liste"/>
+                        {/* <CSVLink
+                            data={this.props.vehicules}
+                            filename={"my-file.csv"}
+                            className="mb-2 mr-2 btn-transition btn btn-outline-success"
+                            >
+                            Download me
+                            </CSVLink> */}
+                                </span> {'  '}
                              
                                 
                                 <MatriculeInput text_attente="Aucune sélection" />
@@ -200,6 +244,8 @@ import MatriculeInput from '../components/MatriculeInput'
                              
                            </div>
                        </div>
+                       </div>
+                       </div>
                    </div>
 
           
@@ -212,6 +258,8 @@ import MatriculeInput from '../components/MatriculeInput'
 const mapStateToProps = state => {
     return {
         vehicules: state.vehicules.items,
+        utilisations: state.utilisations.items,
+
         loading: state.vehicules.loading,
         vehiculeSeleted: state.vehiculeSeleted.vehicule
 

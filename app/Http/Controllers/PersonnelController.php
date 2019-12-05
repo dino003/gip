@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Personnel;
 use Illuminate\Http\Request;
 use App\Repositories\Repository;
+use App\Imports\PersonnelsImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PersonnelController extends Controller
 {
@@ -46,6 +48,18 @@ class PersonnelController extends Controller
         $mod = new Personnel;
         $creation = $mod->create($request->only($mod->fillable));
  
+        return response()->json(Personnel::with(['entite_affectation'])->find($creation->id));
+
+    }
+
+        /**
+    * @return \Illuminate\Support\Collection
+    */
+    public function storeByImport() 
+    {
+        Excel::import(new PersonnelsImport,request()->file('nom_du_fichier_a_uploader'));
+           
+       // return back();
         return response()->json(Personnel::with(['entite_affectation'])->find($creation->id));
 
     }

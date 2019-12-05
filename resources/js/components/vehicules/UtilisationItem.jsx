@@ -33,7 +33,7 @@ export default class UtilisationItem extends Component {
                 {/* <tr style={{backgroundColor: textColor}} onClick={this.onSelect}> */}
                    
             <td onDoubleClick={this.props.onEdit.bind(this, index)}>{item.vehicule.immatriculation || 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, index)}>{item.utilisateur.entite_affectation.entite || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, index)}>{item.utilisateur ? item.utilisateur.entite_affectation.entite : 'Non renseigné'}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, index)}>{item.utilisateur.nom || 'Non renseigné'}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, index)}>{item.chauffeur.nom || 'Non renseigné'}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, index)}>{item.utilisatation_normal_ou_pret || 'Non renseigné'}</td>

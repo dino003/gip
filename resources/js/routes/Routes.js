@@ -75,6 +75,11 @@ import ModifierCommande from '../pages/forms/ModifierCommande';
 import Reservations from '../pages/vehicules/Reservations';
 import AjouterReservation from '../pages/forms/Vehicules/AjouterReservation';
 import ModifierReservation from '../pages/forms/Vehicules/ModifierReservation';
+import EditionListTable from '../pages/editions/EditionListTable';
+import MasterEdition from '../components/layouts/MasterEdition';
+import VehiculeEtatForm from '../pages/editions/forms/VehiculeEtatForm';
+import VehiculesParEntiteVehicule from '../pages/editions/etats/vehicules/VehiculesParEntiteVehicule';
+import UtilisationParUtilisateurVehicules from '../pages/editions/etats/utilisations/UtilisationParUtilisateurVehicules';
 
 
 
@@ -177,6 +182,16 @@ const NavBack = () => (
   <MasterGestion path="/gestion_du_parc_automobile/creation-commande" component={AjouterCommande} />
   <MasterGestion path="/gestion_du_parc_automobile/modification-commande/:commande_id" component={ModifierCommande} />
 
+
+{/*  cette partie concerne les etats  */}
+  <MasterEdition path="/gestion_du_parc_automobile/liste-etats" component={EditionListTable} />
+  <MasterEdition path="/gestion_du_parc_automobile/conception-etat-vehicule" component={VehiculeEtatForm} />
+ 
+ 
+  <MasterEdition path="/gestion_du_parc_automobile/edition-vehicules-par-entites-vehicules" component={VehiculesParEntiteVehicule} />
+  <MasterEdition path="/gestion_du_parc_automobile/edition-utilisations-par-utilisateur-vehicules" component={UtilisationParUtilisateurVehicules} />
+
+{/*  fin de la partie qui concerne les etats  */}
 
     
 

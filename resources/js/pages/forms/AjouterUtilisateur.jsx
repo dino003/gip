@@ -149,7 +149,7 @@ import {connect} from 'react-redux'
 
     render() {
         //console.log(this.checkUser())
-        console.log(this.state.date_creation)
+       // console.log(this.state.date_creation)
         return (
             <div className="app-main__inner">
               

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import moment from 'moment'
+import { formatageSomme } from '../../utils/Repository';
 
 
  class BudgetVehiculeItem extends Component {
@@ -33,17 +34,17 @@ import moment from 'moment'
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.nature_ligne_budget ? item.nature_ligne_budget.nature_depense_recette : 'Non renseigné'}</td>
 
 
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.depense_budget || 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.depense_realisation || 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.depense_pourcentage || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.depense_budget ? formatageSomme(item.depense_budget) : 0}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.depense_realisation ? formatageSomme(item.depense_realisation) : 0}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.depense_pourcentage ? formatageSomme(item.depense_pourcentage) : ''}</td>
 
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.depense_reste || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.depense_reste ? formatageSomme(item.depense_reste) : ''}</td>
 
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.recette_budget || 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.recette_realisation || 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.recette_pourcentage || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.recette_budget ? formatageSomme(item.recette_budget) : 0}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.recette_realisation ? formatageSomme(item.recette_realisation) : 0}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.recette_pourcentage ? formatageSomme(item.recette_pourcentage) : ''}</td>
 
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.recette_reste || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.recette_reste ? formatageSomme(item.recette_reste) : ''}</td>
 
             <td>
 

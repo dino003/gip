@@ -25,11 +25,11 @@ class UserController extends Controller
     public function index()
     {
        // return $this->model->all();
-      // return $this->model->with(['autorisation'] )->get();
+       return $this->model->with(['autorisation'] )->get();
 
-      $user = new User;
+     // $user = new User;
 
-      dd($user);
+     // dd($user);
 
     }
 

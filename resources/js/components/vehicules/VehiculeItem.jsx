@@ -46,6 +46,17 @@ import moment from 'moment'
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.categorie.nom_type || 'Non renseigné'}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_entree_au_parc ? moment(item.date_entree_au_parc).format('DD/MM/YYYY') : 'Non renseigné'}</td>
 
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.numero_carte_grise || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.kilometrage_acquisition || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.tech_chevaux_fiscaux || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.energie || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.tech_numero_serie || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.tech_numero_moteur || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.numero_contrat || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.assureur || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.prime_assurance || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.franchise || 'Non renseigné'}</td>
+
             <td>
 
                 <span className="pull-right">

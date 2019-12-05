@@ -141,7 +141,7 @@ import today from '../../utils/today';
      
 
     onEdit = (id) => {
-        const vehic = this.props.vehiculeSeleted 
+        const vehic = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(vehicule => vehicule.id == this.props.match.params.vehicule_id)
         this.props.history.push('/gestion_du_parc_automobile/parc/modification-reservation-vehicule/' + vehic.id + '/' + vehic.immatriculation + '/reservation/' + id)
     }
 
@@ -167,7 +167,41 @@ import today from '../../utils/today';
 
 
     renderList(){
-        const reservations = this.props.reservations.filter(inter => inter.vehicule.id == this.props.match.params.vehicule_id)
+        const reservations = this.props.reservations.filter(reser => reser.vehicule.id == this.props.match.params.vehicule_id && !reser.transforme_en_utilisation)
+        return (  <table className="mb-0 table" >
+        <thead>
+        <tr>
+            <th>Véhicule</th>
+            <th>Entité de réservation</th>
+            <th>du</th>
+            <th>à</th>
+            <th>au</th>
+            <th>à</th>
+            <th>Objet de la réservation</th>
+            <th>Trans.Util ?</th>
+            <th>Actions</th>
+
+
+        </tr>
+        </thead>
+        <tbody>
+          
+     { reservations.map((item, index) => 
+         <ReservationItem
+         index={index}
+          key={item.id} 
+          onEdit={this.onEdit}              
+          onDelete={this.onDelete}
+          onTransformutilisation={this.onTransformutilisation}
+          onTransformationDepartReservation={this.onTransformationDepartReservation}
+         item={item} />
+    )  }         
+        </tbody>
+    </table>)
+    }
+
+    renderListHistoriques(){
+        const reservations = this.props.reservations.filter(reser => reser.vehicule.id == this.props.match.params.vehicule_id && reser.transforme_en_utilisation)
         return (  <table className="mb-0 table" >
         <thead>
         <tr>
@@ -203,9 +237,10 @@ import today from '../../utils/today';
     
 
     render() {
-        const vehiculeselect = this.props.vehiculeSeleted
-        const reservations = this.props.reservations.filter(inter => inter.vehicule.id == this.props.vehiculeSeleted.id)
+        const vehiculeselect = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
+        const reservations = this.props.reservations.filter(inter => inter.vehicule.id == this.props.match.params.vehicule_id)
 
+       if(this.props.vehicules.length){
         return (
             <div className="app-main__inner">
             <div className="main-card card" >
@@ -221,7 +256,7 @@ import today from '../../utils/today';
                                       <i className="fa fa-plus"></i> {' '}
      
                                           Ajouter
-                                             </button>
+                                </button>
                                 </span>
                              
                                 
@@ -229,6 +264,24 @@ import today from '../../utils/today';
                                             
                                 
                             </h5>
+                            <ul className="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
+                            <li className="nav-item">
+                    <a role="tab" className="nav-link active" id="tab-0" data-toggle="tab" href="#tab_reservations_en_cours">
+
+                        <span>  Réservations en cours</span>
+                    </a>
+                </li>
+                <li className="nav-item">
+                    <a role="tab" className="nav-link" id="tab-1" data-toggle="tab" href="#tab_historique_reservations">
+                        <span>Historiques</span>
+                    </a>
+                </li>
+            </ul>
+
+                    <div className="tab-content">
+
+                    <div className="tab-pane tabs-animation fade show active" id="tab_reservations_en_cours" role="tabpanel">
+
                            <div className="table-responsive">
                            {this.props.loading ? this.renderLoading() : 
                             !reservations.length ? this.renderEmpty() : this.renderList()}
@@ -236,6 +289,22 @@ import today from '../../utils/today';
 
                              
                            </div>
+                    </div>
+
+                    <div className="tab-pane tabs-animation fade show" id="tab_historique_reservations" role="tabpanel">
+
+                        <div className="table-responsive">
+                        {this.props.loading ? this.renderLoading() : 
+                        !reservations.length ? this.renderEmpty() : this.renderListHistoriques()}
+
+
+                        
+                        </div>
+                    </div>
+
+                    </div>
+
+
                        </div>
                    </div>
 
@@ -244,6 +313,15 @@ import today from '../../utils/today';
                 
        </div>
         )
+       }else{
+        return ( <span style={{textAlign: 'center'}}>
+
+        <Loader
+            height={100}
+            width={100}
+         />
+         </span>)
+       }
     }
 }
 
