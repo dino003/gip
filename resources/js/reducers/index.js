@@ -36,6 +36,7 @@ import ContratAssuranceReducer from './ContratAssuranceReducer'
 import CommandesReducer from './CommandesReducer'
 import EtablissementInfoReducer from './parametres_generaux/EtablissementInfoReducer'
 import ParamGenerauxReserOrdreReducer from './parametres_generaux/ParamGenerauxReserOrdreReducer'
+import MissionReducer from './MissionReducer'
 
 const allReducers = combineReducers({
     types_entites: TypeEntiteReducer,
@@ -73,8 +74,10 @@ const allReducers = combineReducers({
     budget_entites: BudgetEntiteReducer,
     contrat_assurances: ContratAssuranceReducer,
     commandes: CommandesReducer,
+    missions: MissionReducer,
     info_societe: EtablissementInfoReducer,
     param_generaux_reservation_ordre: ParamGenerauxReserOrdreReducer
+    
 })
 
 

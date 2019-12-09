@@ -80,6 +80,8 @@ import MasterEdition from '../components/layouts/MasterEdition';
 import VehiculeEtatForm from '../pages/editions/forms/VehiculeEtatForm';
 import VehiculesParEntiteVehicule from '../pages/editions/etats/vehicules/VehiculesParEntiteVehicule';
 import UtilisationParUtilisateurVehicules from '../pages/editions/etats/utilisations/UtilisationParUtilisateurVehicules';
+import Missions from '../pages/gestion/Missions';
+import AjouterMission from '../pages/forms/AjouterMission';
 
 
 
@@ -181,6 +183,9 @@ const NavBack = () => (
   <MasterGestion path="/gestion_du_parc_automobile/gestion-des-commandes" component={Commandes} />
   <MasterGestion path="/gestion_du_parc_automobile/creation-commande" component={AjouterCommande} />
   <MasterGestion path="/gestion_du_parc_automobile/modification-commande/:commande_id" component={ModifierCommande} />
+
+  <MasterGestion path="/gestion_du_parc_automobile/gestion-des-ordres-de-missions" component={Missions} />
+  <MasterGestion path="/gestion_du_parc_automobile/ajouter-des-ordres-de-missions" component={AjouterMission} />
 
 
 {/*  cette partie concerne les etats  */}

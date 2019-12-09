@@ -75,6 +75,10 @@
       }
     }
   }
+
+   html,body{ overflow-x:hidden; } 
+
+
        </style>
     </head>
     <body >

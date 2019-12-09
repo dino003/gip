@@ -399,6 +399,20 @@ Route::post('modifier_commande/{id}', 'CommandeController@update');
 Route::delete('supprimer_commande/{id}', 'CommandeController@destroy');
 //*********** fin commande ********************************************************* 
 
+//****************** ordre de missions  ********************************************************/
+Route::get('ordre_missions', 'MissionController@index');
+// voir
+Route::get('voir_ordre_mission/{id}', 'MissionController@show');
+
+// ajouter 
+Route::post('ajouter_ordre_mission', 'MissionController@store');
+// modifier
+Route::post('modifier_ordre_mission/{id}', 'MissionController@update');
+
+// supprimer
+Route::delete('supprimer_ordre_mission/{id}', 'MissionController@destroy');
+//*********** fin ordre de missions  ********************************************************* 
+
 
 
 //****************** infos sur la societé  ********************************************************/

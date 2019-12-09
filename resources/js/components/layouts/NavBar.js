@@ -109,6 +109,14 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
         }));
     }
 
+    fetchOrdresMissions(){
+        queue.push(() => axios.get('/api/ordre_missions').then((response) => {
+            // .
+            const action = {type: "GET_MISSION", value: response.data}
+            this.props.dispatch(action)
+        }));
+    }
+    
     fetchCodeIncidents(){
         queue.push(() => axios.get('/api/code_incidents').then((response) => {
             // .
@@ -346,6 +354,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
         this.fetchNatureConsommations();
         this.fetchReservation();
         this.fetchNatureAmendes();
+        this.fetchOrdresMissions();
         this.fetchNatureSinistres();
         this.fetchNatureDepenseRecettes();
         this.fetchNatureReservations();

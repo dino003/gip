@@ -28,3 +28,9 @@ export const groupBy = (objectArray, ...properties) => {
   export const calculSommeColonne = (tableau) => {
     return tableau.reduce( (prec, curr) =>  parseFloat(prec) + parseFloat(curr.kilometres_parcourus), 0)
   }
+  var dateWithouthSecond = new Date();
+
+  export const heure = dateWithouthSecond.toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
+        
+  
+
