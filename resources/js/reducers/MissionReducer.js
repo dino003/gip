@@ -1,5 +1,5 @@
 const initialState = {
-    items: undefined,
+    items: [],
     loading: false,
     error: null
 }

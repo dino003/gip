@@ -232,7 +232,7 @@ import {groupBy} from '../utils/Repository'
                                 </span> {'  '}
                              
                                 
-                                <MatriculeInput text_attente="Aucune sélection" />
+                                <MatriculeInput vehicule={this.props.vehiculeSeleted} text_attente="Aucune sélection" />
                                             
                                 
                             </h5>

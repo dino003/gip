@@ -96,10 +96,11 @@ export default class SidebarGestion extends Component {
                                         <ul>
                                  
                                             <li>
-                                                <a href="elements-buttons-standard.html">
-                                                    <i className="metismenu-icon"></i>
-                                                    Les Articles
-                                                </a>
+                                               
+                                                <NavLink activeStyle={active} to="/gestion_du_parc_automobile/gestion-des-articles">
+                                                 <i className="metismenu-icon pe-7s-display2"></i>
+                                                Les Articles
+                                             </NavLink>
                                             </li>
                                             <li>
                                                 <a href="elements-dropdowns.html">

@@ -39,7 +39,7 @@ class ModifierMission extends Component {
 
         this.setState({
             [name]: value
-        });
+        }, () => this.calculCoutTotalMission());
     }
 
 
@@ -64,6 +64,8 @@ class ModifierMission extends Component {
             return "Absence de l'heure de début de la mission !"
         }else if (this.heure_fin_mission.value == '') {
             return "Absence de l'heure de fin de la mission !"
+        }else if (Date.parse(this.date_debut_misssion.value) > Date.parse(this.date_fin_mission.value)) {
+            return `La date de fin de mission doit être égale ou postérieure  à ${this.date_debut_misssion.value} !`
         } else {
             return null
         }
@@ -79,6 +81,27 @@ class ModifierMission extends Component {
         }
     }
 
+    calculeSommedesPair(quantite, cout_unitaire){
+        if(Number(cout_unitaire) == 0 || cout_unitaire == '' || Number(cout_unitaire) < 0) return 0;
+        if(Number(quantite) == 0 || Number(quantite) < 0){
+            return Number(cout_unitaire)
+        }else{
+            return Number(quantite) * Number(cout_unitaire)
+
+        }
+
+    }
+
+    calculCoutTotalMission = () => {
+     var somme = this.calculeSommedesPair(this.nuitees.value, this.cout_nuitee.value) + this.calculeSommedesPair(this.repas.value, this.cout_repas.value) + 
+     this.calculeSommedesPair(this.peages.value, this.cout_peage.value) + this.calculeSommedesPair(this.billet_de_train.value, this.cout_billet_train.value) +
+     this.calculeSommedesPair(this.billet_avion.value, this.cout_billet_avion.value) + this.calculeSommedesPair(this.billet_transport_commun.value, this.cout_bilet_transport_commun.value) +
+     this.calculeSommedesPair(this.taxis.value, this.cou_billet_taxis.value) + this.calculeSommedesPair(this.kilometre_parcouru.value, this.cout_unitaire_kilometre.value)
+     
+     let sommeTotal = somme + Number(this.frais_divers.value)
+     this.cout_total_mission.value =  parseFloat(sommeTotal)
+    }
+
     calculMontantTTCContenu = () => {
         if (this.contenu_montant_commande && this.contenu_taux_tva) {
             if (this.contenu_montant_commande.value == '') return null
@@ -91,8 +114,10 @@ class ModifierMission extends Component {
     enregistrerOrdreMission = (e) => {
         e.preventDefault()
        // console.log(this.moyen_transport.value)
+       const objetEdit = this.props.missions.find(mission => mission.id == this.props.match.params.mission_id)
+
         if (this.verificationFormulaire() == null) {
-            axios.post('/api/ajouter_ordre_mission', {
+            axios.post('/api/modifier_ordre_mission/' + objetEdit.id + '/' + objetEdit.mission_couts.id, {
                 numero_ordre_mission: this.numero_ordre_mission.value,
                 demandeur_id: this.demandeur_id.value,
                 vehicule_id: this.vehicule_id.value,
@@ -163,7 +188,7 @@ class ModifierMission extends Component {
              
             })
                 .then(response => {
-                    const action = { type: "ADD_MISSION", value: response.data }
+                    const action = { type: "EDIT_MISSION", value: response.data }
                     this.props.dispatch(action)
 
                     this.props.history.goBack();
@@ -226,7 +251,7 @@ class ModifierMission extends Component {
 
     render() {
        // console.log(this.numeroAutoOrdreMission().toString().length)
-       const {objetEdit} = this.state
+       const objetEdit = this.props.missions.find(mission => mission.id == this.props.match.params.mission_id)
        if(objetEdit !== undefined){
         return (
             <div className="app-main__inner">
@@ -343,11 +368,12 @@ class ModifierMission extends Component {
                                         ref={etat => this.etat = etat}
                                         defaultValue={objetEdit.etat}
                                         className="form-control">
-                                        <option >En Attente</option>
-                                        <option >En cours</option>
+                                      <option value={1} >En cours</option>
 
-                                        <option >Terminé</option>
-                                        <option >Suspendu</option>
+                                        <option value={2} >En Attente</option>
+
+                                        <option value={3} >Terminé</option>
+                                        <option value={4} >Suspendu</option>
                                     </select>
 
                                 </div>
@@ -358,10 +384,10 @@ class ModifierMission extends Component {
                                         ref={urgence => this.urgence = urgence}
                                         defaultValue={objetEdit.urgence}
                                         className="form-control">
-                                        <option >Basse</option>
+                                        <option value={1} >Basse</option>
 
-                                        <option >Haute</option>
-                                        <option >Moyenne</option>
+                                        <option value={2} >Haute</option>
+                                        <option value={3} >Moyenne</option>
                                     </select>
 
                                 </div>
@@ -419,12 +445,12 @@ class ModifierMission extends Component {
                                                                 ref={moyen_transport => this.moyen_transport = moyen_transport}
                                                                 defaultValue={objetEdit.moyen_transport}
                                                                 className="form-control">
-                                                                <option >Véhicule du parc</option>
-                                                                <option >Véhicule personnel</option>
-                                                                <option >Train </option>
-                                                                <option >Avion </option>
-                                                                <option >Transport commun </option>
-                                                                <option >Autre </option>
+                                                                 <option value={1} >Véhicule du parc</option>
+                                                                <option value={2} >Train </option>
+                                                                <option value={3} >Avion </option>
+                                                                <option value={4} >Transport commun </option>
+                                                                <option value={5} >Autre </option>
+
 
 
                                                             </select>
@@ -666,6 +692,7 @@ class ModifierMission extends Component {
                                                                 <input name="date_fin_mission" type="date"
                                                                     onChange={this.setField}
                                                                     defaultValue={objetEdit.date_fin_mission}
+                                                                    min={this.date_debut_misssion != undefined ? this.date_debut_misssion.value : null}
 
                                                                     style={inputStyle}
                                                                     ref={(date_fin_mission) => { this.date_fin_mission = date_fin_mission }}
@@ -1120,9 +1147,10 @@ class ModifierMission extends Component {
                                             </div>
                                         </div>
 
-                                        <div className="d-block text-right card-footer">
+                                        <div className="d-block card-footer">
                                             <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
-
+                                            <button type="submit" onClick={() => this.props.history.goBack()}
+                                         className="mt-2 btn btn-warning pull-right">Retour</button>
                                         </div>
                                     </div>
 

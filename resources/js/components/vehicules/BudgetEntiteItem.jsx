@@ -29,20 +29,20 @@ import {formatageSomme} from '../../utils/Repository'
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.entite ? item.entite.entite : 'Non renseigné'}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.imputation_interne || 'Non renseigné'}</td>
 
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.nature_ligne_budget ? item.nature_ligne_budget.nature_depense_recette : 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.nature_ligne_budget ? item.nature_ligne_budget.nature_depense_recette : ''}</td>
 
 
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.depense_budget ? formatageSomme(item.depense_budget) : 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.depense_realisation ? formatageSomme(item.depense_realisation) : 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.depense_pourcentage || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.depense_budget ? formatageSomme(item.depense_budget) : ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.depense_realisation ? formatageSomme(item.depense_realisation) : ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.depense_pourcentage || ''}</td>
 
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.depense_reste ? formatageSomme(item.depense_reste) : 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.depense_reste ? formatageSomme(item.depense_reste) : ''}</td>
 
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.recette_budget ? formatageSomme(item.recette_budget) : 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.recette_realisation ? formatageSomme(item.recette_realisation) : 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.recette_pourcentage || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.recette_budget ? formatageSomme(item.recette_budget) : ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.recette_realisation ? formatageSomme(item.recette_realisation) : ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.recette_pourcentage || ''}</td>
 
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.recette_reste ? formatageSomme(item.recette_reste) : 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.recette_reste ? formatageSomme(item.recette_reste) : ''}</td>
 
             <td>
 

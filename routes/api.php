@@ -399,6 +399,34 @@ Route::post('modifier_commande/{id}', 'CommandeController@update');
 Route::delete('supprimer_commande/{id}', 'CommandeController@destroy');
 //*********** fin commande ********************************************************* 
 
+//****************** articles_stock  ********************************************************/
+Route::get('articles_stock', 'StockArticleController@index');
+// voir
+Route::get('article_stock/{id}', 'StockArticleController@show');
+
+// ajouter 
+Route::post('ajouter_article_stock', 'StockArticleController@store');
+// modifier
+Route::post('modifier_article_stock/{id}', 'StockArticleController@update');
+
+// supprimer
+Route::delete('supprimer_article_stock/{id}', 'StockArticleController@destroy');
+//*********** fin articles_stock ********************************************************* 
+
+//****************** entrees_stock  ********************************************************/
+Route::get('entrees_stock', 'StockEntreeController@index');
+// voir
+Route::get('entree_stock/{id}', 'StockEntreeController@show');
+
+// ajouter 
+Route::post('ajouter_entree_stock', 'StockEntreeController@store');
+// modifier
+Route::post('modifier_entree_stock/{id}', 'StockEntreeController@update');
+
+// supprimer
+Route::delete('supprimer_entree_stock/{id}', 'StockEntreeController@destroy');
+//*********** fin entrees_stock ********************************************************* 
+
 //****************** ordre de missions  ********************************************************/
 Route::get('ordre_missions', 'MissionController@index');
 // voir
@@ -407,7 +435,10 @@ Route::get('voir_ordre_mission/{id}', 'MissionController@show');
 // ajouter 
 Route::post('ajouter_ordre_mission', 'MissionController@store');
 // modifier
-Route::post('modifier_ordre_mission/{id}', 'MissionController@update');
+Route::post('modifier_ordre_mission/{mission_id}/{mission_cout_id}', 'MissionController@update');
+
+// modifier
+Route::get('marquer_ordre_mission_termine/{mission_id}', 'MissionController@marquerMissionTermine');
 
 // supprimer
 Route::delete('supprimer_ordre_mission/{id}', 'MissionController@destroy');

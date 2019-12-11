@@ -10,8 +10,8 @@ class StockEntreeController extends Controller
 {
     protected $model;
 
-    public function __construct(StockEntree $stockEntree){
-        $this->model = new Repository($stockEntree);
+    public function __construct(StockEntree $entree){
+        $this->model = new Repository($entree);
     }
     /**
      * Display a listing of the resource.
@@ -20,7 +20,9 @@ class StockEntreeController extends Controller
      */
     public function index()
     {
-        return $this->model->all();
+        $articles = StockEntree::with(['article', 'fournisseur'])->get();
+
+        return response()->json($articles);
     }
 
     /**
@@ -41,8 +43,11 @@ class StockEntreeController extends Controller
      */
     public function store(Request $request)
     {
-       
-         return $this->model->create($request->only($this->model->getModel()->fillable));
+         
+        $entree = new StockEntree;
+        $creation = $entree->create($request->only($article->fillable));
+ 
+        return response()->json(StockEntree::with(['article', 'fournisseur'])->find($creation->id));
 
     }
 
@@ -78,10 +83,10 @@ class StockEntreeController extends Controller
      */
     public function update(Request $request, $id)
     {
-          // update model and only pass in the fillable fields
-        $this->model->update($request->only($this->model->getModel()->fillable), $id);
+         // update model and only pass in the fillable fields
+         $this->model->update($request->only($this->model->getModel()->fillable), $id);
 
-       return $this->model->show($id);
+         return response()->json(StockEntree::with(['article', 'fournisseur'])->find($id));
     }
 
     /**

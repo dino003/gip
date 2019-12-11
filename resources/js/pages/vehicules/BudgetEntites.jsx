@@ -131,7 +131,9 @@ import BudgetEntiteItem from '../../components/vehicules/BudgetEntiteItem';
        // console.log(vehiculeselect)
         return (
             <div className="app-main__inner">
-            <div className="main-card card" >
+                <div className="row">
+                <div className="col-lg-10">
+                <div className="main-card mb-3 card">
                        <div className="card-body ">
                            <h5 className="card-title">Gestion des budgets des entités
                           
@@ -160,6 +162,12 @@ import BudgetEntiteItem from '../../components/vehicules/BudgetEntiteItem';
                            </div>
                        </div>
                    </div>
+                </div>
+
+               
+                </div>
+
+            
 
           
                 

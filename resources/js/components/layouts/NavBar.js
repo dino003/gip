@@ -279,6 +279,14 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
         }));
     }
 
+    fetchArticlesStock(){
+        queue.push(() => axios.get('/api/articles_stock').then((response) => {
+            // .
+            const action = {type: "GET_ARTICLE", value: response.data}
+            this.props.dispatch(action)
+        }));
+    }
+
     fetchAmendes(){
         queue.push(() => axios.get('/api/amendes').then((response) => {
             // .
@@ -366,6 +374,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
         this.fetchInterventions();
         this.fetchConsommations();
         this.fetchCommandes();
+        this.fetchArticlesStock();
         this.fetchDepenseRecettes();
         this.fetchAmendes();
         this.fetchBudgetVehicules();

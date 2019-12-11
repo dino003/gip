@@ -98,8 +98,9 @@ import inputStyle from '../../../utils/inputStyle'
          
       }
 
-      enregistrerIntervention = (e) => {
+      enregistrerReservation = (e) => {
         e.preventDefault()
+        const mission = this.props.match.params.ordre_mission_id != undefined ? this.props.missions.find(miss => miss.id == this.props.match.params.ordre_mission_id) : undefined
 
         var vehicule = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
         if( this.checkIfReservationIsPossible(this.date_debut_reservation.value, this.date_fin_reservation.value) == null ){
@@ -134,9 +135,25 @@ import inputStyle from '../../../utils/inputStyle'
                 .then(response => { 
                    const action = {type: "ADD_RESERVATION", value: response.data}
                      this.props.dispatch(action)
-    
-                   this.props.history.goBack();
-    
+                     if(mission != undefined){
+                        let conf = confirm('Souhaitez vous considérer l\'ordre de mission comme étant terminé ?')
+                        if(conf){
+                            axios.get('/api/marquer_ordre_mission_termine/' + mission.id).then(response => {
+                               const action2 = {type: "EDIT_MISSION", value: response.data}
+                                this.props.dispatch(action2) 
+                            })
+                            this.props.history.goBack();
+
+                        }else{
+                            this.props.history.goBack();
+  
+                        }
+                     }else{
+                        this.props.history.goBack();
+
+                     }
+                   
+
                  
                 }).catch(error => console.log(error))
                
@@ -160,6 +177,7 @@ import inputStyle from '../../../utils/inputStyle'
 
     render() {
         const personeParDefaut = this.props.personnels.find(per => per.default)
+        const mission = this.props.match.params.ordre_mission_id != undefined ? this.props.missions.find(miss => miss.id == this.props.match.params.ordre_mission_id) : undefined
         return (
             <div className="app-main__inner">
               {this.setVehiculeSelectedAuRechargement()}
@@ -168,15 +186,15 @@ import inputStyle from '../../../utils/inputStyle'
                             <h5 className="card-title">Gestion des Reservations du véhicule
                            
                             {this.props.vehicules.length && 
-                            <MatriculeInput text_attente={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id).immatriculation}/>
+                            <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}/>
                             }                              
                           </h5>
                           <br />
-                            <form className="" onChange={this.setField}  onSubmit={this.enregistrerIntervention}>
+                            <form className="" onChange={this.setField}  onSubmit={this.enregistrerReservation}>
                                 <div className="form-row">
                                 <div className="col-md-3">
                                     <label  className="">Personne reservant</label>
-                                        <select name="personne_reservant" onChange={this.setField}
+                                        {mission == undefined ?        <select name="personne_reservant" onChange={this.setField}
                                             ref={personne_reservant => this.personne_reservant = personne_reservant}
                                             style={inputStyle}
 
@@ -190,7 +208,20 @@ import inputStyle from '../../../utils/inputStyle'
                                         }
 
                                                 )}
-                                        </select>
+                                        </select> :  <select name="personne_reservant" onChange={this.setField}
+                                            ref={personne_reservant => this.personne_reservant = personne_reservant}
+                                            style={inputStyle}
+                                            defaultValue={mission.demandeur_id}
+                                          className="form-control">
+                                        {this.props.personnels.map(pers => {
+                                            if(!pers.default){
+                                                return <option key={pers.id} value={pers.id}>{pers.nom} {pers.prenom}</option>
+
+                                            }
+                                        }
+
+                                                )}
+                                        </select>}
                                 
                                         </div>
 
@@ -211,6 +242,7 @@ import inputStyle from '../../../utils/inputStyle'
                                         <select name="objet_reservation" onChange={this.setField}
                                             ref={objet_reservation => this.objet_reservation = objet_reservation}
                                             style={inputStyle}
+                                            defaultValue={mission != undefined ? mission.nature_mission_id : null}
                                           className="form-control">
                                         <option defaultValue={null}></option>
 
@@ -222,15 +254,18 @@ import inputStyle from '../../../utils/inputStyle'
                                 
                                         </div>
 
-                                        <div className="col-md-3">
+                                       
+                                            {mission != undefined &&  <div className="col-md-3">
                                         <div className="position-relative form-group">
                                             <label >Numero de l'ordre de mission </label>
                                             <input name="numero_ordre_mission"  type="text"
+                                            defaultValue={mission != undefined ? mission.numero_ordre_mission : null}
+                                            readOnly
                                             onChange={this.setField}
                                             ref={numero_ordre_mission => this.numero_ordre_mission = numero_ordre_mission}
                                              className="form-control" />
                                              </div>
-                                    </div>
+                                    </div>}
                                   
 
                                   
@@ -242,8 +277,8 @@ import inputStyle from '../../../utils/inputStyle'
                                             <label >Date de debut de la réservation *</label>
                                             <input name="date_debut_reservation"  type="date"
                                             style={inputStyle}
-                                            min={today}
-                                            defaultValue={today}
+                                            min={mission != undefined ? null : today}
+                                            defaultValue={mission != undefined ? mission.date_debut_misssion : today}
                                             onChange={this.setFieldDateDebutReservation}
                                             ref={date_debut_reservation => this.date_debut_reservation = date_debut_reservation}
                                              className="form-control" />
@@ -254,7 +289,7 @@ import inputStyle from '../../../utils/inputStyle'
                                             <label >Heure de début *</label>
                                             <InputMask mask="99:99" maskChar={null} 
                                             style={inputStyle}
-                                            defaultValue="08:00"
+                                            defaultValue={mission != undefined ? mission.heure_debut_mission.slice(0, 5) : '08:00'}
                                             inputRef={heure_debut_reservation => this.heure_debut_reservation = heure_debut_reservation}
                                             className="form-control"
                                             name="heure_debut_reservation"
@@ -268,7 +303,8 @@ import inputStyle from '../../../utils/inputStyle'
                                             <input name="date_fin_reservation"  type="date"
                                             style={inputStyle}
                                             min={this.date_debut_reservation ? this.date_debut_reservation.value : today}
-                                            defaultValue={this.date_debut_reservation ? this.date_debut_reservation.value : today}
+                                            defaultValue={mission != undefined ? mission.date_fin_mission : this.date_debut_reservation ? this.date_debut_reservation.value: today}
+
                                             onChange={this.setField}
                                             ref={date_fin_reservation => this.date_fin_reservation = date_fin_reservation}
                                              className="form-control" />
@@ -279,7 +315,7 @@ import inputStyle from '../../../utils/inputStyle'
                                             <label >Heure de fin *</label>
                                             <InputMask mask="99:99" maskChar={null} 
                                             style={inputStyle}
-                                            defaultValue="18:00"
+                                            defaultValue={mission != undefined ? mission.heure_fin_mission.slice(0, 5) : '18:00'}
                                             inputRef={heure_fin_reservation => this.heure_fin_reservation = heure_fin_reservation}
                                             className="form-control"
                                             name="heure_fin_reservation"
@@ -322,7 +358,7 @@ import inputStyle from '../../../utils/inputStyle'
 
                                             <input name="lieu_depart"
                                             ref={lieu_depart => this.lieu_depart = lieu_depart}
-                                             
+
                                               type="text" className="form-control" />
                                         </div>
 
@@ -331,7 +367,8 @@ import inputStyle from '../../../utils/inputStyle'
 
                                             <input name="destination_ville"
                                             ref={destination_ville => this.destination_ville = destination_ville}
-                                             
+                                            defaultValue={mission != undefined ? mission.destination_ville : null}
+
                                               type="text" className="form-control" />
                                         </div>
 
@@ -339,6 +376,8 @@ import inputStyle from '../../../utils/inputStyle'
                                             <label >Destination: Département</label>
 
                                             <input name="destination_departement"
+                                            defaultValue={mission != undefined ? mission.destination_departement : null}
+
                                                 onChange={this.setField}
                                             ref={destination_departement => this.destination_departement = destination_departement}
                                               type="text" className="form-control" />
@@ -348,6 +387,8 @@ import inputStyle from '../../../utils/inputStyle'
 
                                             <input name="destination_pays"
                                                 onChange={this.setField}
+                                                defaultValue={mission != undefined ? mission.destination_pays : null}
+
                                             ref={destination_pays => this.destination_pays = destination_pays}
                                               type="text" className="form-control" />
                                         </div>
@@ -360,6 +401,8 @@ import inputStyle from '../../../utils/inputStyle'
                                         <div className="position-relative form-group">
                                             <label >nbr pers dans vehicule</label>
                                             <input name="nombre_personne_dans_vehicule"  type="number"
+                                                defaultValue={mission != undefined ? mission.nombre_personne : null}
+
                                             ref={nombre_personne_dans_vehicule => this.nombre_personne_dans_vehicule = nombre_personne_dans_vehicule}
                                              className="form-control" />
                                              </div>
@@ -369,6 +412,8 @@ import inputStyle from '../../../utils/inputStyle'
                                         <div className="position-relative form-group">
                                             <label >Kilometrage prévu</label>
                                             <input name="kilometrage_prevu"  type="number"
+                                                defaultValue={mission != undefined ? mission.kilometrage_prevu : null}
+
                                             ref={kilometrage_prevu => this.kilometrage_prevu = kilometrage_prevu}
                                              className="form-control" />
                                              </div>
@@ -445,6 +490,7 @@ import inputStyle from '../../../utils/inputStyle'
                                             <label >infos complémentaires</label>
                                             <textarea name="infos_complementaire"
                                             ref={infos_complementaire => this.infos_complementaire = infos_complementaire}
+                                            defaultValue={mission != undefined ? mission.description_mission || 'Reservation via ordre de mission' : null}
 
                                               className="form-control" />
                                         </div>
@@ -470,6 +516,8 @@ const mapStateToProps = state => {
         natures_reservations: state.natures_reservations.items,
         personnels: state.personnels.items,
         reservations: state.reservations.items,
+        missions: state.missions.items,
+
         vehiculeSeleted: state.vehiculeSeleted.vehicule,
         vehicules: state.vehicules.items
 

@@ -26,9 +26,9 @@ import MissionItem from '../../components/gestion/MissionItem';
             let conf = confirm('Voulez-vous vraiment supprimer ?')
             if(conf === true){
 
-                const action = {type: "REMOVE_CONTRAT_ASSURANCE", value: id}
+                const action = {type: "REMOVE_MISSION", value: id}
                 this.props.dispatch(action)
-                axios.delete('/api/supprimer_contrat_assurance/' + id)
+                axios.delete('/api/supprimer_ordre_mission/' + id)
                 
             }
            
@@ -37,7 +37,16 @@ import MissionItem from '../../components/gestion/MissionItem';
      
 
     onEdit = (id) => {
-        this.props.history.push('/gestion_du_parc_automobile/modification-contrat-assurance/' + id)
+        this.props.history.push('/gestion_du_parc_automobile/modification-ordre-de-mission/' + id)
+    }
+
+    onReservation = (item) => {
+        if(item.vehicule_id == null){
+            alert(`Cet Ordre de Mission N° ${item.numero_ordre_mission} \n n'est pas lié à un véhicule pour la réservation; \n Sélectionnez un véhicule à réserver pour cet ordre de mission pour ensuite passer a la création d'une réservation. `)
+        }else{
+            this.props.history.push('/gestion_du_parc_automobile/parc/creation-reservation-vehicules-via-ordre-mission/' + item.vehicule_id + '/' + item.vehicule.immatriculation + '/' + item.id )
+  
+        }
     }
   
 
@@ -60,10 +69,10 @@ import MissionItem from '../../components/gestion/MissionItem';
 
 
     renderList(){
-        return (  <table className="mb-0 table" >
+        return (  <table className="mb-0 table" style={{width: '100%'}} >
         <thead>
         <tr>
-            <th>Numero</th>
+            <th colSpan="2">Numero</th>
             <th>Date</th>
             <th>Heure</th>
             <th>Demandeur</th>
@@ -75,6 +84,8 @@ import MissionItem from '../../components/gestion/MissionItem';
             <th>Nature mission</th>
             <th>Moyen de transport</th>
             <th>Mision</th>
+            <th colSpan="2">Actions</th>
+
         </tr>
         </thead>
         <tbody>
@@ -85,6 +96,7 @@ import MissionItem from '../../components/gestion/MissionItem';
           key={item.id} 
           onEdit={this.onEdit}              
           onDelete={this.onDelete}
+          onReservation={this.onReservation}
          item={item} />
     )  }         
         </tbody>
@@ -121,7 +133,7 @@ import MissionItem from '../../components/gestion/MissionItem';
                                 
                             </h5>
                            <div className="table-responsive">
-                           {this.props.missions == undefined ? this.renderLoading() : 
+                           {this.props.loading ? this.renderLoading() : 
                             !this.props.missions.length ? this.renderEmpty() : this.renderList()}
 
                              

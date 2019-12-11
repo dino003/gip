@@ -20,7 +20,9 @@ class StockArticleController extends Controller
      */
     public function index()
     {
-        return $this->model->all();
+        $articles = StockArticle::with(['famille', 'fournisseur', 'marque'])->get();
+
+        return response()->json($articles);
     }
 
     /**
@@ -41,8 +43,12 @@ class StockArticleController extends Controller
      */
     public function store(Request $request)
     {
-       
-         return $this->model->create($request->only($this->model->getModel()->fillable));
+         
+        $article = new StockArticle;
+        $creation = $article->create($request->only($article->fillable));
+ 
+        return response()->json(StockArticle::with(['famille', 'fournisseur', 'marque'])
+                                                             ->find($creation->id));
 
     }
 
@@ -78,10 +84,10 @@ class StockArticleController extends Controller
      */
     public function update(Request $request, $id)
     {
-          // update model and only pass in the fillable fields
-        $this->model->update($request->only($this->model->getModel()->fillable), $id);
+         // update model and only pass in the fillable fields
+         $this->model->update($request->only($this->model->getModel()->fillable), $id);
 
-       return $this->model->show($id);
+         return response()->json(StockArticle::with(['famille', 'fournisseur', 'marque'])->find($id));
     }
 
     /**

@@ -30,7 +30,7 @@ class AjouterMission extends Component {
 
         this.setState({
             [name]: value
-        });
+        }, () => this.calculCoutTotalMission());
     }
 
 
@@ -55,6 +55,8 @@ class AjouterMission extends Component {
             return "Absence de l'heure de début de la mission !"
         }else if (this.heure_fin_mission.value == '') {
             return "Absence de l'heure de fin de la mission !"
+        }else if (Date.parse(this.date_debut_misssion.value) > Date.parse(this.date_fin_mission.value)) {
+            return `La date de fin de mission doit être égale ou postérieure  à ${this.date_debut_misssion.value} !`
         } else {
             return null
         }
@@ -77,6 +79,32 @@ class AjouterMission extends Component {
             var taux = (Number(this.contenu_montant_commande.value) * Number(this.contenu_taux_tva.value)) / 100
             return Number(this.contenu_montant_commande.value) + taux
         }
+    }
+
+    calculeSommedesPair(quantite, cout_unitaire){
+      if(quantite != undefined && cout_unitaire != undefined){
+        if(Number(cout_unitaire) == 0 || cout_unitaire == '' || Number(cout_unitaire) < 0) return 0;
+        if(Number(quantite) == 0 || Number(quantite) < 0){
+            return Number(cout_unitaire)
+        }else{
+            return Number(quantite) * Number(cout_unitaire)
+
+        }
+      }else{
+          return 0
+      }
+
+    }
+
+    calculCoutTotalMission = () => {
+        if(this.nuitees == undefined) return 0
+     var somme = this.calculeSommedesPair(this.nuitees.value, this.cout_nuitee.value) + this.calculeSommedesPair(this.repas.value, this.cout_repas.value) + 
+     this.calculeSommedesPair(this.peages.value, this.cout_peage.value) + this.calculeSommedesPair(this.billet_de_train.value, this.cout_billet_train.value) +
+     this.calculeSommedesPair(this.billet_avion.value, this.cout_billet_avion.value) + this.calculeSommedesPair(this.billet_transport_commun.value, this.cout_bilet_transport_commun.value) +
+     this.calculeSommedesPair(this.taxis.value, this.cou_billet_taxis.value) + this.calculeSommedesPair(this.kilometre_parcouru.value, this.cout_unitaire_kilometre.value)
+     
+     let sommeTotal = somme + Number(this.frais_divers.value)
+     this.cout_total_mission.value =  parseFloat(sommeTotal)
     }
 
     enregistrerOrdreMission = (e) => {
@@ -217,6 +245,8 @@ class AjouterMission extends Component {
 
     render() {
        // console.log(this.numeroAutoOrdreMission().toString().length)
+      // console.log(this.numeroAutoOrdreMission())
+
         return (
             <div className="app-main__inner">
                 <div className="main-card mb-3 card">
@@ -323,11 +353,12 @@ class AjouterMission extends Component {
                                         ref={etat => this.etat = etat}
                                         defaultValue={this.state.etat}
                                         className="form-control">
-                                        <option >En Attente</option>
-                                        <option >En cours</option>
+                                         <option value={1} >En cours</option>
 
-                                        <option >Terminé</option>
-                                        <option >Suspendu</option>
+                                        <option value={2} >En Attente</option>
+
+                                        <option value={3} >Terminé</option>
+                                        <option value={4} >Suspendu</option>
                                     </select>
 
                                 </div>
@@ -338,10 +369,10 @@ class AjouterMission extends Component {
                                         ref={urgence => this.urgence = urgence}
                                         defaultValue={this.state.urgence}
                                         className="form-control">
-                                        <option >Basse</option>
+                                        <option value={1} >Basse</option>
 
-                                        <option >Haute</option>
-                                        <option >Moyenne</option>
+                                        <option value={2} >Haute</option>
+                                        <option value={3} >Moyenne</option>
                                     </select>
 
                                 </div>
@@ -397,12 +428,11 @@ class AjouterMission extends Component {
                                                                 ref={moyen_transport => this.moyen_transport = moyen_transport}
                                                                 defaultValue={this.state.moyen_transport}
                                                                 className="form-control">
-                                                                <option >Véhicule du parc</option>
-                                                                <option >Véhicule personnel</option>
-                                                                <option >Train </option>
-                                                                <option >Avion </option>
-                                                                <option >Transport commun </option>
-                                                                <option >Autre </option>
+                                                                <option value={1} >Véhicule du parc</option>
+                                                                <option value={2} >Train </option>
+                                                                <option value={3} >Avion </option>
+                                                                <option value={4} >Transport commun </option>
+                                                                <option value={5} >Autre </option>
 
 
                                                             </select>
@@ -618,6 +648,7 @@ class AjouterMission extends Component {
                                                             <div className="position-relative form-group">
                                                                 <label >Date de fin de la mission </label>
                                                                 <input name="date_fin_mission" type="date"
+                                                                    min={this.date_debut_misssion != undefined ? this.date_debut_misssion.value : null}
                                                                     onChange={this.setField}
                                                                     style={inputStyle}
                                                                     ref={(date_fin_mission) => { this.date_fin_mission = date_fin_mission }}
@@ -1041,7 +1072,7 @@ class AjouterMission extends Component {
                                                         <div className="col-md-3">
                                                             <input name="cout_total_mission" type="number"
                                                                 onChange={this.setField}
-                                                                defaultValue={0}
+                                                                defaultValue={this.calculCoutTotalMission()}
                                                                 ref={cout_total_mission => this.cout_total_mission = cout_total_mission}
                                                                 className="form-control" />
 
@@ -1054,9 +1085,10 @@ class AjouterMission extends Component {
                                             </div>
                                         </div>
 
-                                        <div className="d-block text-right card-footer">
+                                        <div className="d-block  card-footer">
                                             <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
-
+                                            <button type="submit" onClick={() => this.props.history.goBack()}
+                                            className="mt-2 btn btn-warning pull-right">Retour</button>
                                         </div>
                                     </div>
 

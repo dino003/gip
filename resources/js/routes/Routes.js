@@ -82,6 +82,10 @@ import VehiculesParEntiteVehicule from '../pages/editions/etats/vehicules/Vehicu
 import UtilisationParUtilisateurVehicules from '../pages/editions/etats/utilisations/UtilisationParUtilisateurVehicules';
 import Missions from '../pages/gestion/Missions';
 import AjouterMission from '../pages/forms/AjouterMission';
+import ModifierMission from '../pages/forms/ModifierMission';
+import Articles from '../pages/gestion/Articles';
+import AjouterArticle from '../pages/forms/AjouterArticle';
+import ModifierArticle from '../pages/forms/ModifierArticle';
 
 
 
@@ -163,6 +167,9 @@ const NavBack = () => (
 
   <Master path="/gestion_du_parc_automobile/parc/reservation-vehicules/:vehicule_id/:imma" component={Reservations} />
   <Master path="/gestion_du_parc_automobile/parc/creation-reservation-vehicules/:vehicule_id/:imma" component={AjouterReservation} />
+  <Master exact path="/gestion_du_parc_automobile/parc/creation-reservation-vehicules-via-ordre-mission/:vehicule_id/:imma/:ordre_mission_id" component={AjouterReservation} />
+
+  
   <Master path="/gestion_du_parc_automobile/parc/modification-reservation-vehicule/:vehicule_id/:imma/reservation/:reservation_id" component={ModifierReservation} />
 
 
@@ -186,6 +193,11 @@ const NavBack = () => (
 
   <MasterGestion path="/gestion_du_parc_automobile/gestion-des-ordres-de-missions" component={Missions} />
   <MasterGestion path="/gestion_du_parc_automobile/ajouter-des-ordres-de-missions" component={AjouterMission} />
+  <MasterGestion path="/gestion_du_parc_automobile/modification-ordre-de-mission/:mission_id" component={ModifierMission} />
+  
+  <MasterGestion path="/gestion_du_parc_automobile/gestion-des-articles" component={Articles} />
+  <MasterGestion path="/gestion_du_parc_automobile/ajouter-article" component={AjouterArticle} />
+  <MasterGestion path="/gestion_du_parc_automobile/modification-article/:article_id" component={ModifierArticle} />
 
 
 {/*  cette partie concerne les etats  */}
