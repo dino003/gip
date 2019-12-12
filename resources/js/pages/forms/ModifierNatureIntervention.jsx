@@ -104,8 +104,8 @@ export default class ModifierNatureIntervention extends Component {
                             
                                 <button type="submit" className="mt-2 btn btn-primary">Modifier</button>
                         
-                                <button onClick={() => this.props.history.goBack()}
-                                 className="mt-2 btn btn-warning pull-right">Retour</button>
+                                <span onClick={() => this.props.history.goBack()}
+                                 className="mt-2 btn btn-warning pull-right">Retour</span>
                         </form>
                       
                     </div>

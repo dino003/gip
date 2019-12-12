@@ -48,10 +48,28 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
         }, () => this.libelle_article.value = this.defaultLibelleArticleValue(this.famille_id.value) );
     }
 
+    setFieldPrix = (event) => {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        this.setState({
+            [name]: value
+        }, () => this.getValueQuantite() );
+    }
+
     defaultLibelleArticleValue(famille_id){
         let famille = this.props.famille_pieces_detaches.find(fam => fam.id == famille_id)
        // console.log(famille)
         return famille.famille
+    }
+
+    getValueQuantite(){
+      //  const {objetEdit} = this.state
+        let valeurTva = ( (Number(this.prix_article.value ? this.prix_article.value : 0) * Number(this.quantite_disponible_stock.value)) * Number(this.tva.value) ) / 100
+         this.valorisation_hors_taxe.value = Number(this.prix_article.value ? this.prix_article.value : 0) * Number(this.quantite_disponible_stock.value)
+      // console.log(valeurTva)
+         this.valorisation_ttc.value = this.prix_article.value ?  Number(this.valorisation_hors_taxe.value) + Number(valeurTva) : 0
     }
 
       verificationFormulaire () {
@@ -148,9 +166,6 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                  
                 }).catch(error => console.log(error))
               }
-           
-           
-
           }else{
               //console.log(this.verificationFormulaire())
               toast.error(this.verificationFormulaire(), {
@@ -372,7 +387,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                             <div className="position-relative form-group">
                                                 <label >Prix de l'article </label>
                                                 <input name="prix_article"  type="number"
-                                                onChange={this.setField}
+                                                onChange={this.setFieldPrix}
                                                 style={inputStyle}
                                                 defaultValue={objetEdit.prix_article}
 
@@ -385,7 +400,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                             <div className="position-relative form-group">
                                                 <label >Taux TVA</label>
                                                 <input name="tva"  type="number"
-                                                onChange={this.setField}
+                                                onChange={this.setFieldPrix}
                                                 defaultValue={objetEdit.tva}
                                                 ref={tva => this.tva = tva}
                                                 className="form-control" />
@@ -439,8 +454,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
                                 <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
                           
-                                <button onClick={() => this.props.history.goBack()}
-                                 className="mt-2 btn btn-warning pull-right">Retour</button>
+                                <span onClick={() => this.props.history.goBack()}
+                                 className="mt-2 btn btn-warning pull-right">Retour</span>
                             </form>
                         </div>
                     </div>
