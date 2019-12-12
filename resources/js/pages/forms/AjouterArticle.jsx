@@ -86,34 +86,64 @@ import inputStyle from '../../utils/inputStyle'
         e.preventDefault()
 
           if(this.verificationFormulaire() == null){
-            axios.post('/api/ajouter_article_stock', {
-
-                numero_article: this.numero_article.value,
-                famille_id: this.famille_id.value,
-                type_article: this.type_article.value,
-                libelle_article: this.libelle_article.value,
-                marque_id: this.marque_id.value ,
-                modele: this.modele.value,
-                fournisseur_id: this.fournisseur_id.value,
-                numero_commande_fournisseur: this.numero_commande_fournisseur.value,
-               // quantite_phisique_stock: this.quantite_phisique_stock.value,
-                seuil_alerte: this.seuil_alerte.value,
-               // quantite_disponible_stock: this.quantite_disponible_stock.value,
-                prix_article: this.prix_article.value,
-                tva: this.tva.value,
-               // valorisation_hors_taxe: this.valorisation_hors_taxe.value,
-               // valorisation_ttc: this.valorisation_ttc.value,
-
-            })
-            .then(response => { 
-               const action = {type: "ADD_ARTICLE", value: response.data}
-                 this.props.dispatch(action)
-
-               this.props.history.goBack();
-
-             
-            }).catch(error => console.log(error))
-           
+            if(!this.tva.value || Number(this.tva.value) == 0){
+                let conf = confirm('La TVA est égale à 0 ; Souhaitez vous continuer ? ')
+                if(conf){
+                    axios.post('/api/ajouter_article_stock', {
+                        numero_article: this.numero_article.value,
+                        famille_id: this.famille_id.value,
+                        type_article: this.type_article.value,
+                        libelle_article: this.libelle_article.value,
+                        marque_id: this.marque_id.value ,
+                        modele: this.modele.value,
+                        fournisseur_id: this.fournisseur_id.value,
+                        numero_commande_fournisseur: this.numero_commande_fournisseur.value,
+                       // quantite_phisique_stock: this.quantite_phisique_stock.value,
+                        seuil_alerte: this.seuil_alerte.value,
+                       // quantite_disponible_stock: this.quantite_disponible_stock.value,
+                        prix_article: this.prix_article.value,
+                        tva: this.tva.value != '' ? this.tva.value : 0,
+                       // valorisation_hors_taxe: this.valorisation_hors_taxe.value,
+                       // valorisation_ttc: this.valorisation_ttc.value,
+        
+                    })
+                    .then(response => { 
+                       const action = {type: "ADD_ARTICLE", value: response.data}
+                         this.props.dispatch(action)
+        
+                       this.props.history.goBack();
+        
+                     
+                    }).catch(error => console.log(error))
+                }
+            }else{
+                axios.post('/api/ajouter_article_stock', {
+                    numero_article: this.numero_article.value,
+                    famille_id: this.famille_id.value,
+                    type_article: this.type_article.value,
+                    libelle_article: this.libelle_article.value,
+                    marque_id: this.marque_id.value ,
+                    modele: this.modele.value,
+                    fournisseur_id: this.fournisseur_id.value,
+                    numero_commande_fournisseur: this.numero_commande_fournisseur.value,
+                   // quantite_phisique_stock: this.quantite_phisique_stock.value,
+                    seuil_alerte: this.seuil_alerte.value,
+                   // quantite_disponible_stock: this.quantite_disponible_stock.value,
+                    prix_article: this.prix_article.value,
+                    tva: this.tva.value != '' ? this.tva.value : 0,
+                   // valorisation_hors_taxe: this.valorisation_hors_taxe.value,
+                   // valorisation_ttc: this.valorisation_ttc.value,
+    
+                })
+                .then(response => { 
+                   const action = {type: "ADD_ARTICLE", value: response.data}
+                     this.props.dispatch(action)
+    
+                   this.props.history.goBack();
+    
+                 
+                }).catch(error => console.log(error))
+            }
 
           }else{
               //console.log(this.verificationFormulaire())
@@ -380,7 +410,7 @@ import inputStyle from '../../utils/inputStyle'
 
                                 <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
                           
-                                <button type="submit" onClick={() => this.props.history.goBack()}
+                                <button onClick={() => this.props.history.goBack()}
                                  className="mt-2 btn btn-warning pull-right">Retour</button>
                             </form>
                         </div>

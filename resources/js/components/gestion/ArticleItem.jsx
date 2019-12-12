@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { formatageSomme } from '../../utils/Repository';
-
+import {connect} from 'react-redux'
 
  class ArticleItem extends Component {
 
@@ -17,11 +17,12 @@ import { formatageSomme } from '../../utils/Repository';
     render() {
 
         const {item, index} = this.props
+        const textColor = this.props.articleSelected == undefined ? '' : this.props.articleSelected.id == item.id ? 'orange' : null;
 
         return (
             
-             <tr > 
-             <td colSpan="2" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.famille ?  item.famille.famille : ''}</td>
+            <tr style={{backgroundColor: textColor}} onClick={this.props.onSelectArticle.bind(this, item)}> 
+             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.famille ?  item.famille.famille : ''}</td>
              <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.numero_article ? item.numero_article : ''}</td>
 
 
@@ -63,4 +64,12 @@ import { formatageSomme } from '../../utils/Repository';
 
 
 
-export default ArticleItem
+
+const mapStateToProps = state => {
+    return {
+        articleSelected: state.articleSelected.article
+
+    }
+  }
+
+export default connect(mapStateToProps)(ArticleItem)

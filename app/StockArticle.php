@@ -31,4 +31,14 @@ class StockArticle extends Model
         return $this->belongsTo('App\Marque', 'marque_id');
     }
 
+    public function entrees_stock()
+    {
+        return $this->hasMany('App\StockEntree', 'article_id', 'id');
+    }
+
+    public function sorties_stock()
+    {
+        return $this->hasMany('App\StockSortie', 'article_id', 'id');
+    }
+
 }

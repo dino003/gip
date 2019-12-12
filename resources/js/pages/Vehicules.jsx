@@ -186,13 +186,13 @@ import {groupBy} from '../utils/Repository'
 
         const etat = this.props.utilisations.length ? groupBy(this.props.utilisations, 'utilisateur_id') : null
      // const  etat2 = etat != null ? groupBy(etat, 'vehicule_id') : null
-        if(etat != null){
-            etat.forEach(currentItem => {
-                console.log(groupBy(currentItem, 'vehicule_id'))
+        // if(etat != null){
+        //     etat.forEach(currentItem => {
+        //         console.log(groupBy(currentItem, 'vehicule_id'))
 
-            });
+        //     });
 
-        }
+        // }
         return (
             <div className="app-main__inner">
                 <div className="row">

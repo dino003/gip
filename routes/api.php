@@ -427,6 +427,20 @@ Route::post('modifier_entree_stock/{id}', 'StockEntreeController@update');
 Route::delete('supprimer_entree_stock/{id}', 'StockEntreeController@destroy');
 //*********** fin entrees_stock ********************************************************* 
 
+//****************** sorties_stock  ********************************************************/
+Route::get('sorties_stock', 'StockSortieController@index');
+// voir
+Route::get('sortie_stock/{id}', 'StockSortieController@show');
+
+// ajouter 
+Route::post('ajouter_sortie_stock', 'StockSortieController@store');
+// modifier
+Route::post('modifier_sortie_stock/{id}', 'StockSortieController@update');
+
+// supprimer
+Route::delete('supprimer_sortie_stock/{id}', 'StockSortieController@destroy');
+//*********** fin sorties_stock ********************************************************* 
+
 //****************** ordre de missions  ********************************************************/
 Route::get('ordre_missions', 'MissionController@index');
 // voir

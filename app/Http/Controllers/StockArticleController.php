@@ -20,7 +20,10 @@ class StockArticleController extends Controller
      */
     public function index()
     {
-        $articles = StockArticle::with(['famille', 'fournisseur', 'marque'])->get();
+        $articles = StockArticle::with(['famille', 'fournisseur', 'marque'])
+                                ->withCount('entrees_stock')    
+                                ->withCount('sorties_stock')    
+                                ->get();
 
         return response()->json($articles);
     }
@@ -48,7 +51,9 @@ class StockArticleController extends Controller
         $creation = $article->create($request->only($article->fillable));
  
         return response()->json(StockArticle::with(['famille', 'fournisseur', 'marque'])
-                                                             ->find($creation->id));
+                                                ->withCount('entrees_stock')    
+                                                ->withCount('sorties_stock')  
+                                                ->find($creation->id));
 
     }
 
@@ -85,9 +90,22 @@ class StockArticleController extends Controller
     public function update(Request $request, $id)
     {
          // update model and only pass in the fillable fields
+
          $this->model->update($request->only($this->model->getModel()->fillable), $id);
 
-         return response()->json(StockArticle::with(['famille', 'fournisseur', 'marque'])->find($id));
+         $articleF = StockArticle::find($id);
+         $articleF->valorisation_hors_taxe = floatval($request->get('prix_article')) * floatval($articleF->quantite_disponible_stock);
+         $articleF->save();
+ 
+         $articleFa = StockArticle::find($articleF->id);
+         $valeurTva = (floatval($articleFa->valorisation_hors_taxe) * floatval($request->get('tva')) ) / 100;
+         $articleFa->valorisation_ttc = floatval($articleFa->valorisation_hors_taxe) + $valeurTva;
+         $articleFa->save();
+
+         return response()->json(StockArticle::with(['famille', 'fournisseur', 'marque'])
+                                                ->withCount('entrees_stock')    
+                                                ->withCount('sorties_stock')  
+                                                ->find($id));
     }
 
     /**

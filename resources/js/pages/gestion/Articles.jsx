@@ -13,10 +13,9 @@ import ArticleItem from '../../components/gestion/ArticleItem';
         super(props);
 
         this.state = {
-            isOpen: false,
-            inputOpen: false,
            
             loading: false,
+            articleSelectionne: undefined
         }   
     }
 
@@ -66,12 +65,24 @@ import ArticleItem from '../../components/gestion/ArticleItem';
         </span>
     }
 
+    onSelectArticle = item => {
+        // console.log(id)
+        // const articleSelectionne = this.props.articles.find(article => article.id == id)
+        // const action = {type: "EDIT_ARTICLE_SELECTED", value: articleSelectionne}
+        // this.props.dispatch(action)  
+        // console.log(articleSelectionne)
+        this.setState({articleSelectionne: item}, () => {
+          const action = {type: "EDIT_ARTICLE_SELECTED", value: this.state.articleSelectionne}
+          this.props.dispatch(action)
+        })
+    }
+
 
     renderList(){
         return (  <table className="mb-0 table" style={{width: '100%'}} >
         <thead>
         <tr>
-            <th colSpan="2">Fammille</th>
+            <th >Fammille</th>
             <th>N° d'article</th>
             <th>Type</th>
             <th>Marque</th>
@@ -96,6 +107,7 @@ import ArticleItem from '../../components/gestion/ArticleItem';
           key={item.id} 
           onEdit={this.onEdit}              
           onDelete={this.onDelete}
+          onSelectArticle={this.onSelectArticle}
          item={item} />
     )  }         
         </tbody>
@@ -106,6 +118,7 @@ import ArticleItem from '../../components/gestion/ArticleItem';
 
     render() {
        // console.log(vehiculeselect)
+       const {articleSelected} = this.props
         return (
             <div className="app-main__inner">
            <div className="row">
@@ -116,8 +129,44 @@ import ArticleItem from '../../components/gestion/ArticleItem';
                            <h5 className="card-title">Gestion des Articles
                           
                             <span className="pull-right">
+                                
+                          {articleSelected &&  <React.Fragment>
+                            <button 
+                                      className="mb-2 mr-2 btn-transition btn"
+                                      disabled
+                                      >
+     
+                                         Article:  {articleSelected.numero_article} , Famille:  {articleSelected.famille.famille}
+                                             </button>
+                            <button title=" Ajouter une ligne d'entrée pour cet article"
+                                      className="mb-2 mr-2 btn-transition btn btn-outline-success"
+                                      onClick={() => this.props.history.push(`/gestion_du_parc_automobile/entrees-stock/${articleSelected.id}/article/${articleSelected.numero_article}`)}
+                                      >
+                                      <i className="fa fa-level-up-alt"></i> {' '}
+     
+                                          Entrées
+                                             </button>
+                                             {/* disabled={articleSelected.quantite_phisique_stock <= 0 } */}
+                                             <button title="Les sortie de cet article"
+                                      className="mb-2 mr-2 btn-transition btn btn-outline-warning"
+                                      onClick={() => this.props.history.push(`/gestion_du_parc_automobile/sorties-stock/${articleSelected.id}/article/${articleSelected.numero_article}`)}
+                                      >
+                                      <i className="fa fa-level-down-alt"></i> {' '}
+     
+                                          Sorties
+                                             </button>
+
+                                             <button title=" Ajouter une ligne de sortie pour cet article"
+                                      className="mb-2 mr-2 btn-transition btn btn-outline-info"
+                                      onClick={() => this.props.history.push(`/gestion_du_parc_automobile/commandes-stock/${articleSelected.id}/article/${articleSelected.numero_article}`)}
+                                      >
+                                      <i className="fa fa-file-invoice"></i> {' '}
+     
+                                          Commandes
+                                             </button>
+                            </React.Fragment>}
                         
-                            <button title=" Ajouter une nouvelle ligne de budget"
+                            <button title=" Ajouter un article"
                                       className="mb-2 mr-2 btn-transition btn btn-outline-primary"
                                       onClick={() => this.props.history.push(`/gestion_du_parc_automobile/ajouter-article`)}
                                       >
@@ -125,6 +174,7 @@ import ArticleItem from '../../components/gestion/ArticleItem';
      
                                           Ajouter
                                              </button>
+
                                 </span>
                              
                                 
@@ -156,7 +206,7 @@ const mapStateToProps = state => {
     return {
         articles: state.articles.items,
         loading: state.articles.loading,
-        vehiculeSeleted: state.vehiculeSeleted.vehicule
+        articleSelected: state.articleSelected.article
 
     }
   }

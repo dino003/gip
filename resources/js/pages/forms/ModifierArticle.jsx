@@ -87,35 +87,68 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
       enregistrerArticle = (e) => {
         e.preventDefault()
-
           if(this.verificationFormulaire() == null){
-            axios.post('/api/modifier_article_stock/' + this.state.objetEdit.id, {
+              if(!this.tva.value || Number(this.tva.value) == 0){
+                let conf = confirm('La TVA est égale à 0 ; Souhaitez vous continuer ? ')
+                if(conf){
+                    axios.post('/api/modifier_article_stock/' + this.state.objetEdit.id, {
 
-                numero_article: this.numero_article.value,
-                famille_id: this.famille_id.value,
-                type_article: this.type_article.value,
-                libelle_article: this.libelle_article.value,
-                marque_id: this.marque_id.value ,
-                modele: this.modele.value,
-                fournisseur_id: this.fournisseur_id.value,
-                numero_commande_fournisseur: this.numero_commande_fournisseur.value,
-               // quantite_phisique_stock: this.quantite_phisique_stock.value,
-                seuil_alerte: this.seuil_alerte.value,
-               // quantite_disponible_stock: this.quantite_disponible_stock.value,
-                prix_article: this.prix_article.value,
-                tva: this.tva.value,
-               // valorisation_hors_taxe: this.valorisation_hors_taxe.value,
-               // valorisation_ttc: this.valorisation_ttc.value,
+                        numero_article: this.numero_article.value,
+                        famille_id: this.famille_id.value,
+                        type_article: this.type_article.value,
+                        libelle_article: this.libelle_article.value,
+                        marque_id: this.marque_id.value ,
+                        modele: this.modele.value,
+                        fournisseur_id: this.fournisseur_id.value,
+                        numero_commande_fournisseur: this.numero_commande_fournisseur.value,
+                       // quantite_phisique_stock: this.quantite_phisique_stock.value,
+                        seuil_alerte: this.seuil_alerte.value,
+                       // quantite_disponible_stock: this.quantite_disponible_stock.value,
+                        prix_article: this.prix_article.value,
+                        tva: this.tva.value != '' ? this.tva.value : 0,
+                       // valorisation_hors_taxe: this.valorisation_hors_taxe.value,
+                       // valorisation_ttc: this.valorisation_ttc.value,
+        
+                    })
+                    .then(response => { 
+                       const action = {type: "EDIT_ARTICLE", value: response.data}
+                         this.props.dispatch(action)
+        
+                       this.props.history.goBack();
+        
+                     
+                    }).catch(error => console.log(error))
+                }
+              }else{
+                axios.post('/api/modifier_article_stock/' + this.state.objetEdit.id, {
 
-            })
-            .then(response => { 
-               const action = {type: "EDIT_ARTICLE", value: response.data}
-                 this.props.dispatch(action)
-
-               this.props.history.goBack();
-
-             
-            }).catch(error => console.log(error))
+                    numero_article: this.numero_article.value,
+                    famille_id: this.famille_id.value,
+                    type_article: this.type_article.value,
+                    libelle_article: this.libelle_article.value,
+                    marque_id: this.marque_id.value ,
+                    modele: this.modele.value,
+                    fournisseur_id: this.fournisseur_id.value,
+                    numero_commande_fournisseur: this.numero_commande_fournisseur.value,
+                   // quantite_phisique_stock: this.quantite_phisique_stock.value,
+                    seuil_alerte: this.seuil_alerte.value,
+                   // quantite_disponible_stock: this.quantite_disponible_stock.value,
+                    prix_article: this.prix_article.value,
+                    tva: this.tva.value != '' ? this.tva.value : 0,
+                   // valorisation_hors_taxe: this.valorisation_hors_taxe.value,
+                   // valorisation_ttc: this.valorisation_ttc.value,
+    
+                })
+                .then(response => { 
+                   const action = {type: "EDIT_ARTICLE", value: response.data}
+                     this.props.dispatch(action)
+    
+                   this.props.history.goBack();
+    
+                 
+                }).catch(error => console.log(error))
+              }
+           
            
 
           }else{
@@ -376,7 +409,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                                     <label >Hors Taxes </label>
                                                     <input name="valorisation_hors_taxe"  type="number"
                                                     onChange={this.setField}
-                                                    defaultValue={objetEdit.valorisation_hors_taxe ? objetEditvalorisation_hors_taxe : 0}
+                                                    defaultValue={objetEdit.valorisation_hors_taxe ? objetEdit.valorisation_hors_taxe : 0}
                                                     readOnly
                                                     ref={valorisation_hors_taxe => this.valorisation_hors_taxe = valorisation_hors_taxe}
                                                     className="form-control" />
@@ -389,7 +422,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                                     <input name="valorisation_ttc"  type="number"
                                                     readOnly
                                                     onChange={this.setField}
-                                                    defaultValue={objetEdit.valorisation_hors_taxe ? objetEditvalorisation_hors_taxe : 0}
+                                                    defaultValue={objetEdit.valorisation_ttc ? objetEdit.valorisation_ttc : 0}
 
                                                     ref={valorisation_ttc => this.valorisation_ttc = valorisation_ttc}
                                                     className="form-control" />
@@ -406,7 +439,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
                                 <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
                           
-                                <button type="submit" onClick={() => this.props.history.goBack()}
+                                <button onClick={() => this.props.history.goBack()}
                                  className="mt-2 btn btn-warning pull-right">Retour</button>
                             </form>
                         </div>

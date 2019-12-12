@@ -86,6 +86,12 @@ import ModifierMission from '../pages/forms/ModifierMission';
 import Articles from '../pages/gestion/Articles';
 import AjouterArticle from '../pages/forms/AjouterArticle';
 import ModifierArticle from '../pages/forms/ModifierArticle';
+import EntreeStocks from '../pages/gestion/EntreeStocks';
+import AjouterEntreeStock from '../pages/forms/AjouterEntreeStock';
+import ModifierEntreeStock from '../pages/forms/ModifierEntreeStock';
+import SortieStock from '../pages/gestion/SortieStock';
+import AjouterSortieStock from '../pages/forms/AjouterSortieStock';
+import ModifierSortieStock from '../pages/forms/ModifierSortieStock';
 
 
 
@@ -195,9 +201,16 @@ const NavBack = () => (
   <MasterGestion path="/gestion_du_parc_automobile/ajouter-des-ordres-de-missions" component={AjouterMission} />
   <MasterGestion path="/gestion_du_parc_automobile/modification-ordre-de-mission/:mission_id" component={ModifierMission} />
   
-  <MasterGestion path="/gestion_du_parc_automobile/gestion-des-articles" component={Articles} />
-  <MasterGestion path="/gestion_du_parc_automobile/ajouter-article" component={AjouterArticle} />
-  <MasterGestion path="/gestion_du_parc_automobile/modification-article/:article_id" component={ModifierArticle} />
+  <MasterGestion exact path="/gestion_du_parc_automobile/gestion-des-articles" component={Articles} />
+  <MasterGestion exact path="/gestion_du_parc_automobile/ajouter-article" component={AjouterArticle} />
+  <MasterGestion exact path="/gestion_du_parc_automobile/modification-article/:article_id" component={ModifierArticle} />
+  <MasterGestion exact path="/gestion_du_parc_automobile/entrees-stock/:article_id/article/:numero_article" component={EntreeStocks} />
+  <MasterGestion exact path="/gestion_du_parc_automobile/entrees-stock/:article_id/article/:numero_article/ajout" component={AjouterEntreeStock} />
+  <MasterGestion exact path="/gestion_du_parc_automobile/entrees-stock/:article_id/article/:numero_article/edit/:entree_stock_id" component={ModifierEntreeStock} />
+
+  <MasterGestion exact path="/gestion_du_parc_automobile/sorties-stock/:article_id/article/:numero_article" component={SortieStock} />
+  <MasterGestion exact path="/gestion_du_parc_automobile/sorties-stock/:article_id/article/:numero_article/ajout" component={AjouterSortieStock} />
+  <MasterGestion exact path="/gestion_du_parc_automobile/sorties-stock/:article_id/article/:numero_article/edit/:sortie_stock_id" component={ModifierSortieStock} />
 
 
 {/*  cette partie concerne les etats  */}

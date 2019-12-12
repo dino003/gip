@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\StockSortie;
+use App\StockArticle;
+
 use Illuminate\Http\Request;
 use App\Repositories\Repository;
 
@@ -10,8 +12,8 @@ class StockSortieController extends Controller
 {
     protected $model;
 
-    public function __construct(StockSortie $stockSortie){
-        $this->model = new Repository($stockSortie);
+    public function __construct(StockSortie $sortie){
+        $this->model = new Repository($sortie);
     }
     /**
      * Display a listing of the resource.
@@ -20,7 +22,9 @@ class StockSortieController extends Controller
      */
     public function index()
     {
-        return $this->model->all();
+        $sorties = StockSortie::with(['article', 'vehicule'])->get();
+
+        return response()->json($sorties);
     }
 
     /**
@@ -41,8 +45,31 @@ class StockSortieController extends Controller
      */
     public function store(Request $request)
     {
-       
-         return $this->model->create($request->only($this->model->getModel()->fillable));
+         
+        $sortie = new StockSortie;
+        $creation = $sortie->create($request->only($sortie->fillable));
+        
+        $article = StockArticle::find($creation->article_id);
+        $article->quantite_phisique_stock -= $creation->quantite_sortie;
+        $article->quantite_disponible_stock -= $creation->quantite_sortie;
+        $article->save();
+
+        $articleF = StockArticle::find($article->id);
+        $articleF->valorisation_hors_taxe = floatval($creation->prix_article) * floatval($articleF->quantite_disponible_stock);
+        $articleF->save();
+
+        $articleFa = StockArticle::find($articleF->id);
+        $valeurTva = (floatval($articleFa->valorisation_hors_taxe) * floatval($articleFa->tva) ) / 100;
+        $articleFa->valorisation_ttc = floatval($articleFa->valorisation_hors_taxe) + $valeurTva;
+        $articleFa->save();
+        
+        $articleFinal = StockArticle::with(['famille', 'fournisseur', 'marque'])->find($articleFa->id);
+        $sortieFinal = StockSortie::with(['article', 'vehicule'])->find($creation->id);
+
+        return response()->json([
+            'article' => $articleFinal,
+            'sortie' => $sortieFinal
+        ]);
 
     }
 
@@ -78,10 +105,40 @@ class StockSortieController extends Controller
      */
     public function update(Request $request, $id)
     {
-          // update model and only pass in the fillable fields
-        $this->model->update($request->only($this->model->getModel()->fillable), $id);
+        $sortie1 = StockSortie::find($id);
+        $article1 = StockArticle::find($sortie1->article_id);
+        $article1->quantite_phisique_stock += $sortie1->quantite_sortie;
+        $article1->quantite_disponible_stock += $sortie1->quantite_sortie;
+        $article1->save();
 
-       return $this->model->show($id);
+         // update model and only pass in the fillable fields
+            $this->model->update($request->only($this->model->getModel()->fillable), $id);
+
+            $sortieModifiee = StockSortie::with(['article', 'vehicule'])->find($id);
+   
+            $article = StockArticle::find($sortieModifiee->article_id);
+            $article->quantite_phisique_stock -= $sortieModifiee->quantite_sortie;
+            $article->quantite_disponible_stock -= $sortieModifiee->quantite_sortie;
+            $article->save();
+
+            $articleF = StockArticle::find($article->id);
+            $articleF->valorisation_hors_taxe = floatval($sortieModifiee->prix_article) * floatval($articleF->quantite_disponible_stock);
+            $articleF->save();
+    
+            $articleFa = StockArticle::find($articleF->id);
+            $valeurTva = (floatval($articleFa->valorisation_hors_taxe) * floatval($articleFa->tva) ) / 100;
+            $articleFa->valorisation_ttc = floatval($articleFa->valorisation_hors_taxe) + $valeurTva;
+            $articleFa->save();
+            
+            $articleFinal = StockArticle::with(['famille', 'fournisseur', 'marque'])->find($articleFa->id);
+    
+            return response()->json([
+                'article' => $articleFinal,
+                'sortie' => $sortieModifiee
+            ], 200);
+         
+        
+
     }
 
     /**

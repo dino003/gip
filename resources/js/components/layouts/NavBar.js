@@ -287,6 +287,22 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
         }));
     }
 
+    fetchEntreesStock(){
+        queue.push(() => axios.get('/api/entrees_stock').then((response) => {
+            // .
+            const action = {type: "GET_ENTREE_STOCK", value: response.data}
+            this.props.dispatch(action)
+        }));
+    }
+
+    fetchSortiesStock(){
+        queue.push(() => axios.get('/api/sorties_stock').then((response) => {
+            // .
+            const action = {type: "GET_SORTIE_STOCK", value: response.data}
+            this.props.dispatch(action)
+        }));
+    }
+
     fetchAmendes(){
         queue.push(() => axios.get('/api/amendes').then((response) => {
             // .
@@ -375,6 +391,8 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
         this.fetchConsommations();
         this.fetchCommandes();
         this.fetchArticlesStock();
+        this.fetchEntreesStock();
+        this.fetchSortiesStock();
         this.fetchDepenseRecettes();
         this.fetchAmendes();
         this.fetchBudgetVehicules();

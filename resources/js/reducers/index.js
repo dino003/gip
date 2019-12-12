@@ -38,6 +38,9 @@ import EtablissementInfoReducer from './parametres_generaux/EtablissementInfoRed
 import ParamGenerauxReserOrdreReducer from './parametres_generaux/ParamGenerauxReserOrdreReducer'
 import MissionReducer from './MissionReducer'
 import ArticleReducer from './ArticleReducer'
+import EntreeStockReducer from './EntreeStockReducer'
+import ArticleSelectReducer from './ArticleSelectReducer'
+import SortieStockReducer from './SortieStockReducer'
 
 const allReducers = combineReducers({
     types_entites: TypeEntiteReducer,
@@ -77,6 +80,9 @@ const allReducers = combineReducers({
     commandes: CommandesReducer,
     missions: MissionReducer,
     articles: ArticleReducer,
+    articleSelected: ArticleSelectReducer,
+    entrees_stock: EntreeStockReducer,
+    sorties_stock: SortieStockReducer,
     info_societe: EtablissementInfoReducer,
     param_generaux_reservation_ordre: ParamGenerauxReserOrdreReducer
     
