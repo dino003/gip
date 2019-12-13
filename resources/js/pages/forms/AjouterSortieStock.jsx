@@ -12,7 +12,9 @@ import inputStyle from '../../utils/inputStyle'
  class AjouterSortieStock extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            isFormSubmit: false
+        }
       
     }
 
@@ -52,7 +54,6 @@ import inputStyle from '../../utils/inputStyle'
 
           if(this.verificationFormulaire() == null){
             axios.post('/api/ajouter_sortie_stock', {
-
                 article_id: this.props.match.params.article_id,
                 vehicule_id: this.vehicule_id.value,
                 date_sortie: this.date_sortie.value,
@@ -61,6 +62,7 @@ import inputStyle from '../../utils/inputStyle'
               
             })
             .then(response => { 
+                this.setState({isFormSubmit: true})
                const action = {type: "ADD_SORTIE_STOCK", value: response.data.sortie}
                  this.props.dispatch(action)
 
@@ -70,7 +72,11 @@ import inputStyle from '../../utils/inputStyle'
                this.props.history.goBack();
 
              
-            }).catch(error => console.log(error))
+            }).catch(error => {
+                console.log(error)
+                this.setState({isFormSubmit: false})
+
+            })
            
 
           }else{
@@ -275,8 +281,8 @@ import inputStyle from '../../utils/inputStyle'
                                     </div>
 
 
-                                <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
-                          
+                                {!this.state.isFormSubmit ? <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button> : <span className="mt-4 btn btn-warning">Chargement...</span>}
+                               
                                 <span  onClick={() => this.props.history.goBack()}
                                  className="mt-2 btn btn-warning pull-right">Retour</span>
                             </form>

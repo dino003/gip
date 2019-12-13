@@ -81,7 +81,27 @@ class TauxTvaController extends Controller
           // update model and only pass in the fillable fields
         $this->model->update($request->only($this->model->getModel()->fillable), $id);
 
+
        return $this->model->show($id);
+    }
+
+    public function marquerTvaDefaut($tva_id){
+        $tvas = TauxTva::get();
+
+        foreach ($tvas as $key => $value) {
+            if($value->defaut){
+                $value->defaut = !$value->defaut;
+             $value->save();
+            }   
+        }
+
+        $tva = TauxTva::find($tva_id);
+        $tva->defaut = !$tva->defaut;
+        $tva->save();
+
+       // return $this->model->show($tva->id);
+        return $this->model->all();
+
     }
 
     /**

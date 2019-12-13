@@ -111,7 +111,7 @@ import FamillePieceDetacheItem from '../../components/codifications/FamillePiece
             <div className="app-main__inner">
             <div className="main-card card" >
                        <div className="card-body ">
-                           <h5 className="card-title">Gestion des types d'entités
+                           <h5 className="card-title">Gestion des familles des pièces détachées
                         
                           
                             <span className="pull-right">

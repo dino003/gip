@@ -301,8 +301,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                           
 
                                 <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
-                                <button type="submit" onClick={() => this.props.history.goBack()}
-                                 className="mt-2 btn btn-warning pull-right">Retour</button>
+                                <span  onClick={() => this.props.history.goBack()}
+                                 className="mt-2 btn btn-warning pull-right">Retour</span>
                             </form>
                         </div>
                     </div>

@@ -167,7 +167,7 @@ import BudgetVehiculeItem from '../../components/vehicules/BudgetVehiculeItem';
                                 </span>
                              
                                 
-                                <MatriculeInput />
+                                <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)} />
                                             
                                 
                             </h5>

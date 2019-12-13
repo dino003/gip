@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 
 import Master from '../components/layouts/Master'
 import MasterParametre from '../components/layouts/MasterParametre'
@@ -92,6 +92,13 @@ import ModifierEntreeStock from '../pages/forms/ModifierEntreeStock';
 import SortieStock from '../pages/gestion/SortieStock';
 import AjouterSortieStock from '../pages/forms/AjouterSortieStock';
 import ModifierSortieStock from '../pages/forms/ModifierSortieStock';
+import TauxTva from '../pages/codifications/TauxTva'
+import MasterCodification2 from '../components/layouts/MasterCodification2';
+import GardeCodification1 from '../pages/GardeCodification1'
+import GardeCodification2 from '../pages/GardeCodification2'
+import GardeGestion from '../pages/GardeGestion'
+
+import GardeParametres from '../pages/GardeParametres'
 
 
 
@@ -112,16 +119,25 @@ const NavBack = () => (
     <MasterParametre exact  path="/gestion_du_parc_automobile/gestion-des-utilisateurs" component={Utilisateurs} />
     <MasterParametre  path="/gestion_du_parc_automobile/ajouter-utilisateurs" component={AjouterUtilisateur} />
     <MasterParametre   path="/gestion_du_parc_automobile/gestion-des-utilisateurs/:utilisateur_id" component={ModifierUtilisateur} />
+    <MasterCodification2 exact path="/gestion_du_parc_automobile/les_taux_tva" component={TauxTva} />
 
 
+    {/*  les pages de garde */}
+    <MasterCodification2 exact path="/gestion_du_parc_automobile/codifications_2" component={GardeCodification2} />
+    <MasterCodification exact path="/gestion_du_parc_automobile/codifications_1" component={GardeCodification1} />
+    <MasterParametre exact path="/gestion_du_parc_automobile/parametres" component={GardeParametres} />
+    <MasterGestion exact path="/gestion_du_parc_automobile/gestions" component={GardeGestion} />
+
+
+        {/* fin des pages de garde */}
 
 
 
 
 
     <MasterParametre exact path="/gestion_du_parc_automobile/gestion-de-la-structure-etablissement" component={StructureEtablissement} />
-    <MasterParametre  path="/gestion_du_parc_automobile/les-couts-des-consommables" component={CoutConsommables} />
-    <MasterParametre  path="/gestion_du_parc_automobile/les-annees-budgetaires" component={AnneeBudgetaires} />
+    <MasterCodification2  path="/gestion_du_parc_automobile/les-couts-des-consommables" component={CoutConsommables} />
+    <MasterCodification2  path="/gestion_du_parc_automobile/les-annees-budgetaires" component={AnneeBudgetaires} />
 
 
 
@@ -149,7 +165,7 @@ const NavBack = () => (
 
     <MasterCodification  path="/gestion_du_parc_automobile/natures-des-reservations-utilisations" component={NatureReservations} />
 
-    <MasterCodification  path="/gestion_du_parc_automobile/familles-des-pieces-detachees-et-consommables" component={FamillePieceDetache} />
+    <MasterCodification2  path="/gestion_du_parc_automobile/familles-des-pieces-detachees-et-consommables" component={FamillePieceDetache} />
     <MasterCodification  path="/gestion_du_parc_automobile/natures-des-taxes" component={NatureTaxes} />
 
 

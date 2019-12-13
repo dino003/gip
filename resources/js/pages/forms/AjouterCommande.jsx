@@ -384,10 +384,15 @@ class AjouterCommande extends Component {
                                 <div className="col-md-2">
                                     <div className="position-relative form-group">
                                         <label >Taux TVA %</label>
-                                        <input name="tva" type="number"
+                                            {this.props.tva.length ? <input name="tva" type="number"
+                                        defaultValue={this.props.tva.find(tva => tva.defaut).taux || 18}
+
                                             onChange={this.setField}
                                             ref={tva => this.tva = tva}
-                                            className="form-control" />
+                                            className="form-control" /> :  <input name="tva" type="number"    
+                                                onChange={this.setField}
+                                                ref={tva => this.tva = tva}
+                                                className="form-control" />}
                                     </div>
                                 </div>
 
@@ -1115,7 +1120,9 @@ const mapStateToProps = state => {
         entites: state.entites.items,
         marques: state.marques.items,
         natures_energies: state.natures_energies.items,
-        commandes: state.commandes.items
+        commandes: state.commandes.items,
+        tva: state.tva.items
+
 
     }
 }

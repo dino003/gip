@@ -156,14 +156,14 @@ import ArticleItem from '../../components/gestion/ArticleItem';
                                           Sorties
                                              </button>
 
-                                             <button title=" Ajouter une ligne de sortie pour cet article"
+                                             {/* <button title=" Ajouter une ligne de sortie pour cet article"
                                       className="mb-2 mr-2 btn-transition btn btn-outline-info"
                                       onClick={() => this.props.history.push(`/gestion_du_parc_automobile/commandes-stock/${articleSelected.id}/article/${articleSelected.numero_article}`)}
                                       >
                                       <i className="fa fa-file-invoice"></i> {' '}
      
                                           Commandes
-                                             </button>
+                                             </button> */}
                             </React.Fragment>}
                         
                             <button title=" Ajouter un article"

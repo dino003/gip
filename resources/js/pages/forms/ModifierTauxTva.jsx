@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import inputStyle from '../../utils/inputStyle';
 
 export default class ModifierTauxTva extends Component {
 
@@ -23,11 +24,7 @@ export default class ModifierTauxTva extends Component {
 
         editing = (e) => {
             e.preventDefault()
-            this.props.onEditSubmit(this.code.value,
-                 this.taux.value,
-                 this.libelle.value,
-                 this.defaut.value,
-                  )
+            this.props.onEditSubmit(this.taux.value, this.libelle.value, this.defaut.value,)
                   this.props.closeEdit();
         }
     
@@ -49,20 +46,13 @@ export default class ModifierTauxTva extends Component {
                               
                                     
                                 <div className="form-row">
-                                    <div className="col-md-6">
-                                        <div className="position-relative form-group">
-                                            <label >Code</label>
-                                            <input name="code"
-                                            ref={code => this.code = code}
-                                            defaultValue={item.code}
-                                              type="text" className="form-control" /></div>
-                                    </div>
-
+                                  
                                     <div className="col-md-6">
                                         <div className="position-relative form-group">
                                             <label >Taux</label>
                                             <input name="taux"
-                                            defaultValue={item.code}
+                                            style={inputStyle}
+                                            defaultValue={item.taux}
                                             ref={taux => this.taux = taux}
                                               type="number" step="0.1" className="form-control" /></div>
                                     </div>
@@ -81,7 +71,7 @@ export default class ModifierTauxTva extends Component {
 
                                     <div className="col-md-6">
                                         <div className="position-relative form-group">
-                                            <label >Défaut</label>
+                                            <label >Par Défaut</label>
                                             <select className="form-control"
                                             defaultValue={item.defaut}
                                      ref={defaut => this.defaut = defaut}
@@ -99,8 +89,8 @@ export default class ModifierTauxTva extends Component {
 
                                 <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
                        
-                                <span  onClick={() => this.props.history.goBack()}
-                                 className="mt-2 btn btn-warning pull-right">Retour</span>
+                                {/* <span  onClick={() => this.props.history.goBack()}
+                                 className="mt-2 btn btn-warning pull-right">Retour</span> */}
                         </form>
                       
                     </div>

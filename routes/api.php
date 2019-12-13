@@ -353,6 +353,10 @@ Route::post('ajouter_taux_tva', 'TauxTvaController@store');
 // modifier
 Route::post('modifier_taux_tva/{id}', 'TauxTvaController@update');
 
+// tva par defaut
+Route::get('modifier_taux_tva_defaut/{tva_id}', 'TauxTvaController@marquerTvaDefaut');
+
+
 // supprimer
 Route::delete('supprimer_taux_tva/{id}', 'TauxTvaController@destroy');
 //*********** fin taux_tva vehicules********************************************************* 

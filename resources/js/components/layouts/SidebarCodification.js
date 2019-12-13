@@ -133,12 +133,7 @@ export default class SidebarCodification extends Component {
                                                 Natures des réservations
                                             </NavLink>
                                         </li>
-                                        <li>
-                                            <NavLink activeStyle={active} to="/gestion_du_parc_automobile/familles-des-pieces-detachees-et-consommables">
-                                            <i className="metismenu-icon pe-7s-shopbag"></i>
-                                                Familles de pièces détachées
-                                            </NavLink>
-                                        </li>
+                                    
                                         
 
                                

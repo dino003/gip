@@ -8,6 +8,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import 'react-toastify/dist/ReactToastify.css';
 import TauxTvaItem from '../../components/codifications/TauxTvaItem';
 import ModifierTauxTva from '../forms/ModifierTauxTva';
+import inputStyle from '../../utils/inputStyle';
 
 
  class TauxTva extends Component {
@@ -36,7 +37,6 @@ import ModifierTauxTva from '../forms/ModifierTauxTva';
    
 
     onDelete = (id) => {
-
         let conf = confirm('Voulez-vous vraiment supprimer ?')
         if(conf === true){
         
@@ -46,6 +46,16 @@ import ModifierTauxTva from '../forms/ModifierTauxTva';
             axios.delete('/api/supprimer_taux_tva/' + id)
         }
        
+    }
+    onTvaDefaut = (id) => {
+         this.setState({isDefautDeclench: !this.state.isDefautDeclench})
+
+        axios.get('/api/modifier_taux_tva_defaut/' + id).then(response => {
+            const action = {type: "GET_TVA", value: response.data}
+            this.props.dispatch(action) 
+         this.setState({isDefautDeclench: !this.state.isDefautDeclench})
+ 
+        })
     }
 
     passEdit(){
@@ -107,13 +117,12 @@ import ModifierTauxTva from '../forms/ModifierTauxTva';
           this.setState(this.base)
       }
 
-      onEditSubmit = ( code, taux, libelle, defaut) => {
+      onEditSubmit = ( taux, libelle, defaut) => {
        //  e.preventDefault()
         let modif = this.state.objetModif
 
 
           axios.post('/api/modifier_taux_tva/' + modif.id, {
-            code: code,
             taux: taux,
             libelle: libelle,
             defaut: defaut,
@@ -134,18 +143,16 @@ import ModifierTauxTva from '../forms/ModifierTauxTva';
         }
     }
 
-      enregistrerOperation = async (e) => {
+      enregistrerOperation = (e) => {
           e.preventDefault()
 
           if(this.verificationFormulaire() == null){
-           await axios.post('/api/ajouter_taux_tva', 
+            axios.post('/api/ajouter_taux_tva', 
                {
-                   code: this.code.value,
+                  // code: this.code.value,
                    taux: this.taux.value,
                    libelle: this.libelle.value,
                    defaut: this.defaut.value,
-                
-
             }
             ).then(response => {
                 const action = {type: "ADD_TVA", value: response.data}
@@ -156,7 +163,6 @@ import ModifierTauxTva from '../forms/ModifierTauxTva';
             })
              .catch(error => console.log(error));
         
-
           }else{
               //console.log(this.verificationFormulaire())
               toast.error(this.verificationFormulaire(), {
@@ -169,9 +175,8 @@ import ModifierTauxTva from '../forms/ModifierTauxTva';
           return ( <table className="mb-0 table" >
           <thead>
           <tr>
-              <th>Code</th>
+             <th>Libéllé</th>
               <th>Taux</th>
-              <th>Libéllé</th>
               <th>Défaut ? </th>
           </tr>
           </thead>
@@ -182,6 +187,8 @@ import ModifierTauxTva from '../forms/ModifierTauxTva';
                 index={index}
                 item={st}
                 onEdit={this.onEdit}
+                onTvaDefaut={this.onTvaDefaut}
+                isDefautDeclench={this.state.isDefautDeclench}
                 onDelete={this.onDelete}
                  />
                )}
@@ -194,8 +201,6 @@ import ModifierTauxTva from '../forms/ModifierTauxTva';
           return  <span style={{textAlign: 'center'}}>
 
           <Loader
-              type="BallTriangle"
-              color="#00BFFF"
               height={100}
               width={100}
            />
@@ -242,18 +247,13 @@ import ModifierTauxTva from '../forms/ModifierTauxTva';
                               
                                     
                                 <div className="form-row">
-                                    <div className="col-md-6">
-                                        <div className="position-relative form-group">
-                                            <label >Code</label>
-                                            <input name="code"
-                                            ref={code => this.code = code}
-                                              type="text" className="form-control" /></div>
-                                    </div>
+                                 
 
                                     <div className="col-md-6">
                                         <div className="position-relative form-group">
                                             <label >Taux</label>
                                             <input name="taux"
+                                            style={inputStyle}
                                             ref={taux => this.taux = taux}
                                               type="number" step="0.1" className="form-control" /></div>
                                     </div>
@@ -271,7 +271,7 @@ import ModifierTauxTva from '../forms/ModifierTauxTva';
 
                                     <div className="col-md-6">
                                         <div className="position-relative form-group">
-                                            <label >Défaut</label>
+                                            <label >Par Défaut</label>
                                             <select className="form-control"
                                      ref={defaut => this.defaut = defaut}
                                         onChange={this.setField}
@@ -280,7 +280,7 @@ import ModifierTauxTva from '../forms/ModifierTauxTva';
                                          <option value={1}>Oui</option>
                                     </select>
                                               
-                                              </div>
+                                         </div>
                                     </div>
                                    
                                 </div>
@@ -298,8 +298,6 @@ import ModifierTauxTva from '../forms/ModifierTauxTva';
         : 
         <ModifierTauxTva 
         item={this.state.objetModif}
-        natures_interventions={this.props.natures_interventions}
-        categories_vehicules={this.props.categories_vehicules}
         closeEdit={this.closeEdit}
         onEditSubmit={this.onEditSubmit}
          isOpen={this.state.isOpen} />
@@ -320,8 +318,6 @@ const mapStateToProps = state => {
     return {
         tva: state.tva.items,
         loading: state.tva.loading,
-        categories_vehicules: state.categories_vehicules.items,
-        natures_interventions: state.natures_interventions.items
 
     }
   }

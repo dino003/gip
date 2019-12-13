@@ -476,23 +476,30 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
                         </li>
 
                         <li className="dropdown nav-item">
-                            <Link to="/gestion_du_parc_automobile/parc/budgets-entites" className="nav-link">
+                            <Link to="/gestion_du_parc_automobile/gestions" className="nav-link">
                                 <i className="nav-link-icon fa fa-tools"></i>
                                 Gestion
                             </Link>
                         </li>
 
                         <li className="dropdown nav-item">
-                            <Link to="/gestion_du_parc_automobile/parametres_generaux" className="nav-link">
+                            <Link to="/gestion_du_parc_automobile/parametres" className="nav-link">
                                 <i className="nav-link-icon fa fa-cog"></i>
                                 Paramètres
                             </Link>
                         </li>
 
                         <li className="dropdown nav-item">
-                            <Link to="/gestion_du_parc_automobile/types_entites" className="nav-link">
+                            <Link to="/gestion_du_parc_automobile/codifications_1" className="nav-link">
                                 <i className="nav-link-icon fa fa-folder"></i>
-                                Codifications
+                                Codifications (1)
+                            </Link>
+                        </li>
+
+                        <li className="dropdown nav-item">
+                            <Link to="/gestion_du_parc_automobile/codifications_2" className="nav-link">
+                                <i className="nav-link-icon fa fa-folder"></i>
+                                Codifications (2)
                             </Link>
                         </li>
                       

@@ -23,9 +23,9 @@ import SortieStockItem from '../../components/gestion/SortieStockItem';
     
             let conf = confirm('Voulez-vous vraiment supprimer ?')
             if(conf === true){
-                const action = {type: "REMOVE_ARTICLE", value: id}
+                const action = {type: "REMOVE_SORTIE_STOCK", value: id}
                 this.props.dispatch(action)
-                axios.delete('/api/supprimer_article_stock/' + id)
+                axios.delete('/api/supprimer_sortie_stock/' + id)
                 
             }
            

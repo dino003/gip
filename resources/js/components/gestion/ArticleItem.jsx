@@ -36,7 +36,7 @@ import {connect} from 'react-redux'
              <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.quantite_disponible_stock || 0}</td>
              <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.seuil_alerte || 0}</td>
              <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.prix_article ? formatageSomme(item.prix_article) : 0}</td>
-             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.tva || 0}</td>
+             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.tva || 0} %</td>
             
              <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.fournisseur ? item.fournisseur.code : ''}</td>
              <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.valorisation_hors_taxe ? formatageSomme(item.valorisation_hors_taxe) : 0}</td>

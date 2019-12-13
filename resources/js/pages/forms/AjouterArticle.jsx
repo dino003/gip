@@ -356,10 +356,10 @@ import inputStyle from '../../utils/inputStyle'
 
                                         <div className="col-md-2">
                                             <div className="position-relative form-group">
-                                                <label >Taux TVA</label>
+                                                <label >Taux TVA %</label>
                                                 <input name="tva"  type="number"
                                                 onChange={this.setField}
-                                                defaultValue={18}
+                                                defaultValue={this.props.tva.length ? this.props.tva.find(tva => tva.defaut).taux || 18 : 18}
                                                 ref={tva => this.tva = tva}
                                                 className="form-control" />
                                                 </div>
@@ -428,6 +428,8 @@ const mapStateToProps = state => {
         marques: state.marques.items,
         famille_pieces_detaches: state.famille_pieces_detaches.items,
         articles: state.articles.items,
+        tva: state.tva.items,
+
     }
   }
 

@@ -78,27 +78,7 @@ export default class SidebarParametre extends Component {
                                             </NavLink>
                                         </li>
 
-                                        <li>
-                                            <NavLink activeStyle={active} to="/gestion_du_parc_automobile/r">
-                                            <i className="metismenu-icon pe-7s-display2"></i>
-                                                Les Messages 
-                                            </NavLink>
-                                        </li>
-                                        <li>
-                                            <NavLink activeStyle={active} to="/gestion_du_parc_automobile/les-couts-des-consommables">
-                                            <i className="metismenu-icon pe-7s-display2"></i>
-                                                Les Coûts des consommables
-                                            </NavLink>
-                                        </li>
-
-                                        <li>
-                                            <NavLink activeStyle={active} to="/gestion_du_parc_automobile/les-annees-budgetaires">
-                                            <i className="metismenu-icon pe-7s-display2"></i>
-                                                Les Exercices Budgétaires
-                                            </NavLink>
-                                        </li>
-
-                                        
+                                     
 
                                         <li className="app-sidebar__heading">Les Acteurs</li>
                                         <li>
