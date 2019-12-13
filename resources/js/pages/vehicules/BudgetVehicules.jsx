@@ -191,6 +191,8 @@ import BudgetVehiculeItem from '../../components/vehicules/BudgetVehiculeItem';
 const mapStateToProps = state => {
     return {
         budgetVehicules: state.budgetVehicules.items,
+        vehicules: state.vehicules.items,
+
         loading: state.budgetVehicules.loading,
         vehiculeSeleted: state.vehiculeSeleted.vehicule
 

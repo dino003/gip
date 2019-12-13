@@ -131,8 +131,9 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                 <div className="card-body">
                                     <h5 className="card-title">Gestion des consommations du véhicule
                                    
-                                      <MatriculeInput />
-                                      
+                                    {this.props.vehicules.length && 
+                            <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}/>
+                            }                                       
                                   </h5>
                                     <form className="" onChange={this.setField}  onSubmit={this.modifierConsommation}>
                                         <div className="form-row">
@@ -378,6 +379,8 @@ const mapStateToProps = state => {
         natures_consommations: state.natures_consommations.items,
         tiers: state.tiers.items,
         vehiculeSeleted: state.vehiculeSeleted.vehicule,
+        vehicules: state.vehicules.items,
+
         couts_consommables: state.couts_consommables.items,
         personnels: state.personnels.items,
         consommations: state.consommations.items

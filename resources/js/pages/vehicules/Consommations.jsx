@@ -185,6 +185,8 @@ import ConsommationItem from '../../components/vehicules/ConsommationItem';
 const mapStateToProps = state => {
     return {
         consommations: state.consommations.items,
+        vehicules: state.vehicules.items,
+
         loading: state.consommations.loading,
         vehiculeSeleted: state.vehiculeSeleted.vehicule
 

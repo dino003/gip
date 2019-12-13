@@ -187,6 +187,8 @@ import AmendeItem from '../../components/vehicules/AmendeItem';
 const mapStateToProps = state => {
     return {
         amendes: state.amendes.items,
+        vehicules: state.vehicules.items,
+
         loading: state.amendes.loading,
         vehiculeSeleted: state.vehiculeSeleted.vehicule
 

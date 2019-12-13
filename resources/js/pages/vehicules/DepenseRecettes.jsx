@@ -188,6 +188,8 @@ const mapStateToProps = state => {
     return {
         depense_recettes: state.depense_recettes.items,
         loading: state.depense_recettes.loading,
+        vehicules: state.vehicules.items,
+
         vehiculeSeleted: state.vehiculeSeleted.vehicule
 
     }

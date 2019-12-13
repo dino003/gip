@@ -184,8 +184,9 @@ import inputStyle from '../../../utils/inputStyle'
                         <div className="card-body">
                             <h5 className="card-title">Gestion des budgets du véhicule
                            
-                              <MatriculeInput />
-                              
+                            {this.props.vehicules.length && 
+                            <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}/>
+                            }                               
                           </h5>
                           <br />
                             <form className="" onChange={this.setField}  onSubmit={this.enregistrerIntervention}>
@@ -359,6 +360,8 @@ import inputStyle from '../../../utils/inputStyle'
 const mapStateToProps = state => {
     return {
         natures_depense_recettes: state.natures_depense_recettes.items,
+        vehicules: state.vehicules.items,
+
         vehiculeSeleted: state.vehiculeSeleted.vehicule,
     }
   }

@@ -22,21 +22,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
       
     }
 
-    componentDidMount(){
-    
-         if(this.props.vehiculeSeleted == undefined){
-          const action = {type: "EDIT_SELECTED", value: this.props.location.state.veh}
-          this.props.dispatch(action)
-        //this.props.match.params.categorie_vehicule_id
-             
-         }
-
-         this.setState({
-            objetEdit: this.props.interventions.find(vehi => vehi.id == this.props.match.params.intervention_id)
-        })
-    
-        }
-
+ 
    
     setField = (event) => {
         const target = event.target;
@@ -88,7 +74,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
         e.preventDefault()
 
           if(this.verificationFormulaire() == null){
-            axios.post('/api/modifier_vehicule_intervention/' + this.state.objetEdit.id, {
+              const objetEdit = this.props.interventions.find(inter => inter.id == this.props.match.params.intervention_id)
+            axios.post('/api/modifier_vehicule_intervention/' + objetEdit.id, {
                // vehicule: this.props.vehiculeSeleted.id,
                 nature_intervention: this.nature_intervention.value,
                 categorie: this.categorie.value,
@@ -133,7 +120,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
     
 
     render() {
-        const {objetEdit} = this.state
+        const objetEdit = this.props.interventions.find(inter => inter.id == this.props.match.params.intervention_id)
 
         if(objetEdit !== undefined){
             return (
@@ -143,8 +130,9 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                             <div className="card-body">
                                 <h5 className="card-title">Gestion des interventions du véhicule
                                
-                                  <MatriculeInput />
-                                  
+                                {this.props.vehicules.length && 
+                            <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}/>
+                            }                                   
                               </h5>
                                 <form className="" onChange={this.setField}  onSubmit={this.enregistrerIntervention}>
                                     <div className="form-row">
@@ -397,6 +385,8 @@ const mapStateToProps = state => {
     return {
         natures_interventions: state.natures_interventions.items,
         tiers: state.tiers.items,
+        vehicules: state.vehicules.items,
+
         vehiculeSeleted: state.vehiculeSeleted.vehicule,
         interventions: state.interventions.items,
 

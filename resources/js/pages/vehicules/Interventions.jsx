@@ -182,6 +182,8 @@ import MatriculeInput from '../../components/MatriculeInput';
 const mapStateToProps = state => {
     return {
         interventions: state.interventions.items,
+        vehicules: state.vehicules.items,
+
         loading: state.interventions.loading,
         vehiculeSeleted: state.vehiculeSeleted.vehicule
 
