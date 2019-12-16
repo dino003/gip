@@ -20,19 +20,19 @@ import AmendeItem from '../../components/vehicules/AmendeItem';
         }   
     }
 
-    componentDidMount(){
-        this.setState({
-            amendes: this.props.amendes.filter(inter => inter.vehicule.id == this.props.vehiculeSeleted.id),
-            //loading: false
-         })
+    // componentDidMount(){
+    //     this.setState({
+    //         amendes: this.props.amendes.filter(inter => inter.vehicule.id == this.props.vehiculeSeleted.id),
+    //         //loading: false
+    //      })
     
-         if(this.props.vehiculeSeleted == undefined){
-          const action = {type: "EDIT_SELECTED", value: this.props.location.state.veh}
-          this.props.dispatch(action)
+    //      if(this.props.vehiculeSeleted == undefined){
+    //       const action = {type: "EDIT_SELECTED", value: this.props.location.state.veh}
+    //       this.props.dispatch(action)
     
-         }
+    //      }
     
-        }
+    //     }
     
     
         onDelete = (id) => {
@@ -106,7 +106,7 @@ import AmendeItem from '../../components/vehicules/AmendeItem';
 
 
     renderList(){
-        const amendes = this.props.amendes.filter(inter => inter.vehicule.id == this.props.vehiculeSeleted.id)
+        const amendes = this.props.amendes.filter(inter => inter.vehicule.id == this.props.match.params.vehicule_id)
         return (  <table className="mb-0 table" >
         <thead>
         <tr>
@@ -143,12 +143,18 @@ import AmendeItem from '../../components/vehicules/AmendeItem';
     
 
     render() {
-        const vehiculeselect = this.props.vehiculeSeleted
+        if(this.props.vehiculeSeleted == undefined && this.props.vehicules.length ){
+        const action = {type: "EDIT_SELECTED", value:  this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}
+          this.props.dispatch(action)
+        }
+        const vehiculeselect = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
+        const amendes = this.props.amendes.filter(inter => inter.vehicule.id == this.props.match.params.vehicule_id)
+
         return (
             <div className="app-main__inner">
             <div className="main-card card" >
                        <div className="card-body ">
-                           <h5 className="card-title">Gestion des amendes 
+                           <h5 className="card-title">Gestion des Amendes 
                           
                             <span className="pull-right">
                         
@@ -163,13 +169,15 @@ import AmendeItem from '../../components/vehicules/AmendeItem';
                                 </span>
                              
                                 
-                                <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)} />
-                                            
+  
+                                {this.props.vehicules.length && 
+                            <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}/>
+                            }                                              
                                 
                             </h5>
                            <div className="table-responsive">
-                           {this.props.loading ? this.renderLoading() : 
-                            !this.state.amendes.length ? this.renderEmpty() : this.renderList()}
+                           {!this.props.vehicules.length ? this.renderLoading() : 
+                            !amendes.length ? this.renderEmpty() : this.renderList()}
 
 
                              

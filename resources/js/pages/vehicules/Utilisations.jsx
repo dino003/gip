@@ -32,19 +32,19 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
         }   
     }
 
-    componentDidMount(){
-    this.setState({
-        utilisations: this.props.utilisations.filter(util => util.vehicule.id == this.props.vehiculeSeleted.id),
-        //loading: false
-     })
+    // componentDidMount(){
+    // this.setState({
+    //     utilisations: this.props.utilisations.filter(util => util.vehicule.id == this.props.vehiculeSeleted.id),
+    //     //loading: false
+    //  })
 
-     if(this.props.vehiculeSeleted == undefined){
-      const action = {type: "EDIT_SELECTED", value: this.props.location.state.veh}
-      this.props.dispatch(action)
+    //  if(this.props.vehiculeSeleted == undefined){
+    //   const action = {type: "EDIT_SELECTED", value: this.props.location.state.veh}
+    //   this.props.dispatch(action)
 
-     }
+    //  }
 
-    }
+    // }
 
 
     onDelete = (id) => {
@@ -316,8 +316,7 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
         return  <span style={{textAlign: 'center'}}>
 
         <Loader
-            type="BallTriangle"
-            color="#00BFFF"
+           
             height={100}
             width={100}
          />
@@ -339,7 +338,7 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
     }
 
     renderList(){
-        const utilis = this.props.utilisations.filter(util => util.vehicule.id == this.props.vehiculeSeleted.id)
+        const utilis = this.props.utilisations.filter(util => util.vehicule.id == this.props.match.params.vehicule_id)
         return (  <table className="mb-0 table" id="table-to-xls" >
         <thead>
         <tr>
@@ -385,7 +384,13 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
     
 
     render() {
-        const vehiculeSelect = this.props.vehiculeSeleted
+        if(this.props.vehiculeSeleted == undefined && this.props.vehicules.length){
+            const action = {type: "EDIT_SELECTED", value:  this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}
+              this.props.dispatch(action)
+            }
+        const vehiculeSelect = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
+        const utilisations = this.props.utilisations.filter(util => util.vehicule.id == this.props.match.params.vehicule_id)
+
 
         return (
             <div className="app-main__inner">
@@ -407,8 +412,9 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                                              </button>
                                 </span>
                              
-                                <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)} />
-                                
+                                {this.props.vehicules.length && 
+                            <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}/>
+                            }                                 
                             </h5>
                            <div className="table-responsive">
                            <ReactHTMLTableToExcel
@@ -418,8 +424,8 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                     filename="tablexls"
                     sheet="tablexls"
                     buttonText="Download as XLS"/>
-                           {this.state.loading ? this.renderLoading() : 
-                            !this.state.utilisations.length ? this.renderEmpty() : this.renderList()}
+                           {!this.props.vehicules.length ? this.renderLoading() : 
+                            !utilisations.length ? this.renderEmpty() : this.renderList()}
 
 
                              

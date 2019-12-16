@@ -20,19 +20,19 @@ import MatriculeInput from '../../components/MatriculeInput';
         }   
     }
 
-    componentDidMount(){
-        this.setState({
-            interventions: this.props.interventions.filter(inter => inter.vehicule.id == this.props.vehiculeSeleted.id),
-            //loading: false
-         })
+    // componentDidMount(){
+    //     this.setState({
+    //         interventions: this.props.interventions.filter(inter => inter.vehicule.id == this.props.vehiculeSeleted.id),
+    //         //loading: false
+    //      })
     
-         if(this.props.vehiculeSeleted == undefined){
-          const action = {type: "EDIT_SELECTED", value: this.props.location.state.veh}
-          this.props.dispatch(action)
+    //      if(this.props.vehiculeSeleted == undefined){
+    //       const action = {type: "EDIT_SELECTED", value: this.props.location.state.veh}
+    //       this.props.dispatch(action)
     
-         }
+    //      }
     
-        }
+    //     }
     
     
         onDelete = (id) => {
@@ -90,8 +90,7 @@ import MatriculeInput from '../../components/MatriculeInput';
         return  <span style={{textAlign: 'center'}}>
 
         <Loader
-            type="BallTriangle"
-            color="#00BFFF"
+           
             height={100}
             width={100}
          />
@@ -106,7 +105,7 @@ import MatriculeInput from '../../components/MatriculeInput';
 
 
     renderList(){
-        const interventions = this.props.interventions.filter(inter => inter.vehicule.id == this.props.vehiculeSeleted.id)
+        const interventions = this.props.interventions.filter(inter => inter.vehicule.id == this.props.match.params.vehicule_id)
         return (  <table className="mb-0 table" >
         <thead>
         <tr>
@@ -138,7 +137,13 @@ import MatriculeInput from '../../components/MatriculeInput';
     
 
     render() {
-        const vehiculeselect = this.props.vehiculeSeleted
+        if(this.props.vehiculeSeleted == undefined && this.props.vehicules.length){
+            const action = {type: "EDIT_SELECTED", value:  this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}
+              this.props.dispatch(action)
+            }
+        const vehiculeselect = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
+        const interventions = this.props.interventions.filter(inter => inter.vehicule.id == this.props.match.params.vehicule_id)
+
         return (
             <div className="app-main__inner">
             <div className="main-card card" >
@@ -158,13 +163,14 @@ import MatriculeInput from '../../components/MatriculeInput';
                                 </span>
                              
                                 
-                                <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)} />
-                                            
+                                {this.props.vehicules.length && 
+                            <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}/>
+                            }                                              
                                 
                             </h5>
                            <div className="table-responsive">
-                           {this.props.loading ? this.renderLoading() : 
-                            !this.state.interventions.length ? this.renderEmpty() : this.renderList()}
+                           {!this.props.vehicules.length ? this.renderLoading() : 
+                            !interventions.length ? this.renderEmpty() : this.renderList()}
 
 
                              

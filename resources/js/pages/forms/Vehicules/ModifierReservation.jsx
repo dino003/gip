@@ -23,12 +23,12 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
       
     }
 
-    componentDidMount(){
-        this.setState({
-            objetEdit: this.props.reservations.find(reser => reser.id == this.props.match.params.reservation_id)
-        })
-        // console.log(  )
-        }
+    // componentDidMount(){
+    //     this.setState({
+    //         objetEdit: this.props.reservations.find(reser => reser.id == this.props.match.params.reservation_id)
+    //     })
+    //     // console.log(  )
+    //     }
 
         setVehiculeSelectedAuRechargement = () => {
             if(this.props.vehiculeSeleted == undefined){
@@ -107,12 +107,14 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
       }
 
       enregistrerIntervention = (e) => {
+         const objetEdit = this.props.reservations.find(reser => reser.id == this.props.match.params.reservation_id)
+
         e.preventDefault()
 
        // var vehicule = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
         if( this.checkIfReservationIsPossible(this.date_debut_reservation.value, this.date_fin_reservation.value) == null ){
             if(this.verificationFormulaire() == null){
-                axios.post('/api/modifier_vehicule_reservation/' + this.state.objetEdit.id, {
+                axios.post('/api/modifier_vehicule_reservation/' + objetEdit.id, {
                     personne_reservant: this.personne_reservant.value,
                     date_fin_reservation: this.date_fin_reservation.value,
                     heure_fin_reservation: this.heure_fin_reservation.value,
@@ -167,7 +169,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
     render() {
         const personeParDefaut = this.props.personnels.find(per => per.default)
-        const {objetEdit} = this.state
+        const objetEdit = this.props.reservations.find(reser => reser.id == this.props.match.params.reservation_id)
 
       if(objetEdit != undefined){
         return (

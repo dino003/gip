@@ -4,6 +4,7 @@ import {ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {connect} from 'react-redux'
 import Axios from 'axios';
+import inputStyle from '../../utils/inputStyle';
 
 
 
@@ -50,6 +51,31 @@ import Axios from 'axios';
           [name]: value
         });
       }
+
+      setFieldEntiteAffectation = (event) => {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        this.setState({
+            [name]: value
+        }, () => {
+            this.nom_entite_affectation.value = this.nomEntiteAffectation()
+            // this.contenu_libelle_commande.value = this.LibelleAutoDeCommannde()
+
+        });
+    }
+
+    nomEntiteAffectation = () => {
+        //  this.libelle_commande.value = this.type_commande.value 
+        if (this.entite_affectation != undefined && this.entite_affectation.value != '') {
+           var enti = this.props.entites.find(ent => ent.id == this.entite_affectation.value)
+           return  enti.nom_entite || null
+        }
+
+        return null
+
+    }
 
       verificationFormulaire () {
           if(this.nom.value == undefined || !this.nom.value.length){
@@ -112,9 +138,10 @@ import Axios from 'axios';
     
 
     render() {
+        const {param_personnels, entites} = this.props
         return (
             <div className="app-main__inner">
-              
+                    {param_personnels &&
                     <div className="main-card mb-3 card">
                         <div className="card-body"><h5 className="card-title">Fichier du personnel</h5>
                             <form className="" onChange={this.setField} onSubmit={this.enregistrerPersonnel}>
@@ -124,13 +151,15 @@ import Axios from 'axios';
                                             <label >Nom</label>
                                             <input name="nom"
                                             ref={nom => this.nom = nom}
-                                            
+                                            style={inputStyle}
                                               type="text" className="form-control" /></div>
                                     </div>
                                     <div className="col-md-5">
                                         <div className="position-relative form-group">
                                             <label >Prénom</label>
                                             <input name="prenom"
+                                            style={inputStyle}
+
                                             ref={prenom => this.prenom = prenom}
                                               type="text" className="form-control" />
                                         </div>
@@ -149,11 +178,13 @@ import Axios from 'axios';
                                         <div className="col-md-4">
                                     <label  className="">Entité d'affectation</label>
                                         <select name="entite_affectation" 
+                                        style={inputStyle}
+                                        onChange={this.setFieldEntiteAffectation}
                                         ref={entite_affectation => this.entite_affectation = entite_affectation}
                                          className="form-control">
                                             <option value={null}></option>
-                                            {this.props.entites.map((ent, index) => 
-                                             <option key={ent.id} value={ent.id}>{ent.entite} || {ent.nom_entite}</option>
+                                            {entites.map((ent, index) => 
+                                             <option key={ent.id} value={ent.id}>{ent.entite}</option>
 
                                                 )}
                                         </select>
@@ -163,6 +194,7 @@ import Axios from 'axios';
                                             <label >Entité d'affectation</label>
 
                                             <input name="nom_entite_affectation"
+                                        style={inputStyle}
                                             ref={nom_entite_affectation => this.nom_entite_affectation = nom_entite_affectation}
                                              readOnly type="text" className="form-control" />
                                         </div>
@@ -173,6 +205,8 @@ import Axios from 'axios';
                                         <div className="position-relative form-group">
                                             <label >Fonction</label>
                                             <input name="fonction" 
+                                             style={param_personnels.fonction ? inputStyle : null}
+                                             required={param_personnels.fonction}
                                             ref={fonction => this.fonction = fonction}
                                              type="text" className="form-control" /></div>
                                     </div>
@@ -180,6 +214,8 @@ import Axios from 'axios';
                                         <div className="position-relative form-group">
                                             <label >Matricule</label>
                                             <input name="matricule"
+                                             style={param_personnels.matricule_obligatoire ? inputStyle : null}
+                                             required={param_personnels.matricule_obligatoire}
                                             ref={matricule => this.matricule = matricule}
                                              type="text" className="form-control" />
                                         </div>
@@ -188,6 +224,8 @@ import Axios from 'axios';
                                     <div className="position-relative form-group">
                                             <label >Nom de la boite aux lettres de messagerie</label>
                                             <input name="adresse_email"
+                                            style={param_personnels.boite_lettre ? inputStyle : null}
+                                            required={param_personnels.boite_lettre}
                                             ref={adresse_email => this.adresse_email = adresse_email}
                                               type="text" className="form-control" />
                                         </div>
@@ -350,6 +388,8 @@ import Axios from 'axios';
                                         <div className="position-relative form-group">
                                             <label >Numero du permis de conduire</label>
                                             <input name="numero_permis_conduire"
+                                             style={param_personnels.info_permis ? inputStyle : null}
+                                             required={param_personnels.info_permis}
                                             ref={numero_permis_conduire => this.numero_permis_conduire = numero_permis_conduire}
                                               type="text"
                                                className="form-control" /></div>
@@ -358,6 +398,8 @@ import Axios from 'axios';
                                         <div className="position-relative form-group">
                                             <label >Date de délivrance</label>
                                             <input name="date_delivrance"
+                                            style={param_personnels.info_permis ? inputStyle : null}
+                                            required={param_personnels.info_permis}
                                             ref={date_delivrance => this.date_delivrance = date_delivrance}
                                              type="date"  className="form-control" />
                                         </div>
@@ -366,6 +408,8 @@ import Axios from 'axios';
                                     <div className="position-relative form-group">
                                             <label >Lieu de délivrance</label>
                                             <input name="lieu_delivrance"
+                                            style={param_personnels.info_permis ? inputStyle : null}
+                                             required={param_personnels.info_permis}
                                             ref={lieu_delivrance => this.lieu_delivrance = lieu_delivrance}
                                               type="text" className="form-control" />
                                         </div>
@@ -527,7 +571,7 @@ import Axios from 'axios';
                                  className="mt-2 btn btn-warning pull-right">Retour</span>
                             </form>
                         </div>
-                    </div>
+                    </div> }
                 
                     <ToastContainer autoClose={8000} />
        </div>
@@ -538,6 +582,8 @@ import Axios from 'axios';
 const mapStateToProps = state => {
     return {
         entites: state.entites.items,
+        param_personnels: state.param_personnels.items,
+
     }
   }
 

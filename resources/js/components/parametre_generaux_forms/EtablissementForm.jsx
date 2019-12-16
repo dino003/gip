@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import inputStyle from '../../utils/inputStyle';
 
  class EtablissementForm extends Component {
      constructor(props) {
@@ -34,6 +35,7 @@ import React, { Component } from 'react'
                                         <div className="position-relative form-group">
                                             <label >Société *</label>
                                             <input name="societe"
+                                            style={inputStyle}
                                             defaultValue={item.societe}
                                             ref={societe => this.societe = societe}
                                             type="text" className="form-control" />

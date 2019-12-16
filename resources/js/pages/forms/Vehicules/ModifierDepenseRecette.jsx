@@ -17,19 +17,19 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
       
     }
 
-    componentDidMount(){
+    // componentDidMount(){
     
-         if(this.props.vehiculeSeleted == undefined){
-          const action = {type: "EDIT_SELECTED", value: this.props.location.state.veh}
-          this.props.dispatch(action)
+    //      if(this.props.vehiculeSeleted == undefined){
+    //       const action = {type: "EDIT_SELECTED", value: this.props.location.state.veh}
+    //       this.props.dispatch(action)
     
-         }
+    //      }
 
-         this.setState({
-            objetEdit: this.props.depense_recettes.find(vehi => vehi.id == this.props.match.params.depense_recette_id)
-        })
+    //      this.setState({
+    //         objetEdit: this.props.depense_recettes.find(vehi => vehi.id == this.props.match.params.depense_recette_id)
+    //     })
     
-        }
+    //     }
 
    
     setField = (event) => {
@@ -106,10 +106,12 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
       }
 
       enregistrerIntervention = (e) => {
+          const objetEdit = this.props.depense_recettes.find(depense => depense.id == this.props.match.params.depense_recette_id)
+
         e.preventDefault()
 
           if(this.verificationFormulaire() == null){
-            axios.post('/api/modifier_vehicule_depense_recette/' + this.state.objetEdit.id, {
+            axios.post('/api/modifier_vehicule_depense_recette/' + objetEdit.id, {
                 annee_budgetaire: this.annee_budgetaire.value,
                // vehicule: this.props.vehiculeSeleted.id,
                 depense_ou_recette: this.depense_ou_recette.value,
@@ -149,7 +151,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
     
 
     render() {
-        const {objetEdit} = this.state
+        const objetEdit = this.props.depense_recettes.find(depense => depense.id == this.props.match.params.depense_recette_id)
 
         if(objetEdit !== undefined){
             return (
@@ -276,7 +278,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
     
                                                 <div className="col-md-2">
                                                     <div className="position-relative form-group">
-                                                        <label >Taux de TVA </label>
+                                                        <label >Taux de TVA %</label>
                                                         <input name="taux_tva"  type="number"
                                                         defaultValue={objetEdit.taux_tva}
                                                         onChange={this.setFieldMontantHt}
@@ -364,8 +366,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
             return ( <span style={{textAlign: 'center'}}>
 
             <Loader
-                type="BallTriangle"
-                color="#00BFFF"
+               
                 height={100}
                 width={100}
              />

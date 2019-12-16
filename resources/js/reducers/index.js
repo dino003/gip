@@ -41,6 +41,10 @@ import ArticleReducer from './ArticleReducer'
 import EntreeStockReducer from './EntreeStockReducer'
 import ArticleSelectReducer from './ArticleSelectReducer'
 import SortieStockReducer from './SortieStockReducer'
+import ModulesReducer from './parametres_generaux/ModulesReducer'
+import ParamStockReducer from './parametres_generaux/ParamStockReducer'
+import ParamPersonnelReducer from './parametres_generaux/ParamPersonnelReducer'
+import ParamJournalReducer from './parametres_generaux/ParamJournalReducer'
 
 const allReducers = combineReducers({
     types_entites: TypeEntiteReducer,
@@ -84,7 +88,11 @@ const allReducers = combineReducers({
     entrees_stock: EntreeStockReducer,
     sorties_stock: SortieStockReducer,
     info_societe: EtablissementInfoReducer,
-    param_generaux_reservation_ordre: ParamGenerauxReserOrdreReducer
+    param_generaux_reservation_ordre: ParamGenerauxReserOrdreReducer,
+    param_generaux_modules: ModulesReducer,
+    param_stock: ParamStockReducer,
+    param_personnels: ParamPersonnelReducer,
+    param_journal: ParamJournalReducer
     
 })
 

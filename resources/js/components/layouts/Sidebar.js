@@ -9,7 +9,7 @@ const active = {
 
  class Sidebar extends Component {
     render() {
-        const {vehiculeSeleted} = this.props
+        const {vehiculeSeleted, param_generaux_modules, param_generaux_reservation_ordre } = this.props
         return (
             <div className="app-sidebar sidebar-shadow ">
                 {/*             <div className="app-sidebar sidebar-shadow bg-asteroid sidebar-text-light">
@@ -50,12 +50,9 @@ const active = {
                                 <li className="app-sidebar__heading">Gestion du parc</li>
 
                                 <li>
-        
-
                                      <NavLink exact activeStyle={active} 
                                     to={{
                                         pathname: '/gestion_du_parc_automobile/parc',
-                                        state: { veh: this.props.vehiculeSeleted }
                                     }}
                                         >
                                         <i className="metismenu-icon pe-7s-car"></i>
@@ -64,52 +61,64 @@ const active = {
 
                                     </NavLink> 
                                 </li>
-                                <li>
-        
-
-                                    {this.props.vehiculeSeleted != undefined ?  <NavLink exact activeStyle={active} 
-                                     to={{
-                                        pathname: `/gestion_du_parc_automobile/parc/utilisations-vehicules/${vehiculeSeleted.id}/${vehiculeSeleted.immatriculation}`,
-                                        state: { veh: this.props.vehiculeSeleted }
-                                      }}
-                                        >
-                                        <i className="metismenu-icon pe-7s-menu"></i>
-                                        Utilisations
-                                        <i className="metismenu-state-icon "></i>
-
-                                    </NavLink> :  <a disabled title="Le lien est désactivé, veuillez sélectionner un véhicule">
-                                        <i className="metismenu-icon pe-7s-home"></i>
-                                        Utilisations
-                                        <i className="metismenu-state-icon "></i>
-
-                                    </a> } 
-                                </li>
-                                <li>
-
-                                    {this.props.vehiculeSeleted != undefined ?  <NavLink exact activeStyle={active} 
-                                    to={{
-                                        pathname: `/gestion_du_parc_automobile/parc/interventions-vehicules/${vehiculeSeleted.id}/${vehiculeSeleted.immatriculation}`,
-                                        state: { veh: this.props.vehiculeSeleted }
-                                      }}
-                                    >
-                                        <i className="metismenu-icon pe-7s-date"></i>
-                                        Interventions
-                                        <i className="metismenu-state-icon "></i>
-
-                                    </NavLink> :  <a disabled title="Le lien est désactivé, veuillez sélectionner un véhicule">
-                                        <i className="metismenu-icon pe-7s-date"></i>
-                                        Interventions
-                                        <i className="metismenu-state-icon "></i>
-
-                                    </a> }
-                                </li>
-                                <li>
                                    
+                                  
+                                  
+                                  
+                                  
+                                  
+                                   {param_generaux_modules && 
+                                    <React.Fragment>
+                                          {param_generaux_modules.utilisation_vehicules == 1 &&  <li>
+                                        {vehiculeSeleted != undefined ?  <NavLink exact activeStyle={active} 
+                                        to={{
+                                            pathname: `/gestion_du_parc_automobile/parc/utilisations-vehicules/${vehiculeSeleted.id}/${vehiculeSeleted.immatriculation}`,
+                                        }}
+                                            >
+                                            <i className="metismenu-icon pe-7s-menu"></i>
+                                            Utilisations
+                                            <i className="metismenu-state-icon "></i>
 
-                                    {this.props.vehiculeSeleted != undefined ?  <NavLink exact activeStyle={active}
+                                        </NavLink> :  <a disabled title="Le lien est désactivé, veuillez sélectionner un véhicule">
+                                            <i className="metismenu-icon pe-7s-home"></i>
+                                            Utilisations
+                                            <i className="metismenu-state-icon "></i>
+
+                                        </a> } 
+                                    </li>}
+
+                                       
+                                       
+                                       
+                                       
+                                        {param_generaux_modules.intervention_vehicules == 1 && <li>
+
+                                            {vehiculeSeleted != undefined ?  <NavLink exact activeStyle={active} 
+                                            to={{
+                                                pathname: `/gestion_du_parc_automobile/parc/interventions-vehicules/${vehiculeSeleted.id}/${vehiculeSeleted.immatriculation}`,
+                                            }}
+                                            >
+                                                <i className="metismenu-icon pe-7s-date"></i>
+                                                Interventions
+                                                <i className="metismenu-state-icon "></i>
+
+                                            </NavLink> :  <a disabled title="Le lien est désactivé, veuillez sélectionner un véhicule">
+                                                <i className="metismenu-icon pe-7s-date"></i>
+                                                Interventions
+                                                <i className="metismenu-state-icon "></i>
+
+                                            </a> }
+                                            </li>}
+                                 
+                             
+
+
+
+                                {param_generaux_modules.consomation_vehicules == 1 &&
+                                 <li>
+                                    {vehiculeSeleted != undefined ?  <NavLink exact activeStyle={active}
                                       to={{
                                         pathname: `/gestion_du_parc_automobile/parc/consommations-vehicules/${vehiculeSeleted.id}/${vehiculeSeleted.immatriculation}`,
-                                        state: { veh: this.props.vehiculeSeleted }
                                       }}
                                      >
                                         <i className="metismenu-icon pe-7s-monitor"></i>
@@ -122,14 +131,17 @@ const active = {
                                         <i className="metismenu-state-icon "></i>
 
                                     </a> }
-                                </li>
+                                    </li> }
+
+
+
+
+                                    {param_generaux_modules.amendes == 1 &&
+
                                 <li >
-                                  
-                                
-                                    {this.props.vehiculeSeleted != undefined ?  <NavLink exact activeStyle={active} 
+                                    {vehiculeSeleted != undefined ?  <NavLink exact activeStyle={active} 
                                          to={{
                                             pathname: `/gestion_du_parc_automobile/parc/amendes-vehicules/${vehiculeSeleted.id}/${vehiculeSeleted.immatriculation}`,
-                                            state: { veh: this.props.vehiculeSeleted }
                                           }}
                                     >
                                         <i className="metismenu-icon pe-7s-rocket"></i>
@@ -143,10 +155,15 @@ const active = {
 
                                     </a> }
                                 </li>
-                                <li>
-                                  
+                                        }
 
-                                    {this.props.vehiculeSeleted != undefined ? (this.props.vehiculeSeleted.type_vehicule_statut == 'Fonction' ? 
+
+                              
+                              
+                                {param_generaux_modules.reservations == 1 &&
+
+                                <li>
+                                    {vehiculeSeleted != undefined ? (!param_generaux_reservation_ordre.vehicule_fonction_reservable && vehiculeSeleted.type_vehicule_statut == 'Fonction' ? 
                               <a disabled title="Vous ne pouvez pas réserver un véhicule de fonction">
                                         <i className="metismenu-icon pe-7s-repeat"></i>
                                         Réservations
@@ -155,7 +172,6 @@ const active = {
                                     </a>: <NavLink exact activeStyle={active} 
                                      to={{
                                         pathname: `/gestion_du_parc_automobile/parc/reservation-vehicules/${vehiculeSeleted.id}/${vehiculeSeleted.immatriculation}`,
-                                        state: { veh: this.props.vehiculeSeleted }
                                       }}
                                      >
                                         <i className="metismenu-icon pe-7s-repeat"></i>
@@ -169,12 +185,20 @@ const active = {
 
                                     </a> }
                                 </li>
-                                <li>
+                                        }
 
-                                    {this.props.vehiculeSeleted != undefined ?  <NavLink exact activeStyle={active} 
+
+
+
+
+
+
+                                {param_generaux_modules.budget_depenses_vehicules == 1 &&
+
+                                <li>
+                                    {vehiculeSeleted != undefined ?  <NavLink exact activeStyle={active} 
                                     to={{
                                         pathname: `/gestion_du_parc_automobile/parc/budgets-vehicules/${vehiculeSeleted.id}/${vehiculeSeleted.immatriculation}`,
-                                        state: { veh: this.props.vehiculeSeleted }
                                       }}
                                     >
                                         <i className="metismenu-icon pe-7s-tools"></i>
@@ -188,13 +212,18 @@ const active = {
 
                                     </a> }
                                 </li>
-                                <li>
-                                  
+                                        }
 
-                                    {this.props.vehiculeSeleted != undefined ?  <NavLink exact activeStyle={active} 
+
+
+
+
+                                {param_generaux_modules.budget_depenses_vehicules == 1 &&
+
+                                <li>
+                                    {vehiculeSeleted != undefined ?  <NavLink exact activeStyle={active} 
                                     to={{
                                         pathname: `/gestion_du_parc_automobile/parc/depense-recettes-vehicules/${vehiculeSeleted.id}/${vehiculeSeleted.immatriculation}`,
-                                        state: { veh: this.props.vehiculeSeleted }
                                       }}
                                     >
                                         <i className="metismenu-icon pe-7s-graph3"></i>
@@ -208,11 +237,13 @@ const active = {
 
                                     </a> }
                                 </li>
+                                    }
+
+
+
 
                                 <li>
-                                
-
-                                    {this.props.vehiculeSeleted != undefined ?  <NavLink exact activeStyle={active} to="/contrat">
+                                    {vehiculeSeleted != undefined ?  <NavLink exact activeStyle={active} to="/contrat">
                                         <i className="metismenu-icon pe-7s-note2"></i>
                                         Contrats Assurances
                                         <i className="metismenu-state-icon "></i>
@@ -224,10 +255,14 @@ const active = {
 
                                     </a> }
                                 </li>
-                               
-                                <li>
 
-                                    {this.props.vehiculeSeleted != undefined ?  <NavLink exact activeStyle={active} to="/sinistre">
+
+
+
+                                {/* {param_generaux_modules.budget_depenses_vehicules &&
+
+                                <li>
+                                    {vehiculeSeleted != undefined ?  <NavLink exact activeStyle={active} to="/sinistre">
                                         <i className="metismenu-icon pe-7s-rocket"></i>
                                         Sinistres
                                         <i className="metismenu-state-icon "></i>
@@ -239,6 +274,11 @@ const active = {
 
                                     </a> }
                                 </li>
+                                    } */}
+                                    </React.Fragment>
+                                    
+                                    
+                                        }
                                
 
                                   
@@ -253,7 +293,9 @@ const active = {
 
 const mapStateToProps = state => {
     return {
-        vehiculeSeleted: state.vehiculeSeleted.vehicule
+        vehiculeSeleted: state.vehiculeSeleted.vehicule,
+        param_generaux_modules: state.param_generaux_modules.items,
+        param_generaux_reservation_ordre: state.param_generaux_reservation_ordre.items,
 
     }
   }

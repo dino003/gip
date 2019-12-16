@@ -2,6 +2,10 @@ import React, { Component } from 'react'
 import EtablissementForm from '../components/parametre_generaux_forms/EtablissementForm'
 import ReservationOrdreMissionForm from '../components/parametre_generaux_forms/ReservationOrdreMissionForm'
 import {connect} from  'react-redux'
+import ModulesForm from '../components/parametre_generaux_forms/ModulesForm';
+import StockForm from '../components/parametre_generaux_forms/StockForm';
+import PersonnelForm from '../components/parametre_generaux_forms/PersonnelForm';
+import JournalEvenementForm from '../components/parametre_generaux_forms/JournalEvenementForm'
 
 class ParametreGeneraux extends Component {
 
@@ -9,12 +13,18 @@ class ParametreGeneraux extends Component {
         super(props);
         this.state = {
             isFormEtablissementSubmitted: false,
-            isFormReservationOrdreSubmitted: false 
+            isFormReservationOrdreSubmitted: false,
+            isFormModuleSubmitted: false,
+            isFormStockSubmitted: false,
+            isFormPersonnelSubmitted: false 
  
         }
         this.onFormInfoEtablissemntSubmit = this.onFormInfoEtablissemntSubmit.bind(this)
-
+        this.onSubmitModuleForm = this.onSubmitModuleForm.bind(this)
         this.onSubmitParamReservationOrdreMission = this.onSubmitParamReservationOrdreMission.bind(this)
+        this.onFormStockSubmit = this.onFormStockSubmit.bind(this)
+        this.onFormPersonnelSubmit = this.onFormPersonnelSubmit.bind(this)
+        this.onJournalFormSubmit = this.onJournalFormSubmit.bind(this)
     }
 
     onFormInfoEtablissemntSubmit(objet){
@@ -46,6 +56,66 @@ class ParametreGeneraux extends Component {
 
         })
     }
+    
+    onSubmitModuleForm(objet){
+           this.setState({isFormModuleSubmitted: true})
+        axios.post('/api/ajouter_ou_modifier_parametre_modules', objet)
+        .then(response => { 
+           const action = {type: "ADD_PARAM_MODULE", value: response.data}
+             this.props.dispatch(action)
+             this.setState({isFormModuleSubmitted: false})
+
+        }).catch(error => {
+            console.log(error)
+            this.setState({isFormModuleSubmitted: false})
+
+        })
+    }
+
+    onFormStockSubmit(objet){
+        this.setState({isFormStockSubmitted: true})
+     axios.post('/api/ajouter_ou_modifier_parametre_stocks', objet)
+     .then(response => { 
+        const action = {type: "ADD_PARAM_STOCK", value: response.data}
+          this.props.dispatch(action)
+          this.setState({isFormStockSubmitted: false})
+
+     }).catch(error => {
+         console.log(error)
+         this.setState({isFormStockSubmitted: false})
+
+     })
+ }
+
+        onFormPersonnelSubmit(objet){
+            this.setState({isFormPersonnelSubmitted: true})
+        axios.post('/api/ajouter_ou_modifier_parametre_personnels', objet)
+        .then(response => { 
+            const action = {type: "ADD_PARAM_PERSONNEL", value: response.data}
+            this.props.dispatch(action)
+            this.setState({isFormPersonnelSubmitted: false})
+
+        }).catch(error => {
+            console.log(error)
+            this.setState({isFormPersonnelSubmitted: false})
+
+        })
+        }
+
+        onJournalFormSubmit(objet){
+            this.setState({isFormJournalSubmitted: true})
+        axios.post('/api/ajouter_ou_modifier_parametre_journal', objet)
+        .then(response => { 
+            const action = {type: "ADD_PARAM_JOURNAL", value: response.data}
+            this.props.dispatch(action)
+            this.setState({isFormJournalSubmitted: false})
+
+        }).catch(error => {
+            console.log(error)
+            this.setState({isFormJournalSubmitted: false})
+
+        })
+        }
     
     render() {
         return (
@@ -85,13 +155,13 @@ class ParametreGeneraux extends Component {
                     </a>
                 </li>
                 <li className="nav-item">
-                    <a role="tab" className="nav-link" id="tab-1" data-toggle="tab" href="#tab-content-1">
+                    <a role="tab" className="nav-link" id="tab-1" data-toggle="tab" href="#tab_stock">
                         <i className="fa fa-times"></i> 
                         <span> Stocks</span>
                     </a>
                 </li>
                 <li className="nav-item">
-                    <a role="tab" className="nav-link" id="tab-1" data-toggle="tab" href="#tab-content-1">
+                    <a role="tab" className="nav-link" id="tab-1" data-toggle="tab" href="#tab_personnel">
                         <span>Personnel</span>
                     </a>
                 </li>
@@ -121,13 +191,13 @@ class ParametreGeneraux extends Component {
                     </a>
                 </li>
                 <li className="nav-item">
-                    <a role="tab" className="nav-link" id="tab-1" data-toggle="tab" href="#tab-content-1">
-                        <span>Grid</span>
+                    <a role="tab" className="nav-link" id="tab-1" data-toggle="tab" href="#tab_modules">
+                        <span>Modules</span>
                     </a>
                 </li>
                 <li className="nav-item">
-                    <a role="tab" className="nav-link" id="tab-1" data-toggle="tab" href="#tab-content-1">
-                        <span>Grid</span>
+                    <a role="tab" className="nav-link" id="tab-1" data-toggle="tab" href="#tab_journal">
+                        <span>Journal événements</span>
                     </a>
                 </li>
                 <li className="nav-item">
@@ -161,11 +231,72 @@ class ParametreGeneraux extends Component {
                         <div className="card-body">
                          <ReservationOrdreMissionForm
                          item={this.props.param_generaux_reservation_ordre}
+                         isFormReservationOrdreSubmitted={this.state.isFormReservationOrdreSubmitted}
                          onSubmitParamReservationOrdreMission={this.onSubmitParamReservationOrdreMission}
                           />
                         </div>
                     </div>
                 </div>
+
+                <div className="tab-pane tabs-animation fade" id="tab_modules" role="tabpanel">
+                    <div className="main-card mb-3 card">
+                        <div className="card-body">
+                         <ModulesForm
+                         item={this.props.param_generaux_modules}
+                         isFormModuleSubmitted={this.state.isFormModuleSubmitted}
+                         onSubmitModuleForm={this.onSubmitModuleForm}
+                          />
+                        </div>
+                    </div>
+                </div>
+
+
+                    {/* stock */}
+                    <div className="tab-pane tabs-animation fade" id="tab_stock" role="tabpanel">
+                    <div className="main-card mb-3 card">
+                        <div className="card-body">
+                         <StockForm
+                         item={this.props.param_stock}
+                         entites={this.props.entites}
+                         isFormStockSubmitted={this.state.isFormStockSubmitted}
+                         onFormStockSubmit={this.onFormStockSubmit}
+                          />
+                        </div>
+                    </div>
+                </div>
+
+                    {/* fin stock */}
+
+                      {/* personnel */}
+                      <div className="tab-pane tabs-animation fade" id="tab_personnel" role="tabpanel">
+                    <div className="main-card mb-3 card">
+                        <div className="card-body">
+                         <PersonnelForm
+                         item={this.props.param_personnels}
+                         isFormPersonnelSubmitted={this.state.isFormPersonnelSubmitted}
+                         onFormPersonnelSubmit={this.onFormPersonnelSubmit}
+                          />
+                        </div>
+                    </div>
+                </div>
+
+                    {/* fin personnel */}
+
+                       {/* journal */}
+                       <div className="tab-pane tabs-animation fade" id="tab_journal" role="tabpanel">
+                    <div className="main-card mb-3 card">
+                        <div className="card-body">
+                         <JournalEvenementForm
+                         item={this.props.param_journal}
+                         isFormJournalSubmitted={this.state.isFormJournalSubmitted}
+                         onJournalFormSubmit={this.onJournalFormSubmit}
+                          />
+                        </div>
+                    </div>
+                </div>
+
+                    {/* fin journal */}
+
             </div>
         </div>
         </div>
@@ -178,7 +309,13 @@ class ParametreGeneraux extends Component {
 const mapStateToProps = state => {
     return {
         info_societe: state.info_societe.items,
-        param_generaux_reservation_ordre: state.param_generaux_reservation_ordre.items
+        param_stock: state.param_stock.items,
+        param_personnels: state.param_personnels.items,
+        param_journal: state.param_journal.items,
+        param_generaux_reservation_ordre: state.param_generaux_reservation_ordre.items,
+        param_generaux_modules: state.param_generaux_modules.items,
+        entites: state.entites.items
+
     }
   }
 

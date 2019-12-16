@@ -21,18 +21,18 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
       
     }
 
-    componentDidMount(){
+    // componentDidMount(){
     
-         if(this.props.vehiculeSeleted == undefined){
-          const action = {type: "EDIT_SELECTED", value: this.props.location.state.veh}
-          this.props.dispatch(action)
-         }
+    //      if(this.props.vehiculeSeleted == undefined){
+    //       const action = {type: "EDIT_SELECTED", value: this.props.location.state.veh}
+    //       this.props.dispatch(action)
+    //      }
 
-         this.setState({
-            objetEdit: this.props.consommations.find(conso => conso.id == this.props.match.params.consommation_id)
-        })
+    //      this.setState({
+    //         objetEdit: this.props.consommations.find(conso => conso.id == this.props.match.params.consommation_id)
+    //     })
     
-        }
+    //     }
 
    
     setField = (event) => {
@@ -78,10 +78,12 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
       }
 
       modifierConsommation = (e) => {
+          const objetEdit = this.props.consommations.find(conso => conso.id == this.props.match.params.consommation_id)
+
         e.preventDefault()
 
           if(this.verificationFormulaire() == null){
-            axios.post('/api/modifier_vehicule_consommation/' + this.state.objetEdit.id, {
+            axios.post('/api/modifier_vehicule_consommation/' + objetEdit.id, {
                // vehicule: this.props.vehiculeSeleted.id,
                 type_consomation: this.type_consomation.value,
                 tiers: this.tiers.value,
@@ -122,8 +124,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
     
 
     render() {
-        const {objetEdit} = this.state
-            if(objetEdit !== undefined){
+        const objetEdit = this.props.consommations.find(conso => conso.id == this.props.match.params.consommation_id)
+        if(objetEdit !== undefined){
                 return (
                     <div className="app-main__inner">
                       

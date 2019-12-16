@@ -17,15 +17,15 @@ import year from '../../../utils/Year'
       
     }
 
-    componentDidMount(){
+    // componentDidMount(){
     
-         if(this.props.vehiculeSeleted == undefined){
-          const action = {type: "EDIT_SELECTED", value: this.props.location.state.veh}
-          this.props.dispatch(action)
+    //      if(this.props.vehiculeSeleted == undefined){
+    //       const action = {type: "EDIT_SELECTED", value: this.props.location.state.veh}
+    //       this.props.dispatch(action)
     
-         }
+    //      }
     
-        }
+    //     }
 
    
     setField = (event) => {
@@ -264,11 +264,16 @@ import year from '../../../utils/Year'
 
                                             <div className="col-md-2">
                                                 <div className="position-relative form-group">
-                                                    <label >Taux de TVA </label>
-                                                    <input name="taux_tva"  type="number"
+                                                    <label >Taux de TVA %</label>
+                                                    
+                                                {this.props.tva.length ?  <input name="taux_tva"  type="number"
                                                     onChange={this.setFieldMontantHt}
-                                                    ref={taux_tva => this.taux_tva = taux_tva}
-                                                    className="form-control" />
+                                                    defaultValue={ this.props.tva.find(tva => tva.defaut).taux || 18}
+                                                ref={taux_tva => this.taux_tva = taux_tva}
+                                                className="form-control" /> :  <input name="taux_tva"  type="number"
+                                                onChange={this.setFieldMontantHt}
+                                                ref={taux_tva => this.taux_tva = taux_tva}
+                                                className="form-control" />}
                                                     </div>
                                             </div>
                                                 
@@ -351,6 +356,7 @@ const mapStateToProps = state => {
     return {
         natures_depense_recettes: state.natures_depense_recettes.items,
         vehicules: state.vehicules.items,
+        tva: state.tva.items,
 
         vehiculeSeleted: state.vehiculeSeleted.vehicule,
         tiers: state.tiers.items

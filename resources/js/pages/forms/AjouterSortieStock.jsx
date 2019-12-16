@@ -53,6 +53,8 @@ import inputStyle from '../../utils/inputStyle'
         e.preventDefault()
 
           if(this.verificationFormulaire() == null){
+            this.setState({isFormSubmit: true})
+
             axios.post('/api/ajouter_sortie_stock', {
                 article_id: this.props.match.params.article_id,
                 vehicule_id: this.vehicule_id.value,
@@ -62,12 +64,12 @@ import inputStyle from '../../utils/inputStyle'
               
             })
             .then(response => { 
-                this.setState({isFormSubmit: true})
                const action = {type: "ADD_SORTIE_STOCK", value: response.data.sortie}
                  this.props.dispatch(action)
 
                  const action2 = {type: "EDIT_ARTICLE", value: response.data.article}
                  this.props.dispatch(action2)
+                 this.setState({isFormSubmit: false})
 
                this.props.history.goBack();
 

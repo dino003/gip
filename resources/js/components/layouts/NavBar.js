@@ -37,6 +37,38 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
             this.props.dispatch(action)
         }));
     } 
+    
+    fetchInfoParamGenerauxModules(){
+        queue.push(() => axios.get('/api/parametre_modules').then((response) => {
+            
+            const action = {type: "GET_PARAM_MODULE", value: response.data}
+            this.props.dispatch(action)
+        }));
+    } 
+
+    fetchInfoParamGenerauxPersonnels(){
+        queue.push(() => axios.get('/api/parametre_personnels').then((response) => {
+            
+            const action = {type: "GET_PARAM_PERSONNEL", value: response.data}
+            this.props.dispatch(action)
+        }));
+    } 
+
+    fetchInfoParamGenerauxJournal(){
+        queue.push(() => axios.get('/api/parametre_journal').then((response) => {
+            
+            const action = {type: "GET_PARAM_JOURNAL", value: response.data}
+            this.props.dispatch(action)
+        }));
+    }
+
+    fetchInfoParamGenerauxStock(){
+        queue.push(() => axios.get('/api/parametre_stocks').then((response) => {
+            
+            const action = {type: "GET_PARAM_STOCK", value: response.data}
+            this.props.dispatch(action)
+        }));
+    } 
 
     fetchStructures(){
         queue.push(() => axios.get('/api/structures_etablissements').then((response) => {
@@ -359,6 +391,10 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
       //  this.props.dispatch(action2)
         this.fetchInfoSociete();
         this.fetchInfoParamGenerauxReservationOrdre();
+        this.fetchInfoParamGenerauxModules();
+        this.fetchInfoParamGenerauxPersonnels();
+        this.fetchInfoParamGenerauxJournal();
+        this.fetchInfoParamGenerauxStock();
         this.fetchTypeEntites()
         this.fetchTva();
         this.fetchStructures()

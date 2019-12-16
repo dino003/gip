@@ -26,19 +26,19 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
       
     }
 
-    componentDidMount(){
+    // componentDidMount(){
     
-         if(this.props.vehiculeSeleted == undefined){
-          const action = {type: "EDIT_SELECTED", value: this.props.location.state.veh}
-          this.props.dispatch(action)
+    //      if(this.props.vehiculeSeleted == undefined){
+    //       const action = {type: "EDIT_SELECTED", value: this.props.location.state.veh}
+    //       this.props.dispatch(action)
     
-         }
+    //      }
 
-         this.setState({
-            objetEdit: this.props.amendes.find(amende => amende.id == this.props.match.params.amende_id)
-        })
+    //      this.setState({
+    //         objetEdit: this.props.amendes.find(amende => amende.id == this.props.match.params.amende_id)
+    //     })
     
-        }
+    //     }
 
    
     setField = (event) => {
@@ -67,10 +67,11 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
       }
 
       enregistrerIntervention = (e) => {
+          const objetEdit = this.props.amendes.find(amende => amende.id == this.props.match.params.amende_id)
         e.preventDefault()
 
           if(this.verificationFormulaire() == null){
-            axios.post('/api/modifier_vehicule_amende/' + this.state.objetEdit.id, {
+            axios.post('/api/modifier_vehicule_amende/' + objetEdit.id, {
                // vehicule: this.props.vehiculeSeleted.id,
                 date: this.date.value,
                 date_reception: this.date_reception.value ,
@@ -111,7 +112,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
     
 
     render() {
-       const {objetEdit} = this.state
+        const objetEdit = this.props.amendes.find(amende => amende.id == this.props.match.params.amende_id)
 
        if(objetEdit !== undefined){
         return (
@@ -316,8 +317,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
             return ( <span style={{textAlign: 'center'}}>
 
             <Loader
-                type="BallTriangle"
-                color="#00BFFF"
+              
                 height={100}
                 width={100}
              />

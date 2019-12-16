@@ -17,15 +17,15 @@ import inputStyle from '../../../utils/inputStyle'
       
     }
 
-    componentDidMount(){
+    // componentDidMount(){
     
-         if(this.props.vehiculeSeleted == undefined){
-          const action = {type: "EDIT_SELECTED", value: this.props.location.state.veh}
-          this.props.dispatch(action)
+    //      if(this.props.vehiculeSeleted == undefined){
+    //       const action = {type: "EDIT_SELECTED", value: this.props.location.state.veh}
+    //       this.props.dispatch(action)
     
-         }
+    //      }
     
-        }
+    //     }
 
    
     setField = (event) => {

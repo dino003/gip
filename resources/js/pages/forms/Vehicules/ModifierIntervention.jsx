@@ -369,8 +369,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
             return ( <span style={{textAlign: 'center'}}>
 
             <Loader
-                type="BallTriangle"
-                color="#00BFFF"
+               
                 height={100}
                 width={100}
              />

@@ -26,18 +26,18 @@ export default class DepenseRecetteItem extends Component {
              <tr > 
                 <td onDoubleClick={this.props.onEdit.bind(this, item.id)}> {item.vehicule.entite_physique.entite}</td>
  
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.vehicule.immatriculation || 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.nature ? item.nature.nature_depense_recette : 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.imputation_interne || 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.depense_ou_recette || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.vehicule.immatriculation || ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.nature ? item.nature.nature_depense_recette : ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.imputation_interne || ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.depense_ou_recette || ''}</td>
 
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date ? moment(item.date).format('DD/MM/YYYY') : 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date ? moment(item.date).format('DD/MM/YYYY') : ''}</td>
 
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.montant_ttc ? formatageSomme(item.montant_ttc) : 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.montant_ht ? formatageSomme(item.montant_ht) : 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.tiers ? item.tiers.code : 'Non Renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.numero_piece || 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_piece ? moment(item.date_piece).format('DD/MM/YYYY') : 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.montant_ttc ? formatageSomme(item.montant_ttc) : 0}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.montant_ht ? formatageSomme(item.montant_ht) : 0}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.tiers ? item.tiers.code : ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.numero_piece || ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_piece ? moment(item.date_piece).format('DD/MM/YYYY') : ''}</td>
 
 
             <td>

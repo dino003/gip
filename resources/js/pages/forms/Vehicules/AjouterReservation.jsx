@@ -17,10 +17,7 @@ import inputStyle from '../../../utils/inputStyle'
       
     }
 
-    componentDidMount(){
-      
-        // console.log(  )
-        }
+ 
 
         setVehiculeSelectedAuRechargement = () => {
             if(this.props.vehiculeSeleted == undefined){

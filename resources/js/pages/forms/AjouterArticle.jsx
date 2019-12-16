@@ -177,8 +177,8 @@ import inputStyle from '../../utils/inputStyle'
                                             <label >N° d'article * </label>
                                             <input name="numero_article"  type="text"
                                             onChange={this.setField}
-                                            readOnly
-                                            defaultValue={this.generationNumeroArticle()}
+                                            readOnly={this.props.param_stock.gerer_numero_article_auto}
+                                            defaultValue={this.props.param_stock.gerer_numero_article_auto ? this.generationNumeroArticle() : null}
                                             ref={numero_article => this.numero_article = numero_article}
                                              className="form-control" />
                                              </div>
@@ -357,11 +357,15 @@ import inputStyle from '../../utils/inputStyle'
                                         <div className="col-md-2">
                                             <div className="position-relative form-group">
                                                 <label >Taux TVA %</label>
-                                                <input name="tva"  type="number"
+                                                
+                                                {this.props.tva.length ?  <input name="tva"  type="number"
                                                 onChange={this.setField}
-                                                defaultValue={this.props.tva.length ? this.props.tva.find(tva => tva.defaut).taux || 18 : 18}
+                                                defaultValue={ this.props.tva.find(tva => tva.defaut).taux || 18}
                                                 ref={tva => this.tva = tva}
-                                                className="form-control" />
+                                                className="form-control" /> :  <input name="tva"  type="number"
+                                                onChange={this.setField}
+                                                ref={tva => this.tva = tva}
+                                                className="form-control" />}
                                                 </div>
                                         </div>
 
@@ -425,6 +429,7 @@ import inputStyle from '../../utils/inputStyle'
 const mapStateToProps = state => {
     return {
         tiers: state.tiers.items,
+        param_stock: state.param_stock.items,
         marques: state.marques.items,
         famille_pieces_detaches: state.famille_pieces_detaches.items,
         articles: state.articles.items,

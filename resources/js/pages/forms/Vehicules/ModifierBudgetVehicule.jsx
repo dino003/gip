@@ -22,20 +22,20 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
         }      
     }
 
-    componentDidMount(){
+    // componentDidMount(){
     
-         if(this.props.vehiculeSeleted == undefined){
-          const action = {type: "EDIT_SELECTED", value: this.props.location.state.veh}
-          this.props.dispatch(action)
+    //      if(this.props.vehiculeSeleted == undefined){
+    //       const action = {type: "EDIT_SELECTED", value: this.props.location.state.veh}
+    //       this.props.dispatch(action)
     
-         }
+    //      }
 
-         this.setState({
-            objetEdit: this.props.budgetVehicules.find(bud => bud.id == this.props.match.params.budgetVehicule_id)
-        })
+    //      this.setState({
+    //         objetEdit: this.props.budgetVehicules.find(bud => bud.id == this.props.match.params.budgetVehicule_id)
+    //     })
     
     
-        }
+    //     }
 
    
     setField = (event) => {
@@ -145,10 +145,12 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
       }
 
       enregistrerIntervention = (e) => {
+       const objetEdit = this.props.budgetVehicules.find(bud => bud.id == this.props.match.params.budgetVehicule_id)
+
         e.preventDefault()
 
           if(this.verificationFormulaire() == null){
-            axios.post('/api/modifier_vehicule_budget_vehicule/' + this.state.objetEdit.id, {
+            axios.post('/api/modifier_vehicule_budget_vehicule/' + objetEdit.id, {
                 annee_budgetaire: this.state.objetEdit.annee_budgetaire,
                // vehicule: this.props.vehiculeSeleted.id,
                 entite_vehicule: this.entite_vehicule.value,
@@ -187,7 +189,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
     
 
     render() {
-        const {objetEdit} = this.state
+      const  objetEdit = this.props.budgetVehicules.find(bud => bud.id == this.props.match.params.budgetVehicule_id)
         if(objetEdit !== undefined){
             return (
                 <div className="app-main__inner">
@@ -373,8 +375,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
             return ( <span style={{textAlign: 'center'}}>
 
             <Loader
-                type="BallTriangle"
-                color="#00BFFF"
+              
                 height={100}
                 width={100}
              />

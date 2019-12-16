@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
 import {NavLink} from 'react-router-dom'
+import {connect} from 'react-redux'
 
 const active = {
     backgroundColor: 'orange'
 }
 
-export default class SidebarGestion extends Component {
+ class SidebarGestion extends Component {
 
     render() {
+
+        const {param_generaux_modules} = this.props
         return (
             <div className="app-sidebar sidebar-shadow ">
             {/*             <div className="app-sidebar sidebar-shadow bg-asteroid sidebar-text-light">
@@ -58,25 +61,35 @@ export default class SidebarGestion extends Component {
 
                                 </li>
 
-                             
+                                {param_generaux_modules && 
+
+                                    <React.Fragment>
+                                       
+                                        {param_generaux_modules.gestion_ordre_de_mission == 1 &&   
                                         <li>
                                             <NavLink activeStyle={active}  to="/gestion_du_parc_automobile/gestion-des-ordres-de-missions">
                                             <i className="metismenu-icon pe-7s-safe"></i>
                                                 Gestion des ordres de missions
                                             </NavLink>
-                                        </li>
+                                        </li> }
+
+                                        {param_generaux_modules.contrat_assurance_sinistres == 1 &&   
+
+
                                         <li>
                                             <NavLink activeStyle={active} to="/gestion_du_parc_automobile/gestion-des-contrats-assurances">
                                             <i className="metismenu-icon pe-7s-wallet"></i>
                                                 Les Contrats d'assurances
                                             </NavLink>
                                         </li>
-                                        <li>
+                                            }
+
+                                        {/* <li>
                                             <NavLink activeStyle={active} to="/gestion_du_parc_automobile/gestion-des-commandes">
                                             <i className="metismenu-icon pe-7s-target"></i>
                                                 Les Commandes
                                             </NavLink>
-                                        </li>
+                                        </li> */}
 
                                         <li>
                                             <NavLink activeStyle={active} to="/gestion_du_parc_automobile/parc/budgets-entites">
@@ -86,7 +99,8 @@ export default class SidebarGestion extends Component {
                                         </li>
 
                                         
-                           
+                                        {param_generaux_modules.stock_pieces_detache_consomable == 1 &&   
+
                                         <li>
                                         <a href="#">
                                             <i className="metismenu-icon pe-7s-diamond"></i>
@@ -122,7 +136,12 @@ export default class SidebarGestion extends Component {
                                             </li>
                                         
                                         </ul>
-                                    </li>
+                                    </li> 
+                                            }
+                                    </React.Fragment>
+                                }
+
+                                       
                                        
 
                                    
@@ -133,3 +152,13 @@ export default class SidebarGestion extends Component {
         )
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        param_generaux_modules: state.param_generaux_modules.items,
+        param_generaux_reservation_ordre: state.param_generaux_reservation_ordre.items,
+
+    }
+  }
+
+export default connect(mapStateToProps)(SidebarGestion)

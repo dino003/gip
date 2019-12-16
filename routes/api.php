@@ -484,7 +484,47 @@ Route::post('ajouter_ou_modifier_parametre_generaux_reservation_ordre', 'ParamRe
 //Route::post('modifier_info_etablissement/{id}', 'ParamReservationOrdreMissionController@update');
 
 
-//*********** fin parametre generaux reservation ordre ********************************************************* 
+//*********** fin parametre generaux modules ********************************************************* 
+
+//****************** parametre generaux modules  ********************************************************/
+Route::get('parametre_modules', 'ParamModuleController@index');
+
+// ajouter 
+Route::post('ajouter_ou_modifier_parametre_modules', 'ParamModuleController@storeOuUpdate');
+// modifier
+
+
+//*********** fin parametre generaux modules ********************************************************* 
+
+//****************** parametre generaux stock  ********************************************************/
+Route::get('parametre_stocks', 'ParamStockController@index');
+
+// ajouter 
+Route::post('ajouter_ou_modifier_parametre_stocks', 'ParamStockController@storeOuUpdate');
+// modifier
+
+//*********** fin parametre generaux stock ********************************************************* 
+
+
+//****************** parametre generaux journal  ********************************************************/
+Route::get('parametre_journal', 'ParamJournalController@index');
+
+// ajouter 
+Route::post('ajouter_ou_modifier_parametre_journal', 'ParamJournalController@storeOuUpdate');
+// modifier
+
+
+//*********** fin parametre generaux journal ********************************************************* 
+
+//****************** parametre generaux personnels  ********************************************************/
+Route::get('parametre_personnels', 'ParamPersonnelController@index');
+
+// ajouter 
+Route::post('ajouter_ou_modifier_parametre_personnels', 'ParamPersonnelController@storeOuUpdate');
+// modifier
+
+
+//*********** fin parametre generaux personnels ********************************************************* 
 
 Route::get('tt', 'UserController@index');
 

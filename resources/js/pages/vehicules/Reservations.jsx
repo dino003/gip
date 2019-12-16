@@ -7,7 +7,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import MatriculeInput from '../../components/MatriculeInput';
 import ReservationItem from '../../components/vehicules/ReservationItem';
 
-import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import today from '../../utils/today';
 
@@ -237,6 +236,10 @@ import today from '../../utils/today';
     
 
     render() {
+        if(this.props.vehiculeSeleted == undefined && this.props.vehicules.length){
+            const action = {type: "EDIT_SELECTED", value:  this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}
+              this.props.dispatch(action)
+            }
         const vehiculeselect = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
         const reservations = this.props.reservations.filter(inter => inter.vehicule.id == this.props.match.params.vehicule_id)
 

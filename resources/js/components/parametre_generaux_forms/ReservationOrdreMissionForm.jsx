@@ -21,6 +21,16 @@ class ReservationOrdreMissionForm extends Component {
         }
         this.props.onSubmitParamReservationOrdreMission( objet )
      }
+
+     setField = (event) => {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+    
+        this.setState({
+          [name]: value
+        });
+      }
     
 
 
@@ -29,7 +39,7 @@ class ReservationOrdreMissionForm extends Component {
         return (
             <div className="main-card mb-3 card">
             <div className="card-body">
-            {item != {} && <form className="" onSubmit={this.enregisterParamReservationOrdre}>
+            {item != undefined && <form className="" onSubmit={this.enregisterParamReservationOrdre}>
                                 <div className="form-row">
                                    
                                     <div className="col-md-7">
@@ -47,11 +57,43 @@ class ReservationOrdreMissionForm extends Component {
                                             defaultValue={item.vehicule_fonction_reservable}
                                             className="form-control">
                                                 
-                                               <option value={0}>Non</option>
-                                               <option value={1}>OUI</option>
+                                               <option value="0">Non</option>
+                                               <option value="1">OUI</option>
 
                                            </select>
                                     </div>
+
+                                    {/* <div className="col-md-1">
+                                   <div className="position-relative form-group">
+                                   <input type="checkbox"
+                                             onChange={this.setField}
+                                             checked={item.vehicule_fonction_reservable}
+                                            name="vehicule_fonction_reservable" /> 
+                                       </div>
+                                   </div> */}
+
+                                {/* <div className="col-md-1">
+                                   <div className="position-relative form-group">
+                                           <label className="">
+                                           Oui  <input type="radio"
+                                             onChange={this.setField}
+                                             checked={item.vehicule_fonction_reservable}
+
+                                            name="vehicule_fonction_reservable" value={1}  className="" /> </label>
+                                       </div>
+                                   </div>
+
+                                   <div className="col-md-1">
+                                   <div className="position-relative form-group">
+                                           <label className="">
+                                           Non  <input type="radio"
+                                             onChange={this.setField}
+                                             checked={!item.vehicule_fonction_reservable}
+
+                                            name="vehicule_fonction_reservable" value={0}  className="" /> </label>
+                                       </div>
+                                   </div> */}
+
                                   
                                 </div>
 
@@ -72,8 +114,8 @@ class ReservationOrdreMissionForm extends Component {
                                         defaultValue={item.admin_seul_modif}
 
                                            className="form-control">
-                                              <option value={0}>Non</option>
-                                              <option value={1}>OUI</option>
+                                              <option value="0">Non</option>
+                                               <option value="1">OUI</option>
 
                                           </select>
                                    </div>
@@ -97,8 +139,8 @@ class ReservationOrdreMissionForm extends Component {
                                         defaultValue={item.admin_seul_supp}
 
                                            className="form-control">
-                                              <option value="0">Non</option>
-                                              <option value="1">OUI</option>
+                                             <option value="0">Non</option>
+                                               <option value="1">OUI</option>
 
                                           </select>
                                    </div>
@@ -122,8 +164,8 @@ class ReservationOrdreMissionForm extends Component {
                                         defaultValue={item.edition_automatique}
 
                                            className="form-control">
-                                              <option value={0}>Non</option>
-                                              <option value={1}>OUI</option>
+                                             <option value="0">Non</option>
+                                               <option value="1">OUI</option>
 
                                           </select>
                                    </div>
@@ -148,8 +190,8 @@ class ReservationOrdreMissionForm extends Component {
                                         defaultValue={item.interdire_chevauchement}
 
                                            className="form-control">
-                                              <option value={0}>Interdire</option>
-                                              <option value={1}>Autoriser</option>
+                                             <option value="0">Non</option>
+                                               <option value="1">OUI</option>
 
                                           </select>
                                    </div>
