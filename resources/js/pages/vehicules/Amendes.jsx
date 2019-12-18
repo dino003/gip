@@ -155,7 +155,7 @@ import AmendeItem from '../../components/vehicules/AmendeItem';
             <div className="main-card card" >
                        <div className="card-body ">
                            <h5 className="card-title">Gestion des Amendes 
-                          
+                          {vehiculeselect &&
                             <span className="pull-right">
                         
                             <button title=" Ajouter une nouvelle intervention"
@@ -167,6 +167,7 @@ import AmendeItem from '../../components/vehicules/AmendeItem';
                                           Ajouter
                                              </button>
                                 </span>
+                                }
                              
                                 
   

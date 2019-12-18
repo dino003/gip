@@ -3,14 +3,14 @@ import InputMask from 'react-input-mask';
 import {ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {connect} from 'react-redux'
+import inputStyle from '../../utils/inputStyle';
 
 
  class AjouterTier extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            mode_reglement: 'Virement',
-            fournisseur: 'Fournisseur Interne'
+         isFormSubmitted: false
         }
       
     }
@@ -48,22 +48,45 @@ import {connect} from 'react-redux'
           }
       }
 
-      enregistrerPersonnel = (e) => {
+      enregistrerTiers = (e) => {
         e.preventDefault()
-     // console.log(this.verificationFormulaire())
 
           if(this.verificationFormulaire() == null){
-           // console.log(this.state)
-            axios.post('/api/ajouter_tier', this.state)
+              this.setState({isFormSubmitted: true})
+            axios.post('/api/ajouter_tier', {
+                code: this.code.value,
+                nom: this.nom.value,
+                metier_principal: this.metier_principal.value,
+                autre_metier1: this.autre_metier1.value,
+                adresse1: this.adresse1.value,
+                adresse2: this.adresse2.value,
+                code_postal: this.code_postal.value,
+                telephonne: this.telephonne.value,
+                fax: this.fax.value,
+                adresse_messagerie: this.adresse_messagerie.value,
+                numero_de_siret: this.numero_de_siret.value,
+                fournisseur: this.fournisseur.value,
+                numero_client_etablissement: this.numero_client_etablissement.value,
+                numero_compte: this.numero_compte.value,
+                mode_reglement: this.mode_reglement.value,
+                delai_reglement: this.delai_reglement.value,
+                nom_banque: this.nom_banque.value,
+                rib: this.rib.value,
+                ville: this.ville.value,
+                pays: this.pays.value,
+                autre_metier2: this.autre_metier2.value
+            })
             .then(response => {
        
-               const action = {type: "ADD_ENTITE", value: response.data}
+               const action = {type: "ADD_TIER", value: response.data}
                  this.props.dispatch(action)
-
-               this.props.history.push('/gestion-des-tiers')
+                this.setState({isFormSubmitted: false})
+               this.props.history.goBack()
 
              
-            }).catch(error => console.log(error))
+            }).catch(error => {
+                    this.setState({isFormSubmitted: false})
+                 console.log(error) } )
            
 
           }else{
@@ -73,7 +96,6 @@ import {connect} from 'react-redux'
               });
           }
 
-        console.log(this.state)
       }
     
 
@@ -83,24 +105,34 @@ import {connect} from 'react-redux'
               
                     <div className="main-card mb-3 card">
                         <div className="card-body"><h5 className="card-title">Gestion des Tiers</h5>
-                            <form className="" onChange={this.setField} onSubmit={this.enregistrerPersonnel}>
+                            <form className="" onChange={this.setField} onSubmit={this.enregistrerTiers}>
                                 <div className="form-row">
                                     <div className="col-md-2">
                                         <div className="position-relative form-group">
                                             <label >Code *</label>
-                                            <input name="code"  type="text" className="form-control" /></div>
+                                            <input name="code" 
+                                            style={inputStyle}
+                                            ref={code => this.code = code}
+                                             type="text" className="form-control" /></div>
                                     </div>
                                     <div className="col-md-5">
                                         <div className="position-relative form-group">
                                             <label >Nom *</label>
-                                            <input name="nom"  type="text" className="form-control" />
+                                            <input name="nom" 
+                                            style={inputStyle}
+                                            ref={nom => this.nom = nom}
+
+                                             type="text" className="form-control" />
                                         </div>
                                     </div>
 
                                     <div className="col-md-5">
                                         <div className="position-relative form-group">
                                             <label >Metier Principal </label>
-                                            <input name="metier_principal"  type="text" className="form-control" />
+                                            <input name="metier_principal"
+                                            ref={metier_principal => this.metier_principal = metier_principal}
+
+                                              type="text" className="form-control" />
                                         </div>
                                     </div>
                                   
@@ -112,12 +144,18 @@ import {connect} from 'react-redux'
                                     <div className="col-md-6">
                                         <div className="position-relative form-group">
                                             <label >Adresse </label>
-                                            <input name="adresse1"  type="text" className="form-control" /></div>
+                                            <input name="adresse1"
+                                            ref={adresse1 => this.adresse1 = adresse1}
+
+                                            type="text" className="form-control" /></div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="position-relative form-group">
                                             <label >Adresse </label>
-                                            <input name="adresse2" type="text" className="form-control" />
+                                            <input name="adresse2"
+                                            ref={adresse2 => this.adresse2 = adresse2}
+
+                                             type="text" className="form-control" />
                                         </div>
                                     </div>
                                   
@@ -126,23 +164,35 @@ import {connect} from 'react-redux'
                                     <div className="col-md-3">
                                         <div className="position-relative form-group">
                                             <label >Autre métier</label>
-                                            <input name="autre_metier1"  type="text" className="form-control" /></div>
+                                            <input name="autre_metier1"
+                                            ref={autre_metier1 => this.autre_metier1 = autre_metier1}
+
+                                              type="text" className="form-control" /></div>
                                     </div>
                                     <div className="col-md-3">
                                         <div className="position-relative form-group">
                                             <label >Autre métier</label>
-                                            <input name="autre_metier2"  type="text" className="form-control" /></div>
+                                            <input name="autre_metier2"
+                                            ref={autre_metier2 => this.autre_metier2 = autre_metier2}
+
+                                              type="text" className="form-control" /></div>
                                     </div>
                                     <div className="col-md-3">
                                         <div className="position-relative form-group">
                                             <label >Code postal</label>
-                                            <input name="code_postal" type="text" className="form-control" />
+                                            <input name="code_postal"
+                                            ref={code_postal => this.code_postal = code_postal}
+
+                                             type="text" className="form-control" />
                                         </div>
                                     </div>
                                     <div className="col-md-3">
                                     <div className="position-relative form-group">
                                             <label >Ville</label>
-                                            <input name="ville" type="text" className="form-control" />
+                                            <input name="ville"
+                                            ref={ville => this.ville = ville}
+
+                                             type="text" className="form-control" />
                                         </div>
                                     </div>
                                 </div>
@@ -151,23 +201,35 @@ import {connect} from 'react-redux'
                                     <div className="col-md-3">
                                         <div className="position-relative form-group">
                                             <label >Pays</label>
-                                            <input name="pays"  type="text" className="form-control" /></div>
+                                            <input name="pays"
+                                            ref={pays => this.pays = pays}
+
+                                              type="text" className="form-control" /></div>
                                     </div>
                                     <div className="col-md-3">
                                         <div className="position-relative form-group">
                                             <label >Télephonne</label>
-                                            <input name="telephonne"  type="text" className="form-control" /></div>
+                                            <input name="telephonne" 
+                                            ref={telephonne => this.telephonne = telephonne}
+
+                                             type="text" className="form-control" /></div>
                                     </div>
                                     <div className="col-md-3">
                                         <div className="position-relative form-group">
                                             <label >Fax</label>
-                                            <input name="fax" type="text" className="form-control" />
+                                            <input name="fax"
+                                             ref={fax => this.fax = fax}
+
+                                            type="text" className="form-control" />
                                         </div>
                                     </div>
                                     <div className="col-md-3">
                                     <div className="position-relative form-group">
                                             <label >Adresse internet de messagerie</label>
-                                            <input name="adresse_messagerie" type="text" className="form-control" />
+                                            <input name="adresse_messagerie"
+                                            ref={adresse_messagerie => this.adresse_messagerie = adresse_messagerie}
+
+                                             type="text" className="form-control" />
                                         </div>
                                     </div>
                                 </div>
@@ -176,104 +238,67 @@ import {connect} from 'react-redux'
                                 <div className="col-md-6">
                                         <div className="position-relative form-group">
                                             <label >Numero de siret</label>
-                                            <input name="numero_de_siret"  type="text" className="form-control" /></div>
+                                            <input name="numero_de_siret" 
+                                            ref={numero_de_siret => this.numero_de_siret = numero_de_siret}
+
+                                             type="text" className="form-control" /></div>
                                     </div>
-                                <div className="col-md-3">
-                                    <div className="position-relative form-group">
-                                            <label className="">
-                                            Fournisseur Interne 
-                                             <input onChange={this.setField}
-                                               type="radio"
-                                               checked={this.state.fournisseur === "Fournisseur Interne"}
-                                               value="Fournisseur Interne"
-                                                 name="fournisseur" className="" /> </label>
-                                        </div>
-                                    </div>
+
                                     <div className="col-md-3">
-                                    <div className="position-relative form-group">
-                                            <label className="">
-                                            Fournisseur Externe  <input onChange={this.setField}
-                                             type="radio" value="Fournisseur Externe"
-                                             checked={this.state.fournisseur === "Fournisseur Externe"}
-                                              name="fournisseur" className="" /> </label>
+                                        <div className="position-relative form-group">
+                                            <label className="center">Type de Fournisseur</label>
+
+                                            <select name="fournisseur"
+                                            ref={fournisseur => this.fournisseur = fournisseur}
+
+                                         onChange={this.setField}  className="form-control">
+                                            <option >Fournisseur Interne</option>
+                                            <option >Fournisseur Externe</option>
+                                          
+
+                                        </select>
                                         </div>
                                     </div>
-                                 
-                                   
-                                 
+
+                                    <div className="col-md-3">
+                                        <div className="position-relative form-group">
+                                            <label className="center">Mode de règlement</label>
+
+                                            <select name="mode_reglement"
+                                            ref={mode_reglement => this.mode_reglement = mode_reglement}
+
+                                         onChange={this.setField}  className="form-control">
+                                            <option >Virement</option>
+                                            <option >Chèque</option>
+                                            <option >Carte bancaire</option>
+                                            <option >Espèces</option>
+                                            <option >Traite</option>
+
+
+                                        </select>
+                                        </div>
+                                    </div>
+                            
                                 </div>
 
-                                <div className="form-row">
-                                   
-                                   <div className="col-md-2">
-                                       <div className="position-relative form-group">
-                                           <label className="center">Mode de règlement</label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-2">
-                                   <div className="position-relative form-group">
-                                           <label className="">
-                                           Virement  <input type="radio"
-                                             onChange={this.setField}
-                                              name="mode_reglement"
-                                              checked={this.state.mode_reglement === "Virement"}
-                                               value="Virement"  className="" /> </label>
-                                       </div>
-                                   </div>
-
-                                   <div className="col-md-2">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           Chèque  <input type="radio"
-                                            onChange={this.setField} 
-                                            name="mode_reglement"
-                                            checked={this.state.mode_reglement === "Chèque"}
-                                             value="Chèque" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-2">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           Carte bancaire  <input type="radio"
-                                            onChange={this.setField} name="mode_reglement"
-                                            checked={this.state.mode_reglement === "Carte bancaire"}
-
-                                             value="Carte bancaire" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-2">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           Espèces  <input type="radio" onChange={this.setField}
-                                            name="mode_reglement"
-                                            checked={this.state.mode_reglement === "Espèces"}
-                                             value="Espèces" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-2">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           Traite  <input type="radio" onChange={this.setField} 
-                                           name="mode_reglement" 
-                                           checked={this.state.mode_reglement === "Traite"}
-                                           value="Traite" className="" /></label>
-                                       </div>
-                                   </div>
-                               </div>
-
-                          
-
+                               
                                     <div className="form-row">
                                         <div className="col-md-4">
                                     <label  className="">N° de client de l'établissement chez ce Tiers</label>
-                                    <input name="numero_client_etablissement" type="text" className="form-control" />
+                                    <input name="numero_client_etablissement"
+                                            ref={numero_client_etablissement => this.numero_client_etablissement = numero_client_etablissement}
+
+                                     type="text" className="form-control" />
 
                                         </div>
                                       
                                         <div className="col-md-6">
                                             <label >N° compte du Tiers en comptabilité générale</label>
 
-                                            <input name="numero_compte" type="text" className="form-control" />
+                                            <input name="numero_compte"
+                                            ref={numero_compte => this.numero_compte = numero_compte}
+
+                                             type="text" className="form-control" />
                                         </div>
 
                                     
@@ -283,23 +308,32 @@ import {connect} from 'react-redux'
                                     <div className="col-md-4">
                                             <label >Delai de règlement</label>
 
-                                            <input  name="delai_reglement" type="text" className="form-control" />
+                                            <input  name="delai_reglement"
+                                            ref={delai_reglement => this.delai_reglement = delai_reglement}
+
+                                             type="text" className="form-control" />
                                         </div>
                                       
                                         <div className="col-md-4">
                                             <label >Nom de la banque du Tiers</label>
 
-                                            <input name="nom_banque" type="text" className="form-control" />
+                                            <input name="nom_banque"
+                                            ref={nom_banque => this.nom_banque = nom_banque}
+
+                                             type="text" className="form-control" />
                                         </div>
 
                                         <div className="col-md-4">
                                             <label >RIB Bancaire</label>
 
-                                            <input name="rib" type="text" className="form-control" />
+                                            <input name="rib"
+                                            ref={rib => this.rib = rib}
+
+                                             type="text" className="form-control" />
                                         </div>
                                     </div>
 
-                                <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
+                                    <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
                            
                                 <span onClick={() => this.props.history.goBack()}
                                  className="mt-2 btn btn-warning pull-right">Retour</span>
@@ -313,11 +347,6 @@ import {connect} from 'react-redux'
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        types_entites: state.types_entites.types_entites,
-        structures_etablissements: state.structures_etablissements.structures_etablissements,
-    }
-  }
 
-export default connect(mapStateToProps)(AjouterTier)
+
+export default connect(null)(AjouterTier)

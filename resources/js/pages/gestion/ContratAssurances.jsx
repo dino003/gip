@@ -44,8 +44,6 @@ import ContratAssuranceItem from '../../components/gestion/ContratAssuranceItem'
         return  <span style={{textAlign: 'center'}}>
 
         <Loader
-            type="BallTriangle"
-            color="#00BFFF"
             height={100}
             width={100}
          />

@@ -135,7 +135,7 @@ import TableHeader from '../../../components/TableHeader'
                            isSearchInputVisible={isSearchInputVisible}
                            link="/gestion_du_parc_automobile/ajouter-tiers"
                            searchChange={this.searchChange}
-                           titre="Gestion des entités"
+                           titre="Gestion des Tiers"
                            toggleSearchInput={this.toggleSearchInput}
                             isLink />
                            {/*

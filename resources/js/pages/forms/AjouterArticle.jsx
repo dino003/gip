@@ -12,7 +12,9 @@ import inputStyle from '../../utils/inputStyle'
  class AjouterArticle extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            isFormSubmitted: false
+        }
       
     }
 
@@ -89,6 +91,7 @@ import inputStyle from '../../utils/inputStyle'
             if(!this.tva.value || Number(this.tva.value) == 0){
                 let conf = confirm('La TVA est égale à 0 ; Souhaitez vous continuer ? ')
                 if(conf){
+                    this.setState({isFormSubmitted: true})
                     axios.post('/api/ajouter_article_stock', {
                         numero_article: this.numero_article.value,
                         famille_id: this.famille_id.value,
@@ -110,13 +113,14 @@ import inputStyle from '../../utils/inputStyle'
                     .then(response => { 
                        const action = {type: "ADD_ARTICLE", value: response.data}
                          this.props.dispatch(action)
-        
+                        this.setState({isFormSubmitted: false})
                        this.props.history.goBack();
         
                      
                     }).catch(error => console.log(error))
                 }
             }else{
+                this.setState({isFormSubmitted: true})
                 axios.post('/api/ajouter_article_stock', {
                     numero_article: this.numero_article.value,
                     famille_id: this.famille_id.value,
@@ -138,11 +142,13 @@ import inputStyle from '../../utils/inputStyle'
                 .then(response => { 
                    const action = {type: "ADD_ARTICLE", value: response.data}
                      this.props.dispatch(action)
-    
+                    this.setState({isFormSubmitted: false})
                    this.props.history.goBack();
     
                  
-                }).catch(error => console.log(error))
+                }).catch(error => { 
+                    this.setState({isFormSubmitted: false})
+                    console.log(error) } )
             }
 
           }else{
@@ -412,7 +418,7 @@ import inputStyle from '../../utils/inputStyle'
                             
                           
 
-                                <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
+                            <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
                           
                                 <span onClick={() => this.props.history.goBack()}
                                  className="mt-2 btn btn-warning pull-right">Retour</span>

@@ -62,6 +62,8 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'tenancy.enforce' => \App\Http\Middleware\EnforceTenancy::class,
         'tenant.exists' => \App\Http\Middleware\TenantExists::class,
+        'jwt-auth' => \App\Http\Middleware\jwtMiddleware::class,
+
 
 
     ];

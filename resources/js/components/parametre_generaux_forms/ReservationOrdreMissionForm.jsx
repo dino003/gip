@@ -11,11 +11,11 @@ class ReservationOrdreMissionForm extends Component {
     enregisterParamReservationOrdre = (e) =>{
         e.preventDefault();
         let objet = {
-            vehicule_fonction_reservable: this.vehicule_fonction_reservable.value,
-            admin_seul_modif: this.admin_seul_modif.value,
-            admin_seul_supp: this.admin_seul_supp.value,
-            edition_automatique: this.edition_automatique.value,
-            interdire_chevauchement: this.interdire_chevauchement.value,
+            vehicule_fonction_reservable: this.vehicule_fonction_reservable.checked,
+            admin_seul_modif: this.admin_seul_modif.checked,
+            admin_seul_supp: this.admin_seul_supp.checked,
+            edition_automatique: this.edition_automatique.checked,
+            interdire_chevauchement: this.interdire_chevauchement.checked,
             nombre_jour_a_ne_pas_depasser: this.nombre_jour_a_ne_pas_depasser.value,
             jour_par_date: this.jour_par_date.value,
         }
@@ -52,47 +52,16 @@ class ReservationOrdreMissionForm extends Component {
 
                                     <div className="col-md-2">
                                       
-                                           <select name="vehicule_fonction_reservable" 
-                                            ref={vehicule_fonction_reservable => this.vehicule_fonction_reservable = vehicule_fonction_reservable}
-                                            defaultValue={item.vehicule_fonction_reservable}
-                                            className="form-control">
-                                                
-                                               <option value="0">Non</option>
-                                               <option value="1">OUI</option>
+                      
 
-                                           </select>
+                                           <input name="vehicule_fonction_reservable" type="checkbox"
+                                            onChange={this.setField}
+                                            defaultChecked={item.vehicule_fonction_reservable}
+
+                                            ref={vehicule_fonction_reservable => this.vehicule_fonction_reservable = vehicule_fonction_reservable} />
                                     </div>
 
-                                    {/* <div className="col-md-1">
-                                   <div className="position-relative form-group">
-                                   <input type="checkbox"
-                                             onChange={this.setField}
-                                             checked={item.vehicule_fonction_reservable}
-                                            name="vehicule_fonction_reservable" /> 
-                                       </div>
-                                   </div> */}
-
-                                {/* <div className="col-md-1">
-                                   <div className="position-relative form-group">
-                                           <label className="">
-                                           Oui  <input type="radio"
-                                             onChange={this.setField}
-                                             checked={item.vehicule_fonction_reservable}
-
-                                            name="vehicule_fonction_reservable" value={1}  className="" /> </label>
-                                       </div>
-                                   </div>
-
-                                   <div className="col-md-1">
-                                   <div className="position-relative form-group">
-                                           <label className="">
-                                           Non  <input type="radio"
-                                             onChange={this.setField}
-                                             checked={!item.vehicule_fonction_reservable}
-
-                                            name="vehicule_fonction_reservable" value={0}  className="" /> </label>
-                                       </div>
-                                   </div> */}
+                                  
 
                                   
                                 </div>
@@ -109,15 +78,12 @@ class ReservationOrdreMissionForm extends Component {
 
                                    <div className="col-md-2">
                                      
-                                          <select name="admin_seul_modif" 
-                                        ref={admin_seul_modif => this.admin_seul_modif = admin_seul_modif}
-                                        defaultValue={item.admin_seul_modif}
 
-                                           className="form-control">
-                                              <option value="0">Non</option>
-                                               <option value="1">OUI</option>
+                                          <input name="admin_seul_modif" type="checkbox"
+                                            onChange={this.setField}
+                                            defaultChecked={item.admin_seul_modif}
 
-                                          </select>
+                                            ref={admin_seul_modif => this.admin_seul_modif = admin_seul_modif} />
                                    </div>
                                  
                                </div>
@@ -134,15 +100,13 @@ class ReservationOrdreMissionForm extends Component {
 
                                    <div className="col-md-2">
                                      
-                                          <select name="admin_seul_supp" 
-                                        ref={admin_seul_supp => this.admin_seul_supp = admin_seul_supp}
-                                        defaultValue={item.admin_seul_supp}
+                                   
 
-                                           className="form-control">
-                                             <option value="0">Non</option>
-                                               <option value="1">OUI</option>
+                                          <input name="admin_seul_supp" type="checkbox"
+                                            onChange={this.setField}
+                                            defaultChecked={item.admin_seul_supp}
 
-                                          </select>
+                                            ref={admin_seul_supp => this.admin_seul_supp = admin_seul_supp} />
                                    </div>
                                  
                                </div>
@@ -159,15 +123,11 @@ class ReservationOrdreMissionForm extends Component {
 
                                    <div className="col-md-2">
                                      
-                                          <select name="edition_automatique" 
-                                        ref={edition_automatique => this.edition_automatique = edition_automatique}
-                                        defaultValue={item.edition_automatique}
+                                          <input name="edition_automatique" type="checkbox"
+                                            onChange={this.setField}
+                                            defaultChecked={item.edition_automatique}
 
-                                           className="form-control">
-                                             <option value="0">Non</option>
-                                               <option value="1">OUI</option>
-
-                                          </select>
+                                            ref={edition_automatique => this.edition_automatique = edition_automatique} />
                                    </div>
                                  
                                </div>
@@ -185,15 +145,13 @@ class ReservationOrdreMissionForm extends Component {
 
                                    <div className="col-md-2">
                                      
-                                          <select name="interdire_chevauchement" 
-                                        ref={interdire_chevauchement => this.interdire_chevauchement = interdire_chevauchement}
-                                        defaultValue={item.interdire_chevauchement}
+                           
 
-                                           className="form-control">
-                                             <option value="0">Non</option>
-                                               <option value="1">OUI</option>
+                                          <input name="interdire_chevauchement" type="checkbox"
+                                            onChange={this.setField}
+                                            defaultChecked={item.interdire_chevauchement}
 
-                                          </select>
+                                            ref={interdire_chevauchement => this.interdire_chevauchement = interdire_chevauchement} />
                                    </div>
                                  
                                </div>
@@ -245,60 +203,9 @@ class ReservationOrdreMissionForm extends Component {
 
                                  
 
-                                    {/* <div className="form-row">
-                                    <div className="col-md-2">
-                                        <div className="position-relative form-group">
-                                            <label >Code postal </label>
-                                            <input name="code_postal"  type="text"
-                                            ref={code_postal => this.code_postal = code_postal}
-
-                                             className="form-control" />
-                                             </div>
-                                    </div>
-                                    <div className="col-md-2">
-                                        <div className="position-relative form-group">
-                                            <label >Ville </label>
-                                            <input name="ville" type="text" 
-                                            ref={ville => this.ville = ville}
-
-                                            className="form-control" />
-                                        </div>
-                                    </div>
-
-                                    <div className="col-md-3">
-                                        <div className="position-relative form-group">
-                                            <label >Téléphonne </label>
-                                            <input name="telephonne"
-                                            ref={telephonne => this.telephonne = telephonne}
-
-                                             type="text" className="form-control" />
-                                        </div>
-                                    </div>
-
-                                    <div className="col-md-2">
-                                        <div className="position-relative form-group">
-                                            <label >Fax </label>
-                                            <input name="fax" type="text"
-                                            ref={fax => this.fax = fax}
-
-                                             className="form-control" />
-                                        </div>
-                                    </div>
-
-                                    <div className="col-md-3">
-                                        <div className="position-relative form-group">
-                                            <label >Site internet </label>
-                                            <input name="internet" type="text"
-                                            ref={internet => this.internet = internet}
-
-                                             className="form-control" />
-                                        </div>
-                                    </div>
-                                  
-                                </div> */}
                                
                              
-                               {!this.props.isFormReservationOrdreSubmitted ? <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button> : <button disabled  className="mt-2 btn btn-warning">Merci de patienter ...</button>}
+                               {!this.props.isFormReservationOrdreSubmitted ? <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button> : <button disabled  className="mt-2 btn btn-warning">Merci de patienter <i className="fa fa-spinner fa-spin fa-1x fa-fw"></i></button>}
                            
                                 
                             </form>}

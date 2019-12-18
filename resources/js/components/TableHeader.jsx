@@ -35,7 +35,7 @@ export default class TableHeader extends Component {
                                           Ajouter
                                              </button>
                                              }
-                             {isSearchInputVisible ?  <button title="Quitter le mode recherche"
+                             {/* {isSearchInputVisible ?  <button title="Quitter le mode recherche"
                        className="mb-2 mr-2 btn-transition btn btn-outline-danger pull-right"
                        onClick={() => toggleSearchInput()}
                        >
@@ -47,7 +47,7 @@ export default class TableHeader extends Component {
                        >
                        <i className="fa fa-search"></i> {' '}
 
-                              </button>}
+                              </button>} */}
                               </span>
                             {isSearchInputVisible &&  
              <input

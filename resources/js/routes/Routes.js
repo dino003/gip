@@ -43,7 +43,6 @@ import NatureReservations from '../pages/codifications/NatureReservations';
 import FamillePieceDetache from '../pages/codifications/FamillePieceDetache';
 import NatureTaxes from '../pages/codifications/NatureTaxes';
 import CoutConsommables from '../pages/codifications/CoutConsommables';
-import Dash from '../pages/Vehicules';
 import AjouterVehicule from '../pages/forms/Vehicules/AjouterVehicule';
 import Utilisations from '../pages/vehicules/Utilisations';
 import Interventions from '../pages/vehicules/Interventions';
@@ -99,6 +98,8 @@ import GardeCodification2 from '../pages/GardeCodification2'
 import GardeGestion from '../pages/GardeGestion'
 
 import GardeParametres from '../pages/GardeParametres'
+import ModifierVehicule from '../pages/forms/Vehicules/ModifierVehicule';
+import Vehicules from '../pages/Vehicules';
 
 
 
@@ -169,9 +170,11 @@ const NavBack = () => (
     <MasterCodification  path="/gestion_du_parc_automobile/natures-des-taxes" component={NatureTaxes} />
 
 
-    <Master exact path="/gestion_du_parc_automobile/parc" component={Dash} />
+    <Master exact path="/gestion_du_parc_automobile/parc" component={Vehicules} />
 
   <Master path="/gestion_du_parc_automobile/creation-de-vehicule" component={AjouterVehicule} />
+  <Master path="/gestion_du_parc_automobile/modification_vehicule/:vehicule_id" component={ModifierVehicule} />
+
 
   <Master path="/gestion_du_parc_automobile/parc/utilisations-vehicules/:vehicule_id/:imma" component={Utilisations} />
   <Master path="/gestion_du_parc_automobile/parc/interventions-vehicules/:vehicule_id/:imma" component={Interventions} />

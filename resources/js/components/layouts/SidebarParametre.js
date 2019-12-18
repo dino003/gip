@@ -71,12 +71,19 @@ export default class SidebarParametre extends Component {
                                                 Les Entités
                                             </NavLink>
                                         </li>
+
                                         <li>
+                                            <NavLink activeStyle={active} to="/gestion_du_parc_automobile/gestion-des-messages">
+                                            <i className="metismenu-icon pe-7s-wallet"></i>
+                                                Les Messages
+                                            </NavLink>
+                                        </li>
+                                        {/* <li>
                                             <NavLink activeStyle={active} to="/gestion_du_parc_automobile/r">
                                             <i className="metismenu-icon pe-7s-target"></i>
                                                 Les Models de documents
                                             </NavLink>
-                                        </li>
+                                        </li> */}
 
                                      
 

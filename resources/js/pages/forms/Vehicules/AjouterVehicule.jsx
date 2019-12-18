@@ -18,7 +18,7 @@ const inputStyle = {
 //     '-' + date.getDate().toString().padStart(2, 0);
 
 
-class AjouterModelVehicule extends Component {
+class AjouterVehicule extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -163,7 +163,7 @@ class AjouterModelVehicule extends Component {
                 const action = { type: "ADD_VEHICULE", value: response.data }
                 this.props.dispatch(action)
 
-                this.props.history.push('/')
+                this.props.history.goBack();
             }).catch(error => console.log(error))
 
         } else {
@@ -1118,4 +1118,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(AjouterModelVehicule)
+export default connect(mapStateToProps)(AjouterVehicule)

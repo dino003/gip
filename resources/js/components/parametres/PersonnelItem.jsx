@@ -12,13 +12,13 @@ export default class PersonnelItem extends Component {
         return (
             <tr>
                                       
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.nom || 'Non Renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.nom || ''}</td>
          
-            <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.prenom || 'Non Renseigné'}</td>
-            <td   onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.matricule || 'Non Renseigné'}</td>
-            <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.entite_affectation ? item.entite_affectation.entite : 'Non Renseigné'}</td>
-            <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.portable || 'Non Renseigné'}</td>
-            <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.telephone || 'Non Renseigné'}</td>
+            <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.prenom || ''}</td>
+            <td   onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.matricule || ''}</td>
+            <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.entite_affectation ? item.entite_affectation.entite : ''}</td>
+            <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.portable || ''}</td>
+            <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.telephone || ''}</td>
 
             <td>
 

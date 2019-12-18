@@ -3,7 +3,7 @@ import InputMask from 'react-input-mask';
 import {ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {connect} from 'react-redux'
-
+import inputStyle from '../../utils/inputStyle';
 import Loader from 'react-loader-spinner'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
@@ -12,25 +12,23 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
     constructor(props) {
         super(props);
         this.state = {
-         personneModif: undefined
-
+         isFormSubmitted: false
         }
     }
 
-    componentDidMount(){
-        axios.get('/api/voir_personnel/' + this.props.match.params.personnel_id).then(response => {
-            // const action = {type: "GET_ENTITE", value: response.data}
-            //  this.props.dispatch(action)
-            this.setState({personneModif: response.data})
-      })
-    }
+    // componentDidMount(){
+    //     axios.get('/api/voir_personnel/' + this.props.match.params.personnel_id).then(response => {
+    //         // const action = {type: "GET_ENTITE", value: response.data}
+    //         //  this.props.dispatch(action)
+    //         this.setState({personneModif: response.data})
+    //   })
+    // }
 
     renderLoading(){
         return  <span style={{textAlign: 'center'}}>
 
         <Loader
-            type="BallTriangle"
-            color="#00BFFF"
+          
             height={100}
             width={100}
          />
@@ -50,12 +48,37 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
         });
       }
 
+      setFieldEntiteAffectation = (event) => {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        this.setState({
+            [name]: value
+        }, () => {
+            this.nom_entite_affectation.value = this.nomEntiteAffectation()
+            // this.contenu_libelle_commande.value = this.LibelleAutoDeCommannde()
+
+        });
+    }
+
+    nomEntiteAffectation = () => {
+        //  this.libelle_commande.value = this.type_commande.value 
+        if (this.entite_affectation != undefined && this.entite_affectation.value != '') {
+           var enti = this.props.entites.find(ent => ent.id == this.entite_affectation.value)
+           return  enti.nom_entite || null
+        }
+
+        return null
+
+    }
+
       verificationFormulaire () {
-          if(this.nom.value == undefined || !this.nom.value.length){
+          if(this.nom.value == ''){
               return "Le Nom est obligatoire !"
-          }else if(this.prenom.value == undefined || !this.prenom.value.length){
+          }else if(this.prenom.value == ''){
               return "Le prenom est obligatoire !"
-          }else if(this.entite_affectation.value == undefined || !this.entite_affectation.value.length){
+          }else if(this.entite_affectation.value == ''){
             return "L' entité d'affectation est obligatoire !"
           }else{
               return null
@@ -65,11 +88,13 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
       enregistrerPersonnel = (e) => {
         e.preventDefault()
           if(this.verificationFormulaire() == null){
-          //  console.log(this.state)
-            axios.post('/api/modifier_personnel/' + this.state.personneModif.id, {
+              this.setState({isFormSubmitted: true})
+              const personneModif = this.props.personnels.find(per => per.id == this.props.match.params.personnel_id)
+
+            axios.post('/api/modifier_personnel/' + personneModif.id, {
                 nom: this.nom.value,
                 prenom: this.prenom.value,
-                actif: this.state.actif,
+                actif: this.actif.checked,
                 fonction: this.fonction.value,
                 matricule: this.matricule.value,
                 telephone: this.telephone.value,
@@ -78,14 +103,14 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                 adresse_email: this.adresse_email.value,
                 nationalite: this.nationalite.value,
                 date_naissance: this.date_naissance.value,
-                personne_prioritaire: this.state.personne_prioritaire,
-                statut_chaufeur: this.state.statut_chaufeur,
-                duree_contrat: this.state.duree_contrat,
-                college: this.state.college,
+                personne_prioritaire: this.personne_prioritaire.checked,
+                statut_chaufeur: this.statut_chaufeur.checked,
+                duree_contrat: this.duree_contrat.value,
+                college: this.college.value,
                 numero_permis_conduire: this.numero_permis_conduire.value,
                 date_delivrance: this.date_delivrance.value,
                 lieu_delivrance: this.lieu_delivrance.value,
-                type_permis: this.state.type_permis,
+                type_permis: this.type_permis.value,
                 numero_conducteur_pour_gestion_carte: this.numero_conducteur_pour_gestion_carte.value,
                 categorie: this.categorie.value,
                 entite_affectation: this.entite_affectation.value,
@@ -97,9 +122,11 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                 
                const action = {type: "EDIT_PERSONNEL", value: response.data}
                this.props.dispatch(action)
-
-             this.props.history.push('/gestion_du_personnel')
-            }).catch(error => console.log(error))
+                this.setState({isFormSubmitted: false})
+             this.props.history.goBack()
+            }).catch(error => {
+                this.setState({isFormSubmitted: false})
+                console.log(error) } )
 
           }else{
               //console.log(this.verificationFormulaire())
@@ -111,11 +138,11 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
     
 
     render() {
-        const {personneModif} = this.state
-       // console.log(personneModif)
+        const personneModif = this.props.personnels.find(per => per.id == this.props.match.params.personnel_id)
+        const {param_personnels} = this.props
         return (
             <div className="app-main__inner">
-                {this.state.personneModif != undefined ? 
+                {personneModif != undefined ? 
               
                     <div className="main-card mb-3 card">
                         <div className="card-body"><h5 className="card-title">Fichier du personnel</h5>
@@ -125,6 +152,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         <div className="position-relative form-group">
                                             <label >Nom</label>
                                             <input name="nom"
+                                            style={inputStyle}
                                             ref={nom => this.nom = nom}
                                             defaultValue={personneModif.nom}
                                               type="text" className="form-control" /></div>
@@ -133,6 +161,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         <div className="position-relative form-group">
                                             <label >Prénom</label>
                                             <input name="prenom"
+                                             style={inputStyle}
+
                                             ref={prenom => this.prenom = prenom}
                                             defaultValue={personneModif.prenom}
 
@@ -145,6 +175,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                             Décochez si inactif  <input type="checkbox"
                                              onChange={this.setField}
                                              defaultChecked={personneModif.actif}
+                                             ref={actif => this.actif = actif}
+
                                                name="actif"  className="" /> </label>
                                         </div>
                                     </div>
@@ -154,12 +186,13 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                     <label  className="">Entité d'affectation</label>
                                         <select name="entite_affectation" 
                                         defaultValue={personneModif.entite_affectation.id}
-
+                                        style={inputStyle}
+                                        onChange={this.setFieldEntiteAffectation}
                                         ref={entite_affectation => this.entite_affectation = entite_affectation}
                                          className="form-control">
                                             <option value={null}></option>
                                             {this.props.entites.map((ent, index) => 
-                                             <option key={ent.id} value={ent.id}>{ent.entite} || {ent.nom_entite}</option>
+                                             <option key={ent.id} value={ent.id}>{ent.entite} </option>
 
                                                 )}
                                         </select>
@@ -170,6 +203,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
                                             <input name="nom_entite_affectation"
                                              defaultValue={personneModif.nom_entite_affectation}
+                                             style={inputStyle}
 
                                             ref={nom_entite_affectation => this.nom_entite_affectation = nom_entite_affectation}
                                              readOnly type="text" className="form-control" />
@@ -191,7 +225,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                             <label >Matricule</label>
                                             <input name="matricule"
                                             defaultValue={personneModif.matricule}
-
+                                            style={param_personnels.matricule_obligatoire ? inputStyle : null}
+                                            required={param_personnels.matricule_obligatoire}
                                             ref={matricule => this.matricule = matricule}
                                              type="text" className="form-control" />
                                         </div>
@@ -201,7 +236,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                             <label >Nom de la boite aux lettres de messagerie</label>
                                             <input name="adresse_email"
                                             defaultValue={personneModif.adresse_email}
-
+                                            style={param_personnels.boite_lettre ? inputStyle : null}
+                                            required={param_personnels.boite_lettre}
                                             ref={adresse_email => this.adresse_email = adresse_email}
                                               type="text" className="form-control" />
                                         </div>
@@ -267,6 +303,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                              <input type="checkbox"
                                               onChange={this.setField}
                                                defaultChecked={personneModif.personne_prioritaire}
+                                               ref={personne_prioritaire => this.personne_prioritaire = personne_prioritaire}
 
                                                 name="personne_prioritaire" className="" /> </label>
                                         </div>
@@ -276,7 +313,9 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         <div className="position-relative form-group">
                                             <label className="form-check-label">
                                             Cette personne a un statut de chauffeur 
-                                             <input type="checkbox"                                               onChange={this.setField}
+                                             <input type="checkbox"  onChange={this.setField}
+                                            ref={statut_chaufeur => this.statut_chaufeur = statut_chaufeur}
+
                                                 defaultChecked={personneModif.statut_chaufeur} 
                                                  name="statut_chaufeur" className="" /></label>
                                         </div>
@@ -285,92 +324,51 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
                                 <div className="form-row">
                                    
-                                    <div className="col-md-6">
-                                        <div className="position-relative form-group">
-                                            <label className="center">Durée du contrat</label>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-2">
-                                    <div className="position-relative form-group">
-                                            <label className="">
-                                            Indéterminé  <input type="radio"
-                                             name="duree_contrat"
-                                             onChange={this.setField}
-                                             defaultChecked={personneModif.duree_contrat === "Indéterminé"}
+                                   <div className="col-md-6">
+                                       <div className="position-relative form-group">
+                                           <label className="center">Durée du contrat</label>
 
-                                              value="Indéterminé"
-                                               className="" /> </label>
-                                        </div>
-                                    </div>
+                                           <select name="duree_contrat"
+                                           ref={duree_contrat => this.duree_contrat = duree_contrat}
+                                            defaultValue={personneModif.duree_contrat}
+                                        onChange={this.setField}  className="form-control">
+                                           <option >Indéterminé</option>
+                                           <option >Déterminé</option>
+                                       </select>
+                                       </div>
+                                   </div>
 
-                                    <div className="col-md-2">
-                                        <div className="position-relative form-group">
-                                            <label className="form-check-label">
-                                            Déterminé  <input type="radio"
-                                            onChange={this.setField}
-                                             name="duree_contrat"
-                                             defaultChecked={personneModif.duree_contrat === "Déterminé"}
-
-                                              value="Déterminé" className="" /></label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="form-row">
-                                   
-                                   <div className="col-md-3">
+                                   <div className="col-md-6">
                                        <div className="position-relative form-group">
                                            <label className="center">Collège</label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-2">
-                                   <div className="position-relative form-group">
-                                           <label className="">
-                                           Indéterminé  <input type="radio"
-                                            name="college" 
-                                             value="Indéterminé"
-                                            onChange={this.setField}
-                                            defaultChecked={personneModif.college === "Indéterminé"}
-                                             className="" /> </label>
-                                       </div>
-                                   </div>
 
-                                   <div className="col-md-2">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           Cadre  <input type="radio"
-                                           onChange={this.setField}
-                                           defaultChecked={personneModif.college === "Cadre"}
-                                            name="college"
-                                            value="Cadre" className="" /></label>
+                                           <select name="college"
+                                           ref={college => this.college = college}
+                                           defaultValue={personneModif.college}
+
+                                        onChange={this.setField}  className="form-control">
+                                           <option >Indéterminé</option>
+                                           <option >Cadre</option>
+                                           <option >Non Cadre</option>
+                                           <option >Non Cadre, fait office de Cadre</option>
+
+                                       </select>
                                        </div>
                                    </div>
-                                   <div className="col-md-2">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           Non Cadre  <input type="radio" name="college"
-                                           onChange={this.setField}
-                                           defaultChecked={personneModif.college === "Non Cadre"}
-                                            value="Non Cadre" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-3">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           Non Cadre, Fait office de cadre  <input type="radio"
-                                            value="Non Cadre, fait office de Cadre"
-                                            defaultChecked={personneModif.college === "Non Cadre, fait office de Cadre"}
-                                            onChange={this.setField}
-                                             name="college" className="" /></label>
-                                       </div>
-                                   </div>
+                                
+
+                                 
                                </div>
 
+                          
+
                                <div className="form-row">
-                                    <div className="col-md-5">
+                                    <div className="col-md-3">
                                         <div className="position-relative form-group">
                                             <label >Numero du permis de conduire</label>
                                             <input name="numero_permis_conduire"
+                                             style={param_personnels.info_permis ? inputStyle : null}
+                                             required={param_personnels.info_permis}
                                             ref={numero_permis_conduire => this.numero_permis_conduire = numero_permis_conduire}
                                               type="text"
                                               defaultValue={personneModif.numero_permis_conduire}
@@ -380,116 +378,50 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         <div className="position-relative form-group">
                                             <label >Date de délivrance</label>
                                             <input name="date_delivrance"
+                                                style={param_personnels.info_permis ? inputStyle : null}
+                                                required={param_personnels.info_permis}
                                               defaultValue={personneModif.date_delivrance}
 
                                             ref={date_delivrance => this.date_delivrance = date_delivrance}
                                              type="date"  className="form-control" />
                                         </div>
                                     </div>
-                                    <div className="col-md-4">
+                                    <div className="col-md-3">
                                     <div className="position-relative form-group">
                                             <label >Lieu de délivrance</label>
                                             <input name="lieu_delivrance"
                                              defaultValue={personneModif.lieu_delivrance}
-
+                                             style={param_personnels.info_permis ? inputStyle : null}
+                                             required={param_personnels.info_permis}
                                             ref={lieu_delivrance => this.lieu_delivrance = lieu_delivrance}
                                               type="text" className="form-control" />
                                         </div>
                                     </div>
+
+                                    <div className="col-md-3">
+                                        <div className="position-relative form-group">
+                                            <label className="center">Type de permis</label>
+
+                                            <select name="type_permis"
+                                            ref={type_permis => this.type_permis = type_permis}
+                                                defaultValue={personneModif.type_permis}
+                                         onChange={this.setField}  className="form-control">
+                                            <option >BCDE</option>
+                                            <option >A1</option>
+                                            <option >A</option>
+                                            <option >B</option>
+                                            <option >C</option>
+                                            <option >C1</option>
+                                            <option >D</option>
+                                            <option >E</option>
+                                            <option >F</option>
+
+                                        </select>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <div className="form-row">
-                                   
-                                   <div className="col-md-3">
-                                       <div className="position-relative form-group">
-                                           <label className="center">Type de Permis</label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-1">
-                                   <div className="position-relative form-group">
-                                           <label className="">
-                                           A1  <input type="radio"
-                                             onChange={this.setField}
-                                             defaultChecked={personneModif.type_permis === "A1"}
-
-                                            name="type_permis" value="A1"  className="" /> </label>
-                                       </div>
-                                   </div>
-
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           A  <input type="radio" name="type_permis"
-                                            onChange={this.setField}
-                                            defaultChecked={personneModif.type_permis === "A"}
-                                            value="A" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           B  <input type="radio" name="type_permis"
-                                           
-                                                onChange={this.setField}
-                                                defaultChecked={personneModif.type_permis === "B"}
-                                                value="B" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           C  <input type="radio" name="type_permis"
-                                             onChange={this.setField}
-                                             defaultChecked={personneModif.type_permis === "C"}
-                                            value="C" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           C1  <input type="radio" name="type_permis"
-                                             onChange={this.setField}
-                                             defaultChecked={personneModif.type_permis === "C1"}
-                                            value="C1" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           D  <input type="radio" name="type_permis"
-                                              onChange={this.setField}
-                                              defaultChecked={personneModif.type_permis === "D"}
-                                              value="D" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           E  <input type="radio"
-                                              onChange={this.setField}
-                                              defaultChecked={personneModif.type_permis === "E"}
-                                              name="type_permis" value="E" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           F  <input type="radio" name="type_permis"
-                                              onChange={this.setField}
-                                              defaultChecked={personneModif.type_permis === "F"}
-                                              value="F" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           BCDE  <input type="radio" name="type_permis"
-                                              onChange={this.setField}
-                                              defaultChecked={personneModif.type_permis === "BCDE"}
-                                              value="BCDE" className="" /></label>
-                                       </div>
-                                   </div>
-                               </div>
+                             
 
                                <div className="form-row">
                                     <div className="col-md-5">
@@ -556,7 +488,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                     </div>
                                 </div>
 
-                                <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
+                                <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
                            
                                 <span onClick={() => this.props.history.goBack()}
                                  className="mt-2 btn btn-warning pull-right">Retour</span>
@@ -573,6 +505,9 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 const mapStateToProps = state => {
     return {
         entites: state.entites.items,
+        personnels: state.personnels.items,
+        param_personnels: state.param_personnels.items
+
     }
   }
 

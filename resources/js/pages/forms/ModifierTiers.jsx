@@ -5,24 +5,25 @@ import 'react-toastify/dist/ReactToastify.css';
 import {connect} from 'react-redux'
 import Loader from 'react-loader-spinner'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
+import inputStyle from '../../utils/inputStyle';
 
 
  class ModifierTiers extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            tiersModif: undefined
+            isFormSubmitted: false
         }
       
     }
 
-    componentDidMount(){
-        axios.get('/api/voir_tier/' + this.props.match.params.tiers_id).then(response => {
-            // const action = {type: "GET_ENTITE", value: response.data}
-            //  this.props.dispatch(action)
-            this.setState({tiersModif: response.data})
-      })
-    }
+    // componentDidMount(){
+    //     axios.get('/api/voir_tier/' + this.props.match.params.tiers_id).then(response => {
+    //         // const action = {type: "GET_ENTITE", value: response.data}
+    //         //  this.props.dispatch(action)
+    //         this.setState({tiersModif: response.data})
+    //   })
+    // }
 
 
   
@@ -47,14 +48,16 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
           }
       }
 
-      enregistrerPersonnel = (e) => {
+      modifierTiers = (e) => {
         e.preventDefault()
-        //console.log(this.state.fournisseur)
-     // console.log(this.verificationFormulaire())
-
+      
           if(this.verificationFormulaire() == null){
-           // console.log(this.state)
-            axios.post('/api/modifier_tier/' + this.state.tiersModif.id, {
+
+              this.setState({isFormSubmitted: true})
+
+              const tiersModif = this.props.tiers.find(tier => tier.id == this.props.match.params.tiers_id)
+
+            axios.post('/api/modifier_tier/' + tiersModif.id, {
                 code: this.code.value,
                 nom: this.nom.value,
                 metier_principal: this.metier_principal.value,
@@ -66,10 +69,10 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                 fax: this.fax.value,
                 adresse_messagerie: this.adresse_messagerie.value,
                 numero_de_siret: this.numero_de_siret.value,
-                fournisseur: this.state.fournisseur,
+                fournisseur: this.fournisseur.value,
                 numero_client_etablissement: this.numero_client_etablissement.value,
                 numero_compte: this.numero_compte.value,
-                mode_reglement: this.state.mode_reglement,
+                mode_reglement: this.mode_reglement.value,
                 delai_reglement: this.delai_reglement.value,
                 nom_banque: this.nom_banque.value,
                 rib: this.rib.value,
@@ -81,11 +84,13 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
        
                const action = {type: "EDIT_TIER", value: response.data}
                  this.props.dispatch(action)
-
-               this.props.history.push('/gestion-des-tiers')
+                this.setState({isFormSubmitted: false})
+               this.props.history.goBack()
 
              
-            }).catch(error => console.log(error))
+            }).catch(error => {
+                this.setState({isFormSubmitted: false})
+                console.log(error) }  )
            
 
           }else{
@@ -100,8 +105,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
         return  <span style={{textAlign: 'center'}}>
 
         <Loader
-            type="BallTriangle"
-            color="#00BFFF"
+      
             height={100}
             width={100}
          />
@@ -110,19 +114,21 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
     
 
     render() {
-        const {tiersModif} = this.state
+        const tiersModif = this.props.tiers.find(tier => tier.id == this.props.match.params.tiers_id)
+
         return (
             <div className="app-main__inner">
-             {this.state.tiersModif != undefined ? 
+             {tiersModif != undefined ? 
 
                     <div className="main-card mb-3 card">
                         <div className="card-body"><h5 className="card-title">Modification du Tiers</h5>
-                            <form className="" onChange={this.setField} onSubmit={this.enregistrerPersonnel}>
+                            <form className="" onChange={this.setField} onSubmit={this.modifierTiers}>
                                 <div className="form-row">
                                     <div className="col-md-2">
                                         <div className="position-relative form-group">
                                             <label >Code *</label>
                                             <input name="code" 
+                                            style={inputStyle}
                                              ref={code => this.code = code}
                                              defaultValue={tiersModif.code}
                                              type="text" className="form-control" /></div>
@@ -131,6 +137,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         <div className="position-relative form-group">
                                             <label >Nom *</label>
                                             <input name="nom" 
+                                            style={inputStyle}
                                               ref={nom => this.nom = nom}
                                               defaultValue={tiersModif.nom}
                                              type="text" className="form-control" />
@@ -253,103 +260,47 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                              defaultValue={tiersModif.numero_de_siret}
                                               type="text" className="form-control" /></div>
                                     </div>
-                                <div className="col-md-3">
-                                    <div className="position-relative form-group">
-                                            <label className="">
-                                            Fournisseur Interne  <input onChange={this.setField}
-                                              type="radio"
-                                             value="Fournisseur Interne"
-                                             defaultChecked={this.state.tiersModif.fournisseur === "Fournisseur Interne"}
 
-                                             name="fournisseur" className="" /> </label>
-                                        </div>
-                                    </div>
                                     <div className="col-md-3">
-                                    <div className="position-relative form-group">
-                                            <label className="">
-                                            Fournisseur Externe  <input 
-                                            
-                                            value="Fournisseur Externe"
+                                        <div className="position-relative form-group">
+                                            <label className="center">Type de Fournisseur</label>
 
-                                            defaultChecked={this.state.tiersModif.fournisseur === "Fournisseur Externe"}
+                                            <select name="fournisseur"
+                                            ref={fournisseur => this.fournisseur = fournisseur}
+                                        defaultValue={tiersModif.fournisseur}
+                                         onChange={this.setField}  className="form-control">
+                                            <option >Fournisseur Interne</option>
+                                            <option >Fournisseur Externe</option>
+                                          
 
-                                             onChange={this.setField}
-                                              type="radio" name="fournisseur" className="" /> </label>
+                                        </select>
                                         </div>
                                     </div>
-                                 
-                                   
+
+                                    <div className="col-md-3">
+                                        <div className="position-relative form-group">
+                                            <label className="center">Mode de règlement</label>
+
+                                            <select name="mode_reglement"
+                                            ref={mode_reglement => this.mode_reglement = mode_reglement}
+                                            defaultValue={tiersModif.mode_reglement}
+                                         onChange={this.setField}  className="form-control">
+                                            <option >Virement</option>
+                                            <option >Chèque</option>
+                                            <option >Carte bancaire</option>
+                                            <option >Espèces</option>
+                                            <option >Traite</option>
+
+
+                                        </select>
+                                        </div>
+                                    </div>
+                             
+                                
                                  
                                 </div>
 
-                                <div className="form-row">
-                                   
-                                   <div className="col-md-2">
-                                       <div className="position-relative form-group">
-                                           <label className="center">Mode de règlement</label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-2">
-                                   <div className="position-relative form-group">
-                                           <label className="">
-                                           Virement  <input type="radio" 
-                                            onChange={this.setField}
-                                            value="Virement"
-                                            defaultChecked={this.state.tiersModif.mode_reglement === "Virement"}
-
-                                            name="mode_reglement" 
-                                             className="" /> </label>
-                                       </div>
-                                   </div>
-
-                                   <div className="col-md-2">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           Chèque  <input type="radio" onChange={this.setField}
-                                            value="Chèque"
-                                            defaultChecked={this.state.tiersModif.mode_reglement === "Chèque"}
-
-                                            name="mode_reglement" 
-                                            className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-2">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           Carte bancaire  <input type="radio"
-                                            onChange={this.setField} name="mode_reglement" 
-                                            value="Carte bancaire"
-                                            defaultChecked={this.state.tiersModif.mode_reglement === "Carte bancaire"}
-                                            className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-2">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           Espèces  <input type="radio"
-                                            onChange={this.setField}
-                                             name="mode_reglement"
-                                             value="Espèces"
-                                             defaultChecked={this.state.tiersModif.mode_reglement === "Espèces"}
-                                           
-                                            className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-2">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           Traite  <input type="radio"
-                                            onChange={this.setField}
-                                             name="mode_reglement" 
-                                             value="Traite"
-                                             defaultChecked={this.state.tiersModif.mode_reglement === "Traite"}
-                                           
-                                            className="" /></label>
-                                       </div>
-                                   </div>
-                               </div>
-
-                          
+                             
 
                                     <div className="form-row">
                                         <div className="col-md-4">
@@ -402,7 +353,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         </div>
                                     </div>
 
-                                <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
+                                    <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
                            
                                 <span onClick={() => this.props.history.goBack()}
                                  className="mt-2 btn btn-warning pull-right">Retour</span>
@@ -420,8 +371,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
 const mapStateToProps = state => {
     return {
-        types_entites: state.types_entites.types_entites,
-        structures_etablissements: state.structures_etablissements.structures_etablissements,
+        tiers: state.tiers.items,
     }
   }
 

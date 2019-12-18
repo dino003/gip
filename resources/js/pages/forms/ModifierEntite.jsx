@@ -8,31 +8,28 @@ import {getStructuresEtablissements} from '../../actions/parametres/StructureReg
 
 import Loader from 'react-loader-spinner'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
+import inputStyle from '../../utils/inputStyle';
 
 
  class ModifierEntite extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            entiteModif: undefined
+            entiteModif: undefined,
+            isFormSubmitted: false
         }
       
     }
 
-    componentDidMount(){
-      //  this.props.dispatch(getTypeEntites());
-      //  this.props.dispatch(getStructuresEtablissements());
-        //this.props.dispatch(getEntites())
-        axios.get('/api/voir_entite/' + this.props.match.params.entite_id).then(response => {
-           // const action = {type: "GET_ENTITE", value: response.data}
-           //  this.props.dispatch(action)
-           this.setState({entiteModif: response.data})
-     })
+    // componentDidMount(){
+   
+    //     axios.get('/api/voir_entite/' + this.props.match.params.entite_id).then(response => {
+       
+    //        this.setState({entiteModif: response.data})
+    //  })
 
-       // console.log(this.props.dispatch(getEntites()))
-
-       //console.log(this.props.match.params.entite_id)
-    }
+      
+    // }
 
     // componentWillUnmount(){
     //     this.props.history.push('/gestion-des-entites', {ent : this.props.entites})
@@ -43,8 +40,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
         return  <span style={{textAlign: 'center'}}>
 
         <Loader
-            type="BallTriangle"
-            color="#00BFFF"
+          
             height={100}
             width={100}
          />
@@ -69,9 +65,33 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
         })
     }
 
-    setField = (e) => {
-        this.setState({[e.target.name]: e.target.value}) 
-      }
+    setField = (event) => {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        this.setState({
+            [name]: value
+        });
+    }
+
+      setFieldRegroupement = (event) => {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        this.setState({
+            [name]: value
+        }, () => {
+            const regroupement = this.props.structures_etablissements.find(reg => reg.id == this.regroupement.value)
+            if(regroupement){
+                this.rattachement.value = regroupement.regroupement_appartenance
+            }else{
+                this.rattachement.value = ''
+ 
+            }
+        });
+    }
 
       verificationFormulaire () {
           if(this.entite.value == undefined || !this.entite.value.length){
@@ -94,8 +114,9 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
    // console.log(this.type_entite.value)
 
           if(this.verificationFormulaire() == null){
-             // console.log('test')
-            axios.post('/api/modifier_entite/' + this.state.entiteModif.id, {
+              this.setState({isFormSubmitted: true})
+            const entiteModif = this.props.entites.find(ent => ent.id == this.props.match.params.entite_id)
+            axios.post('/api/modifier_entite/' + entiteModif.id, {
                 entite: this.entite.value,
                 nom_entite: this.nom_entite.value,
                 adresse1: this.adresse1.value,
@@ -124,11 +145,13 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                const action = {type: "EDIT_ENTITE", value: response.data}
                  this.props.dispatch(action)
              //  this.props.dispatch(getEntites())
-
-               this.props.history.push('/gestion-des-entites')
+                this.setState({isFormSubmitted: false})
+               this.props.history.goBack()
 
              
-            }).catch(error => console.log(error))           
+            }).catch(error => { 
+                this.setState({isFormSubmitted: false})
+                console.log(error) } )           
 
           }else{
               //console.log(this.verificationFormulaire())
@@ -140,11 +163,12 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
     
 
     render() {
-        const {entiteModif} = this.state
-        console.log(entiteModif)
+        //const {entiteModif} = this.state
+        const entiteModif = this.props.entites.find(ent => ent.id == this.props.match.params.entite_id)
+
         return (
             <div className="app-main__inner">
-                {this.state.entiteModif != undefined ? 
+                {entiteModif != undefined ? 
                     <div className="main-card mb-3 card">
                         <div className="card-body"><h5 className="card-title">Modification </h5>
                             <form className="" onChange={this.setField} onSubmit={this.enregistrerPersonnel}>
@@ -153,6 +177,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         <div className="position-relative form-group">
                                             <label >Entité *</label>
                                             <input name="entite"
+                                            style={inputStyle}
                                              ref={entite => this.entite = entite}
                                              defaultValue={entiteModif.entite}  type="text" className="form-control" /></div>
                                     </div>
@@ -160,6 +185,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         <div className="position-relative form-group">
                                             <label >nom *</label>
                                             <input name="nom_entite"
+                                            style={inputStyle}
+
                                              ref={nom_entite => this.nom_entite = nom_entite}
                                              defaultValue={entiteModif.nom_entite}  type="text" className="form-control" />
                                         </div>
@@ -230,6 +257,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         <div className="col-md-3">
                                     <label  className="">Type d'entité</label>
                                         <select name="type_entite"
+                                            style={inputStyle}
+
                                          ref={type_entite => this.type_entite = type_entite}
                                          defaultValue={entiteModif.type_entite.id}
                                           onChange={this.setField}  className="form-control">
@@ -245,9 +274,10 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         <div className="col-md-4">
                                     <label  className="">Regroupement</label>
                                         <select name="regroupement"
+                                            style={inputStyle}
                                          ref={regroupement => this.regroupement = regroupement}
                                          defaultValue={entiteModif.regroupement.id}
-                                          onChange={this.setField}  className="form-control">
+                                          onChange={this.setFieldRegroupement}  className="form-control">
                                             <option value={null}></option>
                                           {this.props.structures_etablissements.map(st => 
                                             <option key={st.id} value={st.id}>{st.code_regroupement}</option> )}
@@ -351,7 +381,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
                           
 
-                                <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
+                                    <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
                            
                                 <span onClick={() => this.props.history.goBack()}
                                  className="mt-2 btn btn-warning pull-right">Retour</span>
@@ -370,6 +400,7 @@ const mapStateToProps = state => {
     return {
         types_entites: state.types_entites.items,
         structures_etablissements: state.structures_etablissements.items,
+        entites: state.entites.items,
         personnels: state.personnels.items,
 
     }

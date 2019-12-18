@@ -11,16 +11,16 @@ class ModulesForm extends Component {
     enregisterModules = (e) => {
         e.preventDefault();
         let objet = {
-            utilisation_vehicules: this.utilisation_vehicules.value,
-            consomation_vehicules: this.consomation_vehicules.value,
-            budget_depenses_vehicules: this.budget_depenses_vehicules.value,
-            gestion_ordre_de_mission: this.gestion_ordre_de_mission.value,
-            intervention_vehicules: this.intervention_vehicules.value,
-            reservations: this.reservations.value,
-            contrat_assurance_sinistres: this.contrat_assurance_sinistres.value,
-            journal_evenement: this.journal_evenement.value,
-            amendes: this.amendes.value,
-            stock_pieces_detache_consomable: this.stock_pieces_detache_consomable.value,
+            utilisation_vehicules: this.utilisation_vehicules.checked,
+            consomation_vehicules: this.consomation_vehicules.checked,
+            budget_depenses_vehicules: this.budget_depenses_vehicules.checked,
+            gestion_ordre_de_mission: this.gestion_ordre_de_mission.checked,
+            intervention_vehicules: this.intervention_vehicules.checked,
+            reservations: this.reservations.checked,
+            contrat_assurance_sinistres: this.contrat_assurance_sinistres.checked,
+            journal_evenement: this.journal_evenement.checked,
+            amendes: this.amendes.checked,
+            stock_pieces_detache_consomable: this.stock_pieces_detache_consomable.checked,
            
         }
         this.props.onSubmitModuleForm( objet )
@@ -37,6 +37,11 @@ class ModulesForm extends Component {
             <div className="card-body">
             {item != undefined && <form className="" onSubmit={this.enregisterModules}>
                                 <div className="form-row">
+                                <div className="col-md-12">
+                                        <div className="position-relative form-group">
+                                            <label >Le paramètrage ci-dessous détermine les fonctionnalités que vous souhaitez ou non utiliser ! </label>
+                                   </div>
+                            </div>
                                    
                                     <div className="col-md-4">
                                         <div className="position-relative form-group">
@@ -48,15 +53,12 @@ class ModulesForm extends Component {
 
                                     <div className="col-md-2">
                                       
-                                           <select name="utilisation_vehicules" 
-                                            ref={utilisation_vehicules => this.utilisation_vehicules = utilisation_vehicules}
-                                            defaultValue={item.utilisation_vehicules}
-                                            className="form-control">
-                                                
-                                               <option value="0">Non</option>
-                                               <option value="1">OUI</option>
+                                      
+                                            <input name="utilisation_vehicules" type="checkbox"
+                                            onChange={this.setField}
+                                            defaultChecked={item.utilisation_vehicules}
 
-                                           </select>
+                                            ref={utilisation_vehicules => this.utilisation_vehicules = utilisation_vehicules} />
                                     </div>
 
                                     <div className="col-md-4">
@@ -69,15 +71,12 @@ class ModulesForm extends Component {
 
                                    <div className="col-md-2">
                                      
-                                          <select name="reservations" 
-                                        ref={reservations => this.reservations = reservations}
-                                        defaultValue={item.reservations}
+                                       
+                                            <input name="reservations" type="checkbox"
+                                            onChange={this.setField}
+                                            defaultChecked={item.reservations}
 
-                                           className="form-control">
-                                             <option value="0">Non</option>
-                                               <option value="1">OUI</option>
-
-                                          </select>
+                                            ref={reservations => this.reservations = reservations} />
                                    </div>
 
                               
@@ -97,15 +96,12 @@ class ModulesForm extends Component {
 
                                    <div className="col-md-2">
                                      
-                                          <select name="consomation_vehicules" 
-                                        ref={consomation_vehicules => this.consomation_vehicules = consomation_vehicules}
-                                        defaultValue={item.consomation_vehicules}
 
-                                           className="form-control">
-                                              <option value="0">Non</option>
-                                               <option value="1">OUI</option>
+                                          <input name="consomation_vehicules" type="checkbox"
+                                            onChange={this.setField}
+                                            defaultChecked={item.consomation_vehicules}
 
-                                          </select>
+                                            ref={consomation_vehicules => this.consomation_vehicules = consomation_vehicules} />
                                    </div>
 
                                    <div className="col-md-4">
@@ -117,16 +113,13 @@ class ModulesForm extends Component {
 
 
                                    <div className="col-md-2">
-                                     
-                                          <select name="contrat_assurance_sinistres" 
-                                        ref={contrat_assurance_sinistres => this.contrat_assurance_sinistres = contrat_assurance_sinistres}
-                                        defaultValue={item.contrat_assurance_sinistres}
+                    
+                                          
+                                          <input name="contrat_assurance_sinistres" type="checkbox"
+                                            onChange={this.setField}
+                                            defaultChecked={item.contrat_assurance_sinistres}
 
-                                           className="form-control">
-                                             <option value="0">Non</option>
-                                               <option value="1">OUI</option>
-
-                                          </select>
+                                            ref={contrat_assurance_sinistres => this.contrat_assurance_sinistres = contrat_assurance_sinistres} />
                                    </div>
                                  
                                </div>
@@ -143,15 +136,13 @@ class ModulesForm extends Component {
 
                                    <div className="col-md-2">
                                      
-                                          <select name="intervention_vehicules" 
-                                        ref={intervention_vehicules => this.intervention_vehicules = intervention_vehicules}
-                                        defaultValue={item.intervention_vehicules}
+                            
 
-                                           className="form-control">
-                                             <option value="0">Non</option>
-                                               <option value="1">OUI</option>
+                                          <input name="intervention_vehicules" type="checkbox"
+                                            onChange={this.setField}
+                                            defaultChecked={item.intervention_vehicules}
 
-                                          </select>
+                                            ref={intervention_vehicules => this.intervention_vehicules = intervention_vehicules} />
                                    </div>
 
                                    <div className="col-md-4">
@@ -164,15 +155,11 @@ class ModulesForm extends Component {
 
                                    <div className="col-md-2">
                                      
-                                          <select name="journal_evenement" 
-                                        ref={journal_evenement => this.journal_evenement = journal_evenement}
-                                        defaultValue={item.journal_evenement}
+                                          <input name="journal_evenement" type="checkbox"
+                                            onChange={this.setField}
+                                            defaultChecked={item.journal_evenement}
 
-                                           className="form-control">
-                                             <option value="0">Non</option>
-                                               <option value="1">OUI</option>
-
-                                          </select>
+                                            ref={journal_evenement => this.journal_evenement = journal_evenement} />
                                    </div>
                                  
                                </div>
@@ -189,15 +176,13 @@ class ModulesForm extends Component {
 
                                    <div className="col-md-2">
                                      
-                                          <select name="budget_depenses_vehicules" 
-                                        ref={budget_depenses_vehicules => this.budget_depenses_vehicules = budget_depenses_vehicules}
-                                        defaultValue={item.budget_depenses_vehicules}
+                                
 
-                                           className="form-control">
-                                             <option value="0">Non</option>
-                                               <option value="1">OUI</option>
+                                          <input name="budget_depenses_vehicules" type="checkbox"
+                                            onChange={this.setField}
+                                            defaultChecked={item.budget_depenses_vehicules}
 
-                                          </select>
+                                            ref={budget_depenses_vehicules => this.budget_depenses_vehicules = budget_depenses_vehicules} />
                                    </div>
 
                                    <div className="col-md-4">
@@ -210,15 +195,13 @@ class ModulesForm extends Component {
 
                                    <div className="col-md-2">
                                      
-                                          <select name="amendes" 
-                                        ref={amendes => this.amendes = amendes}
-                                        defaultValue={item.amendes}
+          
 
-                                           className="form-control">
-                                             <option value="0">Non</option>
-                                               <option value="1">OUI</option>
+                                          <input name="amendes" type="checkbox"
+                                            onChange={this.setField}
+                                            defaultChecked={item.amendes}
 
-                                          </select>
+                                            ref={amendes => this.amendes = amendes} />
                                    </div>
                                  
                                </div>
@@ -235,15 +218,11 @@ class ModulesForm extends Component {
 
                                    <div className="col-md-2">
                                      
-                                          <select name="gestion_ordre_de_mission" 
-                                        ref={gestion_ordre_de_mission => this.gestion_ordre_de_mission = gestion_ordre_de_mission}
-                                        defaultValue={item.gestion_ordre_de_mission}
+                                          <input name="gestion_ordre_de_mission" type="checkbox"
+                                            onChange={this.setField}
+                                            defaultChecked={item.gestion_ordre_de_mission}
 
-                                           className="form-control">
-                                             <option value="0">Non</option>
-                                               <option value="1">OUI</option>
-
-                                          </select>
+                                            ref={gestion_ordre_de_mission => this.gestion_ordre_de_mission = gestion_ordre_de_mission} />
                                    </div>
 
                                    <div className="col-md-4">
@@ -256,15 +235,13 @@ class ModulesForm extends Component {
 
                                    <div className="col-md-2">
                                      
-                                          <select name="stock_pieces_detache_consomable" 
-                                        ref={stock_pieces_detache_consomable => this.stock_pieces_detache_consomable = stock_pieces_detache_consomable}
-                                        defaultValue={item.stock_pieces_detache_consomable}
+          
 
-                                           className="form-control">
-                                             <option value="0">Non</option>
-                                               <option value="1">OUI</option>
+                                          <input name="stock_pieces_detache_consomable" type="checkbox"
+                                            onChange={this.setField}
+                                            defaultChecked={item.stock_pieces_detache_consomable}
 
-                                          </select>
+                                            ref={stock_pieces_detache_consomable => this.stock_pieces_detache_consomable = stock_pieces_detache_consomable} />
                                    </div>
                                  
                                </div>
@@ -273,7 +250,7 @@ class ModulesForm extends Component {
 
                                
                              
-                               {!this.props.isFormModuleSubmitted ? <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button> : <button disabled  className="mt-2 btn btn-warning">Merci de patienter ...</button>}
+                               {!this.props.isFormModuleSubmitted ? <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button> : <button disabled  className="mt-2 btn btn-warning">Merci de patienter  <i className="fa fa-spinner fa-spin fa-1x fa-fw"></i></button>}
                            
                                 
                             </form>}

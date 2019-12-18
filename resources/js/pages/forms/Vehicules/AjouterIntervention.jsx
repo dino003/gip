@@ -13,7 +13,9 @@ import inputStyle from '../../../utils/inputStyle'
  class AjouterIntervention extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            isFormSubmitted: false
+        }
       
     }
 
@@ -78,6 +80,7 @@ import inputStyle from '../../../utils/inputStyle'
         e.preventDefault()
 
           if(this.verificationFormulaire() == null){
+              this.setState({isFormSubmitted : true})
             axios.post('/api/ajouter_vehicule_intervention', {
                 vehicule: this.props.vehiculeSeleted.id,
                 nature_intervention: this.nature_intervention.value,
@@ -104,11 +107,13 @@ import inputStyle from '../../../utils/inputStyle'
             .then(response => { 
                const action = {type: "ADD_INTERVENTION", value: response.data}
                  this.props.dispatch(action)
-
+                this.setState({isFormSubmitted : false})
                this.props.history.goBack();
 
              
-            }).catch(error => console.log(error))
+            }).catch(error => {
+                this.setState({isFormSubmitted : false})
+                 console.log(error) } )
            
 
           }else{
@@ -123,6 +128,13 @@ import inputStyle from '../../../utils/inputStyle'
     
 
     render() {
+        if(this.props.vehiculeSeleted == undefined && this.props.vehicules.length){
+            const action = {type: "EDIT_SELECTED", value:  this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}
+              this.props.dispatch(action)
+            }
+
+        const vehiculeSelect = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
+       
         return (
             <div className="app-main__inner">
               
@@ -163,12 +175,12 @@ import inputStyle from '../../../utils/inputStyle'
                                     <div className="col-md-3">
                                         <div className="position-relative form-group">
                                             <label >Kilometrage </label>
-                                            <input name="kilometrage"  type="number"
+                                            {vehiculeSelect &&  <input name="kilometrage"  type="number"
                                             readOnly
-                                            defaultValue={this.props.vehiculeSeleted ? this.props.vehiculeSeleted.kilometrage_acquisition : 0}
-                                            onChange={this.setField}
+                                            defaultValue={vehiculeSelect.kilometrage_acquisition}
                                             ref={kilometrage => this.kilometrage = kilometrage}
-                                             className="form-control" />
+                                             className="form-control" /> }
+
                                              </div>
                                     </div>
 
@@ -352,7 +364,7 @@ import inputStyle from '../../../utils/inputStyle'
                                 </div>
                           
 
-                                <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
+                                <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
                                 <span  onClick={() => this.props.history.goBack()}
                                  className="mt-2 btn btn-warning pull-right">Retour</span>
                             </form>

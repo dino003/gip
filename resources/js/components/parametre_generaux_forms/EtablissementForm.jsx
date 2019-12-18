@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import inputStyle from '../../utils/inputStyle';
 
+
  class EtablissementForm extends Component {
      constructor(props) {
          super(props);
@@ -132,11 +133,12 @@ import inputStyle from '../../utils/inputStyle';
                                 </div>
                                
                              
-                                {!this.props.isFormEtablissementSubmitted ? <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button> : <button disabled  className="mt-2 btn btn-warning">Merci de patienter ...</button>}
+                                {!this.props.isFormEtablissementSubmitted ? <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button> : <button disabled  className="mt-2 btn btn-warning">Merci de patienter  <i className="fa fa-spinner fa-spin fa-1x fa-fw"></i></button>}
                            
                                 
                             </form>
             </div>
+
         </div> 
         )
     }

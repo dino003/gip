@@ -13,13 +13,8 @@ import inputStyle from '../../utils/inputStyle';
     constructor(props) {
         super(props);
         this.state = {
-            actif: true,
-            personne_prioritaire: false,
-            statut_chaufeur: false,
-            duree_contrat: 'Indéterminé',
-            college: 'Indéterminé',
-            type_permis: 'B'
-
+           isFormSubmitted: false,
+            actif: true
         }
     }
 
@@ -78,11 +73,11 @@ import inputStyle from '../../utils/inputStyle';
     }
 
       verificationFormulaire () {
-          if(this.nom.value == undefined || !this.nom.value.length){
+          if(this.nom.value == ''){
               return "Le Nom est obligatoire !"
-          }else if(this.prenom.value == undefined || !this.prenom.value.length){
+          }else if(this.prenom.value == ''){
               return "Le prenom est obligatoire !"
-          }else if(this.entite_affectation.value == undefined || !this.entite_affectation.value.length){
+          }else if(this.entite_affectation.value == ''){
             return "L' entité d'affectation est obligatoire !"
           }else{
               return null
@@ -92,11 +87,11 @@ import inputStyle from '../../utils/inputStyle';
       enregistrerPersonnel = (e) => {
         e.preventDefault()
           if(this.verificationFormulaire() == null){
-            console.log(this.state)
+              this.setState({isFormSubmitted: true})
             axios.post('/api/ajouter_personnel', {
                 nom: this.nom.value,
                 prenom: this.prenom.value,
-                actif: this.state.actif,
+                actif: this.actif.checked,
                 fonction: this.fonction.value,
                 matricule: this.matricule.value,
                 telephone: this.telephone.value,
@@ -105,14 +100,14 @@ import inputStyle from '../../utils/inputStyle';
                 adresse_email: this.adresse_email.value,
                 nationalite: this.nationalite.value,
                 date_naissance: this.date_naissance.value,
-                personne_prioritaire: this.state.personne_prioritaire,
-                statut_chaufeur: this.state.statut_chaufeur,
-                duree_contrat: this.state.duree_contrat,
-                college: this.state.college,
+                personne_prioritaire: this.personne_prioritaire.checked,
+                statut_chaufeur: this.statut_chaufeur.checked,
+                duree_contrat: this.duree_contrat.value,
+                college: this.college.value,
                 numero_permis_conduire: this.numero_permis_conduire.value,
                 date_delivrance: this.date_delivrance.value,
                 lieu_delivrance: this.lieu_delivrance.value,
-                type_permis: this.state.type_permis,
+                type_permis: this.type_permis.value,
                 numero_conducteur_pour_gestion_carte: this.numero_conducteur_pour_gestion_carte.value,
                 categorie: this.categorie.value,
                 entite_affectation: this.entite_affectation.value,
@@ -124,9 +119,11 @@ import inputStyle from '../../utils/inputStyle';
                 
                const action = {type: "ADD_PERSONNEL", value: response.data}
                this.props.dispatch(action)
-
-             this.props.history.push('/gestion_du_personnel')
-            }).catch(error => console.log(error))
+                this.setState({isFormSubmitted: false})
+             this.props.history.goBack()
+            }).catch(error => {
+                this.setState({isFormSubmitted: false})
+                 console.log(error) } )
 
           }else{
               //console.log(this.verificationFormulaire())
@@ -169,7 +166,9 @@ import inputStyle from '../../utils/inputStyle';
                                             <label className="form-check-label">
                                             Décochez si inactif  <input type="checkbox"
                                              onChange={this.setField}
-                                             checked={this.state.actif}
+                                             ref={actif => this.actif = actif}
+
+                                             defaultChecked={true}
                                                name="actif"  className="" /> </label>
                                         </div>
                                     </div>
@@ -280,7 +279,7 @@ import inputStyle from '../../utils/inputStyle';
                                             Personne prioritaire (pour reservation) 
                                              <input type="checkbox"
                                               onChange={this.setField}
-                                               checked={this.state.personne_prioritaire}
+                                               defaultChecked={false}
 
                                                ref={personne_prioritaire => this.personne_prioritaire = personne_prioritaire}
                                                 name="personne_prioritaire" className="" /> </label>
@@ -294,7 +293,7 @@ import inputStyle from '../../utils/inputStyle';
                                              <input type="checkbox"
                                              ref={statut_chaufeur => this.statut_chaufeur = statut_chaufeur}
                                                onChange={this.setField}
-                                                checked={this.state.statut_chaufeur} 
+                                                defaultChecked={false} 
                                                  name="statut_chaufeur" className="" /></label>
                                         </div>
                                     </div>
@@ -305,86 +304,42 @@ import inputStyle from '../../utils/inputStyle';
                                     <div className="col-md-6">
                                         <div className="position-relative form-group">
                                             <label className="center">Durée du contrat</label>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-2">
-                                    <div className="position-relative form-group">
-                                            <label className="">
-                                            Indéterminé  <input type="radio"
-                                             name="duree_contrat"
-                                             onChange={this.setField}
-                                             checked={this.state.duree_contrat === "Indéterminé"}
 
-                                              value="Indéterminé"
-                                               className="" /> </label>
+                                            <select name="duree_contrat"
+                                            ref={duree_contrat => this.duree_contrat = duree_contrat}
+
+                                         onChange={this.setField}  className="form-control">
+                                            <option >Indéterminé</option>
+                                            <option >Déterminé</option>
+                                        </select>
                                         </div>
                                     </div>
 
-                                    <div className="col-md-2">
+                                    <div className="col-md-6">
                                         <div className="position-relative form-group">
-                                            <label className="form-check-label">
-                                            Déterminé  <input type="radio"
-                                            onChange={this.setField}
-                                             name="duree_contrat"
-                                             checked={this.state.duree_contrat === "Déterminé"}
+                                            <label className="center">Collège</label>
 
-                                              value="Déterminé" className="" /></label>
+                                            <select name="college"
+                                            ref={college => this.college = college}
+
+                                         onChange={this.setField}  className="form-control">
+                                            <option >Indéterminé</option>
+                                            <option >Cadre</option>
+                                            <option >Non Cadre</option>
+                                            <option >Non Cadre, fait office de Cadre</option>
+
+                                        </select>
                                         </div>
                                     </div>
+                                 
+
+                                  
                                 </div>
 
-                                <div className="form-row">
-                                   
-                                   <div className="col-md-3">
-                                       <div className="position-relative form-group">
-                                           <label className="center">Collège</label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-2">
-                                   <div className="position-relative form-group">
-                                           <label className="">
-                                           Indéterminé  <input type="radio"
-                                            name="college" 
-                                             value="Indéterminé"
-                                            onChange={this.setField}
-                                            checked={this.state.college === "Indéterminé"}
-                                             className="" /> </label>
-                                       </div>
-                                   </div>
-
-                                   <div className="col-md-2">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           Cadre  <input type="radio"
-                                           onChange={this.setField}
-                                           checked={this.state.college === "Cadre"}
-                                            name="college"
-                                            value="Cadre" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-2">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           Non Cadre  <input type="radio" name="college"
-                                           onChange={this.setField}
-                                           checked={this.state.college === "Non Cadre"}
-                                            value="Non Cadre" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-3">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           Non Cadre, Fait office de cadre  <input type="radio"
-                                            value="Non Cadre, fait office de Cadre"
-                                            checked={this.state.college === "Non Cadre, fait office de Cadre"}
-                                            onChange={this.setField}
-                                             name="college" className="" /></label>
-                                       </div>
-                                   </div>
-                               </div>
+                              
 
                                <div className="form-row">
-                                    <div className="col-md-5">
+                                    <div className="col-md-3">
                                         <div className="position-relative form-group">
                                             <label >Numero du permis de conduire</label>
                                             <input name="numero_permis_conduire"
@@ -404,7 +359,7 @@ import inputStyle from '../../utils/inputStyle';
                                              type="date"  className="form-control" />
                                         </div>
                                     </div>
-                                    <div className="col-md-4">
+                                    <div className="col-md-3">
                                     <div className="position-relative form-group">
                                             <label >Lieu de délivrance</label>
                                             <input name="lieu_delivrance"
@@ -414,100 +369,30 @@ import inputStyle from '../../utils/inputStyle';
                                               type="text" className="form-control" />
                                         </div>
                                     </div>
+
+                                    <div className="col-md-3">
+                                        <div className="position-relative form-group">
+                                            <label className="center">Type de permis</label>
+
+                                            <select name="type_permis"
+                                            ref={type_permis => this.type_permis = type_permis}
+
+                                         onChange={this.setField}  className="form-control">
+                                            <option >BCDE</option>
+                                            <option >A1</option>
+                                            <option >A</option>
+                                            <option >B</option>
+                                            <option >C</option>
+                                            <option >C1</option>
+                                            <option >D</option>
+                                            <option >E</option>
+                                            <option >F</option>
+
+                                        </select>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <div className="form-row">
-                                   
-                                   <div className="col-md-3">
-                                       <div className="position-relative form-group">
-                                           <label className="center">Type de Permis</label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-1">
-                                   <div className="position-relative form-group">
-                                           <label className="">
-                                           A1  <input type="radio"
-                                             onChange={this.setField}
-                                             checked={this.state.type_permis === "A1"}
-
-                                            name="type_permis" value="A1"  className="" /> </label>
-                                       </div>
-                                   </div>
-
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           A  <input type="radio" name="type_permis"
-                                            onChange={this.setField}
-                                            checked={this.state.type_permis === "A"}
-                                            value="A" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           B  <input type="radio" name="type_permis"
-                                           
-                                                onChange={this.setField}
-                                                checked={this.state.type_permis === "B"}
-                                            value="B" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           C  <input type="radio" name="type_permis"
-                                             onChange={this.setField}
-                                             checked={this.state.type_permis === "C"}
-                                            value="C" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           C1  <input type="radio" name="type_permis"
-                                             onChange={this.setField}
-                                             checked={this.state.type_permis === "C1"}
-                                            value="C1" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           D  <input type="radio" name="type_permis"
-                                              onChange={this.setField}
-                                              checked={this.state.type_permis === "D"}
-                                            value="D" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           E  <input type="radio"
-                                              onChange={this.setField}
-                                              checked={this.state.type_permis === "E"}
-                                            name="type_permis" value="E" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           F  <input type="radio" name="type_permis"
-                                              onChange={this.setField}
-                                              checked={this.state.type_permis === "F"}
-                                            value="F" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           BCDE  <input type="radio" name="type_permis"
-                                              onChange={this.setField}
-                                              checked={this.state.type_permis === "BCDE"}
-                                            value="BCDE" className="" /></label>
-                                       </div>
-                                   </div>
-                               </div>
 
                                <div className="form-row">
                                     <div className="col-md-5">
@@ -565,7 +450,7 @@ import inputStyle from '../../utils/inputStyle';
                                     </div>
                                 </div>
 
-                                <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
+                                <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
                            
                                 <span onClick={() => this.props.history.goBack()}
                                  className="mt-2 btn btn-warning pull-right">Retour</span>

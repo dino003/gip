@@ -13,7 +13,9 @@ import year from '../../../utils/Year'
  class AjouterDepenseRecette extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            isFormSubmitted: false
+        }
       
     }
 
@@ -105,6 +107,7 @@ import year from '../../../utils/Year'
         e.preventDefault()
 
           if(this.verificationFormulaire() == null){
+              this.setState({isFormSubmitted: true})
             axios.post('/api/ajouter_vehicule_depense_recette', {
                 annee_budgetaire: this.annee_budgetaire.value,
                 vehicule: this.props.vehiculeSeleted.id,
@@ -126,11 +129,13 @@ import year from '../../../utils/Year'
             .then(response => { 
                const action = {type: "ADD_DR", value: response.data}
                  this.props.dispatch(action)
-
+                this.setState({isFormSubmitted: false})
                this.props.history.goBack();
 
              
-            }).catch(error => console.log(error))
+            }).catch(error => {
+                this.setState({isFormSubmitted: false})
+                 console.log(error) } )
            
 
           }else{
@@ -339,7 +344,7 @@ import year from '../../../utils/Year'
 
 
                                  
-                                <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
+                                 <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
                                 <span  onClick={() => this.props.history.goBack()}
                                  className="mt-2 btn btn-warning pull-right">Retour</span>
                             </form>

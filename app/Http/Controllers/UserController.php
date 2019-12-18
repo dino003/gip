@@ -7,8 +7,8 @@ use App\User;
 use App\UserFonction;
 use App\Repositories\Repository;
 use Illuminate\Support\Facades\Hash;
-
-
+use JWTAuth;
+use JWTAuthException;
 
 class UserController extends Controller
 {
@@ -17,6 +17,50 @@ class UserController extends Controller
     public function __construct(User $user){
         $this->model = new Repository($user);
     }
+
+    private function getToken($username, $password)
+    {
+        $token = null;
+        //$credentials = $request->only('username', 'password');
+        try {
+            if (!$token = JWTAuth::attempt( ['username'=> $username, 'password'=> $password])) {
+                return response()->json([
+                    'response' => 'error',
+                    'message' => 'Ces identifiants ne corespondent à aucun compte',
+                    'token'=>$token
+                ]);
+            }
+        } catch (JWTAuthException $e) {
+            return response()->json([
+                'response' => 'error',
+                'message' => 'Token creation failed',
+            ]);
+        }
+        return $token;
+    }
+
+    /**
+     *  login user
+     */
+
+    public function login(Request $request)
+    {
+        $user = User::where('username', $request->username)->get()->first();
+        if ($user && \Hash::check($request->password, $user->password)) // The passwords match...
+        {
+            $token = self::getToken($request->username, $request->password);
+            $user->auth_token = $token;
+            $user->save();
+            $response = ['success'=>true, 'data'=>['id'=>$user->id,'auth_token'=>$user->auth_token,'name'=>$user->name, 'email'=>$user->email]];           
+        }
+        else 
+          $response = ['success'=>false, 'data'=>'Record doesnt exists'];
+      
+        return response()->json($response, 201);
+    }
+
+    
+
     /**
      * Display a listing of the resource.
      *

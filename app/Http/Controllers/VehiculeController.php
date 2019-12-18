@@ -21,7 +21,7 @@ class VehiculeController extends Controller
     public function index()
     {
         return $this->model->with(['entite_comptable', 'entite_physique',
-        'demandeur','categorie','marque','tiers','detenteur','chauffeur_atitre'])->get();
+        'demandeur','categorie','marque','tiers','detenteur','chauffeur_atitre', 'energie'])->get();
     }
 
     /**
@@ -49,7 +49,7 @@ class VehiculeController extends Controller
          $creation = $vehicule->create($request->only($vehicule->fillable));
   
          return response()->json(Vehicule::with(['entite_comptable',
-         'demandeur','categorie','marque','tiers','detenteur','chauffeur_atitre'])->find($creation->id));
+         'demandeur','categorie','marque','tiers','detenteur','chauffeur_atitre', 'energie'])->find($creation->id));
 
     }
 
@@ -86,9 +86,11 @@ class VehiculeController extends Controller
     public function update(Request $request, $id)
     {
           // update model and only pass in the fillable fields
-        $this->model->update($request->only($this->model->getModel()->fillable), $id);
 
-       return $this->model->show($id);
+       $this->model->update($request->only($this->model->getModel()->fillable), $id);
+
+       return response()->json(Vehicule::with(['entite_comptable', 'entite_physique',
+       'demandeur','categorie','marque','tiers','detenteur','chauffeur_atitre', 'energie'])->find($id));
     }
 
     /**

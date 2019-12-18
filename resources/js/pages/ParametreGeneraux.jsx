@@ -1,4 +1,8 @@
 import React, { Component } from 'react'
+
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import EtablissementForm from '../components/parametre_generaux_forms/EtablissementForm'
 import ReservationOrdreMissionForm from '../components/parametre_generaux_forms/ReservationOrdreMissionForm'
 import {connect} from  'react-redux'
@@ -6,6 +10,8 @@ import ModulesForm from '../components/parametre_generaux_forms/ModulesForm';
 import StockForm from '../components/parametre_generaux_forms/StockForm';
 import PersonnelForm from '../components/parametre_generaux_forms/PersonnelForm';
 import JournalEvenementForm from '../components/parametre_generaux_forms/JournalEvenementForm'
+
+
 
 class ParametreGeneraux extends Component {
 
@@ -34,10 +40,16 @@ class ParametreGeneraux extends Component {
            const action = {type: "ADD_INFO_SOCIETE", value: response.data}
              this.props.dispatch(action)
              this.setState({isFormEtablissementSubmitted: false})
+             toast.success('Enrégistré avec succès', {
+                position: toast.POSITION.BOTTOM_CENTER
+              });
 
         }).catch(error => {
             console.log(error)
             this.setState({isFormEtablissementSubmitted: false})
+            toast.error('L\'Enregistrement a échoué', {
+                position: toast.POSITION.BOTTOM_CENTER
+              });
 
         })
     }
@@ -49,10 +61,16 @@ class ParametreGeneraux extends Component {
            const action = {type: "ADD_PARAM_GENERAUX_RESERV", value: response.data}
              this.props.dispatch(action)
              this.setState({isFormReservationOrdreSubmitted: false})
+             toast.success('Enrégistré avec succès', {
+                position: toast.POSITION.BOTTOM_CENTER
+              });
 
         }).catch(error => {
             console.log(error)
             this.setState({isFormReservationOrdreSubmitted: false})
+            toast.error('L\'Enregistrement a échoué', {
+                position: toast.POSITION.BOTTOM_CENTER
+              });
 
         })
     }
@@ -64,10 +82,16 @@ class ParametreGeneraux extends Component {
            const action = {type: "ADD_PARAM_MODULE", value: response.data}
              this.props.dispatch(action)
              this.setState({isFormModuleSubmitted: false})
+             toast.success('Enrégistré avec succès', {
+                position: toast.POSITION.BOTTOM_CENTER
+              });
 
         }).catch(error => {
             console.log(error)
             this.setState({isFormModuleSubmitted: false})
+            toast.error('L\'Enregistrement a échoué', {
+                position: toast.POSITION.BOTTOM_CENTER
+              });
 
         })
     }
@@ -79,10 +103,16 @@ class ParametreGeneraux extends Component {
         const action = {type: "ADD_PARAM_STOCK", value: response.data}
           this.props.dispatch(action)
           this.setState({isFormStockSubmitted: false})
+          toast.success('Enrégistré avec succès', {
+            position: toast.POSITION.BOTTOM_CENTER
+          });
 
      }).catch(error => {
          console.log(error)
          this.setState({isFormStockSubmitted: false})
+         toast.error('L\'Enregistrement a échoué', {
+            position: toast.POSITION.BOTTOM_CENTER
+          });
 
      })
  }
@@ -94,10 +124,16 @@ class ParametreGeneraux extends Component {
             const action = {type: "ADD_PARAM_PERSONNEL", value: response.data}
             this.props.dispatch(action)
             this.setState({isFormPersonnelSubmitted: false})
+            toast.success('Enrégistré avec succès', {
+                position: toast.POSITION.BOTTOM_CENTER
+              });
 
         }).catch(error => {
             console.log(error)
             this.setState({isFormPersonnelSubmitted: false})
+            toast.error('L\'Enregistrement a échoué', {
+                position: toast.POSITION.BOTTOM_CENTER
+              });
 
         })
         }
@@ -109,10 +145,17 @@ class ParametreGeneraux extends Component {
             const action = {type: "ADD_PARAM_JOURNAL", value: response.data}
             this.props.dispatch(action)
             this.setState({isFormJournalSubmitted: false})
+            toast.success('Enrégistré avec succès', {
+                position: toast.POSITION.BOTTOM_CENTER
+              });
 
         }).catch(error => {
             console.log(error)
             this.setState({isFormJournalSubmitted: false})
+            toast.error('L\'Enregistrement a échoué', {
+                position: toast.POSITION.BOTTOM_CENTER
+              });
+
 
         })
         }
@@ -200,7 +243,7 @@ class ParametreGeneraux extends Component {
                         <span>Journal événements</span>
                     </a>
                 </li>
-                <li className="nav-item">
+                {/* <li className="nav-item">
                     <a role="tab" className="nav-link" id="tab-1" data-toggle="tab" href="#tab-content-1">
                         <span>Grid</span>
                     </a>
@@ -209,7 +252,7 @@ class ParametreGeneraux extends Component {
                     <a role="tab" className="nav-link" id="tab-1" data-toggle="tab" href="#tab-content-1">
                         <span>Grid</span>
                     </a>
-                </li>
+                </li> */}
              
             </ul>
             <div className="tab-content">
@@ -300,6 +343,9 @@ class ParametreGeneraux extends Component {
             </div>
         </div>
         </div>
+
+        <ToastContainer autoClose={4000} />
+
        </div>
         )
     }

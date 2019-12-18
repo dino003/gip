@@ -13,14 +13,14 @@ export default class EntiteItem extends Component {
         return (
             <tr>
                                       
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.code || 'Non Renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.code || ''}</td>
          
-            <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.nom || 'Non Renseigné'}</td>
-            <td   onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.metier_principal || 'Non Renseigné'}</td>
-            <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.ville || 'Non Renseigné'}</td>
-            <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.telephonne || 'Non Renseigné'}</td>
-            <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.fax || 'Non Renseigné'}</td>
-            <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.adresse1 || 'Non Renseigné'}</td>
+            <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.nom || ''}</td>
+            <td   onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.metier_principal || ''}</td>
+            <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.ville || ''}</td>
+            <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.telephonne || ''}</td>
+            <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.fax || ''}</td>
+            <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.adresse1 || ''}</td>
 
             <td>
 

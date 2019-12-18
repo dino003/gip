@@ -100,6 +100,12 @@ class Vehicule extends Model
              return $this->hasMany(VehiculeReservation::class, 'vehicule', 'id');
          }
 
+         // energie
+         public function energie()
+         {
+             return $this->belongsTo('App\NatureEnergie', 'energie_id');
+         }
+
   
 
 }

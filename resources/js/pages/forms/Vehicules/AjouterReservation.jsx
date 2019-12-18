@@ -13,7 +13,9 @@ import inputStyle from '../../../utils/inputStyle'
  class AjouterReservation extends Component {
     constructor(props) {
         super(props);
-        this.state = { }
+        this.state = {
+            isFormSubmitted: false
+         }
       
     }
 
@@ -89,8 +91,11 @@ import inputStyle from '../../../utils/inputStyle'
 
       getEntiteDuPerrsonnelReservant = () => {
           if(this.personne_reservant != undefined){
-            var personne = this.props.personnels.find(per => per.id == this.personne_reservant.value)
-            return (personne.default) ? 'SIEGE' : personne.entite_affectation.entite
+              if(this.props.personnels.length){
+                var personne = this.props.personnels.find(per => per.id == this.personne_reservant.value)
+               if(personne) return (personne.default) ? 'SIEGE' : personne.entite_affectation.entite
+              }
+           
           }
          
       }
@@ -102,6 +107,7 @@ import inputStyle from '../../../utils/inputStyle'
         var vehicule = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
         if( this.checkIfReservationIsPossible(this.date_debut_reservation.value, this.date_fin_reservation.value) == null ){
             if(this.verificationFormulaire() == null){
+                this.setState({isFormSubmitted: true})
                 axios.post('/api/ajouter_vehicule_reservation', {
                     vehicule: vehicule.id,
                     personne_reservant: this.personne_reservant.value,
@@ -139,13 +145,16 @@ import inputStyle from '../../../utils/inputStyle'
                                const action2 = {type: "EDIT_MISSION", value: response.data}
                                 this.props.dispatch(action2) 
                             })
+                            this.setState({isFormSubmitted: false})
                             this.props.history.goBack();
 
                         }else{
+                            this.setState({isFormSubmitted: false})
                             this.props.history.goBack();
   
                         }
                      }else{
+                         this.setState({isFormSubmitted: false})
                         this.props.history.goBack();
 
                      }
@@ -495,7 +504,7 @@ import inputStyle from '../../../utils/inputStyle'
                                 </div>
                                  
 
-                                <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
+                                <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
                                 <span  onClick={() => this.props.history.goBack()}
                                  className="mt-2 btn btn-warning pull-right">Retour</span>
                             </form>

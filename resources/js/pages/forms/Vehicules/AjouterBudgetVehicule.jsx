@@ -13,7 +13,9 @@ import inputStyle from '../../../utils/inputStyle'
  class AjouterBudgetVehicule extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            isFormSubmitted: false
+        }
       
     }
 
@@ -138,6 +140,7 @@ import inputStyle from '../../../utils/inputStyle'
         e.preventDefault()
 
           if(this.verificationFormulaire() == null){
+              this.setState({isFormSubmitted: true})
             axios.post('/api/ajouter_vehicule_budget_vehicule', {
                 annee_budgetaire: 1,
                 vehicule: this.props.vehiculeSeleted.id,
@@ -158,11 +161,13 @@ import inputStyle from '../../../utils/inputStyle'
             .then(response => { 
                const action = {type: "ADD_BUDGET_VEHICULE", value: response.data}
                  this.props.dispatch(action)
-
+                this.setState({isFormSubmitted: false})
                this.props.history.goBack();
 
              
-            }).catch(error => console.log(error))
+            }).catch(error => { 
+                this.setState({isFormSubmitted: false})
+                console.log(error) } )
            
 
           }else{
@@ -177,6 +182,14 @@ import inputStyle from '../../../utils/inputStyle'
     
 
     render() {
+        if(this.props.vehiculeSeleted == undefined){
+            if(this.props.vehicules.length){
+                let vehicule = this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
+            
+                const action = {type: "EDIT_SELECTED", value: vehicule}
+                this.props.dispatch(action)
+            }
+        }
         return (
             <div className="app-main__inner">
               
@@ -198,7 +211,7 @@ import inputStyle from '../../../utils/inputStyle'
                                             <input name="entite_vehicule"  type="text"
                                             onChange={this.setField}
                                             readOnly
-                                            defaultValue={this.props.vehiculeSeleted.entite_physique.entite}
+                                            defaultValue={this.props.vehiculeSeleted ? this.props.vehiculeSeleted.entite_physique.entite : null}
                                             ref={entite_vehicule => this.entite_vehicule = entite_vehicule}
                                              className="form-control" />
                                              </div>
@@ -344,7 +357,7 @@ import inputStyle from '../../../utils/inputStyle'
                                   
                                 </div>
                                  
-                                <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
+                                <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
                                 <span  onClick={() => this.props.history.goBack()}
                                  className="mt-2 btn btn-warning pull-right">Retour</span>
                             </form>

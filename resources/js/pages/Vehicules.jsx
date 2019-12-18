@@ -39,19 +39,19 @@ import {groupBy} from '../utils/Repository'
         let conf = confirm('Voulez-vous vraiment supprimer ?')
         if(conf === true){
         
-            const action = {type: "REMOVE_PERSONNEL", value: id}
+            const action = {type: "REMOVE_VEHICULE", value: id}
             this.props.dispatch(action)
-            const itemIndex = this.state.personnelState.findIndex(item => item.id === id)
+           // const itemIndex = this.state.personnelState.findIndex(item => item.id === id)
 
-            this.setState({personnelState: this.state.personnelState.filter((item, index) => index !== itemIndex)})
-            axios.delete('/api/supprimer_personnel/' + id)
+           // this.setState({personnelState: this.state.personnelState.filter((item, index) => index !== itemIndex)})
+            axios.delete('/api/supprimer_vehicule/' + id)
         }
        
     }
 
     onEdit = (id) => {
    
-        this.props.history.push('/gestion_du_personnel/' + id)
+        this.props.history.push('/gestion_du_parc_automobile/modification_vehicule/' + id)
 
     }
 

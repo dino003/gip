@@ -12,7 +12,9 @@ import inputStyle from '../../utils/inputStyle'
  class AjouterContratAssurance extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            isFormSubmitted: false
+        }
       
     }
 
@@ -87,6 +89,7 @@ import inputStyle from '../../utils/inputStyle'
         e.preventDefault()
 
           if(this.verificationFormulaire() == null){
+              this.setState({isFormSubmitted: true})
             axios.post('/api/ajouter_contrat_assurance', {
                 vehicule: this.vehicule.value,
                 numero_contrat_police: this.numero_contrat_police.value,
@@ -106,11 +109,13 @@ import inputStyle from '../../utils/inputStyle'
             .then(response => { 
                const action = {type: "ADD_CONTRAT_ASSURANCE", value: response.data}
                  this.props.dispatch(action)
-
+                this.setState({isFormSubmitted: false})
                this.props.history.goBack();
 
              
-            }).catch(error => console.log(error))
+            }).catch(error => {
+                this.setState({isFormSubmitted: false})
+                 console.log(error) } )
            
 
           }else{
@@ -313,7 +318,7 @@ import inputStyle from '../../utils/inputStyle'
                                 </div>
                           
 
-                                <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
+                                <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
                           
                                 <span onClick={() => this.props.history.goBack()}
                                  className="mt-2 btn btn-warning pull-right">Retour</span>
