@@ -23,13 +23,13 @@ class ModifierMission extends Component {
 
     }
 
-    componentDidMount(){
+    // componentDidMount(){
     
-        this.setState({
-           objetEdit: this.props.missions.find(mission => mission.id == this.props.match.params.mission_id)
-       })
+    //     this.setState({
+    //        objetEdit: this.props.missions.find(mission => mission.id == this.props.match.params.mission_id)
+    //    })
    
-       }
+    //    }
 
    
     setField = (event) => {
@@ -113,7 +113,6 @@ class ModifierMission extends Component {
 
     enregistrerOrdreMission = (e) => {
         e.preventDefault()
-       // console.log(this.moyen_transport.value)
        const objetEdit = this.props.missions.find(mission => mission.id == this.props.match.params.mission_id)
 
         if (this.verificationFormulaire() == null) {
@@ -125,18 +124,7 @@ class ModifierMission extends Component {
                 date_demande: this.date_demande.value,
                 heure_demande: this.heure_demande.value,
                 etat: this.etat.value,
-               // vehicule_personnel_immatriculation: this.vehicule_personnel_immatriculation.value,
-                // montant_ht: this.type_commande.value != 0 ? null : this.montant_ht.value,
-                // loyer_mensuel_leasing: this.type_commande.value != 3 ? null : this.loyer_mensuel_leasing.value,
-
-                // cout_ttc_location_annuelle: this.type_commande.value != 1 ? null : this.cout_ttc_location_annuelle.value,
-                // cout_ttc_location_courte_duree: this.type_commande.value != 2 ? null : this.cout_ttc_location_courte_duree.value,
-                // tva: this.type_commande.value != 0 ? null : this.tva.value,
-                // montant_ttc: this.type_commande.value != 0 ? null : this.montant_ttc.value,
-               // vehicule_personnel_marque: this.vehicule_personnel_marque.value,
-               // vehicule_personnel_modele: this.vehicule_personnel_modele.value,
-               // vehicule_personnel_cv: this.vehicule_personnel_cv.value,
-               // vehicule_personnel_nombre_place: this.vehicule_personnel_nombre_place.value,
+            
                 urgence: this.urgence.value,
                 nature_mission_id: this.nature_mission_id.value,
                 moyen_transport: this.moyen_transport.value,
@@ -1173,8 +1161,8 @@ class ModifierMission extends Component {
 
         <Loader
             
-            height={100}
-            width={100}
+            height={500}
+            width={300}
          />
          </span>)
     }

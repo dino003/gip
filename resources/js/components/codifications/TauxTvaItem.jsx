@@ -34,7 +34,7 @@ export default class TauxTvaItem extends Component {
 
             <td onDoubleClick={this.props.onEdit.bind(this, index)}>{item.taux}%</td>
 
-                {!isDefautDeclench ?  <td > <button title={item.defaut == 0 ? `Marquer le taux de TVA par défaut à ${item.taux}%` : null} disabled={item.defaut == 1} className={item.defaut == 0 ? 'mb-2 mr-2 btn btn-light' : 'mb-2 mr-2 btn btn-success'} onClick={this.onDeclencherTvaDefaut}> {item.defaut == 0 ? 'Non' : 'Oui'}</button></td> :  <td > <button disabled> Chargement...</button></td>}
+                {!isDefautDeclench ?  <td > <button title={item.defaut == 0 ? `Marquer le taux de TVA par défaut à ${item.taux}%` : null} disabled={item.defaut == 1} className={item.defaut == 0 ? 'mb-2 mr-2 btn btn-light' : 'mb-2 mr-2 btn btn-success'} onClick={this.onDeclencherTvaDefaut}> {item.defaut == 0 ? 'Non' : 'Oui'}</button></td> :  <td > <button disabled><i className="fa fa-spinner fa-spin fa-1x fa-fw"></i></button></td>}
             <td>
                {item.defaut == 0 &&  <span className="pull-right">
                     <button onClick={this.props.onDelete.bind(this, item.id)} className="mb-2 mr-2 btn-transition btn btn-outline-danger pull-right">

@@ -41,7 +41,7 @@ class Tier extends Model
        // contrat assurances
        public function contrat_assurances()
        {
-           return $this->hasMany(ContratAssurance::class, 'compagnie_assurance', 'id');
+           return $this->hasMany(ContratAssurance::class, 'compagnie_assurance_id', 'id');
        }
 
          // contrat courtiers

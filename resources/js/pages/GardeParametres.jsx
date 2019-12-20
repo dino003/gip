@@ -8,11 +8,11 @@ export default class GardeParametres extends Component {
                             <div className="page-title-wrapper">
                                 <div className="page-title-heading">
                                     <div className="page-title-icon">
-                                        <i className="pe-7s-map icon-gradient bg-premium-dark">
+                                        <i className="pe-7s-settings icon-gradient bg-premium-dark">
                                         </i>
                                     </div>
                                     <div>Paramètres
-                                        <div className="page-title-subheading">Sélectionnez un onglet dans le panel de gauche pour Ajusterles paramètres de AGOPARC
+                                        <div className="page-title-subheading">Sélectionnez un onglet dans le panel de gauche pour Ajuster les paramètres de AGOSOFTPARC
                                         </div>
                                     </div>
                                 </div>

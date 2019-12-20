@@ -16,17 +16,18 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
     constructor(props) {
         super(props);
         this.state = {
-            objetEdit: undefined
+            objetEdit: undefined,
+            isFormSubmitted: false
         }
       
     }
 
 
-    componentDidMount(){
-        this.setState({
-            objetEdit: this.props.contrat_assurances.find(contrat => contrat.id == this.props.match.params.contrat_assurance_id)
-        })
-    } 
+    // componentDidMount(){
+    //     this.setState({
+    //         objetEdit: this.props.contrat_assurances.find(contrat => contrat.id == this.props.match.params.contrat_assurance_id)
+    //     })
+    // } 
    
     setField = (event) => {
         const target = event.target;
@@ -96,9 +97,11 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
       enregistrerIntervention = (e) => {
         e.preventDefault()
+        this.setState({isFormSubmitted: true})
+       const objetEdit = this.props.contrat_assurances.find(contrat => contrat.id == this.props.match.params.contrat_assurance_id)
 
           if(this.verificationFormulaire() == null){
-            axios.post('/api/modifier_contrat_assurance/' + this.state.objetEdit.id, {
+            axios.post('/api/modifier_contrat_assurance/' + objetEdit.id, {
                 vehicule: this.vehicule.value,
                 numero_contrat_police: this.numero_contrat_police.value,
                 date_contrat: this.date_contrat.value,
@@ -117,11 +120,16 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
             .then(response => { 
                const action = {type: "EDIT_CONTRAT_ASSURANCE", value: response.data}
                  this.props.dispatch(action)
+                 this.setState({isFormSubmitted: false})
 
                this.props.history.goBack();
 
              
-            }).catch(error => console.log(error))
+            }).catch(error => { 
+                this.setState({isFormSubmitted: false})
+
+                 console.log(error)
+                 } )
            
 
           }else{
@@ -137,7 +145,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
     
 
     render() {
-       const {objetEdit} = this.state
+        const objetEdit = this.props.contrat_assurances.find(contrat => contrat.id == this.props.match.params.contrat_assurance_id)
 
        if(objetEdit !== undefined){
         return (
@@ -350,7 +358,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                 </div>
                           
 
-                                <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
+                                <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
                            
                                 <span onClick={() => this.props.history.goBack()}
                                  className="mt-2 btn btn-warning pull-right">Retour</span>
@@ -367,10 +375,9 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
             return ( <span style={{textAlign: 'center'}}>
 
             <Loader
-                type="BallTriangle"
-                color="#00BFFF"
-                height={100}
-                width={100}
+               
+               height={500}
+               width={300}
              />
              </span>)
         }

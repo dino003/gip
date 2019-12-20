@@ -41,8 +41,8 @@ import inputStyle from '../../utils/inputStyle';
 
         <Loader
           
-            height={100}
-            width={100}
+          height={500}
+            width={300}
          />
          </span>
     }

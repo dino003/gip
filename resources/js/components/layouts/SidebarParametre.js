@@ -51,7 +51,7 @@ export default class SidebarParametre extends Component {
                                  
                                 <li>
                                     <NavLink activeStyle={active} to="/gestion_du_parc_automobile/parametres_generaux">
-                                        <i className="metismenu-icon pe-7s-home"></i>
+                                        <i className="metismenu-icon pe-7s-settings"></i>
                                         Paramètres généraux
                                         <i className="metismenu-state-icon "></i>
                                     </NavLink>
@@ -72,12 +72,12 @@ export default class SidebarParametre extends Component {
                                             </NavLink>
                                         </li>
 
-                                        <li>
+                                        {/* <li>
                                             <NavLink activeStyle={active} to="/gestion_du_parc_automobile/gestion-des-messages">
                                             <i className="metismenu-icon pe-7s-wallet"></i>
                                                 Les Messages
                                             </NavLink>
-                                        </li>
+                                        </li> */}
                                         {/* <li>
                                             <NavLink activeStyle={active} to="/gestion_du_parc_automobile/r">
                                             <i className="metismenu-icon pe-7s-target"></i>

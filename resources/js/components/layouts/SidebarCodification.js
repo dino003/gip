@@ -70,12 +70,12 @@ export default class SidebarCodification extends Component {
                                                 Les Marques de véhicules
                                             </NavLink>
                                         </li>
-                                        <li>
+                                        {/* <li>
                                             <NavLink activeStyle={active} to="/gestion_du_parc_automobile/modeles_de_véhicules">
                                             <i className="metismenu-icon pe-7s-wallet"></i>
                                                 Les Modeles de véhicules
                                             </NavLink>
-                                        </li>
+                                        </li> */}
                                         <li>
                                             <NavLink activeStyle={active} to="/gestion_du_parc_automobile/codes-incidents-vehicules">
                                             <i className="metismenu-icon pe-7s-target"></i>

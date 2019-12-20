@@ -128,12 +128,12 @@ const active = {
                                                     </i>Les Sorties du stock
                                                 </a>
                                             </li>
-                                            <li>
+                                            {/* <li>
                                                 <a href="elements-badges-labels.html">
                                                     <i className="metismenu-icon">
                                                     </i>Les Commandes d'articles
                                                 </a>
-                                            </li>
+                                            </li> */}
                                         
                                         </ul>
                                     </li> 

@@ -88,10 +88,10 @@ class Vehicule extends Model
         }
 
          // contrat_assurances
-         public function contrat_assurances()
-         {
-             return $this->hasMany(ContratAssurance::class, 'vehicule', 'id');
-         }
+        public function contrat_assurance()
+        {
+            return $this->belongsTo('App\ContratAssurance', 'contrat_assurance_id');
+        }
 
          
          // reservations

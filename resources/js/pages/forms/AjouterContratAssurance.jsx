@@ -3,17 +3,53 @@ import InputMask from 'react-input-mask';
 import {ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {connect} from 'react-redux'
+import Select from 'react-select';
 
 import today from '../../utils/today'
 import inputStyle from '../../utils/inputStyle'
 
 
+const groupStyles = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  };
+
+  const groupBadgeStyles = {
+    backgroundColor: '#EBECF0',
+    borderRadius: '2em',
+    color: '#172B4D',
+    display: 'inline-block',
+    fontSize: 12,
+    fontWeight: 'normal',
+    lineHeight: '1',
+    minWidth: 1,
+    padding: '0.16666666666667em 0.5em',
+    textAlign: 'center',
+  };
+
+  
+const formatOptionVehicule = data => (
+    <div style={groupStyles}>
+      <span>{data.immatriculation}</span> 
+    </div>
+  );
+
+  const formatOptionTiers = data => (
+    <div style={groupStyles}>
+      <span>{data.code}</span> 
+    </div>
+  );
 
  class AjouterContratAssurance extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isFormSubmitted: false
+            isFormSubmitted: false,
+            global: true,
+            vehicule: null,
+            compagnie_assurance: null
+
         }
       
     }
@@ -26,8 +62,24 @@ import inputStyle from '../../utils/inputStyle'
 
         this.setState({
             [name]: value
-        });
+        }  );
     }
+
+    setFieldVehicule = (vehicule) => {
+        this.setState({ vehicule });
+        //console.log(`Option selected:`, selectedOption.code);
+      }
+
+      setFieldCompagnie = (compagnie_assurance) => {
+        this.setState({ compagnie_assurance: compagnie_assurance.id }, () => {
+            const courtier = this.props.tiers.find(ti => ti.id == this.state.compagnie_assurance)
+            if(courtier){
+                this.courtier.value = courtier.id
+
+            }
+        });
+        //console.log(`Option selected:`, selectedOption.code);
+      }
 
     setFieldDateContrat = (event) => {
         const target = event.target;
@@ -78,37 +130,51 @@ import inputStyle from '../../utils/inputStyle'
               return "La date du contrat est obligatoire !"
           }else if(this.numero_contrat_police.value == ''){
               return "Le numero du contrat ou police est obligatoire !"
-          }else if(this.compagnie_assurance.value == ''){
-            return "La Compagnie d\'assurance est obligatoire !"
+          }else if(this.state.compagnie_assurance == null){
+            return "La Compagnie d'assurance est obligatoire !"
+          }else if(this.state.vehicule == null && !this.global.checked){
+            return "Le Contrat doit être rattaché à au moins un véhicule \n S'il s'agit d'un contrat global veuillez coher la case contrat global !"
+          }else if(this.state.vehicule !== null && !this.global.checked){
+              if(!this.state.vehicule.length) return "Le Contrat doit être rattaché à au moins un véhicule \n S'il s'agit d'un contrat global veuillez coher la case contrat global !"
+
           } else{
               return null
           }
       }
 
-      enregistrerIntervention = (e) => {
+      enregistrerContratAssurance = (e) => {
         e.preventDefault()
 
           if(this.verificationFormulaire() == null){
               this.setState({isFormSubmitted: true})
-            axios.post('/api/ajouter_contrat_assurance', {
-                vehicule: this.vehicule.value,
+              const contrat = {
                 numero_contrat_police: this.numero_contrat_police.value,
                 date_contrat: this.date_contrat.value,
                 periode_date_debut: this.periode_date_debut.value ,
                 periode_date_fin: this.periode_date_fin.value,
                 date_prise_effet: this.date_prise_effet.value,
-                compagnie_assurance: this.compagnie_assurance.value,
+                compagnie_assurance_id: this.state.compagnie_assurance,
                 courtier: this.courtier.value,
                 valeur_assuree: this.valeur_assuree.value,
                 montant_assuree: this.montant_assuree.value,
                 montant_prime: this.montant_prime.value,
                 pourcentage_assiete: this.pourcentage_assiete.value,
                 montant_franchise: this.montant_franchise.value,
-               
-            })
+                global: this.global.checked
+              }
+            //   const requestObjet = {
+            //     vehicules: this.global.checked ? null : this.state.vehicule,
+            //     contrat_objet: contrat
+            //     } 
+            axios.post('/api/ajouter_contrat_assurance',  {
+                vehicules: this.global.checked ? null : this.state.vehicule == null || !this.state.vehicule.length  ? null : this.state.vehicule,
+                contrat_objet: contrat
+                })
             .then(response => { 
-               const action = {type: "ADD_CONTRAT_ASSURANCE", value: response.data}
+               const action = {type: "ADD_CONTRAT_ASSURANCE", value: response.data.contrat_assurance}
                  this.props.dispatch(action)
+                 const action2 = {type: "GET_VEHICULE", value: response.data.vehicules}
+                 this.props.dispatch(action2)
                 this.setState({isFormSubmitted: false})
                this.props.history.goBack();
 
@@ -120,9 +186,10 @@ import inputStyle from '../../utils/inputStyle'
 
           }else{
               //console.log(this.verificationFormulaire())
-              toast.error(this.verificationFormulaire(), {
-                position: toast.POSITION.BOTTOM_CENTER
-              });
+            //   toast.error(this.verificationFormulaire(), {
+            //     position: toast.POSITION.BOTTOM_CENTER
+            //   });
+            alert(this.verificationFormulaire())
           }
      
 
@@ -140,29 +207,47 @@ import inputStyle from '../../utils/inputStyle'
                             <h5 className="card-title">Ajout de Contrat d'assurance
                                                          
                           </h5>
-                            <form className="" onChange={this.setField}  onSubmit={this.enregistrerIntervention}>
+                            <form className="" onChange={this.setField}  onSubmit={this.enregistrerContratAssurance}>
                           
                                
                                 <div className="form-row">
 
-                                <div className="col-md-3">
-                                         <label  className="">Véhicule</label>
-                                        <select name="vehicule" onChange={this.setField}
-                                            ref={vehicule => this.vehicule = vehicule}
-                                            style={inputStyle}
+                                <div className="col-md-4">
+                                            {!this.state.global ?
+                                             <label  className=""> {this.state.vehicule == null || !this.state.vehicule.length ? 'Aucun véhicule sélectionné' : `${this.state.vehicule.length} Véhicule (s) Sélectionné (s)`}</label> :
+                                             <label>Contrat global</label> }
+                                            { this.state.global ? <input readOnly 
+                                            defaultValue="Ce Contrat couvre tous les véhicules"
+                                            className="form-control" /> : 
+                                        //       <select name="vehicule" onChange={this.setField}
+                                        //     ref={vehicule => this.vehicule = vehicule}
+                                        //     style={inputStyle}
 
-                                          className="form-control">
-                                        <option value="">Tous</option>
+                                        //   className="form-control">
+                                        // <option value={null}></option>
 
-                                        {this.props.vehicules.map(vehicule => 
-                                                <option key={vehicule.id} value={vehicule.id}>{vehicule.immatriculation} {vehicule.modele} </option>
+                                        // {this.props.vehicules.map(vehicule => 
+                                        //         <option key={vehicule.id} value={vehicule.id}>{vehicule.immatriculation} {vehicule.modele} </option>
 
-                                                )}
-                                        </select>
+                                        //         )}
+                                        // </select> 
+                                        <Select
+                                        isMulti
+                                        name="vehicule"
+                                        placeholder="Selectionnez un ou plusieurs véhicules"
+                                        noOptionsMessage={() => "Aucun Véhicule pour l'instant"}
+                                        options={this.props.vehicules}
+                                        getOptionLabel={option => option.immatriculation}
+                                        getOptionValue={option => option.id}
+                                        formatOptionLabel={formatOptionVehicule}
+                                        onChange={this.setFieldVehicule}
+                                        style={inputStyle}
+                                      />
+                                    }
                                 
                                         </div>
 
-                                    <div className="col-md-3">
+                                    <div className="col-md-2">
                                         <div className="position-relative form-group">
                                             <label >N° de contrat/Police * </label>
                                             <input name="numero_contrat_police"  type="text"
@@ -181,6 +266,24 @@ import inputStyle from '../../utils/inputStyle'
                                             onChange={this.setFieldDateContrat}
                                             ref={date_contrat => this.date_contrat = date_contrat}
                                              className="form-control" />
+                                             </div>
+                                    </div>
+
+
+                                    <div className="col-md-2">
+                                        <div className="position-relative form-group">
+                                            <label >Contrat global ?</label>
+                                             </div>
+                                    </div>
+
+                                    <div className="col-md-1">
+                                        <div className="position-relative form-group">
+                                            <input name="global"  type="checkbox"
+                                            style={inputStyle}
+                                            onChange={this.setField}
+                                            defaultChecked={this.state.global}
+                                            ref={global => this.global = global}
+                                             />
                                              </div>
                                     </div>
 
@@ -234,7 +337,7 @@ import inputStyle from '../../utils/inputStyle'
 
                                 <div className="col-md-3">
                                          <label  className="">Compagnie d'assurance</label>
-                                        <select name="compagnie_assurance" onChange={this.setFieldCompagnieEtCourtier}
+                                        {/* <select name="compagnie_assurance" onChange={this.setFieldCompagnieEtCourtier}
                                             ref={compagnie_assurance => this.compagnie_assurance = compagnie_assurance}
                                             style={inputStyle}
 
@@ -245,7 +348,19 @@ import inputStyle from '../../utils/inputStyle'
                                                 <option key={tier.id} value={tier.id}>{tier.code} </option>
 
                                                 )}
-                                        </select>
+                                        </select> */}
+
+                                        <Select
+                                        name="compagnie_assurance"
+                                        placeholder="Selectionnez la compagnie"
+                                        noOptionsMessage={() => "Aucun Tiers pour l'instant"}
+                                        options={this.props.tiers}
+                                        getOptionLabel={option => option.code}
+                                        getOptionValue={option => option.id}
+                                        formatOptionLabel={formatOptionTiers}
+                                        onChange={this.setFieldCompagnie}
+                                        style={inputStyle}
+                                      />
                                 
                                         </div>
 

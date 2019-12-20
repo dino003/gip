@@ -13,7 +13,7 @@ import ContratAssuranceItem from '../../components/gestion/ContratAssuranceItem'
         this.state = {
             isOpen: false,
             inputOpen: false,
-           
+            isDefautDeclench: false,
             loading: false,
         }   
     }
@@ -31,6 +31,16 @@ import ContratAssuranceItem from '../../components/gestion/ContratAssuranceItem'
             }
            
         }
+
+        onContratdefaut = (id) => {
+            this.setState({isDefautDeclench: !this.state.isDefautDeclench})
+           axios.get('/api/modifier_contrat_assurance_defaut/' + id).then(response => {
+               const action = {type: "GET_CONTRAT_ASSURANCE", value: response.data}
+               this.props.dispatch(action) 
+            this.setState({isDefautDeclench: !this.state.isDefautDeclench})
+    
+           })
+       }
 
      
 
@@ -61,7 +71,7 @@ import ContratAssuranceItem from '../../components/gestion/ContratAssuranceItem'
         return (  <table className="mb-0 table" >
         <thead>
         <tr>
-            <th>Entité</th>
+            <th>Défaut</th>
             <th>Véhicule</th>
             <th>Numero de contrat</th>
             <th>Compagnie</th>
@@ -70,6 +80,7 @@ import ContratAssuranceItem from '../../components/gestion/ContratAssuranceItem'
             <th>Début</th>
 
             <th>Fin</th>
+            <th>Global ?</th>
         </tr>
         </thead>
         <tbody>
@@ -80,6 +91,9 @@ import ContratAssuranceItem from '../../components/gestion/ContratAssuranceItem'
           key={item.id} 
           onEdit={this.onEdit}              
           onDelete={this.onDelete}
+          onContratdefaut={this.onContratdefaut}
+          isDefautDeclench={this.state.isDefautDeclench}
+
          item={item} />
     )  }         
         </tbody>

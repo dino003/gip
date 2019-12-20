@@ -7,8 +7,8 @@ import NumberFormat from 'react-number-format';
 import today from '../../../utils/today'
 
 const inputStyle = {
-   // backgroundColor: '#85b9e9' FEBFD2
-   backgroundColor: '#FEBFD2' 
+    // backgroundColor: '#85b9e9' FEBFD2
+    backgroundColor: '#FEBFD2'
 
 }
 
@@ -22,13 +22,7 @@ class AjouterVehicule extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          reservable: false,
-           //vehicule_prioritaire
-               //vehicule_usage_exclusif
-               //vehicule_lie_astreinte
-               vehicule_prioritaire: false, 
-               vehicule_usage_exclusif: false,
-               vehicule_lie_astreinte: false,
+            isFormSubmitted: false
         }
     }
 
@@ -58,13 +52,13 @@ class AjouterVehicule extends Component {
             return "La catégorie est obligatoire"
         } else if (this.marque.value == undefined || !this.marque.value.length) {
             return "La marque est obligatoire"
-        }else if (this.modele.value == undefined || !this.modele.value.length) {
+        } else if (this.modele.value == undefined || !this.modele.value.length) {
             return "Le modèle est obligatoire"
-        }else if (this.code_modele.value == undefined || !this.code_modele.value.length) {
+        } else if (this.code_modele.value == undefined || !this.code_modele.value.length) {
             return "Le code modèle est obligatoire"
-        }else if (this.tiers.value == undefined || !this.tiers.value.length) {
+        } else if (this.tiers.value == undefined || !this.tiers.value.length) {
             return "Le Tiers d'acquisition est obligatoire"
-        }else if (this.date_entree_au_parc.value == undefined || !this.date_entree_au_parc.value.length) {
+        } else if (this.date_entree_au_parc.value == undefined || !this.date_entree_au_parc.value.length) {
             return "La date d'entrée au parc est obligatoire"
         }
         else {
@@ -75,11 +69,8 @@ class AjouterVehicule extends Component {
 
     enregistrerPersonnel = (e) => {
         e.preventDefault()
-       // console.log(this.date_entree_au_parc.value)
         if (this.verificationFormulaire() == null) {
-            // console.log(this.state)
-            // console.log(this.prix_ht)
-
+            this.setState({ isFormSubmitted: true })
             axios.post('/api/ajouter_vehicule', {
                 immatriculation: this.immatriculation.value,
                 entite_comptable: this.entite_comptable.value,
@@ -88,13 +79,13 @@ class AjouterVehicule extends Component {
                 etat_vehicule_status: this.etat_vehicule_status.value,
                 date_commande: this.date_commande.value,
                 // vehicule propre a faire
-              //  vehicule_propre: this.state.vehicule_propre,
+                //  vehicule_propre: this.state.vehicule_propre,
                 mode_acquisition: this.mode_acquisition.value,
                 date_livraison_previsionelle: this.date_livraison_previsionelle.value,
                 date_livraison_reele: this.date_livraison_reele.value,
                 numero_commande: this.numero_commande.value,
                 demandeur: this.demandeur.value,
-                neuf_occasion: this.state.neuf_occasion, //booleen a faire*************
+                neuf_occasion: this.neuf_occasion.checked, //booleen a faire*************
                 date_entree_au_parc: this.date_entree_au_parc.value,
                 annee_mise_circulation: this.annee_mise_circulation.value,
                 premiere_mise_circulation: this.premiere_mise_circulation.value,
@@ -120,51 +111,95 @@ class AjouterVehicule extends Component {
                 amortissement_annee: this.amortissement_annee.value,
                 amortissement_date_fin: this.amortissement_date_fin.value,
                 amortissement_etat: this.amortissement_etat.value,
-               // prix_ttc: this.prix_ttc.value, reservable a faire *************
-               //vehicule_prioritaire
-               //vehicule_usage_exclusif
-               //vehicule_lie_astreinte
-               reservable: this.state.reservable,
-               vehicule_prioritaire: this.state.vehicule_prioritaire,
-               vehicule_usage_exclusif: this.state.vehicule_usage_exclusif,
-               vehicule_lie_astreinte: this.state.vehicule_lie_astreinte,
+                // prix_ttc: this.prix_ttc.value, reservable a faire *************
+                //vehicule_prioritaire
+                //vehicule_usage_exclusif
+                //vehicule_lie_astreinte
+                reservable: this.reservable.checked,
+                vehicule_prioritaire: this.vehicule_prioritaire.checked,
+                vehicule_usage_exclusif: this.vehicule_usage_exclusif.checked,
+                vehicule_lie_astreinte: this.vehicule_lie_astreinte.checked,
 
                 lieu_prise_en_charge_vehicule: this.lieu_prise_en_charge_vehicule.value,
 
-                 lieu_restitution: this.lieu_restitution.value,
-                 lieu_stockage_double: this.lieu_stockage_double.value,
-                 type_permis: this.type_permis.value,
-                 etat_vehicule_physique: this.etat_vehicule_physique.value,
-                 mode_acquisition_etat_vehicule: this.mode_acquisition_etat_vehicule.value,
-                 tech_chevaux_fiscaux: this.tech_chevaux_fiscaux.value,
-                 tech_couleur: this.tech_couleur.value,
-                 tech_couleur_interieure: this.tech_couleur_interieure.value,
-                 tech_numero_serie: this.tech_numero_serie.value,
-                 tech_information_moteur: this.tech_information_moteur.value,
-                 tech_numero_moteur: this.tech_numero_moteur.value,
-                 tech_taille_pneu: this.tech_taille_pneu.value,
-                 tech_pression_avant: this.tech_pression_avant.value,
-                 tech_pression_arriere: this.tech_pression_arriere.value,
-                 tech_poids_vide: this.tech_poids_vide.value,
-                 tech_en_charge: this.tech_en_charge.value,
-                 tech_capacite_reservoire: this.tech_capacite_reservoire.value,
-                 tech_taux_emmission_co2: this.tech_taux_emmission_co2.value,
-                 tech_volume_interieur: this.tech_volume_interieur.value,
-                 tech_longueur: this.tech_longueur.value,
-                 tech_largeur: this.tech_largeur.value,
-                 tech_hauteur: this.tech_hauteur.value,
-                 mode_acquisition_type_vehicule: this.mode_acquisition_type_vehicule.value,
+                lieu_restitution: this.lieu_restitution.value,
+                lieu_stockage_double: this.lieu_stockage_double.value,
+                type_permis: this.type_permis.value,
+                etat_vehicule_physique: this.etat_vehicule_physique.value,
+                mode_acquisition_etat_vehicule: this.mode_acquisition_etat_vehicule.value,
+                tech_chevaux_fiscaux: this.tech_chevaux_fiscaux.value,
+                tech_couleur: this.tech_couleur.value,
+                tech_couleur_interieure: this.tech_couleur_interieure.value,
+                tech_numero_serie: this.tech_numero_serie.value,
+                tech_information_moteur: this.tech_information_moteur.value,
+                tech_numero_moteur: this.tech_numero_moteur.value,
+                tech_taille_pneu: this.tech_taille_pneu.value,
+                tech_pression_avant: this.tech_pression_avant.value,
+                tech_pression_arriere: this.tech_pression_arriere.value,
+                tech_poids_vide: this.tech_poids_vide.value,
+                tech_en_charge: this.tech_en_charge.value,
+                tech_capacite_reservoire: this.tech_capacite_reservoire.value,
+                tech_taux_emmission_co2: this.tech_taux_emmission_co2.value,
+                tech_volume_interieur: this.tech_volume_interieur.value,
+                tech_longueur: this.tech_longueur.value,
+                tech_largeur: this.tech_largeur.value,
+                tech_hauteur: this.tech_hauteur.value,
+                mode_acquisition_type_vehicule: this.mode_acquisition_type_vehicule.value,
+                /**
+                 * partie acquisition
+                 * 
+                 */
+                // acquisition prêt
+                acquisition_pret_date_debut: this.mode_acquisition && this.mode_acquisition.value == '2' ? this.acquisition_pret_date_debut.value : null,
+                acquisition_pret_date_fin: this.mode_acquisition && this.mode_acquisition.value == '2' ? this.acquisition_pret_date_fin.value : null,
+                acquisition_pret_kilometrage_debut: this.mode_acquisition && this.mode_acquisition.value == '2' ? this.acquisition_pret_kilometrage_debut.value : null,
+                acquisition_pret_kilometrage_fin: this.mode_acquisition && this.mode_acquisition.value == '2' ? this.acquisition_pret_kilometrage_fin.value : null,
+                acquisition_pret_motif: this.mode_acquisition && this.mode_acquisition.value == '2' ? this.acquisition_pret_motif.value : null,
+
+                // acquisition achat
+                acquisition_achat_prix_ht: this.mode_acquisition && this.mode_acquisition.value == '0' ? this.acquisition_achat_prix_ht.value : null,
+                acquisition_achat_prix_ttc: this.mode_acquisition && this.mode_acquisition.value == '0' ? this.acquisition_achat_prix_ttc.value : null,
+                acquisition_achat_taux_tva: this.mode_acquisition && this.mode_acquisition.value == '0' ? this.acquisition_achat_taux_tva.value : null,
+                acquisition_achat_numero_facture: this.mode_acquisition && this.mode_acquisition.value == '0' ? this.acquisition_achat_numero_facture.value : null,
+                acquisition_achat_date_facture: this.mode_acquisition && this.mode_acquisition.value == '0' ? this.acquisition_achat_date_facture.value : null,
+                acquisition_achat_reglee_le: this.mode_acquisition && this.mode_acquisition.value == '0' ? this.acquisition_achat_reglee_le.value : null,
 
 
-              
+
+                // acquisition leasing
+                acquisition_leasing_numero_contrat: this.mode_acquisition && this.mode_acquisition.value == '1' ? this.acquisition_leasing_numero_contrat.value : null,
+                acquisition_leasing_duree_annee: this.mode_acquisition && this.mode_acquisition.value == '1' ? this.acquisition_leasing_duree_annee.value : null,
+                acquisition_leasing_apport_initial: this.mode_acquisition && this.mode_acquisition.value == '1' ? this.acquisition_leasing_apport_initial.value : null,
+                acquisition_leasing_loyer_mensuel: this.mode_acquisition && this.mode_acquisition.value == '1' ? this.acquisition_leasing_loyer_mensuel.value : null,
+                acquisition_leasing_valeur_rachat: this.mode_acquisition && this.mode_acquisition.value == '1' ? this.acquisition_leasing_valeur_rachat.value : null,
+                acquisition_leasing_deja_paye: this.mode_acquisition && this.mode_acquisition.value == '1' ? this.acquisition_leasing_deja_paye.value : null,
+
+                /**
+                 * fin acquisition
+                 */
+
+                /**
+                 *  Assurance 
+                 */
+                assurance_valeur_assuree_contrat: this.assurance_valeur_assuree_contrat.value,
+                assurance_valeur_assuree_specifique: this.assurance_valeur_assuree_specifique.value,
+                assurance_prime_annuelle_contrat: this.assurance_prime_annuelle_contrat.value,
+                assurance_prime_annuelle_specifique: this.assurance_prime_annuelle_specifique.value,
+                contrat_assurance_id: this.contrat_assurance_id.value,
+
+
+
 
             }).then(response => {
 
                 const action = { type: "ADD_VEHICULE", value: response.data }
                 this.props.dispatch(action)
-
+                this.setState({ isFormSubmitted: false })
                 this.props.history.goBack();
-            }).catch(error => console.log(error))
+            }).catch(error => {
+                this.setState({ isFormSubmitted: false })
+                console.log(error)
+            })
 
         } else {
             //console.log(this.verificationFormulaire())
@@ -177,40 +212,40 @@ class AjouterVehicule extends Component {
 
     render() {
         //console.log(this.checkUser())
-      //  console.log(new Date())
+        //  console.log(new Date())
         return (
             <div className="app-main__inner">
                 <ul className="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
                     <li className="nav-item">
                         <a role="tab" className="nav-link active" id="tab-0"
-                            data-toggle="tab" href="#tab-content-0">
+                            data-toggle="tab" href="#tab_description1">
                             <span>Description 1</span>
                         </a>
                     </li>
                     <li className="nav-item">
                         <a role="tab" className="nav-link" id="tab-1"
-                            data-toggle="tab" href="#tab-content-1">
+                            data-toggle="tab" href="#tab_description2">
                             <span>Description 2</span>
                         </a>
                     </li>
 
                     <li className="nav-item">
                         <a role="tab" className="nav-link" id="tab-2"
-                            data-toggle="tab" href="#tab-content-2">
+                            data-toggle="tab" href="#tab_technique">
                             <span>Technique/Kms</span>
                         </a>
                     </li>
 
                     <li className="nav-item">
                         <a role="tab" className="nav-link" id="tab-3"
-                            data-toggle="tab" href="#tab-content-3">
+                            data-toggle="tab" href="#tab_acquisition">
                             <span>Acquisition</span>
                         </a>
                     </li>
 
                     <li className="nav-item">
                         <a role="tab" className="nav-link" id="tab-4"
-                            data-toggle="tab" href="#tab-content-4">
+                            data-toggle="tab" href="#tab_assurance">
                             <span>Assurance</span>
                         </a>
                     </li>
@@ -222,11 +257,10 @@ class AjouterVehicule extends Component {
                     */}
                 </ul>
                 <form className="" onChange={this.setField} onSubmit={this.enregistrerPersonnel}>
-                    <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
 
                     <div className="tab-content">
                         <div className="tab-pane tabs-animation fade show active"
-                            id="tab-content-0" role="tabpanel">
+                            id="tab_description1" role="tabpanel">
 
                             <div className="main-card mb-3 card">
                                 <div className="card-body"><h5 className="card-title">Fichier des véhicules
@@ -248,7 +282,7 @@ class AjouterVehicule extends Component {
                                         <div className="col-md-3">
                                             <label className="">Entité d'affectation comptable *</label>
                                             <select name="entite_comptable"
-                                             style={inputStyle}
+                                                style={inputStyle}
 
                                                 ref={entite_comptable => this.entite_comptable = entite_comptable}
                                                 className="form-control">
@@ -264,7 +298,7 @@ class AjouterVehicule extends Component {
                                         <div className="col-md-3">
                                             <label className="">Entité d'affectation physique *</label>
                                             <select name="entite_physique"
-                                                    style={inputStyle}
+                                                style={inputStyle}
 
                                                 ref={entite_physique => this.entite_physique = entite_physique}
                                                 className="form-control">
@@ -318,13 +352,15 @@ class AjouterVehicule extends Component {
                                         <div className="col-md-3">
                                             <label className=""> Mode d'acquisition *</label>
                                             <select name="mode_acquisition"
+                                                defaultValue="0"
+                                                style={inputStyle}
                                                 ref={mode_acquisition => this.mode_acquisition = mode_acquisition}
                                                 className="form-control">
-                                                <option value="Achat">Achat</option>
-                                                <option value="Leasing">Leasing</option>
-                                                <option value="Pret">Prêt</option>
-                                                <option value="Location courte">Location courte</option>
-                                                <option value="Location Longue Durée">Location Longue Durée</option>
+                                                <option value="0">Achat</option>
+                                                <option value="1">Leasing</option>
+                                                <option value="2">Prêt</option>
+                                                {/* <option value="Location courte">Location courte</option>
+                                                <option value="Location Longue Durée">Location Longue Durée</option> */}
 
 
                                             </select>
@@ -501,7 +537,7 @@ class AjouterVehicule extends Component {
                                         <div className="col-md-3">
                                             <label className="">Marque *</label>
                                             <select name="marque"
-                                                 style={inputStyle}
+                                                style={inputStyle}
 
                                                 ref={marque => this.marque = marque}
                                                 className="form-control">
@@ -528,7 +564,7 @@ class AjouterVehicule extends Component {
                                             <label className="">Energie *</label>
 
                                             <select name="energie"
-                                                    style={inputStyle}
+                                                style={inputStyle}
 
                                                 ref={energie => this.energie = energie}
                                                 className="form-control">
@@ -543,7 +579,7 @@ class AjouterVehicule extends Component {
                                         <div className="col-md-3">
                                             <label className="">Tiers d'acquisition *</label>
                                             <select name="tiers"
-                                                    style={inputStyle}
+                                                style={inputStyle}
 
                                                 ref={tiers => this.tiers = tiers}
                                                 className="form-control">
@@ -648,7 +684,7 @@ class AjouterVehicule extends Component {
                         </div>
 
 
-                        <div className="tab-pane tabs-animation fade" id="tab-content-1" role="tabpanel">
+                        <div className="tab-pane tabs-animation fade" id="tab_description2" role="tabpanel">
 
 
                             <div className="main-card mb-3 card">
@@ -765,7 +801,7 @@ class AjouterVehicule extends Component {
                                                     <input type="checkbox"
                                                         ref={vehicule_usage_exclusif => this.vehicule_usage_exclusif = vehicule_usage_exclusif}
                                                         onChange={this.setField}
-                                                        checked={this.state.vehicule_usage_exclusif}
+                                                        defaultChecked={false}
                                                         name="vehicule_usage_exclusif" className="" /></label>
                                             </div>
                                         </div>
@@ -777,7 +813,7 @@ class AjouterVehicule extends Component {
                                                     <input type="checkbox"
                                                         ref={vehicule_prioritaire => this.vehicule_prioritaire = vehicule_prioritaire}
                                                         onChange={this.setField}
-                                                        checked={this.state.vehicule_prioritaire}
+                                                        defaultChecked={false}
                                                         name="vehicule_prioritaire" className="" /></label>
                                             </div>
                                         </div>
@@ -789,7 +825,7 @@ class AjouterVehicule extends Component {
                                                     <input type="checkbox"
                                                         ref={vehicule_lie_astreinte => this.vehicule_lie_astreinte = vehicule_lie_astreinte}
                                                         onChange={this.setField}
-                                                        checked={this.state.vehicule_lie_astreinte}
+                                                        defaultChecked={false}
                                                         name="vehicule_lie_astreinte" className="" /></label>
                                             </div>
                                         </div>
@@ -842,7 +878,7 @@ class AjouterVehicule extends Component {
                                                     <input type="checkbox"
                                                         ref={reservable => this.reservable = reservable}
                                                         onChange={this.setField}
-                                                        checked={this.state.reservable}
+                                                        defaultChecked={true}
                                                         name="reservable" className="" /></label>
                                             </div>
                                         </div>
@@ -873,7 +909,7 @@ class AjouterVehicule extends Component {
                                         <div className="col-md-3">
                                             <label className="">Etat du véhicule</label>
                                             <select name="etat_vehicule_physique    "
-                                                ref={etat_vehicule_physique  => this.etat_vehicule_physique   = etat_vehicule_physique }
+                                                ref={etat_vehicule_physique => this.etat_vehicule_physique = etat_vehicule_physique}
                                                 className="form-control">
                                                 <option value="Excellent">Excellent</option>
                                                 <option value="Bon">Bon</option>
@@ -889,7 +925,7 @@ class AjouterVehicule extends Component {
 
                                     </div>
                                     <div>
-                   
+
 
                                     </div>
 
@@ -903,7 +939,7 @@ class AjouterVehicule extends Component {
 
                         {/*  technique */}
 
-                        <div className="tab-pane tabs-animation fade" id="tab-content-2" role="tabpanel">
+                        <div className="tab-pane tabs-animation fade" id="tab_technique" role="tabpanel">
 
 
                             <div className="main-card mb-3 card">
@@ -1094,6 +1130,325 @@ class AjouterVehicule extends Component {
 
                         {/** fin technique */}
 
+                        {/*  acquisition */}
+
+                        <div className="tab-pane tabs-animation fade" id="tab_acquisition" role="tabpanel">
+
+                            {this.mode_acquisition &&
+                                <div className="main-card mb-3 card">
+                                    <div className="card-body"><h5 className="card-title">Acquisition : {this.mode_acquisition ? this.mode_acquisition.value == '0' ? 'Achat' : this.mode_acquisition.value == '1' ? 'Leasing' : this.mode_acquisition.value == '2' ? 'Prêt' : 'Achat' : null} </h5>
+
+
+
+                                        {this.mode_acquisition.value == '0' &&
+                                            <div className="form-row">
+
+                                                <div className="col-md-2">
+                                                    <div className="position-relative form-group">
+                                                        <label >Prix HT</label>
+                                                        <input name="acquisition_achat_prix_ht"
+                                                            ref={acquisition_achat_prix_ht => this.acquisition_achat_prix_ht = acquisition_achat_prix_ht}
+                                                            type="number" className="form-control" /></div>
+                                                </div>
+
+                                                <div className="col-md-1">
+                                                    <div className="position-relative form-group">
+                                                        <label >Taux de TVA</label>
+
+
+                                                        {this.props.tva.length ? <input name="acquisition_achat_taux_tva" type="number"
+                                                            onChange={this.setField}
+                                                            defaultValue={this.props.tva.find(tva => tva.defaut).taux || 18}
+                                                            ref={acquisition_achat_taux_tva => this.acquisition_achat_taux_tva = acquisition_achat_taux_tva}
+                                                            className="form-control" /> : <input name="acquisition_achat_taux_tva" type="number"
+                                                                onChange={this.setField}
+                                                                ref={acquisition_achat_taux_tva => this.acquisition_achat_taux_tva = acquisition_achat_taux_tva}
+                                                                className="form-control" />}
+
+                                                    </div>
+                                                </div>
+
+                                                <div className="col-md-2">
+                                                    <div className="position-relative form-group">
+                                                        <label >T T C</label>
+                                                        <input name="acquisition_achat_prix_ttc"
+                                                            ref={acquisition_achat_prix_ttc => this.acquisition_achat_prix_ttc = acquisition_achat_prix_ttc}
+                                                            type="number" className="form-control" /></div>
+                                                </div>
+
+                                                <div className="col-md-2">
+                                                    <div className="position-relative form-group">
+                                                        <label >N° de Facture</label>
+                                                        <input name="acquisition_achat_numero_facture"
+                                                            ref={acquisition_achat_numero_facture => this.acquisition_achat_numero_facture = acquisition_achat_numero_facture}
+                                                            type="text" className="form-control" /></div>
+                                                </div>
+
+                                                <div className="col-md-3">
+                                                    <div className="position-relative form-group">
+                                                        <label >Date facture</label>
+                                                        <input name="acquisition_achat_date_facture"
+                                                            ref={acquisition_achat_date_facture => this.acquisition_achat_date_facture = acquisition_achat_date_facture}
+                                                            type="date" className="form-control" /></div>
+                                                </div>
+
+                                                <div className="col-md-2">
+                                                    <div className="position-relative form-group">
+                                                        <label >Réglée le</label>
+                                                        <input name="acquisition_achat_reglee_le"
+                                                            ref={acquisition_achat_reglee_le => this.acquisition_achat_reglee_le = acquisition_achat_reglee_le}
+                                                            type="date" className="form-control" /></div>
+                                                </div>
+
+
+                                            </div>
+                                        }
+
+                                        {this.mode_acquisition.value == '1' &&
+                                            <div className="form-row">
+
+                                                <div className="col-md-2">
+                                                    <div className="position-relative form-group">
+                                                        <label >N° Contrat</label>
+                                                        <input name="acquisition_leasing_numero_contrat"
+                                                            ref={acquisition_leasing_numero_contrat => this.acquisition_leasing_numero_contrat = acquisition_leasing_numero_contrat}
+                                                            type="text" className="form-control" /></div>
+                                                </div>
+
+                                                <div className="col-md-1">
+                                                    <div className="position-relative form-group">
+                                                        <label >Durée</label>
+                                                        <select name="acquisition_leasing_duree_annee"
+                                                            ref={acquisition_leasing_duree_annee => this.acquisition_leasing_duree_annee = acquisition_leasing_duree_annee}
+                                                            className="form-control">
+                                                            <option value="1">1 An</option>
+                                                            <option value="2">2 Ans</option>
+                                                            <option value="3">3 Ans</option>
+                                                            <option value="4">4 Ans</option>
+                                                            <option value="5">5 Ans</option>
+
+
+                                                        </select>
+
+
+                                                    </div>
+
+
+                                                </div>
+
+                                                <div className="col-md-3">
+                                                    <div className="position-relative form-group">
+                                                        <label >Apport initial</label>
+                                                        <input name="acquisition_leasing_apport_initial"
+                                                            ref={acquisition_leasing_apport_initial => this.acquisition_leasing_apport_initial = acquisition_leasing_apport_initial}
+                                                            type="number" className="form-control" /></div>
+                                                </div>
+
+                                                <div className="col-md-2">
+                                                    <div className="position-relative form-group">
+                                                        <label >Loyer Mensuel</label>
+                                                        <input name="acquisition_leasing_loyer_mensuel"
+                                                            ref={acquisition_leasing_loyer_mensuel => this.acquisition_leasing_loyer_mensuel = acquisition_leasing_loyer_mensuel}
+                                                            type="number" className="form-control" /></div>
+                                                </div>
+
+                                                <div className="col-md-2">
+                                                    <div className="position-relative form-group">
+                                                        <label >Déja payé</label>
+                                                        <input name="acquisition_leasing_deja_paye"
+                                                            ref={acquisition_leasing_deja_paye => this.acquisition_leasing_deja_paye = acquisition_leasing_deja_paye}
+                                                            type="number" className="form-control" /></div>
+                                                </div>
+
+                                                <div className="col-md-2">
+                                                    <div className="position-relative form-group">
+                                                        <label >Valeur Rachat</label>
+                                                        <input name="acquisition_leasing_valeur_rachat"
+                                                            ref={acquisition_leasing_valeur_rachat => this.acquisition_leasing_valeur_rachat = acquisition_leasing_valeur_rachat}
+                                                            type="number" className="form-control" /></div>
+                                                </div>
+
+
+                                            </div>
+                                        }
+
+                                        {this.mode_acquisition.value == '2' &&
+                                            <div className="form-row">
+
+
+
+                                                <div className="col-md-2">
+                                                    <div className="position-relative form-group">
+                                                        <label >Date de début</label>
+                                                        <input name="acquisition_pret_date_debut"
+                                                            ref={acquisition_pret_date_debut => this.acquisition_pret_date_debut = acquisition_pret_date_debut}
+                                                            type="text" className="form-control" /></div>
+                                                </div>
+
+                                                <div className="col-md-1">
+                                                    <div className="position-relative form-group">
+                                                        <label >Date de fin</label>
+                                                        <input name="acquisition_pret_date_fin"
+                                                            ref={acquisition_pret_date_fin => this.acquisition_pret_date_fin = acquisition_pret_date_fin}
+                                                            type="text" className="form-control" /></div>
+                                                </div>
+
+                                                <div className="col-md-2">
+                                                    <div className="position-relative form-group">
+                                                        <label >Kilometrage début</label>
+                                                        <input name="acquisition_pret_kilometrage_debut"
+                                                            ref={acquisition_pret_kilometrage_debut => this.acquisition_pret_kilometrage_debut = acquisition_pret_kilometrage_debut}
+                                                            type="text" className="form-control" /></div>
+                                                </div>
+
+                                                <div className="col-md-2">
+                                                    <div className="position-relative form-group">
+                                                        <label >Kilometrage fin</label>
+                                                        <input name="acquisition_pret_kilometrage_fin"
+                                                            ref={acquisition_pret_kilometrage_fin => this.acquisition_pret_kilometrage_fin = acquisition_pret_kilometrage_fin}
+                                                            type="text" className="form-control" /></div>
+                                                </div>
+
+                                                <div className="col-md-3">
+                                                    <div className="position-relative form-group">
+                                                        <label >Motif du prêt</label>
+                                                        <textarea name="acquisition_pret_motif"
+                                                            ref={acquisition_pret_motif => this.acquisition_pret_motif = acquisition_pret_motif}
+                                                            type="text" className="form-control" /></div>
+                                                </div>
+
+                                            </div>
+                                        }
+
+
+
+
+
+
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        {/** fin acquisition */}
+
+
+                        {/*  technique */}
+
+                        <div className="tab-pane tabs-animation fade" id="tab_assurance" role="tabpanel">
+
+
+                            <div className="main-card mb-3 card">
+                                <div className="card-body"><h5 className="card-title">Assurance</h5>
+
+                                    <div className="form-row">
+
+                                        <div className="col-md-5">
+                                            <div className="position-relative form-group">
+                                                <label >N° Contrat Assurance</label>
+                                                {this.props.contrat_assurances.length ? 
+                                                <select name="contrat_assurance_id"
+                                                    ref={contrat_assurance_id => this.contrat_assurance_id = contrat_assurance_id}
+                                                    className="form-control">
+                                                    <option value={null}></option>
+                                                    {this.props.contrat_assurances.map(assur =>
+                                                        <option key={assur.id} value={assur.id}>{assur.numero_contrat_police}</option>
+                                                    )}
+
+                                                </select> : <input name="tech_couleur"
+                                                    readOnly
+                                                    defaultValue="Vous devez creer un contrat d'assurance"
+                                                    type="text" className="form-control" />}
+                                            </div>
+                                        </div>
+
+                                        <div className="col-md-4">
+                                            <div className="position-relative form-group">
+                                                <label >Compagnie</label>
+
+                                                {this.contrat_assurance_id && this.props.contrat_assurances.length && this.contrat_assurance_id.value != '' ? <input name="tech_couleur"
+                                                    readOnly
+                                                    defaultValue={this.props.contrat_assurances.find(cont => cont.id == this.contrat_assurance_id.value).compagnie_assurance.code}
+                                                    type="text" className="form-control" /> : <input name="tech_couleur"
+                                                        readOnly
+                                                        type="text" className="form-control" />}
+                                            </div>
+                                        </div>
+
+                                        {/* <div className="col-md-2">
+                                            <div className="position-relative form-group">
+                                                <label >Courtier</label>
+                                                <input name="tech_couleur_interieure"
+                                                readOnly
+                                                    ref={tech_couleur_interieure => this.tech_couleur_interieure = tech_couleur_interieure}
+                                                    type="text" className="form-control" /></div>
+                                        </div> */}
+
+
+
+                                    </div>
+
+
+
+                                    <div className="form-row">
+
+
+
+                                        <div className="col-md-3">
+                                            <div className="position-relative form-group">
+                                                <label >Valeur Assurée (contrat)</label>
+                                                <input name="assurance_valeur_assuree_contrat"
+                                                    ref={assurance_valeur_assuree_contrat => this.assurance_valeur_assuree_contrat = assurance_valeur_assuree_contrat}
+                                                    type="number" className="form-control" /></div>
+                                        </div>
+
+                                        <div className="col-md-3">
+                                            <div className="position-relative form-group">
+                                                <label >Valeur Assurée (si spécifique)</label>
+                                                <input name="assurance_valeur_assuree_specifique"
+                                                    ref={assurance_valeur_assuree_specifique => this.assurance_valeur_assuree_specifique = assurance_valeur_assuree_specifique}
+                                                    type="number" className="form-control" /></div>
+                                        </div>
+
+                                        <div className="col-md-3">
+                                            <div className="position-relative form-group">
+                                                <label >Prime annuelle d'Assurance (contrat)</label>
+                                                <input name="assurance_prime_annuelle_contrat"
+                                                    ref={assurance_prime_annuelle_contrat => this.assurance_prime_annuelle_contrat = assurance_prime_annuelle_contrat}
+                                                    type="number" className="form-control" /></div>
+                                        </div>
+
+                                        <div className="col-md-3">
+                                            <div className="position-relative form-group">
+                                                <label >Prime annuelle d'Assurance (Si spécifique)</label>
+                                                <input name="assurance_prime_annuelle_specifique"
+                                                    ref={assurance_prime_annuelle_specifique => this.assurance_prime_annuelle_specifique = assurance_prime_annuelle_specifique}
+                                                    type="number" className="form-control" /></div>
+                                        </div>
+
+
+                                    </div>
+
+
+
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        {/** fin assurance */}
+
+
+
+
+
+                        <div className="d-block  card-footer">
+                            <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
+                            <span onClick={() => this.props.history.goBack()}
+                                className="mt-2 btn btn-warning pull-right">Retour</span>
+                        </div>
                     </div>
 
 
@@ -1113,7 +1468,9 @@ const mapStateToProps = state => {
         marques: state.marques.items,
         entites: state.entites.items,
         natures_energies: state.natures_energies.items,
-        personnels: state.personnels.items
+        personnels: state.personnels.items,
+        tva: state.tva.items,
+        contrat_assurances: state.contrat_assurances.items
 
     }
 }

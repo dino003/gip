@@ -17,8 +17,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
     constructor(props) {
         super(props);
         this.state = { 
-            objetEdit: undefined
-
+            objetEdit: undefined,
+            isFormSubmitted: false
         }
       
     }
@@ -106,7 +106,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
          
       }
 
-      enregistrerIntervention = (e) => {
+      modifierReservation = (e) => {
          const objetEdit = this.props.reservations.find(reser => reser.id == this.props.match.params.reservation_id)
 
         e.preventDefault()
@@ -114,6 +114,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
        // var vehicule = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
         if( this.checkIfReservationIsPossible(this.date_debut_reservation.value, this.date_fin_reservation.value) == null ){
             if(this.verificationFormulaire() == null){
+                this.setState({isFormSubmitted: true})
                 axios.post('/api/modifier_vehicule_reservation/' + objetEdit.id, {
                     personne_reservant: this.personne_reservant.value,
                     date_fin_reservation: this.date_fin_reservation.value,
@@ -143,11 +144,14 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                 .then(response => { 
                    const action = {type: "EDIT_RESERVATION", value: response.data}
                      this.props.dispatch(action)
-    
+                    this.setState({isFormSubmitted: false})
                    this.props.history.goBack();
     
                  
-                }).catch(error => console.log(error))
+                }).catch(error => { 
+                    this.setState({isFormSubmitted: false})
+                    console.log(error)
+                 } )
                
     
               }else{
@@ -184,7 +188,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                             }                              
                           </h5>
                           <br />
-                            <form className="" onChange={this.setField}  onSubmit={this.enregistrerIntervention}>
+                            <form className="" onChange={this.setField}  onSubmit={this.modifierReservation}>
                                 <div className="form-row">
                                 <div className="col-md-3">
                                     <label  className="">Personne reservant</label>
@@ -490,7 +494,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                 </div>
                                  
 
-                                <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
+                                <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
                                 <span  onClick={() => this.props.history.goBack()}
                                  className="mt-2 btn btn-warning pull-right">Retour</span>
                             </form>

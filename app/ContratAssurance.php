@@ -17,17 +17,17 @@ class ContratAssurance extends Model
 
  
 
-    protected $casts = [
-        'date_contrat' => 'date:d-m-Y',
-        'periode_date_debut' => 'date:d/m/Y',
-        'periode_date_fin' => 'date:d/m/Y',
-        'date_prise_effet' => 'date:d/m/Y'
-    ];
+    // protected $casts = [
+    //     'date_contrat' => 'date:d-m-Y',
+    //     'periode_date_debut' => 'date:d/m/Y',
+    //     'periode_date_fin' => 'date:d/m/Y',
+    //     'date_prise_effet' => 'date:d/m/Y'
+    // ];
 
    //compagnie_assurance
    public function compagnie_assurance()
    {
-       return $this->belongsTo(Tier::class, 'compagnie_assurance');
+       return $this->belongsTo(Tier::class, 'compagnie_assurance_id');
    }
 
    //courtier
@@ -37,8 +37,8 @@ class ContratAssurance extends Model
    }
 
    //vehicule
-   public function vehicule()
+   public function vehicules()
    {
-       return $this->belongsTo(Vehicule::class, 'vehicule');
+       return $this->hasMany('App\Vehicule', 'contrat_assurance_id', 'id');
    }
 }

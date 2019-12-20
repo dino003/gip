@@ -385,6 +385,9 @@ Route::post('ajouter_contrat_assurance', 'ContratAssuranceController@store');
 // modifier
 Route::post('modifier_contrat_assurance/{id}', 'ContratAssuranceController@update');
 
+// tva par defaut
+Route::get('modifier_contrat_assurance_defaut/{contrat_id}', 'ContratAssuranceController@marquerContratDefaut');
+
 // supprimer
 Route::delete('supprimer_contrat_assurance/{id}', 'ContratAssuranceController@destroy');
 //*********** fin contrat_assurance ********************************************************* 

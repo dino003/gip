@@ -7,6 +7,7 @@ import {connect} from 'react-redux'
 
 import Loader from 'react-loader-spinner'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
+import inputStyle from '../../utils/inputStyle';
 
 
 
@@ -15,36 +16,20 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
     constructor(props) {
         super(props);
         this.state = {
-           // date_creation: new Date(),
+         
+            isFormSubmitted: false,
             hidePassword: true,
-            userNameIsUsed: false,
-            creation_vehicule : 'oui',
-            modification_vehicule: 'oui',
-            suppresion_vehicule: 'oui',
-            commande_vehicule: 'oui',
-            utilisation_vehicule: 'L/E',
-            reservations: 'L/E',
-            intervention: 'L/E',
-            contrat_assurance: 'L/E',
-            ordre_de_mission: 'L/E',
-            consomation_vehicule: 'L/E',
-            cout_vehicule: 'L/E',
-            gestion_stock_piece: 'L/E',
-            amende_vehicule: 'L/E',
-            module_des_commandes: 'L/E',
-
-            utilisateurModif: undefined
-
+            userNameIsUsed: false
         }
     }
 
-    componentDidMount(){
-        axios.get('/api/voir_user/' + this.props.match.params.utilisateur_id).then(response => {
-            // const action = {type: "GET_ENTITE", value: response.data}
-            //  this.props.dispatch(action)
-            this.setState({utilisateurModif: response.data})
-      })
-    }
+    // componentDidMount(){
+    //     axios.get('/api/voir_user/' + this.props.match.params.utilisateur_id).then(response => {
+    //         // const action = {type: "GET_ENTITE", value: response.data}
+    //         //  this.props.dispatch(action)
+    //         this.setState({utilisateurModif: response.data})
+    //   })
+    // }
 
  
 
@@ -114,25 +99,27 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
       enregistrerPersonnel = (e) => {
         e.preventDefault()
           if(this.verificationFormulaire() == null){
+              this.setState({isFormSubmitted: true})
+            const utilisateurModif = this.props.utilisateurs.find(ut => ut.id == this.props.match.params.utilisateur_id)
 
-            axios.post('/api/modifier_user_fonction/' + this.state.utilisateurModif.autorisation.id, {
-                creation_vehicule: this.state.creation_vehicule,
-                modification_vehicule: this.state.modification_vehicule,
-                suppresion_vehicule: this.state.suppresion_vehicule,
-                commande_vehicule: this.state.commande_vehicule,
-                utilisation_vehicule: this.state.utilisation_vehicule,
-                reservations: this.state.reservations,
-                intervention: this.state.intervention,
-                contrat_assurance: this.state.contrat_assurance,
-                ordre_de_mission: this.state.ordre_de_mission,
-                consomation_vehicule: this.state.consomation_vehicule,
-                cout_vehicule: this.state.cout_vehicule,
-                gestion_stock_piece: this.state.gestion_stock_piece,
-                amende_vehicule: this.state.amende_vehicule,
-                module_des_commandes: this.state.module_des_commandes,
+            axios.post('/api/modifier_user_fonction/' + utilisateurModif.autorisation.id, {
+                creation_vehicule: this.creation_vehicule.checked,
+                modification_vehicule: this.modification_vehicule.checked,
+                suppresion_vehicule: this.suppresion_vehicule.checked,
+                commande_vehicule: this.commande_vehicule.checked,
+                utilisation_vehicule: this.utilisation_vehicule.checked,
+                reservations: this.reservations.checked,
+                intervention: this.intervention.checked,
+                contrat_assurance: this.contrat_assurance.checked,
+                ordre_de_mission: this.ordre_de_mission.checked,
+                consomation_vehicule: this.consomation_vehicule.checked,
+                cout_vehicule: this.cout_vehicule.checked,
+                gestion_stock_piece: this.gestion_stock_piece.checked,
+                amende_vehicule: this.amende_vehicule.checked,
+                module_des_commandes: this.module_des_commandes.checked,
             }).catch(error => console.log(error))
            // console.log(this.state)
-            axios.post('/api/modifier_user/' + this.state.utilisateurModif.id, {
+            axios.post('/api/modifier_user/' + utilisateurModif.id, {
                 name: this.name.value,
                 username: this.username.value,
                 email: this.email.value,
@@ -148,9 +135,14 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                 
                const action = {type: "EDIT_UTILISATEUR", value: response.data}
                this.props.dispatch(action)
+               this.setState({isFormSubmitted: false})
 
-             this.props.history.push('/gestion-des-utilisateurs')
-            }).catch(error => console.log(error))
+             this.props.history.goBack()
+            }).catch(error => {
+                this.setState({isFormSubmitted: false})
+
+                console.log(error) 
+            } )
 
           }else{
               //console.log(this.verificationFormulaire())
@@ -164,10 +156,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
         return  <span style={{textAlign: 'center'}}>
 
         <Loader
-            type="BallTriangle"
-            color="#00BFFF"
-            height={100}
-            width={100}
+            height={500}
+            width={300}
          />
          </span>
     }
@@ -175,7 +165,9 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
     render() {
         //console.log(this.checkUser())
-        const {utilisateurModif} = this.state        
+       // const {utilisateurModif} = this.state  
+        const utilisateurModif = this.props.utilisateurs.find(ut => ut.id == this.props.match.params.utilisateur_id)
+      
         return (
             <div className="app-main__inner">
                 {utilisateurModif != undefined ? 
@@ -191,6 +183,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         <div className="position-relative form-group">
                                             <label >Code utilisateur *</label>
                                             <input name="username"
+                                            style={inputStyle}
                                             ref={username => this.username = username}
                                             defaultValue={utilisateurModif.username}
                                               type="text" className={this.state.userNameIsUsed ?
@@ -206,6 +199,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                                  </label>
                                           
                                             <input name="password"
+                                            style={inputStyle}
+
                                             defaultValue={utilisateurModif.password}
                                             ref={password => this.password = password}
                                               type={this.state.hidePassword ? "password" : "text"} className="form-control" />
@@ -217,6 +212,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         <div className="position-relative form-group">
                                             <label >Nom et Prénom *</label>
                                             <input name="name"
+                                            style={inputStyle}
+
                                             defaultValue={utilisateurModif.name}
                                             ref={name => this.name = name}
                                               type="text" className="form-control" />
@@ -301,69 +298,47 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
 
                               
-
                                 <div className="form-row">
                                    
-                                    <div className="col-md-3">
-                                        <div className="position-relative form-group">
-                                            <label className="center">Création de véhicule ? </label>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-1">
-                                    <div className="position-relative form-group">
-                                            <label className="">
-                                            Oui  <input type="radio"
-                                             name="creation_vehicule"
-                                             onChange={this.setField}
-                                             defaultChecked={this.state.utilisateurModif.autorisation.creation_vehicule === "oui"}
+                                   <div className="col-md-3">
+                                       <div className="position-relative form-group">
+                                           <label className="center">Création de véhicule ? </label>
+                                       </div>
+                                   </div>
 
-                                              value="oui"
-                                               className="" /> </label>
-                                        </div>
-                                    </div>
+                                   
+                                   <div className="col-md-2">
+                                   <div className="position-relative form-group">
+                                           
+                                   <input type="checkbox"
+                                       ref={creation_vehicule => this.creation_vehicule = creation_vehicule}
+                                       onChange={this.setField}
+                                       defaultChecked={utilisateurModif.autorisation.creation_vehicule}
+                                       name="creation_vehicule" className="" />
+                                       </div>
+                                   </div>
 
-                                    <div className="col-md-1">
-                                        <div className="position-relative form-group">
-                                            <label className="form-check-label">
-                                            Non  <input type="radio"
-                                            onChange={this.setField}
-                                             name="creation_vehicule"
-                                             defaultChecked={this.state.utilisateurModif.autorisation.creation_vehicule === "non"}
+                                 
+                                   <div className="col-md-2"></div>
+                                   <div className="col-md-3">
+                                       <div className="position-relative form-group">
+                                           <label className="center">Modification de véhicule ?</label>
+                                       </div>
+                                   </div>
 
-                                              value="non" className="" /></label>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-2"></div>
-                                    <div className="col-md-3">
-                                        <div className="position-relative form-group">
-                                            <label className="center">Modification de véhicule ?</label>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-1">
-                                    <div className="position-relative form-group">
-                                            <label className="">
-                                            Oui  <input type="radio"
-                                             name="modification_vehicule"
-                                             onChange={this.setField}
-                                             defaultChecked={this.state.utilisateurModif.autorisation.modification_vehicule === "oui"}
+                                   <div className="col-md-2">
+                                   <div className="position-relative form-group">
+                                           
+                                   <input type="checkbox"
+                                       ref={modification_vehicule => this.modification_vehicule = modification_vehicule}
+                                       onChange={this.setField}
+                                       defaultChecked={utilisateurModif.autorisation.modification_vehicule}
+                                       name="modification_vehicule" className="" />
+                                       </div>
+                                   </div>
+                              
 
-                                              value="oui"
-                                               className="" /> </label>
-                                        </div>
-                                    </div>
-
-                                    <div className="col-md-1">
-                                        <div className="position-relative form-group">
-                                            <label className="form-check-label">
-                                            Non  <input type="radio"
-                                            onChange={this.setField}
-                                             name="modification_vehicule"
-                                             defaultChecked={this.state.utilisateurModif.autorisation.modification_vehicule === "non"}
-
-                                              value="non" className="" /></label>
-                                        </div>
-                                    </div>
-                                </div>
+                               </div>
                                 <hr />
 
                                 <div className="form-row">
@@ -373,60 +348,37 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                            <label className="center">Suppression de véhicule ? </label>
                                        </div>
                                    </div>
-                                   <div className="col-md-1">
-                                   <div className="position-relative form-group">
-                                           <label className="">
-                                           Oui  <input type="radio"
-                                            name="suppresion_vehicule"
-                                            onChange={this.setField}
-                                            defaultChecked={this.state.utilisateurModif.autorisation.suppresion_vehicule === "oui"}
+                                 
+                                    
+                                   <div className="col-md-2">
+                                    <div className="position-relative form-group">
+                                            
+                                    <input type="checkbox"
+                                        ref={suppresion_vehicule => this.suppresion_vehicule = suppresion_vehicule}
+                                        onChange={this.setField}
+                                        defaultChecked={utilisateurModif.autorisation.suppresion_vehicule}
+                                        name="suppresion_vehicule" className="" />
+                                        </div>
+                                    </div>
 
-                                             value="oui"
-                                              className="" /> </label>
-                                       </div>
-                                   </div>
-
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           Non  <input type="radio"
-                                           onChange={this.setField}
-                                            name="suppresion_vehicule"
-                                            defaultChecked={this.state.utilisateurModif.autorisation.suppresion_vehicule === "non"}
-
-                                             value="non" className="" /></label>
-                                       </div>
-                                   </div>
                                    <div className="col-md-2"></div>
                                    <div className="col-md-3">
                                        <div className="position-relative form-group">
                                            <label className="center">Commande de véhicule ?</label>
                                        </div>
                                    </div>
-                                   <div className="col-md-1">
-                                   <div className="position-relative form-group">
-                                           <label className="">
-                                           Oui  <input type="radio"
-                                            name="commande_vehicule"
-                                            onChange={this.setField}
-                                            defaultChecked={this.state.utilisateurModif.autorisation.commande_vehicule === "oui"}
-
-                                             value="oui"
-                                              className="" /> </label>
-                                       </div>
-                                   </div>
-
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           Non  <input type="radio"
-                                           onChange={this.setField}
-                                            name="commande_vehicule"
-                                            defaultChecked={this.state.utilisateurModif.autorisation.commande_vehicule === "non"}
-
-                                             value="non" className="" /></label>
-                                       </div>
-                                   </div>
+                                
+                                   <div className="col-md-2">
+                                    <div className="position-relative form-group">
+                                            
+                                    <input type="checkbox"
+                                        ref={commande_vehicule => this.commande_vehicule = commande_vehicule}
+                                        onChange={this.setField}
+                                        defaultChecked={utilisateurModif.autorisation.commande_vehicule}
+                                        name="commande_vehicule" className="" />
+                                        </div>
+                                    </div>
+                           
                                </div>
                                <hr />
 
@@ -437,83 +389,36 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                            <label className="center">Utilisation des véhicules ? </label>
                                        </div>
                                    </div>
-                                   <div className="col-md-1">
-                                   <div className="position-relative form-group">
-                                           <label className="">
-                                           L/E  <input type="radio"
-                                            name="utilisation_vehicule"
-                                            onChange={this.setField}
-                                            defaultChecked={utilisateurModif.autorisation.utilisation_vehicule === "L/E"}
-
-                                             value="L/E"
-                                              className="" /> </label>
-                                       </div>
-                                   </div>
-
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           L  <input type="radio"
-                                           onChange={this.setField}
-                                            name="utilisation_vehicule"
-                                            defaultChecked={utilisateurModif.autorisation.utilisation_vehicule === "L"}
-
-                                             value="L" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           Non  <input type="radio"
-                                           onChange={this.setField}
-                                            name="utilisation_vehicule"
-                                            defaultChecked={utilisateurModif.autorisation.utilisation_vehicule === "non"}
-
-                                             value="non" className="" /></label>
-                                       </div>
-                                   </div>
+                                 
+                                   <div className="col-md-2">
+                                    <div className="position-relative form-group">
+                                            
+                                    <input type="checkbox"
+                                        ref={utilisation_vehicule => this.utilisation_vehicule = utilisation_vehicule}
+                                        onChange={this.setField}
+                                        defaultChecked={utilisateurModif.autorisation.utilisation_vehicule}
+                                        name="utilisation_vehicule" className="" />
+                                        </div>
+                                    </div>
+                                 
 
                                    <div className="col-md-3">
                                        <div className="position-relative form-group">
                                            <label className="center">Réservation des véhicules ? </label>
                                        </div>
                                    </div>
-                                   <div className="col-md-1">
-                                   <div className="position-relative form-group">
-                                           <label className="">
-                                           L/E  <input type="radio"
-                                            name="reservations"
-                                            onChange={this.setField}
-                                            defaultChecked={utilisateurModif.autorisation.reservations === "L/E"}
-
-                                             value="L/E"
-                                              className="" /> </label>
-                                       </div>
-                                   </div>
-
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           L  <input type="radio"
-                                           onChange={this.setField}
-                                            name="reservations"
-                                            defaultChecked={utilisateurModif.autorisation.reservations === "L"}
-
-                                             value="L" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           Non  <input type="radio"
-                                           onChange={this.setField}
-                                            name="reservations"
-                                            defaultChecked={utilisateurModif.autorisation.reservations === "non"}
-
-                                             value="non" className="" /></label>
-                                       </div>
-                                   </div>
-
+                                
+                                   <div className="col-md-2">
+                                    <div className="position-relative form-group">
+                                            
+                                    <input type="checkbox"
+                                        ref={reservations => this.reservations = reservations}
+                                        onChange={this.setField}
+                                        defaultChecked={utilisateurModif.autorisation.reservations}
+                                        name="reservations" className="" />
+                                        </div>
+                                    </div>
+                                
                                
                                </div>
                                <hr />
@@ -525,82 +430,38 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                            <label className="center">Interventions dur les véhicules ? </label>
                                        </div>
                                    </div>
-                                   <div className="col-md-1">
-                                   <div className="position-relative form-group">
-                                           <label className="">
-                                           L/E  <input type="radio"
-                                            name="intervention"
-                                            onChange={this.setField}
-                                            defaultChecked={utilisateurModif.autorisation.intervention === "L/E"}
-
-                                             value="L/E"
-                                              className="" /> </label>
-                                       </div>
-                                   </div>
-
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           L  <input type="radio"
-                                           onChange={this.setField}
-                                            name="intervention"
-                                            defaultChecked={utilisateurModif.autorisation.intervention === "L"}
-
-                                             value="L" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           Non  <input type="radio"
-                                           onChange={this.setField}
-                                            name="intervention"
-                                            defaultChecked={utilisateurModif.autorisation.intervention === "non"}
-
-                                             value="non" className="" /></label>
-                                       </div>
-                                   </div>
+                                
+                                   <div className="col-md-2">
+                                    <div className="position-relative form-group">
+                                            
+                                    <input type="checkbox"
+                                        ref={intervention => this.intervention = intervention}
+                                        onChange={this.setField}
+                                        defaultChecked={utilisateurModif.autorisation.intervention}
+                                        name="intervention" className="" />
+                                        </div>
+                                    </div>
+                                
+                                
 
                                    <div className="col-md-3">
                                        <div className="position-relative form-group">
                                            <label className="center">Contrats Assurances et Sinistres ? </label>
                                        </div>
                                    </div>
-                                   <div className="col-md-1">
-                                   <div className="position-relative form-group">
-                                           <label className="">
-                                           L/E  <input type="radio"
-                                            name="contrat_assurance"
-                                            onChange={this.setField}
-                                            defaultChecked={utilisateurModif.autorisation.contrat_assurance === "L/E"}
+                                 
 
-                                             value="L/E"
-                                              className="" /> </label>
-                                       </div>
-                                   </div>
-
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           L  <input type="radio"
-                                           onChange={this.setField}
-                                            name="contrat_assurance"
-                                            defaultChecked={utilisateurModif.autorisation.contrat_assurance === "L"}
-
-                                             value="L" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           Non  <input type="radio"
-                                           onChange={this.setField}
-                                            name="contrat_assurance"
-                                            defaultChecked={utilisateurModif.autorisation.contrat_assurance === "non"}
-
-                                             value="non" className="" /></label>
-                                       </div>
-                                   </div>
+                                   <div className="col-md-2">
+                                    <div className="position-relative form-group">
+                                            
+                                    <input type="checkbox"
+                                        ref={contrat_assurance => this.contrat_assurance = contrat_assurance}
+                                        onChange={this.setField}
+                                        defaultChecked={utilisateurModif.autorisation.contrat_assurance}
+                                        name="contrat_assurance" className="" />
+                                        </div>
+                                    </div>
+                               
 
                                
                                </div>
@@ -613,87 +474,40 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                            <label className="center">Ordres de missions ? </label>
                                        </div>
                                    </div>
-                                   <div className="col-md-1">
-                                   <div className="position-relative form-group">
-                                           <label className="">
-                                           L/E  <input type="radio"
-                                            name="ordre_de_mission"
-                                            onChange={this.setField}
-                                            defaultChecked={utilisateurModif.autorisation.ordre_de_mission === "L/E"}
-
-                                             value="L/E"
-                                              className="" /> </label>
-                                       </div>
-                                   </div>
-
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           L  <input type="radio"
-                                           onChange={this.setField}
-                                            name="ordre_de_mission"
-                                            defaultChecked={utilisateurModif.autorisation.ordre_de_mission === "L"}
-
-                                             value="L" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           Non  <input type="radio"
-                                           onChange={this.setField}
-                                            name="ordre_de_mission"
-                                            defaultChecked={utilisateurModif.autorisation.ordre_de_mission === "non"}
-
-                                             value="non" className="" /></label>
-                                       </div>
-                                   </div>
+                              
+                                   <div className="col-md-2">
+                                    <div className="position-relative form-group">
+                                            
+                                    <input type="checkbox"
+                                        ref={ordre_de_mission => this.ordre_de_mission = ordre_de_mission}
+                                        onChange={this.setField}
+                                        defaultChecked={utilisateurModif.autorisation.ordre_de_mission}
+                                        name="ordre_de_mission" className="" />
+                                        </div>
+                                    </div>
+                                  
 
                                    <div className="col-md-3">
                                        <div className="position-relative form-group">
                                            <label className="center">Consomation des véhicules ? </label>
                                        </div>
                                    </div>
-                                   <div className="col-md-1">
-                                   <div className="position-relative form-group">
-                                           <label className="">
-                                           L/E  <input type="radio"
-                                            name="consomation_vehicule"
-                                            onChange={this.setField}
-                                            defaultChecked={utilisateurModif.autorisation.consomation_vehicule === "L/E"}
-
-                                             value="L/E"
-                                              className="" /> </label>
-                                       </div>
-                                   </div>
-
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           L  <input type="radio"
-                                           onChange={this.setField}
-                                            name="consomation_vehicule"
-                                            defaultChecked={utilisateurModif.autorisation.consomation_vehicule === "L"}
-
-                                             value="L" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           Non  <input type="radio"
-                                           onChange={this.setField}
-                                            name="consomation_vehicule"
-                                            defaultChecked={utilisateurModif.autorisation.consomation_vehicule === "non"}
-
-                                             value="non" className="" /></label>
-                                       </div>
-                                   </div>
+                              
+                                   <div className="col-md-2">
+                                    <div className="position-relative form-group">
+                                            
+                                    <input type="checkbox"
+                                        ref={consomation_vehicule => this.consomation_vehicule = consomation_vehicule}
+                                        onChange={this.setField}
+                                        defaultChecked={utilisateurModif.autorisation.consomation_vehicule}
+                                        name="consomation_vehicule" className="" />
+                                        </div>
+                                    </div>
+                                
 
                                
                                </div>
                                <hr />
-
                                <div className="form-row">
                                    
                                    <div className="col-md-3">
@@ -701,84 +515,39 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                            <label className="center">Coûts des véhicules ? </label>
                                        </div>
                                    </div>
-                                   <div className="col-md-1">
-                                   <div className="position-relative form-group">
-                                           <label className="">
-                                           L/E  <input type="radio"
-                                            name="cout_vehicule"
-                                            onChange={this.setField}
-                                            defaultChecked={utilisateurModif.autorisation.cout_vehicule === "L/E"}
+                                 
 
-                                             value="L/E"
-                                              className="" /> </label>
-                                       </div>
-                                   </div>
-
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           L  <input type="radio"
-                                           onChange={this.setField}
-                                            name="cout_vehicule"
-                                            defaultChecked={utilisateurModif.autorisation.cout_vehicule === "L"}
-
-                                             value="L" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           Non  <input type="radio"
-                                           onChange={this.setField}
-                                            name="cout_vehicule"
-                                            defaultChecked={utilisateurModif.autorisation.cout_vehicule === "non"}
-
-                                             value="non" className="" /></label>
-                                       </div>
-                                   </div>
+                               
+                                   <div className="col-md-2">
+                                    <div className="position-relative form-group">
+                                            
+                                    <input type="checkbox"
+                                        ref={cout_vehicule => this.cout_vehicule = cout_vehicule}
+                                        onChange={this.setField}
+                                        defaultChecked={utilisateurModif.autorisation.cout_vehicule}
+                                        name="cout_vehicule" className="" />
+                                        </div>
+                                    </div>
+                              
 
                                    <div className="col-md-3">
                                        <div className="position-relative form-group">
                                            <label className="center">Gestion des stocks: pièces détachées ? </label>
                                        </div>
                                    </div>
-                                   <div className="col-md-1">
-                                   <div className="position-relative form-group">
-                                           <label className="">
-                                           L/E  <input type="radio"
-                                            name="gestion_stock_piece"
-                                            onChange={this.setField}
-                                            defaultChecked={utilisateurModif.autorisation.gestion_stock_piece === "L/E"}
+                       
 
-                                             value="L/E"
-                                              className="" /> </label>
-                                       </div>
-                                   </div>
-
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           L  <input type="radio"
-                                           onChange={this.setField}
-                                            name="gestion_stock_piece"
-                                            defaultChecked={utilisateurModif.autorisation.gestion_stock_piece === "L"}
-
-                                             value="L" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           Non  <input type="radio"
-                                           onChange={this.setField}
-                                            name="gestion_stock_piece"
-                                            defaultChecked={utilisateurModif.autorisation.gestion_stock_piece === "non"}
-
-                                             value="non" className="" /></label>
-                                       </div>
-                                   </div>
-
-                               
+                                   <div className="col-md-2">
+                                    <div className="position-relative form-group">
+                                            
+                                    <input type="checkbox"
+                                        ref={gestion_stock_piece => this.gestion_stock_piece = gestion_stock_piece}
+                                        onChange={this.setField}
+                                        defaultChecked={utilisateurModif.autorisation.gestion_stock_piece}
+                                        name="gestion_stock_piece" className="" />
+                                        </div>
+                                    </div>
+                             
                                </div>
                                <hr />
 
@@ -789,90 +558,44 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                            <label className="center">Amendes des véhicules ? </label>
                                        </div>
                                    </div>
-                                   <div className="col-md-1">
-                                   <div className="position-relative form-group">
-                                           <label className="">
-                                           L/E  <input type="radio"
-                                            name="amende_vehicule"
-                                            onChange={this.setField}
-                                            defaultChecked={utilisateurModif.autorisation.amende_vehicule === "L/E"}
+                              
 
-                                             value="L/E"
-                                              className="" /> </label>
-                                       </div>
-                                   </div>
-
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           L  <input type="radio"
-                                           onChange={this.setField}
-                                            name="amende_vehicule"
-                                            defaultChecked={utilisateurModif.autorisation.amende_vehicule === "L"}
-
-                                             value="L" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           Non  <input type="radio"
-                                           onChange={this.setField}
-                                            name="amende_vehicule"
-                                            defaultChecked={utilisateurModif.autorisation.amende_vehicule === "non"}
-
-                                             value="non" className="" /></label>
-                                       </div>
-                                   </div>
+                                   <div className="col-md-2">
+                                    <div className="position-relative form-group">
+                                            
+                                    <input type="checkbox"
+                                        ref={amende_vehicule => this.amende_vehicule = amende_vehicule}
+                                        onChange={this.setField}
+                                        defaultChecked={utilisateurModif.autorisation.amende_vehicule}
+                                        name="amende_vehicule" className="" />
+                                        </div>
+                                    </div>
+                        
 
                                    <div className="col-md-3">
                                        <div className="position-relative form-group">
                                            <label className="center">Module des commandes ? </label>
                                        </div>
                                    </div>
-                                   <div className="col-md-1">
-                                   <div className="position-relative form-group">
-                                           <label className="">
-                                           L/E  <input type="radio"
-                                            name="module_des_commandes"
-                                            onChange={this.setField}
-                                            defaultChecked={utilisateurModif.autorisation.module_des_commandes === "L/E"}
+                                
+                                   <div className="col-md-2">
+                                    <div className="position-relative form-group">
+                                            
+                                    <input type="checkbox"
+                                        ref={module_des_commandes => this.module_des_commandes = module_des_commandes}
+                                        onChange={this.setField}
+                                        defaultChecked={utilisateurModif.autorisation.module_des_commandes}
+                                        name="module_des_commandes" className="" />
+                                        </div>
+                                    </div>
+                                 
 
-                                             value="L/E"
-                                              className="" /> </label>
-                                       </div>
-                                   </div>
-
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           L  <input type="radio"
-                                           onChange={this.setField}
-                                            name="module_des_commandes"
-                                            defaultChecked={utilisateurModif.autorisation.module_des_commandes === "L"}
-
-                                             value="L" className="" /></label>
-                                       </div>
-                                   </div>
-                                   <div className="col-md-1">
-                                       <div className="position-relative form-group">
-                                           <label className="form-check-label">
-                                           Non  <input type="radio"
-                                           onChange={this.setField}
-                                            name="module_des_commandes"
-                                            defaultChecked={utilisateurModif.autorisation.module_des_commandes === "non"}
-
-                                             value="non" className="" /></label>
-                                       </div>
-                                   </div>
-
-                               
                                </div>
                                <hr />
 
                             
 
-                                <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
+                               <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
                            
                                 <span onClick={() => this.props.history.goBack()}
                                  className="mt-2 btn btn-warning pull-right">Retour</span>
@@ -889,6 +612,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 const mapStateToProps = state => {
     return {
         entites: state.entites.items,
+        utilisateurs: state.utilisateurs.items
     }
   }
 
