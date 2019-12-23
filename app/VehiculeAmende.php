@@ -16,12 +16,12 @@ class VehiculeAmende extends Model
     public $timestamps = false;
 
 
-    protected $casts = [
-        'date' => 'date:d/m/Y',
-        'date_reception' => 'date:d/m/Y',
-        'date_reglement' => 'date:d/m/Y'
+    // protected $casts = [
+    //     'date' => 'date:d/m/Y',
+    //     'date_reception' => 'date:d/m/Y',
+    //     'date_reglement' => 'date:d/m/Y'
 
-    ];
+    // ];
 
        //  vehicule
        public function vehicule()

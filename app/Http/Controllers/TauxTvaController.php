@@ -21,6 +21,8 @@ class TauxTvaController extends Controller
     public function index()
     {
         return $this->model->all();
+
+
     }
 
     /**
@@ -41,8 +43,32 @@ class TauxTvaController extends Controller
      */
     public function store(Request $request)
     {
-       
-         return $this->model->create($request->only($this->model->getModel()->fillable));
+        $isEmptyTableTva = TauxTva::count() == 0;
+
+       // $creation = $tva->create($request->only($tva->fillable));
+        if($isEmptyTableTva ){
+            $tva = new TauxTva;
+
+            $tva->libelle = $request->get('libelle');
+            $tva->taux = $request->get('taux');
+            $tva->defaut = 1;
+     
+            $tva->save();
+            return response()->json($tva);
+
+        }else{
+           // return $this->model->create($request->only($this->model->getModel()->fillable));
+
+           $tva = new TauxTva;
+
+           $tva->libelle = $request->get('libelle');
+           $tva->taux = $request->get('taux');
+           $tva->defaut = 0;
+
+           $tva->save();
+           return response()->json($tva);
+        }
+    
 
     }
 

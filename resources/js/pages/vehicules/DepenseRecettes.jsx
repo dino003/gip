@@ -5,6 +5,9 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import MatriculeInput from '../../components/MatriculeInput';
 import DepenseRecetteItem from '../../components/vehicules/DepenseRecetteItem';
 
+import { Container, Button, Link } from 'react-floating-action-button'
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+
 
   class DepenseRecettes extends Component {
 
@@ -91,8 +94,8 @@ import DepenseRecetteItem from '../../components/vehicules/DepenseRecetteItem';
 
         <Loader
           
-            height={100}
-            width={100}
+            height={500}
+            width={300}
          />
          </span>
     }
@@ -106,7 +109,7 @@ import DepenseRecetteItem from '../../components/vehicules/DepenseRecetteItem';
 
     renderList(){
         const depense_recettes = this.props.depense_recettes.filter(inter => inter.vehicule.id == this.props.match.params.vehicule_id)
-        return (  <table className="mb-0 table" >
+        return (  <table className="mb-0 table" id="export" >
         <thead>
         <tr>
             <th>Entité</th>
@@ -157,20 +160,30 @@ import DepenseRecetteItem from '../../components/vehicules/DepenseRecetteItem';
                           {vehiculeselect &&
                             <span className="pull-right">
                         
-                            <button title=" Ajouter une nouvelle ligne de dépense"
+                            {/* <button title=" Ajouter une nouvelle ligne de dépense"
                                       className="mb-2 mr-2 btn-transition btn btn-outline-primary"
                                       onClick={() => this.props.history.push(`/gestion_du_parc_automobile/parc/creation-depense-recettes-vehicules/${vehiculeselect.id}/${vehiculeselect.immatriculation}`)}
                                       >
                                       <i className="fa fa-plus"></i> {' '}
      
                                           Ajouter
-                                             </button>
+                                             </button> */}
+
+                                             
+                                             { this.props.depense_recettes.filter(inter => inter.vehicule.id == this.props.match.params.vehicule_id).length ?
+                                             <ReactHTMLTableToExcel
+                                                id="test-table-xls-button"
+                                                className="mb-2 mr-2 btn-transition btn btn-outline-success"
+                                                table="export"
+                                                filename={`Dépense et recette de véhicule ${vehiculeselect.immatriculation}`}
+                                                sheet="feuille1"
+                                                buttonText="Ecran -> Liste"/> : null }
                                 </span>
                                 }
                              
                                 
-                                {this.props.vehicules.length && 
-                            <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}/>
+                                {this.props.vehicules.length ?
+                            <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}/> : null
                             }                                               
                                 
                             </h5>
@@ -184,7 +197,16 @@ import DepenseRecetteItem from '../../components/vehicules/DepenseRecetteItem';
                        </div>
                    </div>
 
-          
+                   <Container>
+                        <Button
+                        tooltip="Ajouter une ligne de Dépense"
+                        icon="fas fa-plus"
+                    // rotate={true}
+                        styles={{backgroundColor: 'green', color: 'white', cursor: 'pointer'}}
+
+                        onClick={() => this.props.history.push(`/gestion_du_parc_automobile/parc/creation-depense-recettes-vehicules/${vehiculeselect.id}/${vehiculeselect.immatriculation}`)}
+                        />
+                </Container> 
                 
        </div>
         )

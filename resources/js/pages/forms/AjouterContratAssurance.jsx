@@ -7,6 +7,7 @@ import Select from 'react-select';
 
 import today from '../../utils/today'
 import inputStyle from '../../utils/inputStyle'
+import { colourStyles } from '../../utils/Repository';
 
 
 const groupStyles = {
@@ -66,8 +67,7 @@ const formatOptionVehicule = data => (
     }
 
     setFieldVehicule = (vehicule) => {
-        this.setState({ vehicule });
-        //console.log(`Option selected:`, selectedOption.code);
+        this.setState({ vehicule: vehicule.id });
       }
 
       setFieldCompagnie = (compagnie_assurance) => {
@@ -78,7 +78,6 @@ const formatOptionVehicule = data => (
 
             }
         });
-        //console.log(`Option selected:`, selectedOption.code);
       }
 
     setFieldDateContrat = (event) => {
@@ -134,9 +133,6 @@ const formatOptionVehicule = data => (
             return "La Compagnie d'assurance est obligatoire !"
           }else if(this.state.vehicule == null && !this.global.checked){
             return "Le Contrat doit être rattaché à au moins un véhicule \n S'il s'agit d'un contrat global veuillez coher la case contrat global !"
-          }else if(this.state.vehicule !== null && !this.global.checked){
-              if(!this.state.vehicule.length) return "Le Contrat doit être rattaché à au moins un véhicule \n S'il s'agit d'un contrat global veuillez coher la case contrat global !"
-
           } else{
               return null
           }
@@ -162,12 +158,9 @@ const formatOptionVehicule = data => (
                 montant_franchise: this.montant_franchise.value,
                 global: this.global.checked
               }
-            //   const requestObjet = {
-            //     vehicules: this.global.checked ? null : this.state.vehicule,
-            //     contrat_objet: contrat
-            //     } 
+           
             axios.post('/api/ajouter_contrat_assurance',  {
-                vehicules: this.global.checked ? null : this.state.vehicule == null || !this.state.vehicule.length  ? null : this.state.vehicule,
+                vehicules: this.global.checked ? null : this.state.vehicule == null  ? null : this.state.vehicule,
                 contrat_objet: contrat
                 })
             .then(response => { 
@@ -193,7 +186,6 @@ const formatOptionVehicule = data => (
           }
      
 
-       // console.log(yea)
       }
     
 
@@ -214,34 +206,22 @@ const formatOptionVehicule = data => (
 
                                 <div className="col-md-4">
                                             {!this.state.global ?
-                                             <label  className=""> {this.state.vehicule == null || !this.state.vehicule.length ? 'Aucun véhicule sélectionné' : `${this.state.vehicule.length} Véhicule (s) Sélectionné (s)`}</label> :
+                                             <label  className="">  Sélection de véhicule</label> :
                                              <label>Contrat global</label> }
                                             { this.state.global ? <input readOnly 
                                             defaultValue="Ce Contrat couvre tous les véhicules"
                                             className="form-control" /> : 
-                                        //       <select name="vehicule" onChange={this.setField}
-                                        //     ref={vehicule => this.vehicule = vehicule}
-                                        //     style={inputStyle}
-
-                                        //   className="form-control">
-                                        // <option value={null}></option>
-
-                                        // {this.props.vehicules.map(vehicule => 
-                                        //         <option key={vehicule.id} value={vehicule.id}>{vehicule.immatriculation} {vehicule.modele} </option>
-
-                                        //         )}
-                                        // </select> 
+                                     
                                         <Select
-                                        isMulti
                                         name="vehicule"
-                                        placeholder="Selectionnez un ou plusieurs véhicules"
+                                        placeholder="Selectionnez un véhicule"
                                         noOptionsMessage={() => "Aucun Véhicule pour l'instant"}
                                         options={this.props.vehicules}
                                         getOptionLabel={option => option.immatriculation}
                                         getOptionValue={option => option.id}
                                         formatOptionLabel={formatOptionVehicule}
                                         onChange={this.setFieldVehicule}
-                                        style={inputStyle}
+                                        styles={colourStyles}
                                       />
                                     }
                                 
@@ -337,18 +317,7 @@ const formatOptionVehicule = data => (
 
                                 <div className="col-md-3">
                                          <label  className="">Compagnie d'assurance</label>
-                                        {/* <select name="compagnie_assurance" onChange={this.setFieldCompagnieEtCourtier}
-                                            ref={compagnie_assurance => this.compagnie_assurance = compagnie_assurance}
-                                            style={inputStyle}
-
-                                          className="form-control">
-                                        <option defaultValue={null}></option>
-
-                                        {this.props.tiers.map(tier => 
-                                                <option key={tier.id} value={tier.id}>{tier.code} </option>
-
-                                                )}
-                                        </select> */}
+                                  
 
                                         <Select
                                         name="compagnie_assurance"
@@ -359,7 +328,7 @@ const formatOptionVehicule = data => (
                                         getOptionValue={option => option.id}
                                         formatOptionLabel={formatOptionTiers}
                                         onChange={this.setFieldCompagnie}
-                                        style={inputStyle}
+                                        styles={colourStyles}
                                       />
                                 
                                         </div>

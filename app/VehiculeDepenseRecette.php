@@ -17,10 +17,10 @@ class VehiculeDepenseRecette extends Model
 
  
 
-    protected $casts = [
-        'date' => 'date:d/m/Y',
-        'date_piece' => 'date:d/m/Y',
-    ];
+    // protected $casts = [
+    //     'date' => 'date:d/m/Y',
+    //     'date_piece' => 'date:d/m/Y',
+    // ];
 
 
        //  vehicule

@@ -31,6 +31,18 @@ export const groupBy = (objectArray, ...properties) => {
   var dateWithouthSecond = new Date();
 
   export const heure = dateWithouthSecond.toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
+       
+  export const colourStyles =  {
+    control: styles => ({ ...styles, backgroundColor: '#FEBFD2' }),
+    option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+      //const color = chroma(data.color);
+      return {
+        ...styles,
+      
         
+      }
+    },
+  
+  } 
   
 

@@ -20,8 +20,12 @@ class VehiculeController extends Controller
      */
     public function index()
     {
-        return $this->model->with(['entite_comptable', 'entite_physique',
-        'demandeur','categorie','marque','tiers','detenteur','chauffeur_atitre', 'energie'])->get();
+       // return $this->model->get();
+        $vehicules = Vehicule::with(['entite_comptable', 'entite_physique',
+        'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
+         'chauffeur_atitre', 'contrat_assurance', 'energie'])->orderBy('id', 'desc')->get();
+
+         return response()->json($vehicules);
     }
 
     /**
@@ -48,8 +52,9 @@ class VehiculeController extends Controller
          $vehicule = new Vehicule;
          $creation = $vehicule->create($request->only($vehicule->fillable));
   
-         return response()->json(Vehicule::with(['entite_comptable',
-         'demandeur','categorie','marque','tiers','detenteur','chauffeur_atitre', 'energie'])->find($creation->id));
+         return response()->json(Vehicule::with(['entite_comptable', 'entite_physique',
+         'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
+          'chauffeur_atitre', 'contrat_assurance', 'energie'])->find($creation->id));
 
     }
 
@@ -90,7 +95,8 @@ class VehiculeController extends Controller
        $this->model->update($request->only($this->model->getModel()->fillable), $id);
 
        return response()->json(Vehicule::with(['entite_comptable', 'entite_physique',
-       'demandeur','categorie','marque','tiers','detenteur','chauffeur_atitre', 'energie'])->find($id));
+       'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
+        'chauffeur_atitre', 'contrat_assurance', 'energie'])->find($id));
     }
 
     /**

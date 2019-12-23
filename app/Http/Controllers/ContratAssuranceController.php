@@ -21,10 +21,9 @@ class ContratAssuranceController extends Controller
      */
     public function index()
     {
-        $contrat_assurances = ContratAssurance::with(['compagnie_assurance', 'courtier', 'vehicules.entite_physique'])
-                                    ->get();
+        $contrat_assurances = ContratAssurance::with(['compagnie_assurance', 'courtier', 'vehicules'])->orderBy('id', 'desc')->get();
 
-        return response()->json($contrat_assurances);    
+        return response()->json($contrat_assurances);  
     }
 
     /**
@@ -68,21 +67,44 @@ class ContratAssuranceController extends Controller
        // $creation = $contrat_assurance->create($request->only($contrat_assurance->fillable));
         $contrat_assurance->save();
       // dd($request->get('vehicules'));
-        
-        if($request->get('vehicules')){
-            foreach ($request->get('vehicules') as $key => $vehicule) {
-                $veh = Vehicule::find($vehicule['id']);
-                $veh->contrat_assurance_id = $contrat_assurance->id;
-                $veh->save();
+
+      if($request->get('vehicules')){
+        $veh = Vehicule::find($request->get('vehicules'));
+
+        $veh->contrat_assurance_id = $contrat_assurance->id;
+        $veh->save();
+    
+        }else{
+            $vehicules = Vehicule::whereNull('contrat_assurance_id')->get();
+            if(!empty($vehicules)){
+                foreach ($vehicules as $key => $value) {
+                    $value->contrat_assurance_id = $contrat_assurance->id;
+                    $value->save();
+    
+                }
             }
         }
 
-        $contrat_assurance = ContratAssurance::with(['compagnie_assurance', 'courtier', 'vehicules.entite_physique'])
+
+        if($contrat_assurance->global){
+            $isEmptyGlobalContrat = ContratAssurance::where('global', 1)->count() == 1;
+
+            if($isEmptyGlobalContrat){
+                $contrat_assurance->defaut = !$contrat_assurance->defaut; 
+                $contrat_assurance->save();
+            }
+        }
+        
+     
+
+        $contrat_assurance = ContratAssurance::with(['compagnie_assurance', 'courtier', 'vehicules'])->withCount(['vehicules'])
                                              ->find($contrat_assurance->id);
         
         $vehicules = Vehicule::with(['entite_comptable', 'entite_physique',
-        'demandeur','categorie','marque','tiers','detenteur','chauffeur_atitre', 'energie'])->get();
-        return response()->json([
+        'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
+         'chauffeur_atitre', 'contrat_assurance', 'energie'])->orderBy('id', 'desc')->get();
+       
+         return response()->json([
             'vehicules' => $vehicules,
             'contrat_assurance' => $contrat_assurance
         ]);
@@ -141,9 +163,60 @@ class ContratAssuranceController extends Controller
     public function update(Request $request, $id)
     {
         // update model and only pass in the fillable fields
-        $this->model->update($request->only($this->model->getModel()->fillable), $id);
+        // $this->model->update($request->only($this->model->getModel()->fillable), $id);
 
-        return response()->json(ContratAssurance::with(['compagnie_assurance', 'courtier', 'vehicules.entite_physique'])->find($id));
+        // return response()->json(ContratAssurance::with(['compagnie_assurance', 'courtier', 'vehicules'])->withCount([ 'vehicules'])->find($id));
+
+
+        $contrat_assurance =  ContratAssurance::find($id);
+        // $contratInputs = $request->only(['contrat_objet']);
+         $contratInputs = $request->get('contrat_objet');
+        // dd($contratInputs);
+ 
+         $contrat_assurance->numero_contrat_police  = $contratInputs['numero_contrat_police'];
+         $contrat_assurance->date_contrat  = $contratInputs['date_contrat'];
+         $contrat_assurance->periode_date_debut  = $contratInputs['periode_date_debut'];
+         $contrat_assurance->periode_date_fin  = $contratInputs['periode_date_fin'];
+         $contrat_assurance->date_prise_effet  = $contratInputs['date_prise_effet'];
+         $contrat_assurance->compagnie_assurance_id  = $contratInputs['compagnie_assurance_id'];
+         $contrat_assurance->courtier  = $contratInputs['courtier'];
+         $contrat_assurance->valeur_assuree  = $contratInputs['valeur_assuree'];
+         $contrat_assurance->montant_assuree  = $contratInputs['montant_assuree'];
+         $contrat_assurance->montant_prime  = $contratInputs['montant_prime'];
+         $contrat_assurance->pourcentage_assiete  = $contratInputs['pourcentage_assiete'];
+         $contrat_assurance->montant_franchise  = $contratInputs['montant_franchise'];
+         $contrat_assurance->global  = $contratInputs['global'];
+ 
+        // $creation = $contrat_assurance->create($request->only($contrat_assurance->fillable));
+         $contrat_assurance->save();
+       // dd($request->get('vehicules'));
+         
+         if($request->get('vehicules')){
+                 $veh = Vehicule::find($request->get('vehicules'));
+
+                 $veh->contrat_assurance_id = $contrat_assurance->id;
+                 $veh->save();
+         }else{
+            $vehicules = Vehicule::whereNull('contrat_assurance_id')->get();
+            foreach ($vehicules as $key => $value) {
+                $value->contrat_assurance_id = $contrat_assurance->id;
+                $value->save();
+
+            }
+        }
+
+ 
+         $contrat_assurance = ContratAssurance::with(['compagnie_assurance', 'courtier', 'vehicules'])->withCount(['vehicules'])
+                                              ->find($contrat_assurance->id);
+         
+         $vehicules = Vehicule::with(['entite_comptable', 'entite_physique',
+         'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
+          'chauffeur_atitre', 'contrat_assurance', 'energie'])->orderBy('id', 'desc')->get();
+        
+          return response()->json([
+             'vehicules' => $vehicules,
+             'contrat_assurance' => $contrat_assurance
+         ]);
     }
 
     /**

@@ -6,6 +6,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import VehiculeItem from '../components/vehicules/VehiculeItem'
 import MatriculeInput from '../components/MatriculeInput'
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import { Container, Button, Link } from 'react-floating-action-button'
+
 import { CSVLink } from "react-csv";
 import {groupBy} from '../utils/Repository'
 
@@ -206,22 +208,22 @@ import {groupBy} from '../utils/Repository'
                           
                             <span className="pull-right">
                         
-                            <button title=" Ajouter un nouvel acteur"
+                            {/* <button title=" Ajouter un nouvel acteur"
                                       className="mb-2 mr-2 btn-transition btn btn-outline-primary"
                                       onClick={() => this.props.history.push('/gestion_du_parc_automobile/creation-de-vehicule')}
                                       >
                                       <i className="fa fa-plus"></i> {' '}
      
                                           Ajouter
-                                             </button>
-
+                                             </button> */}
+                                            {this.props.vehicules.length ?
                                              <ReactHTMLTableToExcel
-                    id="test-table-xls-button"
-                    className="mb-2 mr-2 btn-transition btn btn-outline-success"
-                    table="table-to-xls"
-                    filename="Liste des véhicules"
-                    sheet="tablexls"
-                    buttonText="Ecran -> Liste"/>
+                                        id="test-table-xls-button"
+                                        className="mb-2 mr-2 btn-transition btn btn-outline-success"
+                                        table="table-to-xls"
+                                        filename="Liste des véhicules"
+                                        sheet="Véhicules"
+                                        buttonText="Ecran -> Liste"/> : null }
                         {/* <CSVLink
                             data={this.props.vehicules}
                             filename={"my-file.csv"}
@@ -248,7 +250,16 @@ import {groupBy} from '../utils/Repository'
                        </div>
                    </div>
 
-          
+                   <Container>
+                        <Button
+                        tooltip="Ajouter un Véhicule"
+                        icon="fas fa-plus"
+                    // rotate={true}
+                        styles={{backgroundColor: 'green', color: 'white', cursor: 'pointer'}}
+
+                        onClick={() => this.props.history.push('/gestion_du_parc_automobile/creation-de-vehicule')}
+                        />
+                </Container> 
                 
        </div>
         )

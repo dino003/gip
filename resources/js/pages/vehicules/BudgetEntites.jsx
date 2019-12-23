@@ -4,6 +4,9 @@ import Loader from 'react-loader-spinner'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import BudgetEntiteItem from '../../components/vehicules/BudgetEntiteItem';
 
+import { Container, Button, Link } from 'react-floating-action-button'
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+
 
   class BudgetEntites extends Component {
 
@@ -74,10 +77,9 @@ import BudgetEntiteItem from '../../components/vehicules/BudgetEntiteItem';
         return  <span style={{textAlign: 'center'}}>
 
         <Loader
-            type="BallTriangle"
-            color="#00BFFF"
-            height={100}
-            width={100}
+        
+            height={500}
+            width={300}
          />
          </span>
     }
@@ -90,7 +92,7 @@ import BudgetEntiteItem from '../../components/vehicules/BudgetEntiteItem';
 
 
     renderList(){
-        return (  <table className="mb-0 table" >
+        return (  <table className="mb-0 table" id="export" >
         <thead>
         <tr>
             <th>Année</th>
@@ -139,14 +141,22 @@ import BudgetEntiteItem from '../../components/vehicules/BudgetEntiteItem';
                           
                             <span className="pull-right">
                         
-                            <button title=" Ajouter une nouvelle ligne de budget"
+                            {/* <button title=" Ajouter une nouvelle ligne de budget"
                                       className="mb-2 mr-2 btn-transition btn btn-outline-primary"
                                       onClick={() => this.props.history.push(`/gestion_du_parc_automobile/parc/creation-budget-entites`)}
                                       >
                                       <i className="fa fa-plus"></i> {' '}
      
                                           Ajouter
-                                             </button>
+                                             </button> */}
+                                            { this.props.budget_entites.length ?
+                                             <ReactHTMLTableToExcel
+                                                id="test-table-xls-button"
+                                                className="mb-2 mr-2 btn-transition btn btn-outline-success"
+                                                table="export"
+                                                filename="Liste des budgets des entités"
+                                                sheet="feuille1"
+                                                buttonText="Ecran -> Liste"/> : null }
                                 </span>
                              
                                 
@@ -168,7 +178,16 @@ import BudgetEntiteItem from '../../components/vehicules/BudgetEntiteItem';
                 </div>
 
             
+                <Container>
+                        <Button
+                        tooltip="Ajouter une ligne de budget"
+                        icon="fas fa-plus"
+                    // rotate={true}
+                        styles={{backgroundColor: 'green', color: 'white', cursor: 'pointer'}}
 
+                        onClick={() => this.props.history.push(`/gestion_du_parc_automobile/parc/creation-budget-entites`)}
+                        />
+                </Container>
           
                 
        </div>

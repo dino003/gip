@@ -2,6 +2,48 @@
    <div className={this.state.isOpen ? "ui-theme-settings settings-open" : "ui-theme-settings"}>
             <button type="button" onClick={this.toggleVisible}  className="btn-open-options btn btn-warning">
                 <i className="fa fa-plus fa-w-16 fa-spin fa-2x"></i>
+
+
+
+
+
+
+                         <Container>
+            {/* <Link href="#"
+                tooltip="Create note link"
+                icon="far fa-sticky-note" />
+            <Link href="#"
+                tooltip="Add user link"
+                className="fab-item btn btn-link btn-lg text-white"
+
+                icon="fas fa-user-plus" /> */}
+             
+            <Button
+                tooltip="Ajouter un Contrat"
+                icon="fas fa-plus"
+               // rotate={true}
+                styles={{backgroundColor: 'green', color: 'white', cursor: 'pointer'}}
+
+                onClick={() => this.props.history.push(`/gestion_du_parc_automobile/creation-contrat-assurance`)}
+                />
+
+                <Button
+              //  tooltip="Ajouter un Contrat"
+                icon="fas fa-braille"
+               // rotate={true}
+                styles={{backgroundColor: 'green', color: 'white', cursor: 'pointer'}}
+
+               // onClick={() => this.props.history.push(`/gestion_du_parc_automobile/creation-contrat-assurance`)}
+                />
+        </Container>
+
+
+
+
+
+
+
+
             </button>
             <div className="theme-settings__inner">
                 <div className="scrollbar-container">

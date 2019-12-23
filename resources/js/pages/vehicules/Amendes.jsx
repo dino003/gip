@@ -5,6 +5,9 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import MatriculeInput from '../../components/MatriculeInput';
 import AmendeItem from '../../components/vehicules/AmendeItem';
 
+import { Container, Button, Link } from 'react-floating-action-button'
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+
 
   class Amendes extends Component {
 
@@ -90,10 +93,9 @@ import AmendeItem from '../../components/vehicules/AmendeItem';
         return  <span style={{textAlign: 'center'}}>
 
         <Loader
-            type="BallTriangle"
-            color="#00BFFF"
-            height={100}
-            width={100}
+       
+            height={500}
+            width={300}
          />
          </span>
     }
@@ -107,7 +109,7 @@ import AmendeItem from '../../components/vehicules/AmendeItem';
 
     renderList(){
         const amendes = this.props.amendes.filter(inter => inter.vehicule.id == this.props.match.params.vehicule_id)
-        return (  <table className="mb-0 table" >
+        return (  <table className="mb-0 table" id="export" >
         <thead>
         <tr>
             <th>Véhicule</th>
@@ -158,14 +160,24 @@ import AmendeItem from '../../components/vehicules/AmendeItem';
                           {vehiculeselect &&
                             <span className="pull-right">
                         
-                            <button title=" Ajouter une nouvelle intervention"
+                            {/* <button title=" Ajouter une nouvelle intervention"
                                       className="mb-2 mr-2 btn-transition btn btn-outline-primary"
                                       onClick={() => this.props.history.push(`/gestion_du_parc_automobile/parc/creation-amendes-vehicules/${vehiculeselect.id}/${vehiculeselect.immatriculation}`)}
                                       >
                                       <i className="fa fa-plus"></i> {' '}
      
                                           Ajouter
-                                             </button>
+                                             </button> */}
+
+
+                                             { this.props.amendes.filter(inter => inter.vehicule.id == this.props.match.params.vehicule_id).length ?
+                                             <ReactHTMLTableToExcel
+                                                id="test-table-xls-button"
+                                                className="mb-2 mr-2 btn-transition btn btn-outline-success"
+                                                table="export"
+                                                filename="Liste des Amendes véhicules"
+                                                sheet="feuille1"
+                                                buttonText="Ecran -> Liste"/> : null }
                                 </span>
                                 }
                              
@@ -186,7 +198,16 @@ import AmendeItem from '../../components/vehicules/AmendeItem';
                        </div>
                    </div>
 
-          
+                   <Container>
+                        <Button
+                        tooltip="Ajouter une Amende"
+                        icon="fas fa-plus"
+                    // rotate={true}
+                        styles={{backgroundColor: 'green', color: 'white', cursor: 'pointer'}}
+
+                        onClick={() => this.props.history.push(`/gestion_du_parc_automobile/parc/creation-amendes-vehicules/${vehiculeselect.id}/${vehiculeselect.immatriculation}`)}
+                        />
+                </Container>
                 
        </div>
         )

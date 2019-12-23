@@ -4,6 +4,9 @@ import Loader from 'react-loader-spinner'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import SortieStockItem from '../../components/gestion/SortieStockItem';
 
+import { Container, Button, Link } from 'react-floating-action-button'
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+
 
   class SortieStock extends Component {
 
@@ -61,7 +64,7 @@ import SortieStockItem from '../../components/gestion/SortieStockItem';
 
     renderList(){
         const sorties = this.props.sorties_stock.filter(sortie => sortie.article_id == this.props.match.params.article_id)
-        return ( <table className="mb-0 table" style={{width: '100%'}} >
+        return ( <table className="mb-0 table" id="export" style={{width: '100%'}} >
         <thead>
         <tr>
             <th >Date de sortie</th>
@@ -88,8 +91,14 @@ import SortieStockItem from '../../components/gestion/SortieStockItem';
 
     render() {
        // console.log(vehiculeselect)
+
        const articleSelected = this.props.articles.find(art => art.id == this.props.match.params.article_id)
-       const isSortiePossible = articleSelected.quantite_phisique_stock > 0
+       const isSortiePossible = articleSelected ? articleSelected.quantite_phisique_stock > 0 : false
+
+       if(this.props.articleSelected == undefined && this.props.articles.length){
+        const action = {type: "EDIT_ARTICLE_SELECTED", value:  this.props.articles.find(art => art.id == this.props.match.params.article_id)}
+          this.props.dispatch(action)
+        }
        return (
             <div className="app-main__inner">
            <div className="row">
@@ -97,11 +106,21 @@ import SortieStockItem from '../../components/gestion/SortieStockItem';
 
            <div className="main-card mb-3 card">
                        <div className="card-body ">
-       <h5 className="card-title">Sorties du stock ==> <span style={{fontSize: '0.8em'}}> Article N° {articleSelected.numero_article} | Famille: {articleSelected.famille.famille} |  Modele: {articleSelected.modele} | </span> <span style={{fontSize: '0.8em'}}>Disponible en stock: <em style={{color: 'red'}}>{articleSelected.quantite_phisique_stock ? articleSelected.quantite_phisique_stock : 0}</em></span>
+
+       <h5 className="card-title">Sorties du stock ==>
+       {this.props.articleSelected ? 
+            <React.Fragment>
+               <span style={{fontSize: '0.8em'}}>
+                    Article N° {this.props.articleSelected.numero_article} | Famille: {this.props.articleSelected.famille.famille} |  Modele: {this.props.articleSelected.modele} | </span>
+                     <span style={{fontSize: '0.8em'}}>Disponible en stock: <em style={{color: 'red'}}>{this.props.articleSelected.quantite_phisique_stock ? this.props.articleSelected.quantite_phisique_stock : 0}</em></span>
+
+            </React.Fragment> : null
+
+       }
                           
                             <span className="pull-right">
                         
-                            <button title={isSortiePossible ? 'Enregistrer une nouvelle sortie de stock' : 'Sortie du stock impossible'}
+                            {/* <button title={isSortiePossible ? 'Enregistrer une nouvelle sortie de stock' : 'Sortie du stock impossible'}
                             disabled={!isSortiePossible}
                                       className="mb-2 mr-2 btn-transition btn btn-outline-primary"
                                       onClick={() => this.props.history.push(`/gestion_du_parc_automobile/sorties-stock/${articleSelected.id}/article/${articleSelected.numero_article}/ajout`)}
@@ -109,7 +128,16 @@ import SortieStockItem from '../../components/gestion/SortieStockItem';
                                       <i className="fa fa-plus"></i> {' '}
      
                                           Ajouter
-                                             </button>
+                                             </button> */}
+
+                                             {this.props.sorties_stock.filter(sortie => sortie.article_id == this.props.match.params.article_id).length ?
+                                             <ReactHTMLTableToExcel
+                                                id="test-table-xls-button"
+                                                className="mb-2 mr-2 btn-transition btn btn-outline-success"
+                                                table="export"
+                                                filename={`Liste des Sorties de ${articleSelected.libelle_article}`}
+                                                sheet="feuille1"
+                                                buttonText="Ecran -> Liste"/> : null }
                                 </span>
                                
                             </h5>
@@ -124,7 +152,16 @@ import SortieStockItem from '../../components/gestion/SortieStockItem';
                    </div>
            </div>
 
-          
+                {isSortiePossible ?  <Container>
+                        <Button
+                        tooltip={isSortiePossible ? 'Enregistrer une nouvelle sortie de stock' : 'Sortie du stock impossible'}
+                        icon="fas fa-plus"
+                    // rotate={true}
+                        styles={{backgroundColor: 'green', color: 'white', cursor: 'pointer'}}
+
+                        onClick={() => this.props.history.push(`/gestion_du_parc_automobile/sorties-stock/${articleSelected.id}/article/${articleSelected.numero_article}/ajout`)}
+                        />
+                </Container> : null}
                 
        </div>
         )
@@ -139,6 +176,7 @@ const mapStateToProps = state => {
         sorties_stock: state.sorties_stock.items,
         articles: state.articles.items,
         loading: state.sorties_stock.loading,
+        articleSelected: state.articleSelected.article
 
     }
   }

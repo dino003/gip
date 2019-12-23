@@ -4,6 +4,8 @@ import Loader from 'react-loader-spinner'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
 import TypeEntiteItem from '../../components/codifications/TypeEntiteItem'
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+
 
   class TypeEntite extends Component {
 
@@ -154,6 +156,15 @@ import TypeEntiteItem from '../../components/codifications/TypeEntiteItem'
                                                     ) : null}
                                                     </span>
                                                 )}
+
+                                            {this.props.types_entites.length ?
+                                             <ReactHTMLTableToExcel
+                                                id="test-table-xls-button"
+                                                className="mb-2 mr-2 btn-transition btn btn-outline-success"
+                                                table="export"
+                                                filename="Liste des types d'entités"
+                                                sheet="feuille1"
+                                                buttonText="Ecran -> Liste"/> : null }
                                 </span>
                                 {this.state.inputOpen ? (
                                      <input value={this.state.type_entite} 
@@ -163,10 +174,11 @@ import TypeEntiteItem from '../../components/codifications/TypeEntiteItem'
                                      type="text" className="form-control pull-right" />
                                 ) : null}
                                
+                              
                             </h5>
                            <div className="table-responsive">
                                 {!this.props.loading ? (
-                                           <table className="mb-0 table" >
+                                           <table className="mb-0 table" id="export">
                                            <thead>
                                            <tr>
                                                <th>Type d'entité</th>
@@ -188,10 +200,9 @@ import TypeEntiteItem from '../../components/codifications/TypeEntiteItem'
                                     <span style={{textAlign: 'center'}}>
 
                                     <Loader
-                                        type="BallTriangle"
-                                        color="#00BFFF"
-                                        height={100}
-                                        width={100}
+                                      
+                                        height={500}
+                                        width={300}
                                      />
                                      </span>
                                 )}
@@ -201,7 +212,7 @@ import TypeEntiteItem from '../../components/codifications/TypeEntiteItem'
                        </div>
                    </div>
 
-          
+                
                 
        </div>
         )

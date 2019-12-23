@@ -5,6 +5,11 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import EntreeStockItem from '../../components/gestion/EntreeStockItem';
 
 
+import { Container, Button, Link } from 'react-floating-action-button'
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+
+
+
   class EntreeStocks extends Component {
 
     constructor(props) {
@@ -61,7 +66,7 @@ import EntreeStockItem from '../../components/gestion/EntreeStockItem';
 
     renderList(){
         const entrees = this.props.entrees_stock.filter(entree => entree.article_id == this.props.match.params.article_id)
-        return (  <table className="mb-0 table" style={{width: '100%'}} >
+        return (  <table className="mb-0 table" id="export" style={{width: '100%'}} >
         <thead>
         <tr>
             <th >Date d'entrée</th>
@@ -103,14 +108,23 @@ import EntreeStockItem from '../../components/gestion/EntreeStockItem';
                           
                             <span className="pull-right">
                         
-                            <button title=" Ajouter une nouvelle ligne de budget"
+                            {/* <button title=" Ajouter une nouvelle ligne de budget"
                                       className="mb-2 mr-2 btn-transition btn btn-outline-primary"
                                       onClick={() => this.props.history.push(`/gestion_du_parc_automobile/entrees-stock/${articleSelected.id}/article/${articleSelected.numero_article}/ajout`)}
                                       >
                                       <i className="fa fa-plus"></i> {' '}
      
                                           Ajouter
-                                             </button>
+                                             </button> */}
+
+                                             {this.props.entrees_stock.filter(entree => entree.article_id == this.props.match.params.article_id).length ?
+                                             <ReactHTMLTableToExcel
+                                                id="test-table-xls-button"
+                                                className="mb-2 mr-2 btn-transition btn btn-outline-success"
+                                                table="export"
+                                                filename={`Liste des Entrées de ${articleSelected.libelle_article}`}
+                                                sheet="feuille1"
+                                                buttonText="Ecran -> Liste"/> : null }
                                 </span>
                                
                             </h5>
@@ -125,7 +139,17 @@ import EntreeStockItem from '../../components/gestion/EntreeStockItem';
                    </div>
            </div>
 
-          
+                
+           <Container>
+                        <Button
+                        tooltip="Ajouter une Entrée"
+                        icon="fas fa-plus"
+                    // rotate={true}
+                        styles={{backgroundColor: 'green', color: 'white', cursor: 'pointer'}}
+
+                        onClick={() => this.props.history.push(`/gestion_du_parc_automobile/entrees-stock/${articleSelected.id}/article/${articleSelected.numero_article}/ajout`)}
+                        />
+                </Container>
                 
        </div>
         )
@@ -139,6 +163,7 @@ const mapStateToProps = state => {
     return {
         entrees_stock: state.entrees_stock.items,
         articles: state.articles.items,
+        articleSelected: state.articleSelected.article,
 
         loading: state.entrees_stock.loading,
 

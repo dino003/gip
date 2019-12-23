@@ -12,6 +12,11 @@ class Repository //implements RepositoryInterface
         $this->model = $model;
     }
 
+        // retourne toutes les instances
+        public function get(){
+            return response()->json($this->model->all(), 200); 
+        }
+
        // retourne toutes les instances
     public function all(){
         return response()->json($this->model->all(), 200); 

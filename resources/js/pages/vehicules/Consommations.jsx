@@ -5,6 +5,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import MatriculeInput from '../../components/MatriculeInput';
 import ConsommationItem from '../../components/vehicules/ConsommationItem';
 
+import { Container, Button, Link } from 'react-floating-action-button'
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
   class Consommations extends Component {
 
@@ -90,8 +92,8 @@ import ConsommationItem from '../../components/vehicules/ConsommationItem';
         return  <span style={{textAlign: 'center'}}>
 
         <Loader
-            height={100}
-            width={100}
+            height={500}
+            width={300}
          />
          </span>
     }
@@ -105,7 +107,7 @@ import ConsommationItem from '../../components/vehicules/ConsommationItem';
 
     renderList(){
         const consommations = this.props.consommations.filter(inter => inter.vehicule.id == this.props.match.params.vehicule_id)
-        return (  <table className="mb-0 table" >
+        return (  <table className="mb-0 table" id="export" >
         <thead>
         <tr>
             <th>Véhicule</th>
@@ -154,20 +156,29 @@ import ConsommationItem from '../../components/vehicules/ConsommationItem';
                           {vehiculeselect &&
                             <span className="pull-right">
                         
-                            <button title=" Ajouter une nouvelle intervention"
+                            {/* <button title=" Ajouter une nouvelle intervention"
                                       className="mb-2 mr-2 btn-transition btn btn-outline-primary"
                                       onClick={() => this.props.history.push(`/gestion_du_parc_automobile/parc/creation-consommations-vehicules/${vehiculeselect.id}/${vehiculeselect.immatriculation}`)}
                                       >
                                       <i className="fa fa-plus"></i> {' '}
      
                                           Ajouter
-                                             </button>
+                                             </button> */}
+
+                                             { this.props.consommations.filter(inter => inter.vehicule.id == this.props.match.params.vehicule_id).length ?
+                                             <ReactHTMLTableToExcel
+                                                id="test-table-xls-button"
+                                                className="mb-2 mr-2 btn-transition btn btn-outline-success"
+                                                table="export"
+                                                filename={`Consommations de véhicule ${vehiculeselect.immatriculation}`}
+                                                sheet="feuille1"
+                                                buttonText="Ecran -> Liste"/> : null }
                                 </span>
                                 }
                              
                                 
-                                {this.props.vehicules.length && 
-                            <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}/>
+                                {this.props.vehicules.length ? 
+                            <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}/> : null
                             }                                              
                                 
                             </h5>
@@ -182,7 +193,16 @@ import ConsommationItem from '../../components/vehicules/ConsommationItem';
                    </div>
 
           
-                
+                   <Container>
+                        <Button
+                        tooltip="Ajouter une ligne de consommation"
+                        icon="fas fa-plus"
+                    // rotate={true}
+                        styles={{backgroundColor: 'green', color: 'white', cursor: 'pointer'}}
+
+                        onClick={() => this.props.history.push(`/gestion_du_parc_automobile/parc/creation-consommations-vehicules/${vehiculeselect.id}/${vehiculeselect.immatriculation}`)}
+                        />
+                </Container> 
        </div>
         )
     }

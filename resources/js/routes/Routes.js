@@ -8,7 +8,7 @@ import MasterGestion from '../components/layouts/MasterGestion'
 
 import Dashboard from '../pages/Dashboard'
 import ParametreGeneraux from '../pages/ParametreGeneraux'
-import TypeEntite from '../pages/codifications/TypeEntite'
+import TypeEntite from '../pages/codifications/TypeEntite.jsx'
 import CategorieVehicule from '../pages/codifications/CategorieVehicule'
 import Personnels from '../pages/parametres/acteurs/Personnels'
 import AjouterPersonnel from '../pages/forms/AjouterPersonnel.jsx'

@@ -11,6 +11,11 @@ import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import today from '../../utils/today';
 
 
+import { Container, Button, Link } from 'react-floating-action-button'
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+
+
+
   class Reservations extends Component {
 
     constructor(props) {
@@ -150,10 +155,9 @@ import today from '../../utils/today';
         return  <span style={{textAlign: 'center'}}>
 
         <Loader
-            type="BallTriangle"
-            color="#00BFFF"
-            height={100}
-            width={100}
+      
+            height={500}
+            width={300}
          />
          </span>
     }
@@ -167,7 +171,7 @@ import today from '../../utils/today';
 
     renderList(){
         const reservations = this.props.reservations.filter(reser => reser.vehicule.id == this.props.match.params.vehicule_id && !reser.transforme_en_utilisation)
-        return (  <table className="mb-0 table" >
+        return (  <table className="mb-0 table" id="export">
         <thead>
         <tr>
             <th>Véhicule</th>
@@ -252,14 +256,22 @@ import today from '../../utils/today';
                           {vehiculeselect &&
                             <span className="pull-right">
                           
-                            <button title=" Ajouter une nouvelle intervention"
+                            {/* <button title=" Ajouter une nouvelle intervention"
                                       className="mb-2 mr-2 btn-transition btn btn-outline-primary"
                                       onClick={() => this.props.history.push(`/gestion_du_parc_automobile/parc/creation-reservation-vehicules/${vehiculeselect.id}/${vehiculeselect.immatriculation}`)}
                                       >
                                       <i className="fa fa-plus"></i> {' '}
      
                                           Ajouter
-                                </button>
+                                </button> */}
+                                { this.props.reservations.length ?
+                                             <ReactHTMLTableToExcel
+                                                id="test-table-xls-button"
+                                                className="mb-2 mr-2 btn-transition btn btn-outline-success"
+                                                table="export"
+                                                filename={`Réservations de véhicule ${vehiculeselect.immatriculation}`}
+                                                sheet="feuille1"
+                                                buttonText="Ecran -> Liste"/> : null }
                                 </span>
                                 }
                              
@@ -313,7 +325,17 @@ import today from '../../utils/today';
                    </div>
 
                    <ToastContainer autoClose={4000} />
+                
+                   <Container>
+                        <Button
+                        tooltip="Ajouter une ligne de réservation"
+                        icon="fas fa-plus"
+                    // rotate={true}
+                        styles={{backgroundColor: 'green', color: 'white', cursor: 'pointer'}}
 
+                        onClick={() => this.props.history.push(`/gestion_du_parc_automobile/parc/creation-reservation-vehicules/${vehiculeselect.id}/${vehiculeselect.immatriculation}`)}
+                        />
+                </Container> 
                 
        </div>
         )

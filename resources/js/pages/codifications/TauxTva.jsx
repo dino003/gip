@@ -117,7 +117,7 @@ import inputStyle from '../../utils/inputStyle';
           this.setState(this.base)
       }
 
-      onEditSubmit = ( taux, libelle, defaut) => {
+      onEditSubmit = ( taux, libelle) => {
        //  e.preventDefault()
         let modif = this.state.objetModif
 
@@ -125,7 +125,7 @@ import inputStyle from '../../utils/inputStyle';
           axios.post('/api/modifier_taux_tva/' + modif.id, {
             taux: taux,
             libelle: libelle,
-            defaut: defaut,
+           // defaut: defaut,
             
           }).then(response => {
             const action = {type: "EDIT_TVA", value: response.data}
@@ -152,7 +152,7 @@ import inputStyle from '../../utils/inputStyle';
                   // code: this.code.value,
                    taux: this.taux.value,
                    libelle: this.libelle.value,
-                   defaut: this.defaut.value,
+                 //  defaut: this.defaut.value,
             }
             ).then(response => {
                 const action = {type: "ADD_TVA", value: response.data}
@@ -257,10 +257,18 @@ import inputStyle from '../../utils/inputStyle';
                                             ref={taux => this.taux = taux}
                                               type="number" step="0.1" className="form-control" /></div>
                                     </div>
+
+                                    <div className="col-md-6">
+                                        <div className="position-relative form-group">
+                                            <label >Libéllé</label>
+                                            <input name="libelle"
+                                            ref={libelle => this.libelle = libelle}
+                                              type="text" className="form-control" /></div>
+                                    </div>
                                    
                                 </div>
 
-                                <div className="form-row">
+                                {/* <div className="form-row">
                                     <div className="col-md-6">
                                         <div className="position-relative form-group">
                                             <label >Libéllé</label>
@@ -283,7 +291,7 @@ import inputStyle from '../../utils/inputStyle';
                                          </div>
                                     </div>
                                    
-                                </div>
+                                </div> */}
                             
 
                              

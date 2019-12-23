@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import moment from 'moment'
+import { formatageSomme } from '../../utils/Repository';
 
  class VehiculeItem extends Component {
 
@@ -16,10 +17,8 @@ import moment from 'moment'
 
     onSelect = () => {
         this.setState({
-          //  isSelect: !this.state.isSelect
             selectIndex: this.props.index
-        }, () =>   console.log(this.state.selectIndex)
-        )
+        })
     }
 
 
@@ -34,15 +33,15 @@ import moment from 'moment'
             
              <tr style={{backgroundColor: textColor}} onClick={this.props.onSelect.bind(this, item.id)}> 
                    
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.entite_comptable.nom_entite || ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.entite_comptable ? item.entite_comptable.nom_entite : ''}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.immatriculation || ''}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.type_vehicule_statut || ''}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.mode_acquisition || ''}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.marque.nom_marque || ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.mode_acquisition == "0" ? 'Achat' : item.mode_acquisition == "1" ? 'Leasing' : 'Prêt'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.marque ? item.marque.nom_marque : ''}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.modele || ''}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.couleur || ''}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.detenteur.nom || ''}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.chauffeur_atitre ? item.chauffeur_atitre.nom : ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.detenteur ? `${ item.detenteur.nom} ${ item.detenteur.prenom.slice(0, 10)}` : ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.chauffeur_atitre ? `${ item.chauffeur_atitre.nom} ${ item.chauffeur_atitre.prenom.slice(0, 10)}` : ''}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.categorie.nom_type || ''}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_entree_au_parc ? moment(item.date_entree_au_parc).format('DD/MM/YYYY') : ''}</td>
 
@@ -52,10 +51,11 @@ import moment from 'moment'
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.energie ? item.energie.nom_energie : ''}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.tech_numero_serie || ''}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.tech_numero_moteur || ''}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.numero_contrat || ''}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.assureur || ''}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.prime_assurance || ''}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.franchise || ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.contrat_assurance ? item.contrat_assurance.numero_contrat_police : 'Neant'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.contrat_assurance ? item.contrat_assurance.compagnie_assurance ? item.contrat_assurance.compagnie_assurance.code : '' : ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.contrat_assurance ? item.contrat_assurance.montant_prime ? formatageSomme(item.contrat_assurance.montant_prime) : '' : ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.contrat_assurance ? item.contrat_assurance.montant_franchise ? formatageSomme(item.contrat_assurance.montant_franchise) : '' : ''}</td>
+
 
             <td>
 

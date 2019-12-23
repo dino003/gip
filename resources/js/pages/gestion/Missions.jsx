@@ -5,7 +5,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import MissionItem from '../../components/gestion/MissionItem';
 
 
-
+import { Container, Button, Link } from 'react-floating-action-button'
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
   class Missions extends Component {
 
@@ -55,8 +56,8 @@ import MissionItem from '../../components/gestion/MissionItem';
         return  <span style={{textAlign: 'center'}}>
 
         <Loader
-            height={100}
-            width={100}
+            height={500}
+            width={300}
          />
          </span>
     }
@@ -69,7 +70,7 @@ import MissionItem from '../../components/gestion/MissionItem';
 
 
     renderList(){
-        return (  <table className="mb-0 table" style={{width: '100%'}} >
+        return (  <table className="mb-0 table" id="export" style={{width: '100%'}} >
         <thead>
         <tr>
             <th colSpan="2">Numero</th>
@@ -118,14 +119,23 @@ import MissionItem from '../../components/gestion/MissionItem';
                           
                             <span className="pull-right">
                         
-                            <button title=" Ajouter une nouvelle ligne de budget"
+                            {/* <button title=" Ajouter une nouvelle ligne de budget"
                                       className="mb-2 mr-2 btn-transition btn btn-outline-primary"
                                       onClick={() => this.props.history.push(`/gestion_du_parc_automobile/ajouter-des-ordres-de-missions`)}
                                       >
                                       <i className="fa fa-plus"></i> {' '}
      
                                           Ajouter
-                                             </button>
+                                             </button> */}
+
+                                             {this.props.missions.length ?
+                                             <ReactHTMLTableToExcel
+                                                id="test-table-xls-button"
+                                                className="mb-2 mr-2 btn-transition btn btn-outline-success"
+                                                table="export"
+                                                filename="Liste des Ordres de Missions"
+                                                sheet="feuille1"
+                                                buttonText="Ecran -> Liste"/> : null }
                                 </span>
                              
                                 
@@ -144,6 +154,16 @@ import MissionItem from '../../components/gestion/MissionItem';
            </div>
 
           
+           <Container>
+                        <Button
+                        tooltip="Ajouter un Ordre de mission"
+                        icon="fas fa-plus"
+                    // rotate={true}
+                        styles={{backgroundColor: 'green', color: 'white', cursor: 'pointer'}}
+
+                        onClick={() => this.props.history.push(`/gestion_du_parc_automobile/ajouter-des-ordres-de-missions`)}
+                        />
+                </Container>
                 
        </div>
         )

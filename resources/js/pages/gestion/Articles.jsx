@@ -5,7 +5,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import ArticleItem from '../../components/gestion/ArticleItem';
 
 
-
+import { Container, Button, Link } from 'react-floating-action-button'
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
   class Articles extends Component {
 
@@ -79,7 +80,7 @@ import ArticleItem from '../../components/gestion/ArticleItem';
 
 
     renderList(){
-        return (  <table className="mb-0 table" style={{width: '100%'}} >
+        return (  <table className="mb-0 table" id="export" style={{width: '100%'}} >
         <thead>
         <tr>
             <th >Fammille</th>
@@ -118,7 +119,7 @@ import ArticleItem from '../../components/gestion/ArticleItem';
 
     render() {
        // console.log(vehiculeselect)
-       const {articleSelected} = this.props
+       const {articleSelected, articles} = this.props
         return (
             <div className="app-main__inner">
            <div className="row">
@@ -166,14 +167,22 @@ import ArticleItem from '../../components/gestion/ArticleItem';
                                              </button> */}
                             </React.Fragment>}
                         
-                            <button title=" Ajouter un article"
+                            {/* <button title=" Ajouter un article"
                                       className="mb-2 mr-2 btn-transition btn btn-outline-primary"
                                       onClick={() => this.props.history.push(`/gestion_du_parc_automobile/ajouter-article`)}
                                       >
                                       <i className="fa fa-plus"></i> {' '}
      
                                           Ajouter
-                                             </button>
+                                             </button> */}
+                                            {articles.length ?
+                                             <ReactHTMLTableToExcel
+                                                id="test-table-xls-button"
+                                                className="mb-2 mr-2 btn-transition btn btn-outline-success"
+                                                table="export"
+                                                filename="Liste des Articles"
+                                                sheet="feuille1"
+                                                buttonText="Ecran -> Liste"/> : null }
 
                                 </span>
                              
@@ -192,7 +201,16 @@ import ArticleItem from '../../components/gestion/ArticleItem';
                    </div>
            </div>
 
-          
+           <Container>
+                        <Button
+                        tooltip="Ajouter un Article"
+                        icon="fas fa-plus"
+                    // rotate={true}
+                        styles={{backgroundColor: 'green', color: 'white', cursor: 'pointer'}}
+
+                        onClick={() => this.props.history.push(`/gestion_du_parc_automobile/ajouter-article`)}
+                        />
+                </Container>
                 
        </div>
         )

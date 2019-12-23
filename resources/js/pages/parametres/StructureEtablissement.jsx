@@ -8,6 +8,10 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import 'react-toastify/dist/ReactToastify.css';
 import StructureEtablissementItem from '../../components/codifications/StructureEtablissementItem'
 
+import { Container, Button, Link } from 'react-floating-action-button'
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+
+
 
  class StructureEtablissement extends Component {
 
@@ -166,7 +170,7 @@ import StructureEtablissementItem from '../../components/codifications/Structure
       }
 
       renderList(){
-          return ( <table className="mb-0 table" >
+          return ( <table className="mb-0 table" id="export" >
           <thead>
           <tr>
               <th>Code Regroupement</th>
@@ -198,10 +202,9 @@ import StructureEtablissementItem from '../../components/codifications/Structure
           return  <span style={{textAlign: 'center'}}>
 
           <Loader
-              type="BallTriangle"
-              color="#00BFFF"
-              height={100}
-              width={100}
+         
+              height={500}
+              width={300}
            />
            </span>
       }
@@ -213,7 +216,7 @@ import StructureEtablissementItem from '../../components/codifications/Structure
             <div className="app-main__inner">
             <div className="main-card card" >
                        <div className="card-body ">
-                           <h5 className="card-title">Gestion de la structure de l'établissement
+                           {/* <h5 className="card-title">Gestion de la structure de l'établissement
                            <button title=" Ajouter un nouvel acteur"
                                       className="mb-2 mr-2 btn-transition btn btn-outline-primary pull-right"
                                       onClick={this.closeEdit}
@@ -222,7 +225,34 @@ import StructureEtablissementItem from '../../components/codifications/Structure
      
                                           Ajouter
                                              </button>
-                           </h5>
+                           </h5> */}
+
+                           <h5 className="card-title">Gestion de la structure de l'établissement
+                          
+                          <span className="pull-right">
+                      
+                          {/* <button title=" Ajouter une nouvelle ligne de budget"
+                                    className="mb-2 mr-2 btn-transition btn btn-outline-primary"
+                                    onClick={() => this.props.history.push(`/gestion_du_parc_automobile/creation-contrat-assurance`)}
+                                    >
+                                    <i className="fa fa-plus"></i> {' '}
+   
+                                        Ajouter
+                                           </button> */}
+                                           {this.props.structures_etablissements.length ?
+                                           <ReactHTMLTableToExcel
+                                              id="test-table-xls-button"
+                                              className="mb-2 mr-2 btn-transition btn btn-outline-success"
+                                              table="export"
+                                              filename="Structure Etablissement"
+                                              sheet="feuille1"
+                                              buttonText="Ecran -> Liste"/> : null }
+                              </span>
+                           
+                              
+                                          
+                              
+                          </h5>
                            <div className="table-responsive">
                               {!this.props.loading ? this.renderList() : this.renderLoading()}
                            </div>
@@ -308,6 +338,17 @@ import StructureEtablissementItem from '../../components/codifications/Structure
   
 
         <ToastContainer autoClose={4000} />
+
+        <Container>
+                        <Button
+                        tooltip="Ajouter une Structure"
+                        icon="fas fa-plus"
+                    // rotate={true}
+                        styles={{backgroundColor: 'green', color: 'white', cursor: 'pointer'}}
+
+                        onClick={this.closeEdit}
+                        />
+                </Container>
 
        </div>
         )

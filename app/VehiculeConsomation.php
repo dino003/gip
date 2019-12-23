@@ -17,10 +17,10 @@ class VehiculeConsomation extends Model
 
 
 
-    protected $casts = [
-        'date_conso' => 'date:d/m/Y',
-        'date_chargement_integration' => 'date:d/m/Y',
-    ];
+    // protected $casts = [
+    //     'date_conso' => 'date:d/m/Y',
+    //     'date_chargement_integration' => 'date:d/m/Y',
+    // ];
 
      //  vehicule
      public function vehicule()

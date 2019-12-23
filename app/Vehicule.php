@@ -15,6 +15,10 @@ class Vehicule extends Model
 
     public $timestamps = false;
 
+    // protected $with = ['entite_comptable', 'entite_physique',
+    //  'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
+    //   'chauffeur_atitre', 'contrat_assurance', 'energie'];
+
     // entite comptable
     public function entite_comptable()
     {
@@ -103,7 +107,7 @@ class Vehicule extends Model
          // energie
          public function energie()
          {
-             return $this->belongsTo('App\NatureEnergie', 'energie_id');
+             return $this->belongsTo('App\NatureEnergie', 'energie');
          }
 
   

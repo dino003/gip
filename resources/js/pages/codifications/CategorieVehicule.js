@@ -7,6 +7,9 @@ import TableHeader from '../../components/TableHeader'
 import CategorieVehiculeItem from '../../components/codifications/CategorieVehiculeItem'
 import AjouterCategorieVehicule from '../forms/AjouterCategorieVehicule'
 
+import { Container, Button, Link } from 'react-floating-action-button'
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+
 
  class CategorieVehicules extends Component {
 
@@ -28,10 +31,9 @@ import AjouterCategorieVehicule from '../forms/AjouterCategorieVehicule'
         return  <span style={{textAlign: 'center'}}>
 
         <Loader
-            type="BallTriangle"
-            color="#00BFFF"
-            height={100}
-            width={100}
+        
+            height={500}
+            width={300}
          />
          </span>
     }
@@ -43,7 +45,7 @@ import AjouterCategorieVehicule from '../forms/AjouterCategorieVehicule'
     }
 
     renderList(){
-        return (    <table className="mb-0 table" >
+        return (    <table className="mb-0 table" id="export" >
         <thead>
         <tr>
             <th>Types</th>
@@ -123,14 +125,24 @@ import AjouterCategorieVehicule from '../forms/AjouterCategorieVehicule'
             <div className="app-main__inner">
             <div className="main-card card" >
                        <div className="card-body ">
-                           <TableHeader
+                           {/* <TableHeader
                            isSearchInputVisible={isSearchInputVisible}
                            link="/gestion_du_parc_automobile/ajouter_categories_véhicules"
                            searchChange={this.searchChange}
                            titre="Gestion des catégories de véhicules"
                            toggleSearchInput={this.toggleSearchInput}
                            toggleVisibleInput={this.toggleOpen}
-                            isLink />
+                            isLink /> */}
+                               <span className="pull-right">
+                               {this.props.categories_vehicules.length ?
+                                             <ReactHTMLTableToExcel
+                                                id="test-table-xls-button"
+                                                className="mb-2 mr-2 btn-transition btn btn-outline-success"
+                                                table="export"
+                                                filename="Liste des Catégories de véhicule"
+                                                sheet="feuille1"
+                                                buttonText="Ecran -> Liste"/> : null }
+                               </span>
                            {/*
                            <h5 className="card-title">Gestion des entités
                            <span className="pull-right">
@@ -170,7 +182,17 @@ import AjouterCategorieVehicule from '../forms/AjouterCategorieVehicule'
                            </div>
                        </div>
                    </div>
+                
+                   <Container>
+                        <Button
+                        tooltip="Ajouter une catégorie de véhicule"
+                        icon="fas fa-plus"
+                    // rotate={true}
+                        styles={{backgroundColor: 'green', color: 'white', cursor: 'pointer'}}
 
+                        onClick={() => this.props.history.push(`/gestion_du_parc_automobile/ajouter_categories_véhicules`)}
+                        />
+                </Container>
        </div>
         )
     }

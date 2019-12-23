@@ -14,6 +14,8 @@ import inputStyle from '../../utils/inputStyle'
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import { Container, Button, Link } from 'react-floating-action-button'
+
 
 
   class Utilisations extends Component {
@@ -317,8 +319,8 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
         <Loader
            
-            height={100}
-            width={100}
+            height={500}
+            width={300}
          />
          </span>
     }
@@ -339,7 +341,7 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
     renderList(){
         const utilis = this.props.utilisations.filter(util => util.vehicule.id == this.props.match.params.vehicule_id)
-        return (  <table className="mb-0 table" id="table-to-xls" >
+        return (  <table className="mb-0 table" id="export" >
         <thead>
         <tr>
         <th>Véhicule</th>
@@ -402,28 +404,32 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                           
                             <span className="pull-right">
                         
-                            <button title=" Ajouter un nouvel acteur"
+                            {/* <button title=" Ajouter un nouvel acteur"
                                       className="mb-2 mr-2 btn-transition btn btn-outline-primary"
                                       onClick={this.closeEdit}
                                       >
                                       <i className="fa fa-plus"></i> {' '}
      
                                           Ajouter
-                                             </button>
+                                             </button> */}
+
+                                             { this.props.utilisations.filter(inter => inter.vehicule.id == this.props.match.params.vehicule_id).length ?
+
+                                                <ReactHTMLTableToExcel
+                                                id="test-table-xls-button"
+                                                className="mb-2 mr-2 btn-transition btn btn-outline-success"
+                                                table="export"
+                                                filename={`Liste des Utilisations de ${vehiculeSelect ? vehiculeSelect.immatriculation : null}`}
+                                                sheet="tablexls"
+                                                buttonText="Ecran -> Liste"/> : null}
                                 </span>
                              
-                                {this.props.vehicules.length && 
-                            <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}/>
+                                {this.props.vehicules.length ?
+                            <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}/> : null
                             }                                 
                             </h5>
                            <div className="table-responsive">
-                           <ReactHTMLTableToExcel
-                    id="test-table-xls-button"
-                    className="download-table-xls-button"
-                    table="table-to-xls"
-                    filename="tablexls"
-                    sheet="tablexls"
-                    buttonText="Download as XLS"/>
+                   
                            {!this.props.vehicules.length ? this.renderLoading() : 
                             !utilisations.length ? this.renderEmpty() : this.renderList()}
 
@@ -703,6 +709,17 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
     }
                  <ToastContainer autoClose={4000} />
+
+                 <Container>
+                        <Button
+                        tooltip="Ajouter une ligne d'utilisation"
+                        icon="fas fa-plus"
+                    // rotate={true}
+                        styles={{backgroundColor: 'green', color: 'white', cursor: 'pointer'}}
+
+                        onClick={this.closeEdit}
+                        />
+                </Container> 
        
        </div>
         )

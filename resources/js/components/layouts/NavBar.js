@@ -558,7 +558,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
                                 <div className="widget-content-left">
                                     <div className="btn-group">
                                         <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="p-0 btn">
-                                            <img width="42" className="rounded-circle" src="/assets/images/avatars/1.jpg" alt="" />
+                                            {/* <img width="42" className="rounded-circle" src="/assets/images/avatars/1.jpg" alt="" /> */}
                                             <i className="fa fa-angle-down ml-2 opacity-8"></i>
                                         </a>
                                         <div tabIndex="-1" role="menu" aria-hidden="true" className="dropdown-menu dropdown-menu-right">
@@ -579,11 +579,11 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
                                         VP People Manager
                                     </div>
                                 </div>
-                                <div className="widget-content-right header-user-info ml-3">
+                                {/* <div className="widget-content-right header-user-info ml-3">
                                     <button type="button" className="btn-shadow p-1 btn btn-primary btn-sm show-toastr-example">
                                         <i className="fa text-white fa-calendar pr-1 pl-1"></i>
                                     </button>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>        

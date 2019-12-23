@@ -4,6 +4,11 @@ import Loader from 'react-loader-spinner'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import ContratAssuranceItem from '../../components/gestion/ContratAssuranceItem';
 
+import { Container, Button, Link } from 'react-floating-action-button'
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+
+
+
 
   class ContratAssurances extends Component {
 
@@ -68,7 +73,7 @@ import ContratAssuranceItem from '../../components/gestion/ContratAssuranceItem'
 
 
     renderList(){
-        return (  <table className="mb-0 table" >
+        return (  <table className="mb-0 table" id="export">
         <thead>
         <tr>
             <th>Défaut</th>
@@ -112,14 +117,22 @@ import ContratAssuranceItem from '../../components/gestion/ContratAssuranceItem'
                           
                             <span className="pull-right">
                         
-                            <button title=" Ajouter une nouvelle ligne de budget"
+                            {/* <button title=" Ajouter une nouvelle ligne de budget"
                                       className="mb-2 mr-2 btn-transition btn btn-outline-primary"
                                       onClick={() => this.props.history.push(`/gestion_du_parc_automobile/creation-contrat-assurance`)}
                                       >
                                       <i className="fa fa-plus"></i> {' '}
      
                                           Ajouter
-                                             </button>
+                                             </button> */}
+                                             {this.props.contrat_assurances.length ?
+                                             <ReactHTMLTableToExcel
+                                                id="test-table-xls-button"
+                                                className="mb-2 mr-2 btn-transition btn btn-outline-success"
+                                                table="export"
+                                                filename="Liste des contrats"
+                                                sheet="feuille1"
+                                                buttonText="Ecran -> Liste"/> : null }
                                 </span>
                              
                                 
@@ -136,7 +149,16 @@ import ContratAssuranceItem from '../../components/gestion/ContratAssuranceItem'
                        </div>
                    </div>
 
-          
+                   <Container>
+                        <Button
+                        tooltip="Ajouter un Contrat"
+                        icon="fas fa-plus"
+                    // rotate={true}
+                        styles={{backgroundColor: 'green', color: 'white', cursor: 'pointer'}}
+
+                        onClick={() => this.props.history.push(`/gestion_du_parc_automobile/creation-contrat-assurance`)}
+                        />
+                </Container>
                 
        </div>
         )

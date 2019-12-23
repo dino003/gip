@@ -44,7 +44,7 @@ import moment from 'moment'
                  </td>  
                  
 
-             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.vehicule ? item.vehicule.immatriculation : 'Tous'}</td>
+             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{ !item.global ? item.vehicules ? item.vehicules.immatriculation : '' : 'Tous'}</td>
              <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.numero_contrat_police || ''}</td>
 
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.compagnie_assurance ? item.compagnie_assurance.code : ''}</td>

@@ -24,7 +24,7 @@ export default class ModifierTauxTva extends Component {
 
         editing = (e) => {
             e.preventDefault()
-            this.props.onEditSubmit(this.taux.value, this.libelle.value, this.defaut.value,)
+            this.props.onEditSubmit(this.taux.value, this.libelle.value)
                   this.props.closeEdit();
         }
     
@@ -39,7 +39,7 @@ export default class ModifierTauxTva extends Component {
             <div className="theme-settings__inner">
                 <div className="scrollbar-container">
                     <div className="theme-settings__options-wrapper">
-                        <h3 className="themeoptions-heading">Ajouter 
+                        <h3 className="themeoptions-heading">Modifier 
                         </h3>
                         <form ref={(ref) => this.formRef = ref} className="p-3" onChange={this.setField} onSubmit={this.enregistrerOperation}>
                             <br />
@@ -56,9 +56,18 @@ export default class ModifierTauxTva extends Component {
                                             ref={taux => this.taux = taux}
                                               type="number" step="0.1" className="form-control" /></div>
                                     </div>
+
+                                    <div className="col-md-6">
+                                        <div className="position-relative form-group">
+                                            <label >Libéllé</label>
+                                            <input name="libelle"
+                                            defaultValue={item.libelle}
+                                            ref={libelle => this.libelle = libelle}
+                                              type="text" className="form-control" /></div>
+                                    </div>
                                    
                                 </div>
-
+{/* 
                                 <div className="form-row">
                                     <div className="col-md-6">
                                         <div className="position-relative form-group">
@@ -84,7 +93,7 @@ export default class ModifierTauxTva extends Component {
                                               </div>
                                     </div>
                                    
-                                </div>
+                                </div> */}
                             
 
                                 <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>

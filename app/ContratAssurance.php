@@ -15,6 +15,8 @@ class ContratAssurance extends Model
 
     protected $guarded = ['id'];
 
+    //protected $with = ['compagnie_assurance', 'courtier', 'vehicules'];
+
  
 
     // protected $casts = [
@@ -39,6 +41,6 @@ class ContratAssurance extends Model
    //vehicule
    public function vehicules()
    {
-       return $this->hasMany('App\Vehicule', 'contrat_assurance_id', 'id');
+       return $this->hasOne('App\Vehicule', 'contrat_assurance_id', 'id');
    }
 }

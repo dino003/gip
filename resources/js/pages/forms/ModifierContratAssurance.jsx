@@ -6,6 +6,8 @@ import {connect} from 'react-redux'
 
 import today from '../../utils/today'
 import inputStyle from '../../utils/inputStyle'
+import Select from 'react-select';
+import { colourStyles } from '../../utils/Repository';
 
 import Loader from 'react-loader-spinner'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
@@ -38,6 +40,21 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
             [name]: value
         });
     }
+
+    setFieldVehicule = (vehicule) => {
+        this.setState({ vehicule: vehicule.id });
+        //console.log(`Option selected:`, selectedOption.code);
+      }
+
+      setFieldCompagnie = (compagnie_assurance) => {
+        this.setState({ compagnie_assurance: compagnie_assurance.id }, () => {
+            const courtier = this.props.tiers.find(ti => ti.id == this.state.compagnie_assurance)
+            if(courtier){
+                this.courtier.value = courtier.id
+
+            }
+        });
+      }
 
     setFieldDateContrat = (event) => {
         const target = event.target;
@@ -83,64 +100,75 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
 
 
-      verificationFormulaire () {
-          if(this.date_contrat.value == ''){
-              return "La date du contrat est obligatoire !"
-          }else if(this.numero_contrat_police.value == ''){
-              return "Le numero du contrat ou police est obligatoire !"
-          }else if(this.compagnie_assurance.value == ''){
-            return "La Compagnie d\'assurance est obligatoire !"
-          } else{
-              return null
-          }
-      }
+    verificationFormulaire () {
+        const objetEdit = this.props.contrat_assurances.find(contrat => contrat.id == this.props.match.params.contrat_assurance_id)
 
-      enregistrerIntervention = (e) => {
+        if(this.date_contrat.value == ''){
+            return "La date du contrat est obligatoire !"
+        }else if(this.numero_contrat_police.value == ''){
+            return "Le numero du contrat ou police est obligatoire !"
+        }else if(this.state.compagnie_assurance == undefined && !objetEdit.compagnie_assurance){
+          return "La Compagnie d'assurance est obligatoire !"
+        }else if(this.state.vehicule == undefined && !this.global.checked && !objetEdit.vehicules){
+          return "Le Contrat doit être rattaché à au moins un véhicule \n S'il s'agit d'un contrat global veuillez coher la case contrat global !"
+        } else{
+            return null
+        }
+    }
+
+
+
+      modifierContratAssurance = (e) => {
         e.preventDefault()
-        this.setState({isFormSubmitted: true})
-       const objetEdit = this.props.contrat_assurances.find(contrat => contrat.id == this.props.match.params.contrat_assurance_id)
 
           if(this.verificationFormulaire() == null){
-            axios.post('/api/modifier_contrat_assurance/' + objetEdit.id, {
-                vehicule: this.vehicule.value,
+              this.setState({isFormSubmitted: true})
+              const objetEdit = this.props.contrat_assurances.find(contrat => contrat.id == this.props.match.params.contrat_assurance_id)
+
+              const contrat = {
                 numero_contrat_police: this.numero_contrat_police.value,
                 date_contrat: this.date_contrat.value,
                 periode_date_debut: this.periode_date_debut.value ,
                 periode_date_fin: this.periode_date_fin.value,
                 date_prise_effet: this.date_prise_effet.value,
-                compagnie_assurance: this.compagnie_assurance.value,
+                compagnie_assurance_id: this.state.compagnie_assurance ? this.state.compagnie_assurance : objetEdit.compagnie_assurance.id,
                 courtier: this.courtier.value,
                 valeur_assuree: this.valeur_assuree.value,
                 montant_assuree: this.montant_assuree.value,
                 montant_prime: this.montant_prime.value,
                 pourcentage_assiete: this.pourcentage_assiete.value,
                 montant_franchise: this.montant_franchise.value,
-               
-            })
-            .then(response => { 
-               const action = {type: "EDIT_CONTRAT_ASSURANCE", value: response.data}
-                 this.props.dispatch(action)
-                 this.setState({isFormSubmitted: false})
+                global: this.global.checked
+              }
+        
 
+            axios.post('/api/modifier_contrat_assurance/' + objetEdit.id, {
+                vehicules: this.global.checked ? null : this.state.vehicule == undefined  ? null : this.state.vehicule,
+                contrat_objet: contrat
+                })
+            .then(response => { 
+               const action = {type: "EDIT_CONTRAT_ASSURANCE", value: response.data.contrat_assurance}
+                 this.props.dispatch(action)
+                 const action2 = {type: "GET_VEHICULE", value: response.data.vehicules}
+                 this.props.dispatch(action2)
+                this.setState({isFormSubmitted: false})
                this.props.history.goBack();
 
              
-            }).catch(error => { 
+            }).catch(error => {
                 this.setState({isFormSubmitted: false})
-
-                 console.log(error)
-                 } )
+                 console.log(error) } )
            
 
           }else{
               //console.log(this.verificationFormulaire())
-              toast.error(this.verificationFormulaire(), {
-                position: toast.POSITION.BOTTOM_CENTER
-              });
+            //   toast.error(this.verificationFormulaire(), {
+            //     position: toast.POSITION.BOTTOM_CENTER
+            //   });
+            alert(this.verificationFormulaire())
           }
      
 
-       // console.log(yea)
       }
     
 
@@ -153,32 +181,62 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
               
                     <div className="main-card mb-3 card">
                         <div className="card-body">
-                            <h5 className="card-title">Ajout de Contrat d'assurance
+                            <h5 className="card-title">Modification de Contrat d'assurance
                                                          
                           </h5>
-                            <form className="" onChange={this.setField}  onSubmit={this.enregistrerIntervention}>
+                            <form className="" onChange={this.setField}  onSubmit={this.modifierContratAssurance}>
                           
                                
                                 <div className="form-row">
 
-                                <div className="col-md-3">
-                                         <label  className="">Véhicule</label>
-                                        <select name="vehicule" onChange={this.setField}
-                                            ref={vehicule => this.vehicule = vehicule}
-                                            style={inputStyle}
-                                            defaultValue={objetEdit.vehicule ? objetEdit.vehicule.id : objetEdit.vehicule}
-                                          className="form-control">
-                                        <option value="">Tous</option>
-
-                                        {this.props.vehicules.map(vehicule => 
-                                                <option key={vehicule.id} value={vehicule.id}>{vehicule.immatriculation} {vehicule.modele} </option>
-
-                                                )}
-                                        </select>
+                                <div className="col-md-4">
+                 
+                                    {this.state.global !== undefined ?    <React.Fragment>
+                                  {!this.state.global ?
+                                             <label  className=""> Sélection de véhicule</label> :
+                                             <label>Contrat global</label> }
+                                            { this.state.global ? <input readOnly 
+                                            defaultValue="Ce Contrat couvre tous les véhicules"
+                                            className="form-control" /> : 
+                                     
+                                        <Select
+                                        
+                                        name="vehicule"
+                                        placeholder="Selectionnez un véhicule"
+                                        noOptionsMessage={() => "Aucun Véhicule pour l'instant"}
+                                        options={this.props.vehicules}
+                                        getOptionLabel={option => option.immatriculation}
+                                        getOptionValue={option => option.id}
+                                        onChange={this.setFieldVehicule}
+                                        defaultValue={objetEdit.vehicules ? objetEdit.vehicules : null}
+                                        styles={colourStyles}
+                                      />
+                                    }
+                                  </React.Fragment> :    <React.Fragment>
+                                  {!objetEdit.global ?
+                                             <label  className=""> Sélection de véhicule</label> :
+                                             <label>Contrat global</label> }
+                                            { objetEdit.global ? <input readOnly 
+                                            defaultValue="Ce Contrat couvre tous les véhicules"
+                                            className="form-control" /> : 
+                                     
+                                        <Select
+                                        name="vehicule"
+                                        placeholder="Selectionnez un véhicule"
+                                        noOptionsMessage={() => "Aucun Véhicule pour l'instant"}
+                                        options={this.props.vehicules}
+                                        getOptionLabel={option => option.immatriculation}
+                                        getOptionValue={option => option.id}
+                                        onChange={this.setFieldVehicule}
+                                        defaultValue={objetEdit.vehicules ? objetEdit.vehicules : null}
+                                        styles={colourStyles}
+                                      />
+                                    }
+                                  </React.Fragment>}
                                 
                                         </div>
 
-                                    <div className="col-md-3">
+                                    <div className="col-md-2">
                                         <div className="position-relative form-group">
                                             <label >N° de contrat/Police * </label>
                                             <input name="numero_contrat_police"  type="text"
@@ -201,6 +259,23 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                             onChange={this.setFieldDateContrat}
                                             ref={date_contrat => this.date_contrat = date_contrat}
                                              className="form-control" />
+                                             </div>
+                                    </div>
+
+                                    <div className="col-md-2">
+                                        <div className="position-relative form-group">
+                                            <label >Contrat global ?</label>
+                                             </div>
+                                    </div>
+
+                                    <div className="col-md-1">
+                                        <div className="position-relative form-group">
+                                            <input name="global"  type="checkbox"
+                                            style={inputStyle}
+                                            onChange={this.setField}
+                                            defaultChecked={objetEdit.global}
+                                            ref={global => this.global = global}
+                                             />
                                              </div>
                                     </div>
 
@@ -260,19 +335,19 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
                                 <div className="col-md-3">
                                          <label  className="">Compagnie d'assurance</label>
-                                        <select name="compagnie_assurance" onChange={this.setFieldCompagnieEtCourtier}
-                                            ref={compagnie_assurance => this.compagnie_assurance = compagnie_assurance}
-                                            style={inputStyle}
-                                            defaultValue={objetEdit.compagnie_assurance.id}
+                                    
 
-                                          className="form-control">
-                                        <option defaultValue={null}></option>
-
-                                        {this.props.tiers.map(tier => 
-                                                <option key={tier.id} value={tier.id}>{tier.code} </option>
-
-                                                )}
-                                        </select>
+                                        <Select
+                                        name="compagnie_assurance"
+                                        placeholder="Selectionnez la compagnie"
+                                        noOptionsMessage={() => "Aucun Tiers pour l'instant"}
+                                        options={this.props.tiers}
+                                        getOptionLabel={option => option.code}
+                                        getOptionValue={option => option.id}
+                                        onChange={this.setFieldCompagnie}
+                                        defaultValue={objetEdit.compagnie_assurance}
+                                        styles={colourStyles}
+                                      />
                                 
                                         </div>
 
