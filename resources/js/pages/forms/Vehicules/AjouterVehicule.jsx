@@ -276,7 +276,7 @@ class AjouterVehicule extends Component {
         return this.sendData() 
     }
 
-    enregistrerPersonnel = (e) => {
+    enregistrerVehicule = (e) => {
         e.preventDefault()
         if (this.verificationFormulaire() == null) {
          
@@ -343,7 +343,7 @@ class AjouterVehicule extends Component {
                     </li>
                     */}
                 </ul>
-                <form className="" onChange={this.setField} onSubmit={this.enregistrerPersonnel}>
+                <form className="" onChange={this.setField} onSubmit={this.enregistrerVehicule}>
 
                     <div className="tab-content">
                         <div className="tab-pane tabs-animation fade show active"
@@ -1485,9 +1485,10 @@ class AjouterVehicule extends Component {
                             <div className="main-card mb-3 card">
                                 <div className="card-body">
                                     <h5 className="card-title">Assurance</h5>
+                                    {!this.props.contrat_assurances.length ?
                                     <h4>Les éléments du contrat doivent obligatoirement voir été creés dans la gestion des contrats,
                                         Vous pouvez cependant saisir hors contrat les valeur assurées et primes spécifiques
-                                    </h4>
+                                    </h4> : null }
 
                                     <div className="form-row">
 

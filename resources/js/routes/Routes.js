@@ -100,12 +100,12 @@ import GardeGestion from '../pages/GardeGestion'
 import GardeParametres from '../pages/GardeParametres'
 import ModifierVehicule from '../pages/forms/Vehicules/ModifierVehicule';
 import Vehicules from '../pages/Vehicules';
+import ReservationsGeneral from '../pages/gestion/ReservationsGeneral';
 
 
 
 const NavBack = () => (
   <Switch>
-   {/*  <Route exact path="/" component={Dashboard} /> */}
     <MasterParametre exact path="/gestion_du_parc_automobile/parametres_generaux" component={ParametreGeneraux} />
     <MasterParametre exact path="/gestion_du_parc_automobile/gestion_du_personnel" component={Personnels} />
     <MasterParametre exact path="/gestion_du_parc_automobile/ajouter_personnel" component={AjouterPersonnel} />
@@ -226,6 +226,9 @@ const NavBack = () => (
   <MasterGestion exact path="/gestion_du_parc_automobile/entrees-stock/:article_id/article/:numero_article" component={EntreeStocks} />
   <MasterGestion exact path="/gestion_du_parc_automobile/entrees-stock/:article_id/article/:numero_article/ajout" component={AjouterEntreeStock} />
   <MasterGestion exact path="/gestion_du_parc_automobile/entrees-stock/:article_id/article/:numero_article/edit/:entree_stock_id" component={ModifierEntreeStock} />
+
+  <MasterGestion exact path="/gestion_du_parc_automobile/gestion-des-reservations-all" component={ReservationsGeneral} />
+
 
   <MasterGestion exact path="/gestion_du_parc_automobile/sorties-stock/:article_id/article/:numero_article" component={SortieStock} />
   <MasterGestion exact path="/gestion_du_parc_automobile/sorties-stock/:article_id/article/:numero_article/ajout" component={AjouterSortieStock} />

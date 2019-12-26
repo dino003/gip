@@ -39,7 +39,7 @@ import { formatageSomme } from '../../utils/Repository';
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.mode_acquisition == "0" ? 'Achat' : item.mode_acquisition == "1" ? 'Leasing' : 'Prêt'}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.marque ? item.marque.nom_marque : ''}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.modele || ''}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.couleur || ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.tech_couleur || ''}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.detenteur ? `${ item.detenteur.nom} ${ item.detenteur.prenom.slice(0, 10)}` : ''}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.chauffeur_atitre ? `${ item.chauffeur_atitre.nom} ${ item.chauffeur_atitre.prenom.slice(0, 10)}` : ''}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.categorie.nom_type || ''}</td>

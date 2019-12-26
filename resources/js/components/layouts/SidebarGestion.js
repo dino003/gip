@@ -53,9 +53,10 @@ const active = {
                                   
                                  
                                 <li>
-                                    <NavLink activeStyle={active} exact to="/gestion_du_parc_automobile/parc">
+                                    <NavLink activeStyle={active} exact to="/gestion_du_parc_automobile/gestion-des-reservations-all">
                                         <i className="metismenu-icon pe-7s-home"></i>
-                                        Le Parc de véhicule
+                                        Les Réservations de véhicules
+                                        
                                         <i className="metismenu-state-icon "></i>
                                     </NavLink>
 
@@ -128,7 +129,7 @@ const active = {
                                                     </i>Les Sorties du stock
                                                 </a>
                                             </li>
-                                            {/* <li>
+                                            {/* <li>    
                                                 <a href="elements-badges-labels.html">
                                                     <i className="metismenu-icon">
                                                     </i>Les Commandes d'articles

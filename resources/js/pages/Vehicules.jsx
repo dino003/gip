@@ -10,6 +10,7 @@ import { Container, Button, Link } from 'react-floating-action-button'
 
 import { CSVLink } from "react-csv";
 import {groupBy} from '../utils/Repository'
+import TableHeader from '../components/TableHeader'
 
 
 
@@ -19,15 +20,12 @@ import {groupBy} from '../utils/Repository'
         super(props);
 
         this.state = {
-            isOpen: false,
-            inputOpen: false,
-            libelle: '',
-            code: '',
-    
-            selection: [],
+            vehicules_visibles_actuelement: this.props.vehicules,
             obj: undefined,
           //  selected: (new Map(): Map<string, boolean>)      
-        }   
+        }  
+        
+        this.searchChange = this.searchChange.bind(this)
     }
 
     // componentWillUnmount(){
@@ -35,7 +33,13 @@ import {groupBy} from '../utils/Repository'
     //     this.props.dispatch(action)    }
 
 
-
+    searchChange(search){
+        
+        let vehicules_visibles_maintenant = this.props.vehicules.filter(vehicule => vehicule.immatriculation.includes(search.toLowerCase()))
+        this.setState({
+            vehicules_visibles_actuelement: vehicules_visibles_maintenant
+        })
+    }
 
     onDelete = (id) => {
         let conf = confirm('Voulez-vous vraiment supprimer ?')
@@ -69,50 +73,14 @@ import {groupBy} from '../utils/Repository'
 
 
 
-  async handleSubmit(e){
-        e.preventDefault();
-
-      const response =  await axios.post('/api/ajouter_code_incident', {
-            libelle: this.libelle.value,
-            code: this.code.value
-        })
-
-       const action = {type: "ADD_CODE_INCIDENT", value: response.data}
-       this.props.dispatch(action)
-       this.setState({libelle: '', code: ''})
-       this.code.value = '';
-       this.libelle.value = '';
-
-   // console.log(this.libelle.value)
-       
-
-    } 
-
-    toggleVisibleInput = () => {
-        this.setState(prevState => {
-            return {
-                inputOpen: !prevState.inputOpen
-            }
-        })
-    }
-
-    toggleVisible = () => {
-        this.setState(prevState => {
-            return {
-                isOpen: !prevState.isOpen
-            }
-        })
-    }
-
     
     renderLoading(){
         return  <span style={{textAlign: 'center'}}>
 
         <Loader
-            type="BallTriangle"
-            color="#00BFFF"
-            height={100}
-            width={100}
+           
+            height={500}
+            width={300}
          />
          </span>
     }
@@ -135,6 +103,7 @@ import {groupBy} from '../utils/Repository'
     }
 
     renderList(){
+        const {vehicules_visibles_actuelement} = this.state
         return (  <table className="mb-0 table" id="table-to-xls" >
         <thead>
         <tr>
@@ -166,7 +135,7 @@ import {groupBy} from '../utils/Repository'
         </thead>
         <tbody>
           
-     { this.props.vehicules.map((item, index) => 
+     { vehicules_visibles_actuelement.map((item, index) => 
          <VehiculeItem
          index={index}
           key={item.id} 
@@ -186,7 +155,7 @@ import {groupBy} from '../utils/Repository'
         // console.log(Array.isArray(this.props.vehicule))
        // console.log(this.props.vehiculeSeleted)
 
-        const etat = this.props.utilisations.length ? groupBy(this.props.utilisations, 'utilisateur_id') : null
+       // const etat = this.props.utilisations.length ? groupBy(this.props.utilisations, 'utilisateur_id') : null
      // const  etat2 = etat != null ? groupBy(etat, 'vehicule_id') : null
         // if(etat != null){
         //     etat.forEach(currentItem => {
@@ -208,14 +177,8 @@ import {groupBy} from '../utils/Repository'
                           
                             <span className="pull-right">
                         
-                            {/* <button title=" Ajouter un nouvel acteur"
-                                      className="mb-2 mr-2 btn-transition btn btn-outline-primary"
-                                      onClick={() => this.props.history.push('/gestion_du_parc_automobile/creation-de-vehicule')}
-                                      >
-                                      <i className="fa fa-plus"></i> {' '}
-     
-                                          Ajouter
-                                             </button> */}
+
+
                                             {this.props.vehicules.length ?
                                              <ReactHTMLTableToExcel
                                         id="test-table-xls-button"
@@ -224,18 +187,15 @@ import {groupBy} from '../utils/Repository'
                                         filename="Liste des véhicules"
                                         sheet="Véhicules"
                                         buttonText="Ecran -> Liste"/> : null }
-                        {/* <CSVLink
-                            data={this.props.vehicules}
-                            filename={"my-file.csv"}
-                            className="mb-2 mr-2 btn-transition btn btn-outline-success"
-                            >
-                            Download me
-                            </CSVLink> */}
+
+
+                     
                                 </span> {'  '}
                              
-                                
-                                <MatriculeInput vehicule={this.props.vehiculeSeleted} text_attente="Aucune sélection" />
-                                            
+                                <TableHeader searchChange={this.searchChange} text_recherche="Recherchez par Immatriculation"  /> 
+                                {'  '}
+
+                                {this.props.vehiculeSeleted ? <MatriculeInput vehicule={this.props.vehiculeSeleted} text_attente="Aucune sélection" /> : null}                                            
                                 
                             </h5>
                            <div className="table-responsive">

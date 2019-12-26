@@ -69,6 +69,9 @@ import inputStyle from '../../utils/inputStyle'
 
                  const action2 = {type: "EDIT_ARTICLE", value: response.data.article}
                  this.props.dispatch(action2)
+
+                 const action3 = {type: "EDIT_ARTICLE_SELECTED", value: response.data.article  }
+                 this.props.dispatch(action3)
                  this.setState({isFormSubmit: false})
 
                this.props.history.goBack();

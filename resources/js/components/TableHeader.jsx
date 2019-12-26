@@ -1,61 +1,51 @@
 import React, { Component } from 'react'
-import {NavLink} from 'react-router-dom'
 
 export default class TableHeader extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            isSearchInputVisible: false
+        }
         
     }
 
     handleInputChange = () => {
         this.props.searchChange(this.search.value)
     }
+
+    toggleSearchInput = () => {
+        this.setState({isSearchInputVisible: !this.state.isSearchInputVisible})
+    }
     
     render() {
-        const {titre, isLink, link, isButton,
-             toggleVisibleInput, toggleSearchInput, isSearchInputVisible} = this.props
+        const {isSearchInputVisible} = this.state
+        const {text_recherche} = this.props
         return (
-            <h5 className="card-title">{titre}
-            <span className="pull-right">
-                {isLink ?
-            <NavLink title=" Ajouter un nouvel acteur"
-                       className="mb-2 mr-2 btn-transition btn btn-outline-primary pull-right"
-                       to={link}
-                       >
-                       <i className="fa fa-plus"></i> {' '}
+           <React.Fragment>
+                <span className="pull-right">
+         
+                        {isSearchInputVisible ?  <button title="Quitter le mode recherche"
+                className="mb-2 mr-2 btn-transition btn btn-outline-danger pull-right"
+                onClick={this.toggleSearchInput}
+                >
+                <i className="fa fa-times"></i> {' '}
 
-                           Ajouter
-                              </NavLink> :
-                              <button title=" Ajouter un nouvel acteur"
-                                      className="mb-2 mr-2 btn-transition btn btn-outline-primary"
-                                      onClick={this.props.toggleVisibleInput.bind(this)}
-                                      >
-                                      <i className="fa fa-plus"></i> {' '}
-     
-                                          Ajouter
-                                             </button>
-                                             }
-                             {/* {isSearchInputVisible ?  <button title="Quitter le mode recherche"
-                       className="mb-2 mr-2 btn-transition btn btn-outline-danger pull-right"
-                       onClick={() => toggleSearchInput()}
-                       >
-                       <i className="fa fa-times"></i> {' '}
+                        </button> :  <button title="Rechercher"
+                className="mb-2 mr-2 btn-transition btn btn-outline-info pull-right"
+                onClick={this.toggleSearchInput}
+                >
+                <i className="fa fa-search"></i> {' '}
 
-                              </button> :  <button title="Rechercher"
-                       className="mb-2 mr-2 btn-transition btn btn-outline-info pull-right"
-                       onClick={() => toggleSearchInput()}
-                       >
-                       <i className="fa fa-search"></i> {' '}
-
-                              </button>} */}
-                              </span>
-                            {isSearchInputVisible &&  
-             <input
-             ref={search => this.search = search}
+                        </button>}
+                        </span>
+                        {isSearchInputVisible &&  
+                <input
+                ref={search => this.search = search}
                 onChange={this.handleInputChange}
-              style={{width: '40%'}} type="text" className="form-control pull-right" placeholder="Taper pour rechercher" />
-             }
-            </h5>
+                style={{width: '30%'}} type="text" className="form-control pull-right" placeholder={text_recherche ? text_recherche : 'Taper pour rechercher'} />
+                }
+           </React.Fragment>
+        
         )
     }
 }

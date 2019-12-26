@@ -5,9 +5,10 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import store from './store/Store'
 
 import NavBack from './routes/Routes'
+import withSplashScreen from './components/withSplashScreen.jsx'
 
 
-export default class Main extends Component {
+ class Main extends Component {
     render() {
        // console.log(store.getState())
 
@@ -19,14 +20,16 @@ export default class Main extends Component {
     }
 }
 
-let $app = document.querySelector('#react')
+export default withSplashScreen(Main)
 
-if($app) {
-    ReactDOM.render( 
-        <Provider store={store}>
-            <Main />
-        </Provider>
-        , document.getElementById('react'))
-}
+// let $app = document.querySelector('#react')
+
+// if($app) {
+//     ReactDOM.render( 
+//         <Provider store={store}>
+//             <Main />
+//         </Provider>
+//         , document.getElementById('react'))
+// }
 
 

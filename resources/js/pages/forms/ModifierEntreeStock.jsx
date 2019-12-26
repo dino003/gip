@@ -66,6 +66,9 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                  const action2 = {type: "EDIT_ARTICLE", value: response.data.article}
                  this.props.dispatch(action2)
 
+                 const action3 = {type: "EDIT_ARTICLE_SELECTED", value: response.data.article  }
+                 this.props.dispatch(action3)
+
                this.props.history.goBack();
 
             }).catch(error => console.log(error))

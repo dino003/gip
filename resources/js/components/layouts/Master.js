@@ -14,7 +14,7 @@ export default function Master({component: Component, ...rest}) {
             <NavBar />
         <div className="app-main">
             <Sidebar />
-            <div className="app-main__outer "> 
+            <div className="app-main__outer"> 
             <Component {...matchProps} />
 
             </div>
