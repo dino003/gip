@@ -83,7 +83,7 @@ class UtilisationParUtilisateurVehicules extends Component {
 
     render() {
 
-        const etatVehiculeUtilisationParVehicule = this.props.utilisations.length ? groupBy(this.props.utilisations, 'vehicule_id') : null
+        const etatVehiculeUtilisationParVehicule = this.props.utilisations.length ? groupBy(this.props.utilisations, 'vehicule_id') : []
 
         const { isFormOpened } = this.state
 
