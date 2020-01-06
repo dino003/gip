@@ -14,9 +14,8 @@ class AddForeignKeysToContratAssurancesTable extends Migration {
 	{
 		Schema::table('contrat_assurances', function(Blueprint $table)
 		{
-			$table->foreign('compagnie_assurance', 'FK_contrat_compagnie_assurance')->references('id')->on('tiers')->onUpdate('SET NULL')->onDelete('SET NULL');
+			$table->foreign('compagnie_assurance_id', 'FK_contrat_compagnie_assurance')->references('id')->on('tiers')->onUpdate('SET NULL')->onDelete('SET NULL');
 			$table->foreign('courtier', 'FK_contrat_courtier')->references('id')->on('tiers')->onUpdate('SET NULL')->onDelete('SET NULL');
-			$table->foreign('vehicule', 'FK_contrat_vehicule')->references('id')->on('vehicules')->onUpdate('SET NULL')->onDelete('SET NULL');
 		});
 	}
 
@@ -32,7 +31,6 @@ class AddForeignKeysToContratAssurancesTable extends Migration {
 		{
 			$table->dropForeign('FK_contrat_compagnie_assurance');
 			$table->dropForeign('FK_contrat_courtier');
-			$table->dropForeign('FK_contrat_vehicule');
 		});
 	}
 

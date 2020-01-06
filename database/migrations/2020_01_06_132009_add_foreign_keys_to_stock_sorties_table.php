@@ -14,8 +14,8 @@ class AddForeignKeysToStockSortiesTable extends Migration {
 	{
 		Schema::table('stock_sorties', function(Blueprint $table)
 		{
-			$table->foreign('article', 'FK_sortie_article')->references('id')->on('stock_articles')->onUpdate('SET NULL')->onDelete('SET NULL');
-			$table->foreign('vehicule', 'FK_sortie_vehicule')->references('id')->on('stock_articles')->onUpdate('SET NULL')->onDelete('SET NULL');
+			$table->foreign('article_id', 'FK_sortie_article')->references('id')->on('stock_articles')->onUpdate('SET NULL')->onDelete('SET NULL');
+			$table->foreign('vehicule_id', 'FK_sortie_vehicule')->references('id')->on('stock_articles')->onUpdate('SET NULL')->onDelete('SET NULL');
 		});
 	}
 

@@ -20,14 +20,15 @@ class CreateContratAssurancesTable extends Migration {
 			$table->date('periode_date_debut')->nullable();
 			$table->date('periode_date_fin')->nullable();
 			$table->date('date_prise_effet')->nullable();
-			$table->bigInteger('compagnie_assurance')->unsigned()->nullable()->index('FK_contrat_compagnie_assurance');
+			$table->bigInteger('compagnie_assurance_id')->unsigned()->nullable()->index('FK_contrat_compagnie_assurance');
 			$table->bigInteger('courtier')->unsigned()->nullable()->index('FK_contrat_courtier');
-			$table->bigInteger('vehicule')->unsigned()->nullable()->index('FK_contrat_vehicule');
 			$table->float('valeur_assuree', 10, 0)->nullable();
 			$table->float('montant_assuree', 10, 0)->nullable();
 			$table->float('montant_prime', 10, 0)->nullable();
 			$table->float('pourcentage_assiete', 10, 0)->nullable();
 			$table->float('montant_franchise', 10, 0)->nullable();
+			$table->boolean('defaut')->nullable()->default(0);
+			$table->boolean('global')->nullable()->default(0);
 		});
 	}
 

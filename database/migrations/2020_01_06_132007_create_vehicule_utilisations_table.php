@@ -32,9 +32,9 @@ class CreateVehiculeUtilisationsTable extends Migration {
 			$table->integer('kilometrage_compteur_debut')->nullable();
 			$table->integer('kilometrage_compteur_retour')->nullable();
 			$table->integer('kilometres_parcourus')->nullable();
-			$table->float('pourcentage_reservoire_debut', 10, 0)->nullable();
+			$table->string('lieu_depart', 100)->nullable();
 			$table->integer('duree_utilisation_heure')->nullable();
-			$table->float('pourcentage_reservoire_retour', 10, 0)->nullable();
+			$table->string('destination', 100)->nullable();
 			$table->text('observation', 65535)->nullable();
 		});
 	}

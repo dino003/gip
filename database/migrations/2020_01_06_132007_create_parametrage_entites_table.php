@@ -26,7 +26,7 @@ class CreateParametrageEntitesTable extends Migration {
 			$table->string('fax', 60)->nullable();
 			$table->bigInteger('type_entite')->unsigned()->nullable()->index('FK_entite_type_entite');
 			$table->bigInteger('regroupement')->unsigned()->nullable()->index('FK_entite_regroupement');
-			$table->bigInteger('rattachement')->unsigned()->nullable();
+			$table->string('rattachement', 100)->nullable();
 			$table->bigInteger('responsable')->unsigned()->nullable()->index('FK_entite_responsable');
 			$table->string('numero_siret_entite', 100)->nullable();
 			$table->string('lieu_prise_en_charge', 100)->nullable();

@@ -18,6 +18,7 @@ class CreateParametrageStructureRegroupementsTable extends Migration {
 			$table->string('code_regroupement', 50)->nullable();
 			$table->string('nom_regroupement', 200)->nullable();
 			$table->string('regroupement_appartenance', 100)->nullable()->default('SIEGE');
+			$table->bigInteger('parent')->unsigned()->nullable()->index('FK_parent');
 		});
 	}
 

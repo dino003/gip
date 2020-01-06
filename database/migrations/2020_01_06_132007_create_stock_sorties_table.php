@@ -15,8 +15,8 @@ class CreateStockSortiesTable extends Migration {
 		Schema::create('stock_sorties', function(Blueprint $table)
 		{
 			$table->bigInteger('id', true)->unsigned();
-			$table->bigInteger('article')->unsigned()->nullable()->index('FK_sortie_article');
-			$table->bigInteger('vehicule')->unsigned()->nullable()->index('FK_sortie_vehicule');
+			$table->bigInteger('article_id')->unsigned()->nullable()->index('FK_sortie_article');
+			$table->bigInteger('vehicule_id')->unsigned()->nullable()->index('FK_sortie_vehicule');
 			$table->date('date_sortie')->nullable();
 			$table->integer('quantite_sortie')->unsigned()->nullable();
 			$table->float('prix_article', 10, 0)->nullable();
