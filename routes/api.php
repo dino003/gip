@@ -18,7 +18,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 // route deploiement
-Route::post('deploy', 'UtilController@deploy');
+Route::post('deploy', function(){
+    Artisan::call('git:deploy');
+
+    exit;
+});
 
 
 //----------------------Cout consomables --------------------------------------------------------**********

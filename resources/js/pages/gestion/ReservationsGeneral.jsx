@@ -466,8 +466,8 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
         return ( <span style={{textAlign: 'center'}}>
 
         <Loader
-            height={100}
-            width={100}
+            height={500}
+            width={300}
          />
          </span>)
        }
