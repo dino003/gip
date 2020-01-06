@@ -6,7 +6,8 @@ import { connect } from 'react-redux'
 import NumberFormat from 'react-number-format';
 import today from '../../../utils/today'
 import Select from 'react-select';
-import { colourStyles, inputStyle } from '../../../utils/Repository';
+import { colourStyles } from '../../../utils/Repository';
+import inputStyle from '../../../utils/inputStyle';
 
 
 
