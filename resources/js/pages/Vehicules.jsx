@@ -8,7 +8,6 @@ import MatriculeInput from '../components/MatriculeInput'
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import { Container, Button, Link } from 'react-floating-action-button'
 
-import { CSVLink } from "react-csv";
 import {groupBy} from '../utils/Repository'
 import TableHeader from '../components/TableHeader'
 
@@ -26,6 +25,7 @@ import TableHeader from '../components/TableHeader'
         }  
         
         this.searchChange = this.searchChange.bind(this)
+        this.changeState = this.changeState.bind(this)
     }
 
     // componentWillUnmount(){
@@ -38,6 +38,13 @@ import TableHeader from '../components/TableHeader'
         let vehicules_visibles_maintenant = this.props.vehicules.filter(vehicule => vehicule.immatriculation.includes(search.toLowerCase()))
         this.setState({
             vehicules_visibles_actuelement: vehicules_visibles_maintenant
+        })
+    }
+
+    changeState(){
+        this.setState({
+            vehicules_visibles_actuelement: this.props.vehicules
+
         })
     }
 
@@ -192,7 +199,11 @@ import TableHeader from '../components/TableHeader'
                      
                                 </span> {'  '}
                              
-                                <TableHeader searchChange={this.searchChange} text_recherche="Recherchez par Immatriculation"  /> 
+                                <TableHeader
+                                 searchChange={this.searchChange}
+                                  text_recherche="Recherchez par Immatriculation"
+                                  changeState={this.changeState}
+                                    /> 
                                 {'  '}
 
                                 {this.props.vehiculeSeleted ? <MatriculeInput vehicule={this.props.vehiculeSeleted} text_attente="Aucune sélection" /> : null}                                            

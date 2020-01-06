@@ -155,57 +155,14 @@ class EditionListTable extends Component {
     render() {
         return (
             <div className="app-main__inner">
+                 <br /><br /><br />
+
                 <div className="row">
                     <div className="col-lg-12">
                 <div className="main-card mb-3 card">
                     <div className="card-body ">
                     <h5 className="card-title">Effectuez un Double-clic sur la ligne de l'état a exécuter </h5>
-                    <button type="button" className="btn mr-2 mb-2 btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm">Small modal</button>
-                    <button  onClick={e => { this.showModal(e);}}> Le modal </button>
-
-                    <ReactHTMLTableToExcel
-                    id="test-table-xls-button"
-                    className="download-table-xls-button"
-                    table="complex-table"
-                    filename="tablexls"
-                    sheet="tablexls"
-                    buttonText="Download as XLS"/>
-
-                    {/* <div style={{position: 'absolute'}}>
-    <div className="modal-dialog modal-sm">
-        <div className="modal-content">
-            <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div className="modal-body">
-                <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-            </div>
-            <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" className="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div> */}
-                    <MyModal onClose={this.showModal} show={this.state.show}>
-                    <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-                <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-                <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-                <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-                <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-                <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-                <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-                <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-                <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-                <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-                <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-                <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-
-                         </MyModal>
-
+                  
                         <div className="table-responsive">
                             <table className="mb-0 table table-bordered" >
                                 <thead>
@@ -229,7 +186,7 @@ class EditionListTable extends Component {
                                         <td >Véhicules</td>
                                         <td >Liste du parc de véhicule</td>
                                         <td >PA_000</td>
-                                        <td >Oui</td>
+                                        <td > <span><i className="fa fa-eye"></i></span> </td>
                                       
 
                                     </tr>
@@ -238,7 +195,7 @@ class EditionListTable extends Component {
                                         <td >Véhicules</td>
                                         <td >Liste des véhicules par Entité et Véhicule</td>
                                         <td >PA_000</td>
-                                        <td >Oui</td>
+                                        <td > <span><i className="fa fa-eye"></i></span> </td>
 
                                     </tr>
                                     
@@ -246,7 +203,7 @@ class EditionListTable extends Component {
                                         <td >Véhicules</td>
                                         <td >Liste des véhicules par Tiers, Entité, Véhicule</td>
                                         <td >PA_000</td>
-                                        <td >Oui</td>
+                                        <td > <span><i className="fa fa-eye"></i></span> </td>
 
                                     </tr>
 
@@ -254,7 +211,7 @@ class EditionListTable extends Component {
                                         <td >Véhicules</td>
                                         <td >Liste des véhicules par Tiers, Véhicule</td>
                                         <td >PA_000</td>
-                                        <td >Oui</td>
+                                        <td > <span><i className="fa fa-eye"></i></span> </td>
 
                                     </tr>
 

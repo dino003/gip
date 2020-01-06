@@ -3,6 +3,8 @@ import InputMask from 'react-input-mask';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { connect } from 'react-redux'
+import Select from 'react-select';
+import { colourStyles } from '../../../utils/Repository';
 
 
 
@@ -148,24 +150,28 @@ class VehiculeEtatForm extends Component {
             });
         }
     }
+    setFieldSelect(name, value) {
+     
+        let obj = {};
+        obj[name] = value;
+        this.setState(obj);
+    }
 
 
     render() {
         //console.log(this.checkUser())
         // console.log(this.state.date_creation)
         return (
-            <div className="app-main__inner">
+            // <div className="app-main__inner">
 
-                <div className="main-card mb-3 card">
-                    <div className="card-body"><h5 className="card-title">Fichier des Utilisateurs
-
-                        </h5>
+                <React.Fragment >
+          
                         <form className="" onChange={this.setField} onSubmit={this.enregistrerPersonnel}>
                             <div className="form-row">
 
-                                <div className="col-md-1">
+                                <div className="col-md-2">
                                     <div className="position-relative form-group">
-                                        <label className="center">Type </label>
+                                        <label className="center">Type de véhicule </label>
                                     </div>
                                 </div>
                                 <div className="col-md-1">
@@ -179,7 +185,7 @@ class VehiculeEtatForm extends Component {
                                     </div>
                                 </div>
 
-                                <div className="col-md-1">
+                                <div className="col-md-2">
                                     <div className="position-relative form-group">
                                         <label className="form-check-label">
                                             de Service  <input type="radio" name="type_vehicule_statut"
@@ -393,7 +399,7 @@ class VehiculeEtatForm extends Component {
 
 
 
-                            <div className="form-row">
+                            <div className="form-row"> 
 
                                 <div className="col-md-3">
                                     <div className="position-relative form-group">
@@ -471,57 +477,65 @@ class VehiculeEtatForm extends Component {
                             <div className="form-row">
                                 <div className="col-md-3">
                                     <label className="">Sélection entité Comptable</label>
-                                    <select name="entite"
-                                        ref={entite => this.entite = entite}
-                                        className="form-control">
-                                        <option value={null}></option>
-                                        {this.props.entites.map((ent, index) =>
-                                            <option key={ent.id} value={ent.id}>{ent.entite} || {ent.nom_entite}</option>
-
-                                        )}
-                                    </select>
+                                
+                                    <Select
+                                        name="entite"
+                                        placeholder="Selectionnez une entité"
+                                        noOptionsMessage={() => "Aucune Entité pour l'instant"}
+                                        options={this.props.entites}
+                                        getOptionLabel={option => option.entite}
+                                        getOptionValue={option => option.id}
+                                        onChange={this.setFieldSelect.bind(this, "entite")}
+                                        
+                                      />
 
                                 </div>
 
                                 <div className="col-md-3">
                                     <label className="">Sélection entité Physique</label>
-                                    <select name="entite"
-                                        ref={entite => this.entite = entite}
-                                        className="form-control">
-                                        <option value={null}></option>
-                                        {this.props.entites.map((ent, index) =>
-                                            <option key={ent.id} value={ent.id}>{ent.entite} || {ent.nom_entite}</option>
-
-                                        )}
-                                    </select>
+                                
+                                    <Select
+                                        name="entite_physique"
+                                        placeholder="Selectionnez une entité"
+                                        noOptionsMessage={() => "Aucune Entité pour l'instant"}
+                                        options={this.props.entites}
+                                        getOptionLabel={option => option.entite}
+                                        getOptionValue={option => option.id}
+                                        onChange={this.setFieldSelect.bind(this, "entite_physique")}
+                                        
+                                      />
 
                                 </div>
 
                                 <div className="col-md-3">
                                     <label className="">Sélection Regroupement entités Comptables</label>
-                                    <select name="entite"
-                                        ref={entite => this.entite = entite}
-                                        className="form-control">
-                                        <option value={null}></option>
-                                        {this.props.entites.map((ent, index) =>
-                                            <option key={ent.id} value={ent.id}>{ent.entite} || {ent.nom_entite}</option>
-
-                                        )}
-                                    </select>
+                                 
+                                    <Select
+                                        name="structure_comptable"
+                                        placeholder="Selectionnez une structure"
+                                        noOptionsMessage={() => "Aucune Entité pour l'instant"}
+                                        options={this.props.structures_etablissements}
+                                        getOptionLabel={option => option.code_regroupement}
+                                        getOptionValue={option => option.id}
+                                        onChange={this.setFieldSelect.bind(this, "structure_comptable")}
+                                        
+                                      />
 
                                 </div>
 
                                 <div className="col-md-3">
                                     <label className="">Sélection Regroupement entités Physiques</label>
-                                    <select name="entite"
-                                        ref={entite => this.entite = entite}
-                                        className="form-control">
-                                        <option value={null}></option>
-                                        {this.props.entites.map((ent, index) =>
-                                            <option key={ent.id} value={ent.id}>{ent.entite} || {ent.nom_entite}</option>
 
-                                        )}
-                                    </select>
+                                    <Select
+                                        name="structure_physique"
+                                        placeholder="Selectionnez une structure"
+                                        noOptionsMessage={() => "Aucune Entité pour l'instant"}
+                                        options={this.props.structures_etablissements}
+                                        getOptionLabel={option => option.code_regroupement}
+                                        getOptionValue={option => option.id}
+                                        onChange={this.setFieldSelect.bind(this, "structure_physique")}
+                                        
+                                      />
 
                                 </div>
 
@@ -532,29 +546,34 @@ class VehiculeEtatForm extends Component {
                             <div className="form-row">
                                 <div className="col-md-3">
                                     <label className="">Sélection d'un Tiers: achat/location</label>
-                                    <select name="entite"
-                                        ref={entite => this.entite = entite}
-                                        className="form-control">
-                                        <option value={null}></option>
-                                        {this.props.entites.map((ent, index) =>
-                                            <option key={ent.id} value={ent.id}>{ent.entite} || {ent.nom_entite}</option>
 
-                                        )}
-                                    </select>
+                                    <Select
+                                        name="tiers"
+                                        placeholder="Selectionnez une entité"
+                                        noOptionsMessage={() => "Aucune Entité pour l'instant"}
+                                        options={this.props.tiers}
+                                        getOptionLabel={option => `${option.code} ${option.nom}`}
+                                        getOptionValue={option => option.id}
+                                        onChange={this.setFieldSelect.bind(this, "tiers")}
+                                        
+                                      />
 
                                 </div>
 
                                 <div className="col-md-3">
                                     <label className="">Sélection d'un Assureur</label>
-                                    <select name="entite"
-                                        ref={entite => this.entite = entite}
-                                        className="form-control">
-                                        <option value={null}></option>
-                                        {this.props.entites.map((ent, index) =>
-                                            <option key={ent.id} value={ent.id}>{ent.entite} || {ent.nom_entite}</option>
+                                 
 
-                                        )}
-                                    </select>
+                                    <Select
+                                        name="assureur"
+                                        placeholder="Selectionnez un Assureur"
+                                        noOptionsMessage={() => "Aucune donnée pour l'instant"}
+                                        options={this.props.tiers}
+                                        getOptionLabel={option => `${option.code} ${option.nom}`}
+                                        getOptionValue={option => option.id}
+                                        onChange={this.setFieldSelect.bind(this, "assureur")}
+                                        
+                                      />
 
                                 </div>
 
@@ -781,16 +800,15 @@ class VehiculeEtatForm extends Component {
                             <hr />
 
 
-                            <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
-
+                            <button type="submit" className="mt-2 btn btn-primary">Valider</button>
+{/* 
                             <button type="submit" onClick={() => this.props.history.goBack()}
-                                className="mt-2 btn btn-warning pull-right">Retour</button>
+                                className="mt-2 btn btn-warning pull-right">Retour</button> */}
                         </form>
-                    </div>
-                </div>
+                 </React.Fragment>
 
-                <ToastContainer autoClose={8000} />
-            </div>
+            //     <ToastContainer autoClose={8000} />
+            // </div>
         )
     }
 }
@@ -798,6 +816,9 @@ class VehiculeEtatForm extends Component {
 const mapStateToProps = state => {
     return {
         entites: state.entites.items,
+        tiers: state.tiers.items,
+        structures_etablissements: state.structures_etablissements.items
+
     }
 }
 

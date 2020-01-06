@@ -21,7 +21,8 @@ import NatureReservationItem from '../../components/codifications/NatureReservat
         //         'Ditrection'
         
         //    ],
-            selection: []
+            selection: [],
+            isFormSubmitted: false
         }
 
        // this.handleChange = this.handleChange.bind(this)
@@ -73,6 +74,7 @@ import NatureReservationItem from '../../components/codifications/NatureReservat
         e.preventDefault();
 
         if(this.verificationFormulaire() == null){
+            this.setState({isFormSubmitted : true})
             const response =  await axios.post('/api/ajouter_nature_reservation', {
                 libelle: this.libelle.value,
                 priorite: this.priorite.value
@@ -83,6 +85,8 @@ import NatureReservationItem from '../../components/codifications/NatureReservat
            this.setState({libelle: '', priorite: ''})
            this.priorite.value = '';
            this.libelle.value = '';
+           this.setState({isFormSubmitted : false})
+
         }else{
               //console.log(this.verificationFormulaire())
               toast.error(this.verificationFormulaire(), {
@@ -99,10 +103,8 @@ import NatureReservationItem from '../../components/codifications/NatureReservat
 
     
     verificationFormulaire () {
-        if(this.libelle.value == undefined || !this.libelle.value.length){
+        if(this.libelle.value == '' ){
             return "La nature de réservation est obligatoire !"
-        }else if(this.priorite.value == undefined || !this.priorite.value.length){
-          return "La priorite est obligatoire !"
         } else{
             return null
         }
@@ -129,10 +131,9 @@ import NatureReservationItem from '../../components/codifications/NatureReservat
         return  <span style={{textAlign: 'center'}}>
 
         <Loader
-            type="BallTriangle"
-            color="#00BFFF"
-            height={100}
-            width={100}
+           
+            height={500}
+            width={300}
          />
          </span>
     }
@@ -206,11 +207,8 @@ import NatureReservationItem from '../../components/codifications/NatureReservat
                                                     <span>
                                                    
                                                     {this.state.libelle && this.state.libelle.length > 2 ? (
-                                                         <button onClick={this.handleSubmit} className="mb-2 mr-2 btn-transition btn btn-outline-success">
-                                                             <i className="fa fa-send"></i> {' '}
+                                                            <button disabled={this.state.isFormSubmitted}  onClick={this.handleSubmit} className="mb-2 mr-2 btn-transition btn btn-outline-success" >{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
 
-                                                         Enregistrer
-                                                     </button>
                                                     ) : null}
                                                     </span>
                                                 )}
@@ -221,7 +219,7 @@ import NatureReservationItem from '../../components/codifications/NatureReservat
                                      ref={libelle => this.libelle = libelle} 
                                      onChange={this.handleChange}
                                      style={{width: '30%'}} name="libelle"
-                                      placeholder="Nature de dépense"
+                                      placeholder="Nature de réservation"
                                      type="text" className="form-control pull-right" />
                                            <input 
                                      ref={priorite => this.priorite = priorite} 

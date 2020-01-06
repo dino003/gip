@@ -42,8 +42,9 @@ import moment from 'moment'
             <td>
 
                 <span className="pull-right">
-               
-                             <button onClick={this.props.onDelete.bind(this, item.id)}
+                <ul className="list-inline" style={{listStyle: 'none'}}>
+                    
+                <button onClick={this.props.onDelete.bind(this, item.id)}
                     title="Supprimer"
                      className="mb-2 mr-2 btn-transition btn btn-outline-danger pull-right">
                     <i className="fa fa-trash"></i>
@@ -58,6 +59,7 @@ import moment from 'moment'
                             className="mb-2 mr-2 btn-transition btn btn-outline-info pull-right">
                     <i className="fa fa-calendar"></i> Départ Util.
                 </button>}
+                </ul>
                    
               
                 </span>

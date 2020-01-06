@@ -67,6 +67,7 @@ export default class ModifierUtilisationVehicule extends Component {
     
     render() {
         const {item, isOpen} = this.props
+        console.log(item)
         return (
             <div className={isOpen ? "ui-theme-settings settings-open" : "ui-theme-settings"}>
             {isOpen &&   <button type="button" onClick={this.props.closeEdit.bind(this)} 
@@ -76,7 +77,7 @@ export default class ModifierUtilisationVehicule extends Component {
             <div className="theme-settings__inner">
                 <div className="scrollbar-container">
                     <div className="theme-settings__options-wrapper">
-                        <h3 className="themeoptions-heading">Ajouter 
+                        <h3 className="themeoptions-heading">Modifier 
                         </h3>
                         <form  className="p-3" onSubmit={this.editing}>
                             <br />
@@ -291,22 +292,22 @@ export default class ModifierUtilisationVehicule extends Component {
                                 <div className="form-row">
                                     <div className="col-md-6">
                                         <div className="position-relative form-group">
-                                            <label >% de remplissage reservoir en debut</label>
-                                            <input name="pourcentage_reservoire_debut"
-                                            defaultValue={item.pourcentage_reservoire_debut }
+                                            <label >Lieu de Départ</label>
+                                            <input name="lieu_depart"
+                                            defaultValue={item.lieu_depart }
 
-                                            ref={pourcentage_reservoire_debut => this.pourcentage_reservoire_debut = pourcentage_reservoire_debut}
-                                              type="number" step="0.1" className="form-control" /></div>
+                                            ref={lieu_depart => this.lieu_depart = lieu_depart}
+                                              type="text"  className="form-control" /></div>
                                     </div>
 
                                     <div className="col-md-6">
                                         <div className="position-relative form-group">
-                                            <label >% de remplissage reservoir au retour </label>
-                                            <input name="pourcentage_reservoire_retour"
-                                            defaultValue={item.pourcentage_reservoire_retour }
+                                            <label >Destination </label>
+                                            <input name="destination"
+                                            defaultValue={item.destination}
 
-                                            ref={pourcentage_reservoire_retour => this.pourcentage_reservoire_retour = pourcentage_reservoire_retour}
-                                            type="number" step="0.1" className="form-control" /></div>
+                                            ref={destination => this.destination = destination}
+                                            type="text"  className="form-control" /></div>
                                     </div>
 
                                    

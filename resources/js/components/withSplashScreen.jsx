@@ -9,41 +9,22 @@ var housecall = require('housecall');
 
 var queue = housecall({ concurrency: 2, cooldown: 1000 });
 
-function LoadingMessage() {
-  return (
-    // <div className="splash-screen">
-    //   Wait a moment while we load your app.
-    //   <div className="loading-dot">...</div>
-    // </div>
-        <React.Fragment>
-              <div className="splash">
-                <div className="splash_logo">
-                    AGOSOFTPARC <img src="/assets/images/log_princip.png" />
-                </div>
-                <div className="splash_svg">
-                    <svg width="100%" height="100%" >
-                    <rect width="100%" height="100%" />
-                    </svg>
-                </div>
-                <div className="splash_minimize">
-                    <svg width="100%" height="100%">
-                    <rect width="100%" height="100%" />
-                    </svg>
-                </div>
-                </div>
-            <div className="text">
-            <p>Logiciel professionnel de gestion de parc automobile</p>
-                <p style={{fontSize: '0.6em'}}><img src="/assets/images/log_princip.png" /> By AGOSOFT  </p>
-            {/* <button>More</button> */}
-           
-            </div>
-            <div className="splash-screen">
-               <p style={{color: 'white'}}>Nous preparons les données de AGOPARCSOFT</p>
-                 <div className="loading-dot">Merci de Patienter...</div>
-            </div>
-        </React.Fragment>
-  );
-}
+const ProgressBar = (props) => {
+    return (
+        <div className="progress-bar">
+          <Filler percentage={props.percentage} />
+        </div>
+      )
+  }
+  
+  const Filler = (props) => {
+    return <div className="filler"
+  style={{ width: `${props.percentage}%` }} >
+       <p style={{textAlign: 'center', fontSize: '0.2em'}}>{props.percentage == 100 ? 'Chargement terminé' : `${props.percentage} %`}</p> 
+       </div>
+  }
+
+
 
 function withSplashScreen(WrappedComponent) {
   return class extends Component {
@@ -51,24 +32,12 @@ function withSplashScreen(WrappedComponent) {
       super(props);
       this.state = {
         loading: true,
+        percentage: 0
+
       };
     }
 
-    // async componentDidMount() {
-    //   try {
-    //    // await auth0Client.loadSession();
-    //   await  setTimeout(() => {
-    //       this.setState({
-    //         loading: false,
-    //       });
-    //     }, 5000)
-    //   } catch (err) {
-    //     console.log(err);
-    //     this.setState({
-    //       loading: false,
-    //     });
-    //   }
-    // }
+  
 
     fetchInfoSociete(){
         queue.push(() => axios.get('/api/infos_societe').then((response) => {
@@ -425,18 +394,25 @@ function withSplashScreen(WrappedComponent) {
         );
     }
 
-    // componentWillUnmount(){
-    //     clearInterval(this.state.intervalId)
-    //   }
+    componentWillUnmount() {
+        clearInterval(this.timerID);
+      }
+
+      tick() {
+          if(this.state.percentage == 100) return
+        this.setState({
+          percentage: this.state.percentage += 2
+        });
+      }
 
     componentDidMount(){
-        // const action = {type: "START"}
-        // this.props.dispatch(action)
-        // let intervalId = setInterval(LoadingMessage(), 1000)
-        // this.setState({ intervalId: intervalId })
- 
-       //  const action2 = {type: "START_VEHICULE"}
-       //  this.props.dispatch(action2)
+     
+
+       this.timerID = setInterval(
+        () => this.tick(),
+        1000
+      );
+
          this.fetchInfoSociete();
          this.fetchInfoParamGenerauxReservationOrdre();
          this.fetchInfoParamGenerauxModules();
@@ -484,10 +460,52 @@ function withSplashScreen(WrappedComponent) {
  
      }
 
+     
+
+     LoadingMessage() {
+        return (
+          // <div className="splash-screen">
+          //   Wait a moment while we load your app.
+          //   <div className="loading-dot">...</div>
+          // </div>
+              <React.Fragment>
+                    <div className="splash">
+                      <div className="splash_logo">
+                          AGOSOFTPARC <img src="/assets/images/log_princip.png" />
+                      </div>
+                      <div className="splash_svg">
+                          <svg width="100%" height="100%" >
+                          <rect width="100%" height="100%" />
+                          </svg>
+                      </div>
+                      <div className="splash_minimize">
+                          <svg width="100%" height="100%">
+                          <rect width="100%" height="100%" />
+                          </svg>
+                      </div>
+                      </div>
+                  <div className="text">
+                  {/* <p>Logiciel professionnel de gestion de parc automobile</p>
+                      <p style={{fontSize: '0.6em'}}><img src="/assets/images/log_princip.png" /> By AGOSOFT  </p> */}
+
+                   <p> <img src="/assets/images/theme.png" /></p>
+                 
+                  {/* <button>More</button> */}
+                 {/* <marquee behavior="" direction="">AGOSOFTPARC est en cours de chargement</marquee> */}
+                 <ProgressBar percentage={this.state.percentage} />
+
+                  </div>
+                  <div className="splash-screen">
+                     <p style={{color: 'white'}}>Nous preparons les données de AGOPARCSOFT</p>
+                       <div className="loading-dot">En cours de Chargement...</div>
+                  </div>
+              </React.Fragment>
+        );
+      }
+
     render() {
-       // console.log(store.getState().vehicules.items)
-      // while checking user session, show "loading" message
-      if (!store.getState().vehicules.items) return LoadingMessage();
+    
+      if (!store.getState().vehicules.items) return this.LoadingMessage();
 
       // otherwise, show the desired route
       return <WrappedComponent {...this.props} />;

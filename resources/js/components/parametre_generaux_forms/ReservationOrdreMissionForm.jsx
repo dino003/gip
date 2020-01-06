@@ -205,7 +205,7 @@ class ReservationOrdreMissionForm extends Component {
 
                                
                              
-                               {!this.props.isFormReservationOrdreSubmitted ? <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button> : <button disabled  className="mt-2 btn btn-warning">Merci de patienter <i className="fa fa-spinner fa-spin fa-1x fa-fw"></i></button>}
+                               {!this.props.isFormReservationOrdreSubmitted ? <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button> : <button disabled  className="mt-2 btn btn-primary">Merci de patienter <i className="fa fa-spinner fa-spin fa-1x fa-fw"></i></button>}
                            
                                 
                             </form>}

@@ -47,7 +47,7 @@ const formatOptionVehicule = data => (
         super(props);
         this.state = {
             isFormSubmitted: false,
-            global: true,
+            global: false,
             vehicule: null,
             compagnie_assurance: null
 

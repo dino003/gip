@@ -9,9 +9,9 @@ export default function MasterEdition({component: Component, ...rest}) {
         <Route {...rest} render={matchProps => (
             <div className="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header closed-sidebar">
             <NavBar />
-        <div className="app-main">
+        <div className="">
             {/* <SidebarCodification /> */}
-            <div className="app-main__outer "> 
+            <div className=" "> 
             <Component {...matchProps} />
 
             </div>

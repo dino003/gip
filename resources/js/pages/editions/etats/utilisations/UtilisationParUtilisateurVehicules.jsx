@@ -1,20 +1,16 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Loader from 'react-loader-spinner'
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import today from '../../../../utils/today';
 import moment from 'moment';
-import {groupBy, calculSommeColonne, formatageNombre} from '../../../../utils/Repository'
-import Pdf from "react-to-pdf";
+import { groupBy, calculSommeColonne, formatageNombre } from '../../../../utils/Repository'
+import VehiculeEtatForm from '../../forms/VehiculeEtatForm';
 
-const ref = React.createRef();
-const options = {
-    orientation: 'landscape',
-    unit: 'in',
-   // format: [4,2]
-};
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
+
 
 class UtilisationParUtilisateurVehicules extends Component {
 
@@ -25,12 +21,12 @@ class UtilisationParUtilisateurVehicules extends Component {
             isOpen: false,
             inputOpen: false,
             show: false,
-
+            isFormOpened: false,
             consommations: [],
             loading: false,
         }
 
-     
+
     }
 
 
@@ -38,32 +34,7 @@ class UtilisationParUtilisateurVehicules extends Component {
 
     }
 
-    showModal = e => {
-        this.setState({
-          show: !this.state.show
-        });
-      };
 
-
-    onDelete = (id) => {
-
-        let conf = confirm('Voulez-vous vraiment supprimer ?')
-        if (conf === true) {
-
-            const action = { type: "REMOVE_INTERVENTION", value: id }
-            this.props.dispatch(action)
-            axios.delete('/api/supprimer_vehicule_intervention/' + id)
-
-        }
-
-    }
-
-
-
-    onEdit = (id) => {
-        const vehic = this.props.vehiculeSeleted
-        this.props.history.push('/gestion_du_parc_automobile/parc/modification-consommations-vehicules/' + vehic.id + '/' + vehic.immatriculation + '/consommation/' + id)
-    }
 
     handleChange = (e) => {
         const target = event.target;
@@ -75,247 +46,182 @@ class UtilisationParUtilisateurVehicules extends Component {
         });
     }
 
+    createP = () => {
+        const etatVehiculeUtilisationParVehicule = this.props.utilisations.length ? groupBy(this.props.utilisations, 'vehicule_id') : null
+        // console.log(etatVehiculeUtilisationParVehicule[0])
+        var doc = new jsPDF('l');
+        doc.autoTable({
+            html: '#export',
+            theme: 'grid'
+        });
+        //doc.autoTable({startY: 30, head: this.headRows(), body: this.bodyRows(25)});
+        //   for (var j = 0; j < etatVehiculeUtilisationParVehicule.length; j++) {
+        //     doc.autoTable({
+        //       //  head: headRows(), 
+        //         head: [['Date de Début', 'Heure', 'Date de fin', 'Heure', 'Kms cmptr', 'Kms Parcourus', 'But de l\'utilisation', 'Départ', 'Destination']],
+        //         body: etatVehiculeUtilisationParVehicule[0],
+        //         startY: doc.autoTable.previous.finalY + 10,
+        //         pageBreak: 'avoid',
+        //     });
+        // }
+        //  doc.save('table.pdf');
+        //  doc.output('dataurlnewwindow');
+        // doc.output('datauri');              //opens the data uri in current window
+        window.open(doc.output('bloburl'), '_blank')
 
 
 
-
-    toggleVisibleInput = () => {
-        this.setState(prevState => {
-            return {
-                inputOpen: !prevState.inputOpen
-            }
-        })
-    }
-
-    toggleVisible = () => {
-        this.setState(prevState => {
-            return {
-                isOpen: !prevState.isOpen
-            }
-        })
-    }
-
-
-    renderLoading() {
-        return <span style={{ textAlign: 'center' }}>
-
-            <Loader
-                type="BallTriangle"
-                color="#00BFFF"
-                height={100}
-                width={100}
-            />
-        </span>
-    }
-
-    renderEmpty() {
-        return <span style={{ textAlign: 'center', color: 'red' }}>
-            Aucune donnée enregistrée !
-        </span>
     }
 
 
-    renderList() {
-        const consommations = this.props.consommations.filter(inter => inter.vehicule.id == this.props.vehiculeSeleted.id)
-        return (<table className="mb-0 table" >
-            <thead>
-                <tr>
-                    <th>Nature</th>
-                    <th>Libéllé Etat</th>
-                    <th>Référence</th>
-                    <th>Sélection ?</th>
-                    <th>Quantité</th>
-                    <th>TTC</th>
-                    <th>TVA</th>
-                    <th>HT</th>
-                    <th>Tiers</th>
-                    <th>Libéllé</th>
 
-
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-
-                    <td onDoubleClick={this.onEdit}>{item.libelle}</td>
-                    <td onDoubleClick={this.onEdit}>{item.cout_unitaire}</td>
-
-
-                    <td>
-
-                        <span className="pull-right">
-                            <button onClick={this.props.onDelete.bind(this, item.id)}
-                                className="mb-2 mr-2 btn-transition btn btn-outline-danger pull-right">
-                                <i className="fa fa-trash"></i>
-                            </button>
-
-                        </span>
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>)
+    toggleForm = () => {
+        this.setState({ isFormOpened: !this.state.isFormOpened })
     }
 
 
 
     render() {
 
-        const etat = this.props.utilisations.length ? groupBy(this.props.utilisations, 'utilisateur_id') : null
-       // const  etat2 = etat != null ? groupBy(etat, 'vehicule_id') : null
-    //    var tabNiveau2 = []
-    //    console.log( etat)
-    //        if(etat != null){
-    //            etat.forEach(currentItem => {
-    //               // console.log(groupBy(currentItem, 'vehicule_id'))
-    //                 var ty = groupBy(currentItem, 'vehicule_id')
-    //                 // var pol = ty.map(p => p)
-    //                 console.log( ty)
+        const etatVehiculeUtilisationParVehicule = this.props.utilisations.length ? groupBy(this.props.utilisations, 'vehicule_id') : null
 
-    //            });
-   
-    //        }
-    const et2 = this.props.utilisations.length ? groupBy(this.props.utilisations, 'utilisateur_id', 'vehicule_id') : null
-    const etUtili = this.props.utilisations.length ? groupBy(this.props.utilisations, 'utilisateur_id') : null
-    const etVehi = this.props.utilisations.length ? groupBy(this.props.utilisations, 'vehicule_id') : null
-
-      // console.log(etUtili, etVehi)
-               if(etUtili != null){
-               etUtili.forEach((currentItem, index) => {
-                  // console.log(groupBy(currentItem, 'vehicule_id'))
-                    // var pol = ty.map(p => p)
-                    console.log( currentItem)
-
-               });
-   
-           }
+        const { isFormOpened } = this.state
 
         return (
-            <div className="app-main__inner">
+            <div className="">
+                <br /><br /><br /><br />
                 <div className="row">
                     <div className="col-lg-12">
-                <div className="main-card mb-3 card">
-                    <div className="card-body ">
-                    {/* <button type="button" className="btn mr-2 mb-2 btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm">Small modal</button>
+                        <div className="main-card mb-3 card">
+                            <div className="card-body ">
+                                <h5 className="card-title">
+                                    <span className="pull-right">
+                                        <button className="mb-2 mr-2 btn-transition btn btn-outline-warning" onClick={() => this.props.history.goBack()}>Retour</button>
 
-                    <ReactHTMLTableToExcel
-                    id="test-table-xls-button"
-                    className="download-table-xls-button"
-                    table="complex-table"
-                    filename="tablexls"
-                    sheet="tablexls"
-                    buttonText="Download as XLS"/> */}
+                                        {etatVehiculeUtilisationParVehicule.length ? <React.Fragment>
+                                            <button title={!isFormOpened ? 'Affinner' : 'Revenir aux Etats'}
+                                                className={!isFormOpened ? 'mb-2 mr-2 btn-transition btn btn-outline-primary' : 'mb-2 mr-2 btn-transition btn btn-outline-warning'}
+                                                onClick={this.toggleForm}
+                                            >
+                                                <i className={!isFormOpened ? 'fa fa-plus' : 'fa fa-times'}></i> {' '}
 
-   
-{/* <Pdf targetRef={ref} filename="div-blue.pdf" options={options} x={.5} y={.5}>
-        {({toPdf}) => (
-            <button onClick={toPdf}>Generate pdf</button>
-        )}
-    </Pdf> */}
-
-    <Pdf targetRef={ref} filename="code-example.pdf" options={options}>
-        {({ toPdf }) => <button onClick={toPdf}>Generate Pdf</button>}
-      </Pdf>
-
-                        <div className="table-responsive" ref={ref}>
-                           
-
-                           {etUtili && etUtili.map((etatCourant, index) => {
-                               const niveau2 = groupBy(etatCourant, 'vehicule_id')
-                            //    console.log(niveau2)
-                                var tab = []
-                                niveau2.forEach(val => tab.push(val[0]))
-
-                               return (<table key={index} className="mb-0 table table-bordered" id="complex-table">
-                               <thead>
-                               <tr > 
-                                         <th colSpan="4">AGOSOFT Parc-Automobile - Utilisation Véhicules par Utilisateurs</th>
-                                         <th colSpan="2">DATE: {moment(today).format('DD/MM/YYYY')}</th>
-                                         <th colSpan="2">Référence: PA 00058</th>
-                                      </tr>
-
-                                      <tr style={{backgroundColor: 'gray'}}> 
-                                         <th colSpan="12">Utilisateur: {etatCourant[0].utilisateur.prenom} {etatCourant[0].utilisateur.nom}</th>
-                                      </tr>  
-
-                                    
-                               </thead>
-                               {/* <caption>Nom de l'etat</caption> */}
-                                { niveau2.map((base) => {
-                                   // console.log(element)
-                                    return base.map((element, index) => {
-                                        // var precedentIndex = base[index - 1]
-                                        // var suivantIndex = base[index + 1]
-                                        // objetPrecedent = this.props.find(el, index)
-                                        return (<React.Fragment key={index}>
-                                             <thead>
-                       
-                                                 <tr> 
-                                                <th colSpan="5">Véhicule  ({base[0].vehicule.immatriculation})</th>
-                                                 <th colSpan="3">Véhicule de {base[0].vehicule.type_vehicule_statut}</th>
-             
-                                             </tr>
-             
-                                            </thead> 
-             
-                                            <tbody> 
-                                                <tr> 
-                                                    <th >Date Début</th> 
-                                                    <th>Heure</th> 
-                                                    <th>Date Fin</th> 
-                                                    <th>Heure</th> 
-                                                    <th>Kms cmptr</th> 
-                                                    <th>Kms parcourus </th> 
-                                                    <th>But de l'utilisation</th> 
-                                                     
-                                                    </tr> 
-                                                    <tr> 
-                                                        <td>{moment(element.date_debut_utilisation).format('DD/MM/YYYY')}</td> 
-                                                         <td>{element.heure_debut.slice(0, 5)}</td> 
-                                                        <td>{moment(element.date_fin_utilisation).format('DD/MM/YYYY')}</td> 
-                                                        <td>{element.heure_de_fin.slice(0, 5)}</td> 
-                                                         <td>{formatageNombre(element.kilometrage_compteur_debut)}</td> 
-                                                        <td>{formatageNombre(element.kilometres_parcourus)}</td> 
-                                                        <td>{element.nature_utilisation ? element.nature_utilisation.libelle : null}</td> 
-                                                       
-             
-                                                    </tr> 
-                                                         
-                                                   
-                                                </tbody>
-             
-                                                <tfoot> 
-                                                    <tr> 
-                                                        <th colSpan="2">Nombre d'utilisations du véhicule ( {base.length} )</th> 
-                                                        <th > Kms parcourus  ({calculSommeColonne(base)})</th> 
-                                                        </tr> 
-             
-                                                        <tr> 
-                                                        <th colSpan="2">Nombre d'utilisations Utilisateur ( {base.length} )</th> 
-                                                        <th> Kms parcourus  ({calculSommeColonne(base)})</th> 
-                                                        </tr> 
-                                                        
-                                                </tfoot>
-                                       </React.Fragment>)
-                                    })
-                                })}
-                              
+                                                {!isFormOpened ? 'Affinner' : 'Quitter'}
+                                            </button>
 
 
-                           </table>)
-                           })}
 
-                         
+                                            <ReactHTMLTableToExcel
+                                                id="test-table-xls-button"
+                                                className="mb-2 mr-2 btn-transition btn btn-outline-success"
+                                                table="export"
+                                                filename="Liste des Amendes véhicules"
+                                                sheet="feuille1"
+                                                buttonText="Ecran -> Excel" />
 
+                                            <button className="mb-2 mr-2 btn-transition btn btn-outline-info" onClick={this.createP}>Imprimer</button>
+                                        </React.Fragment> : null}
+                                    </span>
+                                </h5>
+
+
+
+                                {etatVehiculeUtilisationParVehicule.length ? <React.Fragment>
+                                    {isFormOpened ?
+
+                                        <VehiculeEtatForm /> :
+
+
+                                        <div className="">
+
+
+                                            <table className="mb-0 table table-bordered " id="export">
+                                                {etatVehiculeUtilisationParVehicule.map((etatCourant, index) =>
+                                                    <React.Fragment key={index} >
+
+                                                        <thead>
+                                                            <tr >
+                                                                <th colSpan="6">AGOSOFT Parc-Automobile - Utilisation Véhicules par Utilisateurs</th>
+                                                                <th colSpan="2">DATE: {moment(today).format('DD/MM/YYYY')}</th>
+                                                                <th colSpan="2">Référence: PA 00058</th>
+                                                            </tr>
+
+                                                            <tr style={{ backgroundColor: 'gray' }}>
+                                                                <th colSpan="12">Véhicule: {etatCourant[0].vehicule ? etatCourant[0].vehicule.immatriculation : null} </th>
+                                                            </tr>
+
+
+                                                        </thead>
+
+
+
+                                                        <tbody>
+                                                            <tr>
+                                                                <th >Date Début</th>
+                                                                <th>Heure</th>
+                                                                <th>Date Fin</th>
+                                                                <th>Heure</th>
+                                                                <th>Kms cmptr</th>
+                                                                <th>Kms parcourus </th>
+                                                                <th>But de l'utilisation</th>
+                                                                <th>Départ</th>
+                                                                <th>Destination</th>
+
+
+                                                            </tr>
+                                                        </tbody>
+
+                                                        {etatCourant.map((utilisation, index) => <React.Fragment key={index}>
+
+
+                                                            <tbody>
+
+                                                                <tr>
+                                                                    <td style={{ width: '100px' }}>{moment(utilisation.date_debut_utilisation).format('DD/MM/YYYY')}</td>
+                                                                    <td style={{ width: '20px' }}>{utilisation.heure_debut.slice(0, 5)}</td>
+                                                                    <td style={{ width: '100px' }}>{moment(utilisation.date_fin_utilisation).format('DD/MM/YYYY')}</td>
+                                                                    <td style={{ width: '20px' }}>{utilisation.heure_de_fin.slice(0, 5)}</td>
+                                                                    <td style={{ width: '60px' }}>{utilisation.kilometrage_compteur_debut ? formatageNombre(utilisation.kilometrage_compteur_debut) : null}</td>
+                                                                    <td style={{ width: '80px' }}>{utilisation.kilometres_parcourus ? formatageNombre(utilisation.kilometres_parcourus) : null}</td>
+                                                                    <td >{utilisation.nature_utilisation ? utilisation.nature_utilisation.libelle : null}</td>
+                                                                    <td>{utilisation.lieu_depart}</td>
+                                                                    <td>{utilisation.destination}</td>
+
+
+                                                                </tr>
+                                                                {etatCourant[etatCourant.length - 1].id == utilisation.id ?
+                                                                    <tr style={{ backgroundColor: 'yellow' }}>
+                                                                        <th colSpan="6">Nombre d'utilisations du véhicule <span style={{ color: 'red' }}><em>{etatCourant[0].vehicule.immatriculation}</em></span> ( {etatCourant.length.toString().length == 1 ? `0${etatCourant.length}` : etatCourant.length} )</th>
+                                                                        <th colSpan="6"> Kms parcourus Véhicule <span style={{ color: 'red' }}><em>{etatCourant[0].vehicule.immatriculation}</em></span> ({formatageNombre(calculSommeColonne(etatCourant))})</th>
+                                                                    </tr>
+                                                                    : null}
+
+                                                            </tbody>
+
+
+                                                        </React.Fragment>)}
+
+
+                                                    </React.Fragment>
+
+                                                )}
+
+                                            </table>
+
+
+
+
+
+                                        </div>}
+                                </React.Fragment> : <p style={{textAlign: 'center'}}><span>
+                                    Aucune donnée trouvée
+                                    </span> </p> }
+
+
+
+                            </div>
                         </div>
                     </div>
                 </div>
-                </div>
-                </div>
-
-
-        
-
 
 
 
@@ -336,5 +242,4 @@ const mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps)(UtilisationParUtilisateurVehicules)
-//export default TypeEntite
 

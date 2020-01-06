@@ -10,6 +10,8 @@ import StructureEtablissementItem from '../../components/codifications/Structure
 
 import { Container, Button, Link } from 'react-floating-action-button'
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import {Treebeard} from 'react-treebeard';
+
 
 
 
@@ -25,13 +27,14 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
             editIndex: undefined,
             code_regroupement: '',
             nom_regroupement: '',
-            regroupement_appartenance: ''
+            regroupement_appartenance: '',
+            data: this.props.structures_etablissements,
         }
 
-        this.formRef = null;
-        this.base = this.state
+        this.onToggle = this.onToggle.bind(this);
 
-        
+        this.formRef = null;
+        this.base = this.state   
     }
 
   
@@ -111,6 +114,18 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
           this.setState(this.base)
       }
 
+      onToggle(node, toggled){
+        const {cursor, data} = this.state;
+        if (cursor) {
+            this.setState(() => ({cursor, active: false}));
+        }
+        node.active = true;
+        if (node.children) { 
+            node.toggled = toggled; 
+        }
+        this.setState(() => ({cursor: node, data: Object.assign({}, data)}));
+    }
+
       onEditSubmit = (e) => {
           e.preventDefault()
         let modif = this.state.objetModif
@@ -169,33 +184,47 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
           }
       }
 
+      setEtablissement = () => {
+        const events = [];
+        this.state.data.filter(st => st.parent == null).map(event => {
+            return events.push({
+                ...event,
+                name: event.code_regroupement,
+            })
+        })
+
+        return events
+    }
+
       renderList(){
-          return ( <table className="mb-0 table" id="export" >
-          <thead>
-          <tr>
-              <th>Code Regroupement</th>
-              <th>Nom du Regroupement</th>
-              <th>Regroupement d'Appartenance</th>
-             
-            
-
-
-
-          </tr>
-          </thead>
-          <tbody>
-           {this.props.structures_etablissements.map((st, index) => 
-               <StructureEtablissementItem
-                key={st.id} 
-                index={index}
-                item={st}
-                onEdit={this.onEdit}
-                onDelete={this.onDelete}
-                 />
-               )}
+    //       return ( <table className="mb-0 table" id="export" >
+    //       <thead>
+    //       <tr>
+    //           <th>Code Regroupement</th>
+    //           <th>Nom du Regroupement</th>
+    //           <th>Regroupement d'Appartenance</th>
+    //       </tr>
+    //       </thead>
+    //       <tbody>
+    //        {this.props.structures_etablissements.map((st, index) => 
+    //            <StructureEtablissementItem
+    //             key={st.id} 
+    //             index={index}
+    //             item={st}
+    //             onEdit={this.onEdit}
+    //             onDelete={this.onDelete}
+    //              />
+    //            )}
         
-          </tbody>
-      </table>)
+    //       </tbody>
+    //   </table>)
+
+        return (
+            <Treebeard
+            data={this.setEtablissement()}
+           // onToggle={this.onToggle}
+        />
+        )
       }
 
       renderLoading(){

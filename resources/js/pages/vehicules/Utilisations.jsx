@@ -99,13 +99,13 @@ import { Container, Button, Link } from 'react-floating-action-button'
         }, () => this.toggleVisible())
     }
 
-    onEdit = ( index) => {
-        var utilisations = this.state.utilisations
+    onEdit = ( id, index) => {
+        var utilisations = this.props.utilisations.filter(util => util.vehicule.id == this.props.match.vehicule_id)
        // var struc = utilisations[index]
 
 
         this.setState({
-            objetModif: utilisations[index],
+            objetModif: utilisations.find(util => util.id == id),
             editIndex: index
         }, () => this.passEdit())
 
@@ -227,7 +227,7 @@ import { Container, Button, Link } from 'react-floating-action-button'
           this.setState(this.base)
       }
 
-      onEditSubmit = ( utilisatation_normal_ou_pret, nature_utilisation, utilisateur, chauffeur,date_debut_utilisation, heure_debut,date_fin_utilisation, heure_de_fin, kilometrage_compteur_debut, kilometrage_compteur_retour, kilometres_parcourus, pourcentage_reservoire_debut, pourcentage_reservoire_retour) => {
+      onEditSubmit = ( utilisatation_normal_ou_pret, nature_utilisation, utilisateur, chauffeur,date_debut_utilisation, heure_debut,date_fin_utilisation, heure_de_fin, kilometrage_compteur_debut, kilometrage_compteur_retour, kilometres_parcourus, lieu_depart, destination) => {
        //  e.preventDefault()
         let modif = this.state.objetModif
         const utili = this.props.personnels.find(per => per.id == utilisateur)
@@ -250,8 +250,8 @@ import { Container, Button, Link } from 'react-floating-action-button'
                    kilometrage_compteur_debut: kilometrage_compteur_debut,
                    kilometrage_compteur_retour: kilometrage_compteur_retour,
                    kilometres_parcourus: kilometres_parcourus,
-                   pourcentage_reservoire_debut: pourcentage_reservoire_debut,
-                   pourcentage_reservoire_retour: pourcentage_reservoire_retour,  
+                   lieu_depart: lieu_depart,
+                   destination: destination,  
           }).then(response => {
             const action = {type: "EDIT_UTILISATION", value: response.data}
             this.props.dispatch(action)
@@ -285,8 +285,8 @@ import { Container, Button, Link } from 'react-floating-action-button'
                    kilometrage_compteur_debut: this.kilometrage_compteur_debut.value,
                    kilometrage_compteur_retour: this.kilometrage_compteur_retour.value,
                    kilometres_parcourus: this.kilometres_parcourus.value,
-                   pourcentage_reservoire_debut: this.pourcentage_reservoire_debut.value,
-                   pourcentage_reservoire_retour: this.pourcentage_reservoire_retour.value,   
+                   lieu_depart: this.lieu_depart.value,
+                   destination: this.destination.value,   
 
             }
             ).then(response => {
@@ -674,18 +674,18 @@ import { Container, Button, Link } from 'react-floating-action-button'
                                 <div className="form-row">
                                     <div className="col-md-6">
                                         <div className="position-relative form-group">
-                                            <label >% de remplissage reservoir en debut</label>
-                                            <input name="pourcentage_reservoire_debut"
-                                            ref={pourcentage_reservoire_debut => this.pourcentage_reservoire_debut = pourcentage_reservoire_debut}
-                                              type="number" step="0.1" className="form-control" /></div>
+                                            <label >Lieu Départ</label>
+                                            <input name="lieu_depart"
+                                            ref={lieu_depart => this.lieu_depart = lieu_depart}
+                                              type="text"  className="form-control" /></div>
                                     </div>
 
                                     <div className="col-md-6">
                                         <div className="position-relative form-group">
-                                            <label title="ppppppppppp" >% de remplissage reservoir au retour </label>
-                                            <input name="pourcentage_reservoire_retour"
-                                            ref={pourcentage_reservoire_retour => this.pourcentage_reservoire_retour = pourcentage_reservoire_retour}
-                                            type="number" step="0.1" className="form-control" /></div>
+                                            <label >Destination </label>
+                                            <input name="destination"
+                                            ref={destination => this.destination = destination}
+                                            type="text"  className="form-control" /></div>
                                     </div>
 
                                    

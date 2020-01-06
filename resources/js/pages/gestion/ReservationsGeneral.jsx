@@ -185,8 +185,7 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
      
 
     onEdit = (id) => {
-        const vehic = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(vehicule => vehicule.id == this.props.match.params.vehicule_id)
-        this.props.history.push('/gestion_du_parc_automobile/parc/modification-reservation-vehicule/' + vehic.id + '/' + vehic.immatriculation + '/reservation/' + id)
+        this.props.history.push('/gestion_du_parc_automobile/modification-reservation-vehicules-general/' + id)
     }
 
 
@@ -210,12 +209,12 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
     setDates = () => {
         const events = [];
-        this.props.reservations.map(event => {
+        this.state.reservations_visible_actuelement.map(event => {
             return events.push({
                 start: new Date(event.date_debut_reservation),
                 end: new Date(event.date_fin_reservation),
                 allDay: true,
-                title: `${event.objet_reservation.libelle} par ${event.personne_reservant.prenom} ${event.personne_reservant.nom}`
+                title: `Pour ${event.objet_reservation.libelle} par ${event.personne_reservant.prenom} ${event.personne_reservant.nom} : Véhicule réservé (${event.vehicule.immatriculation})`
             })
         })
 
@@ -304,8 +303,9 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
         let obj = {};
         obj[name] = value;
         this.setState(obj, () => {
+            let reservations = this.props.reservations.filter(reser => reser.vehicule.id == this.state.vehicule_selectionne.id)
             this.setState({
-                reservations_visible_actuelement: this.state.reservations_visible_actuelement.filter(reser => reser.vehicule.id == this.state.vehicule_selectionne.id)
+                reservations_visible_actuelement: reservations
             })
         });
     }
@@ -356,7 +356,7 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                                     
                                         <Select
                                         name="vehicule_selectionne"
-                                        placeholder="Selectionnez ou saisissez"
+                                        placeholder="Selectionnez ou saisissez un Véhicule"
                                         noOptionsMessage={() => "Aucun Véhicule  trouvé"}
                                         options={this.props.vehicules}
                                         getOptionLabel={option => option.immatriculation}
@@ -365,7 +365,7 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                                     />
                                 </span>
                                 
-                             
+                             {' '}
                                 
                                             
                                 
@@ -422,12 +422,7 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                              startAccessor="start"
                              endAccessor="end"
                              culture='fr'
-                            //   components={{
-                            //      timeSlotWrapper: ColoredDateCellWrapper,
-                            //    }}
-                             // showMultiDayTimes
-                           // step={60}
-                           // views={allViews}
+                         
                            views={['month', 'week', 'day']}
                            messages={{
                                month: 'Mensuel',
@@ -461,7 +456,7 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                     // rotate={true}
                         styles={{backgroundColor: 'green', color: 'white', cursor: 'pointer'}}
 
-                        onClick={() => this.props.history.push(`/gestion_du_parc_automobile/parc/creation-reservation-vehicules-general`)}
+                        onClick={() => this.props.history.push(`/gestion_du_parc_automobile/creation-reservation-vehicules-general`)}
                         />
                 </Container> 
                 

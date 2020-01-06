@@ -6,15 +6,21 @@ export default class TableHeader extends Component {
         this.state = {
             isSearchInputVisible: false
         }
-        
+       this.handleInputChange = this.handleInputChange.bind(this) 
+       this.toggleSearchInput = this.toggleSearchInput.bind(this) 
+
     }
 
-    handleInputChange = () => {
+    handleInputChange () {
         this.props.searchChange(this.search.value)
     }
 
-    toggleSearchInput = () => {
-        this.setState({isSearchInputVisible: !this.state.isSearchInputVisible})
+    toggleSearchInput () {
+        const {changeState} = this.props
+
+        changeState()
+        this.setState({isSearchInputVisible: !this.state.isSearchInputVisible} )
+
     }
     
     render() {

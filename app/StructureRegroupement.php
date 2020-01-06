@@ -19,4 +19,11 @@ class StructureRegroupement extends Model
     {
         return $this->hasMany(Entite::class, 'regroupement', 'id');
     }
+
+    public function children()
+    {
+        return $this->hasMany('App\StructureRegroupement', 'parent', 'id');
+    }
+
+    
 }

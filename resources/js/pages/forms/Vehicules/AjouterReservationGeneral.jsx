@@ -58,9 +58,11 @@ import { colourStyles } from '../../../utils/Repository';
 
 
       verificationFormulaire () {
-          if(this.objet_reservation.value == ''){
+          if(this.state.objet_reservation == undefined){
               return "L'objet de la reservation obligatoire !"
-          }else if(this.heure_debut_reservation.value == ''){
+          }if(this.state.vehicule == undefined){
+            return "Vous devez sélectionner un véhicule !"
+        }else if(this.heure_debut_reservation.value == ''){
               return "L'heure de début de réservation est obligatoire !"
           }else if(this.date_fin_reservation.value == ''){
             return "La date de fin est obligatoire !"
@@ -74,7 +76,7 @@ import { colourStyles } from '../../../utils/Repository';
       }
 
       checkIfReservationIsPossible = (debut, fin) => {
-        var vehicule = this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
+        var vehicule = this.state.vehicule
         var lesReservationsDuVehicule = this.props.reservations.filter(reser => reser.vehicule.id == vehicule.id && !reser.abandonne && !reser.transforme_en_utilisation)
        
         var tab = []
@@ -106,20 +108,20 @@ import { colourStyles } from '../../../utils/Repository';
       enregistrerReservation = (e) => {
         e.preventDefault()
         const mission = this.props.match.params.ordre_mission_id != undefined ? this.props.missions.find(miss => miss.id == this.props.match.params.ordre_mission_id) : undefined
+        const personeParDefaut = this.props.personnels.find(per => per.default)
 
-        var vehicule = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
         if( this.checkIfReservationIsPossible(this.date_debut_reservation.value, this.date_fin_reservation.value) == null ){
             if(this.verificationFormulaire() == null){
                 this.setState({isFormSubmitted: true})
                 axios.post('/api/ajouter_vehicule_reservation', {
-                    vehicule: vehicule.id,
-                    personne_reservant: this.personne_reservant.value,
+                    vehicule: this.state.vehicule.id,
+                    personne_reservant: this.state.personne_reservant ? this.state.personne_reservant.id : personeParDefaut.id,
                     date_fin_reservation: this.date_fin_reservation.value,
                     heure_fin_reservation: this.heure_fin_reservation.value,
-                    vehicule_parti: this.vehicule_parti.value,
-                    vehicule_retourne: this.vehicule_retourne.value,
+                   // vehicule_parti: this.vehicule_parti.value,
+                   // vehicule_retourne: this.vehicule_retourne.value,
                     entite_personne_reservant: this.entite_personne_reservant.value,
-                    objet_reservation: this.objet_reservation.value,
+                    objet_reservation: this.state.objet_reservation.id,
                     date_debut_reservation: this.date_debut_reservation.value,
                     heure_debut_reservation: this.heure_debut_reservation.value,
                     lieu_depart: this.lieu_depart.value,
@@ -162,11 +164,8 @@ import { colourStyles } from '../../../utils/Repository';
 
                      }
                    
-
-                 
                 }).catch(error => console.log(error))
                
-    
               }else{
                   //console.log(this.verificationFormulaire())
                   toast.error(this.verificationFormulaire(), {
@@ -182,6 +181,30 @@ import { colourStyles } from '../../../utils/Repository';
 
        // console.log(this.date_debut.value)
       }
+
+      setFieldSelect(name, value) {
+        let obj = {};
+        obj[name] = value;
+        this.setState(obj);
+    }
+
+    setFieldSelectPersonneReservant(name, value) {
+        let obj = {};
+        obj[name] = value;
+        this.setState(obj, () => {
+            const persone = this.props.personnels.find(per => per.id == this.state.personne_reservant.id)
+            this.entite_personne_reservant.value = persone.entite_affectation ? persone.entite_affectation.entite : null
+        });
+    }
+
+    setFieldSelectVehicule(name, value) {
+        let obj = {};
+        obj[name] = value;
+        this.setState(obj, () => {
+            const vehicule = this.props.vehicules.find(veh => veh.id == this.state.vehicule.id)
+            this.kilometrage_vehicule_a_la_reservation.value = vehicule.kilometrage_acquisition
+        });
+    }
     
 
     render() {
@@ -194,9 +217,7 @@ import { colourStyles } from '../../../utils/Repository';
                         <div className="card-body">
                             <h5 className="card-title">Gestion des Reservations du véhicule
                            
-                            {this.props.vehicules.length && 
-                            <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}/>
-                            }                              
+                                                       
                           </h5>
                           <br />
                           
@@ -213,11 +234,11 @@ import { colourStyles } from '../../../utils/Repository';
                                                 placeholder="Selectionnez un Véhicule"
                                                 noOptionsMessage={() => "Aucun véhicule pour l'instant"}
                                                 options={this.props.vehicules}
-                                                getOptionLabel={option => option.entite}
+                                                getOptionLabel={option => option.immatriculation}
                                                 getOptionValue={option => option.id}
-
+                                                isOptionDisabled={option => !this.props.param_generaux_reservation_ordre.vehicule_fonction_reservable && option.type_vehicule_statut === 'Fonction'}
                                                 // formatOptionLabel={formatOptionVehicule}
-                                                onChange={this.setFieldSelect.bind(this, "vehicule")}
+                                                onChange={this.setFieldSelectVehicule.bind(this, "vehicule")}
                                                 styles={colourStyles}
                                             />
                                              </div>
@@ -225,34 +246,19 @@ import { colourStyles } from '../../../utils/Repository';
 
                                 <div className="col-md-3">
                                     <label  className="">Personne reservant</label>
-                                        {mission == undefined ?        <select name="personne_reservant" onChange={this.setField}
-                                            ref={personne_reservant => this.personne_reservant = personne_reservant}
-                                            style={inputStyle}
-
-                                          className="form-control">
-                                            {personeParDefaut != undefined && <option value={personeParDefaut.id}>{personeParDefaut.nom} {personeParDefaut.prenom}</option>}
-                                        {this.props.personnels.map(pers => {
-                                            if(!pers.default){
-                                                return <option key={pers.id} value={pers.id}>{pers.nom} {pers.prenom}</option>
-
-                                            }
-                                        }
-
-                                                )}
-                                        </select> :  <select name="personne_reservant" onChange={this.setField}
-                                            ref={personne_reservant => this.personne_reservant = personne_reservant}
-                                            style={inputStyle}
-                                            defaultValue={mission.demandeur_id}
-                                          className="form-control">
-                                        {this.props.personnels.map(pers => {
-                                            if(!pers.default){
-                                                return <option key={pers.id} value={pers.id}>{pers.nom} {pers.prenom}</option>
-
-                                            }
-                                        }
-
-                                                )}
-                                        </select>}
+                                
+                                        <Select
+                                                name="personne_reservant"
+                                                placeholder="Selectionnez une personne"
+                                                noOptionsMessage={() => "Personnel introuvable"}
+                                                options={this.props.personnels}
+                                                getOptionLabel={option => `${option.nom} ${option.prenom.slice(0,15)}`}
+                                                getOptionValue={option => option.id}
+                                                defaultValue={personeParDefaut ? personeParDefaut : null}
+                                                // formatOptionLabel={formatOptionVehicule}
+                                                onChange={this.setFieldSelectPersonneReservant.bind(this, "personne_reservant")}
+                                                styles={colourStyles}
+                                            />
                                 
                                         </div>
 
@@ -261,7 +267,7 @@ import { colourStyles } from '../../../utils/Repository';
                                             <label >Entité de la personne </label>
                                             <input name="entite_personne_reservant"  type="text"
                                              readOnly
-                                             defaultValue={this.getEntiteDuPerrsonnelReservant()}
+                                             defaultValue={personeParDefaut.entite_affectation ? personeParDefaut.entite_affectation.entite : null}
                                             onChange={this.setField}
                                             ref={entite_personne_reservant => this.entite_personne_reservant = entite_personne_reservant}
                                              className="form-control" />
@@ -270,35 +276,25 @@ import { colourStyles } from '../../../utils/Repository';
 
                                     <div className="col-md-3">
                                     <label  className="">Objet de la réservation</label>
-                                        <select name="objet_reservation" onChange={this.setField}
-                                            ref={objet_reservation => this.objet_reservation = objet_reservation}
-                                            style={inputStyle}
-                                            defaultValue={mission != undefined ? mission.nature_mission_id : null}
-                                          className="form-control">
-                                        <option defaultValue={null}></option>
+                        
 
-                                        {this.props.natures_reservations.map(nature => 
-                                                <option key={nature.id} value={nature.id}>{nature.libelle}</option>
+                                        <Select
+                                                name="objet_reservation"
+                                                placeholder="Selectionnez L'objet de réservation"
+                                                noOptionsMessage={() => "Liste vide"}
+                                                options={this.props.natures_reservations}
+                                                getOptionLabel={option => option.libelle} 
+                                                getOptionValue={option => option.id}
 
-                                                )}
-                                        </select>
+                                                // formatOptionLabel={formatOptionVehicule}
+                                                onChange={this.setFieldSelect.bind(this, "objet_reservation")}
+                                                styles={colourStyles}
+                                            />
                                 
                                         </div>
 
                                        
-                                            {mission != undefined &&  <div className="col-md-3">
-                                        <div className="position-relative form-group">
-                                            <label >Numero de l'ordre de mission </label>
-                                            <input name="numero_ordre_mission"  type="text"
-                                            defaultValue={mission != undefined ? mission.numero_ordre_mission : null}
-                                            readOnly
-                                            onChange={this.setField}
-                                            ref={numero_ordre_mission => this.numero_ordre_mission = numero_ordre_mission}
-                                             className="form-control" />
-                                             </div>
-                                    </div>}
-                                  
-
+                                      
                                   
                                 </div>
 
@@ -354,7 +350,7 @@ import { colourStyles } from '../../../utils/Repository';
                                         </div>
                                     </div>
 
-                                    <div className="col-md-1">
+                                    {/* <div className="col-md-1">
                                     <label  className="">Véhicule parti</label>
                                         <select name="vehicule_parti" onChange={this.setField}
                                             ref={vehicule_parti => this.vehicule_parti = vehicule_parti}
@@ -374,7 +370,7 @@ import { colourStyles } from '../../../utils/Repository';
                                         <option value={1}>Oui</option>
                                         </select>
                                 
-                                        </div>
+                                        </div> */}
 
                                     
                                 </div>
@@ -454,7 +450,6 @@ import { colourStyles } from '../../../utils/Repository';
                                         <div className="position-relative form-group">
                                             <label >Kilometrage actuel</label>
                                             <input name="kilometrage_vehicule_a_la_reservation"
-                                            defaultValue={this.props.vehiculeSeleted ? this.props.vehiculeSeleted.kilometrage_acquisition : 0}
                                             readOnly
                                               type="number"
                                             ref={kilometrage_vehicule_a_la_reservation => this.kilometrage_vehicule_a_la_reservation = kilometrage_vehicule_a_la_reservation}
@@ -548,7 +543,7 @@ const mapStateToProps = state => {
         personnels: state.personnels.items,
         reservations: state.reservations.items,
         missions: state.missions.items,
-
+        param_generaux_reservation_ordre: state.param_generaux_reservation_ordre.items,
         vehiculeSeleted: state.vehiculeSeleted.vehicule,
         vehicules: state.vehicules.items
 

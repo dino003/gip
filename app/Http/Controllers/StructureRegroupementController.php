@@ -20,7 +20,10 @@ class StructureRegroupementController extends Controller
      */
     public function index()
     {
-        return $this->model->all();
+       // return $this->model->all();
+        $structures = StructureRegroupement::orderBy('id', 'desc')->with('children.children.children.children.children.children.children.children.children.children')->get();
+        
+        return response()->json($structures);
     }
 
     /**

@@ -101,6 +101,8 @@ import GardeParametres from '../pages/GardeParametres'
 import ModifierVehicule from '../pages/forms/Vehicules/ModifierVehicule';
 import Vehicules from '../pages/Vehicules';
 import ReservationsGeneral from '../pages/gestion/ReservationsGeneral';
+import AjouterReservationGeneral from '../pages/forms/Vehicules/AjouterReservationGeneral';
+import ModifierReservationGeneral from '../pages/forms/Vehicules/ModifierReservationGeneral';
 
 
 
@@ -228,6 +230,8 @@ const NavBack = () => (
   <MasterGestion exact path="/gestion_du_parc_automobile/entrees-stock/:article_id/article/:numero_article/edit/:entree_stock_id" component={ModifierEntreeStock} />
 
   <MasterGestion exact path="/gestion_du_parc_automobile/gestion-des-reservations-all" component={ReservationsGeneral} />
+  <MasterGestion exact path="/gestion_du_parc_automobile/creation-reservation-vehicules-general" component={AjouterReservationGeneral} />
+  <MasterGestion exact path="/gestion_du_parc_automobile/modification-reservation-vehicules-general/:reservation_id" component={ModifierReservationGeneral} />
 
 
   <MasterGestion exact path="/gestion_du_parc_automobile/sorties-stock/:article_id/article/:numero_article" component={SortieStock} />

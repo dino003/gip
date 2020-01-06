@@ -6,10 +6,11 @@
 }
 
 export const formatageNombre = (nombre)  => {
-  var format = nombre ? nombre : 0
-  var p = format.toFixed(2).split(".");
-  return p[0].split("").reverse().reduce( (acc, format, i) => {
-      return  format == "-" ? acc : format + (i && !(i % 3) ? "." : "") + acc;
+
+  nombre = nombre || 0
+  var p = nombre.toFixed(2).split(".");
+  return p[0].split("").reverse().reduce( (acc, nombre, i) => {
+      return  nombre == "-" ? acc : nombre + (i && !(i % 3) ? "." : "") + acc;
   }, "") ;
 }
 
@@ -26,14 +27,14 @@ export const groupBy = (objectArray, ...properties) => {
   }
 
   export const calculSommeColonne = (tableau) => {
-    return tableau.reduce( (prec, curr) =>  parseFloat(prec) + parseFloat(curr.kilometres_parcourus), 0)
+    return tableau.reduce( (prec, curr) =>  parseFloat(prec) + parseFloat(curr.kilometres_parcourus || 0), 0)
   }
   var dateWithouthSecond = new Date();
 
   export const heure = dateWithouthSecond.toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
        
   export const colourStyles =  {
-    control: styles => ({ ...styles, backgroundColor: '#FEBFD2' }),
+    control: styles => ({ ...styles, backgroundColor: '#F4FEFE' }),
     option: (styles, { data, isDisabled, isFocused, isSelected }) => {
       //const color = chroma(data.color);
       return {

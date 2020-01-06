@@ -8,13 +8,36 @@
   }
   
   .splash-screen .loading-dot {
-    font-size: 100px;
+    font-size: 40px;
     margin-top: -30px;
     position: relative;
     animation: ease-in-out infinite alternate;
     animation-name: run;
     animation-duration: 1.2s;
   }
+
+  @import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+/* html, body {
+  font-family: 'Montserrat', sans-serif;
+} */
+
+.progress-bar {
+  position: relative;
+  height: 20px;
+  width: 100%;
+  border-radius: 50px;
+  border: 1px solid #333;
+  background: #fff;
+
+}
+
+.filler {
+  background: green;
+  height: 100%;
+  border-radius: inherit;
+  transition: width .2s ease-in;
+}
   
   @keyframes run {
     0% {

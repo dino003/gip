@@ -43,10 +43,7 @@ class AjouterVehicule extends Component {
     }
 
     setFieldSelect(name, value) {
-        // this.setState({ vehicule });
-        //console.log(`Option selected:`, selectedOption.code);
-        // this.setState({[event.target.name]: value}, () => console.log(this.state.entite_comptable));
-        //this.setState({[name]: e.value})
+     
         let obj = {};
         obj[name] = value;
         this.setState(obj);
