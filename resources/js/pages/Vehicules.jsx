@@ -178,7 +178,7 @@ import TableHeader from '../components/TableHeader'
                      <div className="main-card mb-3 card">
 
                        <div className="card-body ">
-                           <h5 className="card-title">Gestion des véhicules du parc Automobile 
+                           <h5 className="card-title">Gestion des véhicules 
                           
                         
                           
