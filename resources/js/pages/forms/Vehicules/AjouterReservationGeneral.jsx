@@ -215,7 +215,7 @@ import { colourStyles } from '../../../utils/Repository';
               {this.setVehiculeSelectedAuRechargement()}
                     <div className="main-card mb-3 card">
                         <div className="card-body">
-                            <h5 className="card-title">Gestion des Reservations du véhicule
+                            <h5 className="card-title">Gestion des Reservations du véhicule Agos
                            
                                                        
                           </h5>
