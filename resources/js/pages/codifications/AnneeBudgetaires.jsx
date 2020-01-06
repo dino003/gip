@@ -40,13 +40,13 @@ import AnneeBudgetaireItem from '../../components/codifications/AnneeBudgetaireI
             const action = {type: "REMOVE_ANNEE_BUDGETAIRE", value: id}
             this.props.dispatch(action)
            // this.setState({entitesState : this.state.entitesState.filter(ent => ent.id !== id)})
-            axios.delete('api/supprimer_annee_budgetaire/' + id)
+            axios.delete('/api/supprimer_annee_budgetaire/' + id)
         }
        
     }
 
     onEditSubmit(newValue, id){
-        axios.post('api/modifier_annee_budgetaire/' + id, {
+        axios.post('/api/modifier_annee_budgetaire/' + id, {
             annee_budgetaire: newValue
         }).then(response => {
             const action = {type: "EDIT_ANNEE_BUDGETAIRE", value: response.data}
@@ -65,7 +65,7 @@ import AnneeBudgetaireItem from '../../components/codifications/AnneeBudgetaireI
   async handleSubmit(e){
         e.preventDefault();
 
-      const response =  await axios.post('api/ajouter_annee_budgetaire', {
+      const response =  await axios.post('/api/ajouter_annee_budgetaire', {
             annee_budgetaire: this.state.annee_budgetaire
         })
 

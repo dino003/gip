@@ -39,13 +39,13 @@ import MarqueItem from '../../components/codifications/MarqueItem'
             const action = {type: "REMOVE_MARQUE", value: id}
             this.props.dispatch(action)
            // this.setState({entitesState : this.state.entitesState.filter(ent => ent.id !== id)})
-            axios.delete('api/supprimer_marque/' + id)
+            axios.delete('/api/supprimer_marque/' + id)
         }
        
     }
 
     onEditSubmit(newValue, id){
-        axios.post('api/modifier_marque/' + id, {
+        axios.post('/api/modifier_marque/' + id, {
             nom_marque: newValue
         }).then(response => {
             const action = {type: "EDIT_MARQUE", value: response.data}
@@ -69,10 +69,9 @@ import MarqueItem from '../../components/codifications/MarqueItem'
         return  <span style={{textAlign: 'center'}}>
 
         <Loader
-            type="BallTriangle"
-            color="#00BFFF"
-            height={100}
-            width={100}
+          
+            height={500}
+            width={300}
          />
          </span>
     }
@@ -102,7 +101,7 @@ import MarqueItem from '../../components/codifications/MarqueItem'
   async handleSubmit(e){
         e.preventDefault();
 
-      const response =  await axios.post('api/ajouter_marque', {
+      const response =  await axios.post('/api/ajouter_marque', {
             nom_marque: this.state.nom_marque
         })
 

@@ -84,7 +84,7 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
             const action = {type: "REMOVE_CATEGORIE_VEHICULE", value: id}
             this.props.dispatch(action)
             this.setState({entitesState : this.state.entitesState.filter(ent => ent.id !== id)})
-           // axios.delete('api/supprimer_entite/' + id)
+            axios.delete('api/supprimer_categorie_vehicule/' + id)
         }
        
     }

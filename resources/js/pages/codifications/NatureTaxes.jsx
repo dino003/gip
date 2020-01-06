@@ -40,13 +40,13 @@ import NatureTaxeItem from '../../components/codifications/NatureTaxeItem'
             const action = {type: "REMOVE_NATURE_TAXE", value: id}
             this.props.dispatch(action)
            // this.setState({entitesState : this.state.entitesState.filter(ent => ent.id !== id)})
-            axios.delete('api/supprimer_nature_taxe/' + id)
+            axios.delete('/api/supprimer_nature_taxe/' + id)
         }
        
     }
 
     onEditSubmit(newValue, id){
-        axios.post('api/modifier_nature_taxe/' + id, {
+        axios.post('/api/modifier_nature_taxe/' + id, {
             libelle: newValue
         }).then(response => {
             const action = {type: "EDIT_NATURE_TAXE", value: response.data}
@@ -65,7 +65,7 @@ import NatureTaxeItem from '../../components/codifications/NatureTaxeItem'
   async handleSubmit(e){
         e.preventDefault();
 
-      const response =  await axios.post('api/ajouter_nature_taxe', {
+      const response =  await axios.post('/api/ajouter_nature_taxe', {
             libelle: this.state.libelle
         })
 

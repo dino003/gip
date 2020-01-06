@@ -42,13 +42,13 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
             const action = {type: "REMOVE_TYPE_ENTITE", value: id}
             this.props.dispatch(action)
            // this.setState({entitesState : this.state.entitesState.filter(ent => ent.id !== id)})
-            axios.delete('api/supprimer_type_entite/' + id)
+            axios.delete('/api/supprimer_type_entite/' + id)
         }
        
     }
 
     onEditSubmit(newValue, id){
-        axios.post('api/modifier_type_entite/' + id, {
+        axios.post('/api/modifier_type_entite/' + id, {
             type_entite: newValue
         }).then(response => {
             const action = {type: "EDIT_TYPE_ENTITE", value: response.data}
@@ -63,7 +63,7 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
     }
 
    async getTypesEntites(){
-    const response = await axios.get('api/types_entites')
+    const response = await axios.get('/api/types_entites')
 
     const action = {type: "GET_TYPE_ENTITE", value: response.data}
     this.props.dispatch(action)
@@ -72,7 +72,7 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
   async handleSubmit(e){
         e.preventDefault();
 
-      const response =  await axios.post('api/ajouter_type_entite', {
+      const response =  await axios.post('/api/ajouter_type_entite', {
             type_entite: this.state.type_entite
         })
 

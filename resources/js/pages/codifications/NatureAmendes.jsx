@@ -40,13 +40,13 @@ import NatureAmendeItem from '../../components/codifications/NatureAmendeItem'
             const action = {type: "REMOVE_NATURE_AMENDE", value: id}
             this.props.dispatch(action)
            // this.setState({entitesState : this.state.entitesState.filter(ent => ent.id !== id)})
-            axios.delete('api/supprimer_nature_amende/' + id)
+            axios.delete('/api/supprimer_nature_amende/' + id)
         }
        
     }
 
     onEditSubmit(newValue, id){
-        axios.post('api/modifier_nature_amende/' + id, {
+        axios.post('/api/modifier_nature_amende/' + id, {
             nature_amende: newValue
         }).then(response => {
             const action = {type: "EDIT_NATURE_AMENDE", value: response.data}

@@ -41,13 +41,13 @@ import CoutConsommableItem from '../../components/codifications/CoutConsommableI
             const action = {type: "REMOVE_COUT_CONSOMMABLE", value: id}
             this.props.dispatch(action)
            // this.setState({entitesState : this.state.entitesState.filter(ent => ent.id !== id)})
-            axios.delete('api/supprimer_cout_consomable/' + id)
+            axios.delete('/api/supprimer_cout_consomable/' + id)
         }
        
     }
 
     onEditSubmit(libelle, cout_unitaire, id){
-        axios.post('api/modifier_cout_consomable/' + id, {
+        axios.post('/api/modifier_cout_consomable/' + id, {
             libelle: libelle,
             cout_unitaire: cout_unitaire
         }).then(response => {
@@ -71,7 +71,7 @@ import CoutConsommableItem from '../../components/codifications/CoutConsommableI
   async handleSubmit(e){
         e.preventDefault();
 
-      const response =  await axios.post('api/ajouter_cout_consomable', {
+      const response =  await axios.post('/api/ajouter_cout_consomable', {
             libelle: this.libelle.value,
             cout_unitaire: this.cout_unitaire.value
         })

@@ -6,31 +6,9 @@ import { connect } from 'react-redux'
 import NumberFormat from 'react-number-format';
 import today from '../../../utils/today'
 import Select from 'react-select';
-import { colourStyles } from '../../../utils/Repository';
+import { colourStyles, inputStyle } from '../../../utils/Repository';
 
 
-const formatOptionVehicule = data => (
-    <div style={groupStyles}>
-        <span>{data.immatriculation}</span>
-    </div>
-);
-
-const formatOptionTiers = data => (
-    <div style={groupStyles}>
-        <span>{data.code}</span>
-    </div>
-);
-
-const inputStyle = {
-    // backgroundColor: '#85b9e9' FEBFD2
-    backgroundColor: '#FEBFD2'
-
-}
-
-// const date = new Date();
-
-//  const today = date.getFullYear().toString() + '-' + (date.getMonth() + 1).toString().padStart(2, 0) + 
-//     '-' + date.getDate().toString().padStart(2, 0);
 
 
 class AjouterVehicule extends Component {

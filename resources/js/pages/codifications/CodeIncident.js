@@ -41,13 +41,13 @@ import CodeIncidentItem from '../../components/codifications/CodeIncidentItem'
             const action = {type: "REMOVE_CODE_INCIDENT", value: id}
             this.props.dispatch(action)
            // this.setState({entitesState : this.state.entitesState.filter(ent => ent.id !== id)})
-            axios.delete('api/supprimer_code_incident/' + id)
+            axios.delete('/api/supprimer_code_incident/' + id)
         }
        
     }
 
     onEditSubmit(libelle, code, id){
-        axios.post('api/modifier_code_incident/' + id, {
+        axios.post('/api/modifier_code_incident/' + id, {
             libelle: libelle,
             code: code
         }).then(response => {
@@ -71,7 +71,7 @@ import CodeIncidentItem from '../../components/codifications/CodeIncidentItem'
   async handleSubmit(e){
         e.preventDefault();
 
-      const response =  await axios.post('api/ajouter_code_incident', {
+      const response =  await axios.post('/api/ajouter_code_incident', {
             libelle: this.libelle.value,
             code: this.code.value
         })
@@ -108,10 +108,9 @@ import CodeIncidentItem from '../../components/codifications/CodeIncidentItem'
         return  <span style={{textAlign: 'center'}}>
 
         <Loader
-            type="BallTriangle"
-            color="#00BFFF"
-            height={100}
-            width={100}
+           
+            height={500}
+            width={300}
          />
          </span>
     }

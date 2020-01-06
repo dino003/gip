@@ -43,7 +43,7 @@ import ModifierNatureIntervention from '../forms/ModifierNatureIntervention';
             const action = {type: "REMOVE_NATURE_INTERVENTION", value: id}
             this.props.dispatch(action)
            // this.setState({entitesState : this.state.entitesState.filter(ent => ent.id !== id)})
-            axios.delete('api/supprimer_nature_intervention/' + id)
+            axios.delete('/api/supprimer_nature_intervention/' + id)
         }
        
     }
@@ -121,7 +121,7 @@ import ModifierNatureIntervention from '../forms/ModifierNatureIntervention';
         let modif = this.state.objetModif
 
 
-          axios.post('api/modifier_nature_intervention/' + modif.id, {
+          axios.post('/api/modifier_nature_intervention/' + modif.id, {
             nom_intervention: nom,
             categorie: cat,
             sinistre: sin,
@@ -138,7 +138,7 @@ import ModifierNatureIntervention from '../forms/ModifierNatureIntervention';
           e.preventDefault()
 
           if(this.verificationFormulaire() == null){
-           await axios.post('api/ajouter_nature_intervention', 
+           await axios.post('/api/ajouter_nature_intervention', 
                {
                    nom_intervention: this.nom_intervention_ajout.value,
                    categorie: this.categorie_ajout.value,
@@ -193,10 +193,9 @@ import ModifierNatureIntervention from '../forms/ModifierNatureIntervention';
           return  <span style={{textAlign: 'center'}}>
 
           <Loader
-              type="BallTriangle"
-              color="#00BFFF"
-              height={100}
-              width={100}
+        
+              height={500}
+              width={300}
            />
            </span>
       }

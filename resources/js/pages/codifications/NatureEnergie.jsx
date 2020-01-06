@@ -40,13 +40,13 @@ import NatureEnergieItem from '../../components/codifications/NatureEnergieItem'
             const action = {type: "REMOVE_NATURE_ENERGIE", value: id}
             this.props.dispatch(action)
            // this.setState({entitesState : this.state.entitesState.filter(ent => ent.id !== id)})
-            axios.delete('api/supprimer_nature_energie/' + id)
+            axios.delete('/api/supprimer_nature_energie/' + id)
         }
        
     }
 
     onEditSubmit(newValue, id){
-        axios.post('api/modifier_nature_energie/' + id, {
+        axios.post('/api/modifier_nature_energie/' + id, {
             nom_energie: newValue
         }).then(response => {
             const action = {type: "EDIT_NATURE_ENERGIE", value: response.data}
@@ -64,7 +64,7 @@ import NatureEnergieItem from '../../components/codifications/NatureEnergieItem'
   async handleSubmit(e){
         e.preventDefault();
 
-      const response =  await axios.post('api/ajouter_nature_energie', {
+      const response =  await axios.post('/api/ajouter_nature_energie', {
             nom_energie: this.state.nom_energie
         })
 
@@ -182,10 +182,9 @@ import NatureEnergieItem from '../../components/codifications/NatureEnergieItem'
                                     <span style={{textAlign: 'center'}}>
 
                                     <Loader
-                                        type="BallTriangle"
-                                        color="#00BFFF"
-                                        height={100}
-                                        width={100}
+                                    
+                                        height={500}
+                                        width={300}
                                      />
                                      </span>
                                 )}

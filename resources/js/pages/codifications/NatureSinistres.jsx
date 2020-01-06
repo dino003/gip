@@ -39,13 +39,13 @@ import NatureSinistreItem from '../../components/codifications/NatureSinistreIte
             const action = {type: "REMOVE_NATURE_SINISTRE", value: id}
             this.props.dispatch(action)
            // this.setState({entitesState : this.state.entitesState.filter(ent => ent.id !== id)})
-            axios.delete('api/supprimer_nature_sinistre/' + id)
+            axios.delete('/api/supprimer_nature_sinistre/' + id)
         }
        
     }
 
     onEditSubmit(newValue, id){
-        axios.post('api/modifier_nature_sinistre/' + id, {
+        axios.post('/api/modifier_nature_sinistre/' + id, {
             nature_sinistre: newValue
         }).then(response => {
             const action = {type: "EDIT_NATURE_SINISTRE", value: response.data}
