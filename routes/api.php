@@ -18,15 +18,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 // route deploiement
-Route::post('deploy', 'UtilController@deploy');
-Route::post('deploy_autre', 'UtilController@deploy_autre');
+//Route::post('deploy', 'UtilController@deploy');
+//Route::post('deploy_autre', 'UtilController@deploy_autre');
 
 
-// Route::post('deploy_autre', function(){
-//     Artisan::call('git:deploy');
+Route::post('deploy_autre', function(){
+    Artisan::call('git:deploy');
 
-//     exit;
-// });
+    exit;
+});
 
 
 //----------------------Cout consomables --------------------------------------------------------**********
