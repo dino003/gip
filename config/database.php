@@ -55,6 +55,7 @@ return [
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
+            'port'=>'3306',
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
