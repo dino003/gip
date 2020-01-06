@@ -330,7 +330,7 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
                    
                        <div className="card-body ">
-                           <h5 className="card-title">Gestion des reservations Tous
+                           <h5 className="card-title">Gestion des reservations Tous les jours
                             <span className="pull-right">
                           
                             {/* <button title=" Ajouter une nouvelle intervention"
