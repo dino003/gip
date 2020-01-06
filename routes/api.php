@@ -18,7 +18,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 // route deploiement
-Route::post('deploy', function(){
+Route::post('deploy', 'UtilController@deploy');
+
+Route::post('deploy_autre', function(){
     Artisan::call('git:deploy');
 
     exit;

@@ -4,7 +4,7 @@
 php artisan down
 
 # update code depuis le depot git
-git pull --all
+git pull 
 
 ### mise a jour des dependances php via composer
 
@@ -21,8 +21,6 @@ php artisan config:clear
 php artisan config:cache
 
 php artisan -v queue:restart
-
-
 
 
 php artisan up
