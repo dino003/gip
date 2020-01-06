@@ -28,4 +28,19 @@ class UtilController extends Controller
 
         }
     }
+
+    public function deploy_autre(Request $request){
+        $githubPayload = $request->getContent();
+        $githubHash = $request->header('X-Hub-Signature');
+ 
+        $localToken = config('app.deploy_secret');
+        $localHash = 'sha1=' . hash_hmac('sha1', $githubPayload, $localToken, false);
+ 
+        if (hash_equals($githubHash, $localHash)) {
+            Artisan::call('git:deploy');
+
+            exit;
+
+        }
+    }
 }
