@@ -178,7 +178,7 @@ import TableHeader from '../components/TableHeader'
                      <div className="main-card mb-3 card">
 
                        <div className="card-body ">
-                           {/* <h5 className="card-title">Gestion des véhicules
+                           <h5 className="card-title">Gestion des véhicules
                           
                         
                           
@@ -209,7 +209,7 @@ import TableHeader from '../components/TableHeader'
 
                                 {this.props.vehiculeSeleted ? <MatriculeInput vehicule={this.props.vehiculeSeleted} text_attente="Aucune sélection" /> : null}                                            
                                 
-                            </h5> */}
+                            </h5>
                            <div className="table-responsive">
                            {this.props.loading ? this.renderLoading() : 
                             !this.props.vehicules.length ? this.renderEmpty() : this.renderList()}
