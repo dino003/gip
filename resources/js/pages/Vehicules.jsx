@@ -198,12 +198,13 @@ import TableHeader from '../components/TableHeader'
 
                      
                                 </span> {'  '}
-                             
+                                {this.props.vehicules.length ?
+
                                 <TableHeader
                                  searchChange={this.searchChange}
                                   text_recherche="Recherchez par Immatriculation"
                                   changeState={this.changeState}
-                                    /> 
+                                    /> : null }
                                 {'  '}
 
                                 {this.props.vehiculeSeleted ? <MatriculeInput vehicule={this.props.vehiculeSeleted} text_attente="Aucune sélection" /> : null}                                            
