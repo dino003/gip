@@ -39,6 +39,7 @@ class AutoDeploy extends Command
     {
         // script shell
         exec('php artisan down');
+        exec('git checkout -f');
         exec('git pull');
         exec('composer install --no-interaction --no-dev --prefer-dist');
         exec('npm install');
