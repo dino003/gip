@@ -238,6 +238,21 @@ class EditionListTable extends Component {
                                     </tr>
 
                                 </tbody>
+
+                                <tbody>
+                                    <tr>
+                                        <th colSpan="12" style={{ backgroundColor: 'gray' }} >  LES RESERVATIONS DES VEHICULES  </th>
+
+                                    </tr>
+                                
+                                    
+                                    <tr onDoubleClick={() => this.props.history.push('/gestion_du_parc_automobile/edition-reservations-vehicules')}>
+                                        <td >Réservations des véhicules </td>
+                                        <td >PA_000</td>
+
+                                    </tr>
+
+                                </tbody>
                             </table>
 
                             {/* <table className="mb-0 table table-bordered" id="complex-table">

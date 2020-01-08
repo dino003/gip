@@ -115,6 +115,8 @@ import { colourStyles } from '../../../utils/Repository';
                 this.setState({isFormSubmitted: true})
                 axios.post('/api/ajouter_vehicule_reservation', {
                     vehicule: this.state.vehicule.id,
+                    vehicule_id: this.state.vehicule.id,
+
                     personne_reservant: this.state.personne_reservant ? this.state.personne_reservant.id : personeParDefaut.id,
                     date_fin_reservation: this.date_fin_reservation.value,
                     heure_fin_reservation: this.heure_fin_reservation.value,

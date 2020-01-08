@@ -23,7 +23,8 @@ import ModifierNatureIntervention from '../forms/ModifierNatureIntervention';
             nom_intervention: '',
             categorie: 'Réparation',
             sinistre: false,
-            operation: false
+            operation: false,
+            isFormSubmitted: false
         }
 
         this.formRef = null;
@@ -119,7 +120,7 @@ import ModifierNatureIntervention from '../forms/ModifierNatureIntervention';
       onEditSubmit = ( nom, cat, sin, op) => {
        //  e.preventDefault()
         let modif = this.state.objetModif
-
+        this.setState({isFormSubmitted: true})
 
           axios.post('/api/modifier_nature_intervention/' + modif.id, {
             nom_intervention: nom,
@@ -129,7 +130,12 @@ import ModifierNatureIntervention from '../forms/ModifierNatureIntervention';
           }).then(response => {
             const action = {type: "EDIT_NATURE_INTERVENTION", value: response.data}
             this.props.dispatch(action)
-          }).catch(error => console.log(error))
+            this.setState({isFormSubmitted: false})
+
+          }).catch(error => {
+            this.setState({isFormSubmitted: false})
+            console.log(error)
+          } )
     
            // console.log(sin)
       }
@@ -138,22 +144,28 @@ import ModifierNatureIntervention from '../forms/ModifierNatureIntervention';
           e.preventDefault()
 
           if(this.verificationFormulaire() == null){
+              this.setState({isFormSubmitted: true})
            await axios.post('/api/ajouter_nature_intervention', 
                {
                    nom_intervention: this.nom_intervention_ajout.value,
                    categorie: this.categorie_ajout.value,
-                   sinistre: this.state.sinistre,
-                   operation: this.state.operation
+                   sinistre: this.sinistre.checked,
+                   operation: this.operation.checked
 
             }
             ).then(response => {
                 const action = {type: "ADD_NATURE_INTERVENTION", value: response.data}
                 this.props.dispatch(action)
                // this.toggleVisible()
+               this.setState({isFormSubmitted: false})
+
                 this.resetForm();
 
             })
-             .catch(error => console.log(error));
+             .catch(error => {
+                this.setState({isFormSubmitted: false})
+                console.log(error)
+             } );
         
 
           }else{
@@ -264,24 +276,29 @@ import ModifierNatureIntervention from '../forms/ModifierNatureIntervention';
                                 <div className="position-relative form-group">
                                     <label htmlFor="exampleAddress2" className="">
                                         Sinistre ?
+                                      
+                                        </label>
+
                                         <input type="checkbox"
                                          onChange={this.setField}
-                                         checked={this.state.sinistre}
+                                         ref={sinistre => this.sinistre = sinistre}
+
                                          name="sinistre" />
-                                        </label>
                                 </div>
 
                                 <div className="position-relative form-group">
                                     <label htmlFor="exampleAddress2" className="">
                                         Opérations ?
+                                       
+                                        </label>
+
                                         <input type="checkbox" 
                                          onChange={this.setField}
-                                         checked={this.state.operation}
+                                         ref={operation => this.operation = operation}
                                         name="operation" />
-                                        </label>
                                 </div>
                             
-                                <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
+                                <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
                         </form>
                       
                     </div>

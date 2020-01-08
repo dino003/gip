@@ -105,6 +105,7 @@ import VehiculesEtat from '../pages/editions/etats/vehicules/VehiculesEtat';
 import UtilisationVehiculeEtat from '../pages/editions/etats/utilisations/UtilisationVehiculeEtat';
 import InterventionVehiculeEtat from '../pages/editions/etats/interventions/InterventionVehiculeEtat';
 import ConsommationVehiculeEtat from '../pages/editions/etats/consommations/ConsommationVehiculeEtat';
+import ReservationVehiculeEtat from '../pages/editions/etats/reservations/ReservationVehiculeEtat';
 
 
 
@@ -250,6 +251,7 @@ const NavBack = () => (
   <MasterEdition path="/gestion_du_parc_automobile/edition-utilisations-vehicules" component={UtilisationVehiculeEtat} />
   <MasterEdition path="/gestion_du_parc_automobile/edition-interventions-vehicules" component={InterventionVehiculeEtat} />
   <MasterEdition path="/gestion_du_parc_automobile/edition-consommations-vehicules" component={ConsommationVehiculeEtat} />
+  <MasterEdition path="/gestion_du_parc_automobile/edition-reservations-vehicules" component={ReservationVehiculeEtat} />
 
 {/*  fin de la partie qui concerne les etats  */}
 

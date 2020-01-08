@@ -146,7 +146,7 @@ class ConsommationVehiculeEtat extends Component {
                                         {etatVehiculeConsommation.map((etatCourant, index) => <React.Fragment key={index} >
                                             <thead>
                                                 <tr >
-                                                    <th colSpan="6">{this.props.info_societe ? this.props.info_societe.societe.toUpperCase() : 'AGOSOFTPARC' + 'Véhicules'}</th>
+                                                    <th colSpan="6">{this.props.info_societe ? `${this.props.info_societe.societe.toUpperCase()} Etat Consommations des véhicules` : 'AGOSOFTPARC Etat Consommations des véhicules'}</th>
                                                     <th colSpan="2">DATE: {moment(today).format('DD/MM/YYYY')}</th>
                                                     {/* <th colSpan="2">Référence: PA 00058</th> */}
                                                 </tr>
@@ -192,7 +192,7 @@ class ConsommationVehiculeEtat extends Component {
 
                                                 {etatCourant[etatCourant.length - 1].id == conso.id ?
                                                     <tr style={{ backgroundColor: 'yellow' }}>
-                                                        <th colSpan="6">Nombre d'consommations du véhicule <span style={red}><em >{etatCourant[0].vehicule.immatriculation}</em></span> ( {etatCourant.length.toString().length == 1 ? `0${etatCourant.length}` : etatCourant.length} )</th>
+                                                        <th colSpan="6">Nombre de ligne deconsommations du véhicule <span style={red}><em >{etatCourant[0].vehicule.immatriculation}</em></span> ( {etatCourant.length.toString().length == 1 ? `0${etatCourant.length}` : etatCourant.length} )</th>
                                                         <th colSpan="6"> Coût Total <span style={{ color: 'red' }}><em>{etatCourant[0].vehicule.immatriculation}</em></span> ({formatageSomme(calculSommeColonneConsommation(etatCourant))})</th>
 
                                                     </tr> : null}

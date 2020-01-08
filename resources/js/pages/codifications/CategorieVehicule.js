@@ -48,14 +48,10 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
         return (    <table className="mb-0 table" id="export" >
         <thead>
         <tr>
-            <th>Types</th>
+            <th>Catégorie</th>
             <th>Type</th>
             <th>Coût</th>
-            <th>Encombrement</th>
-            <th>Cartes</th>
-            <th>Garantie</th>
-            <th>Options</th>
-            <th>Etat</th>
+           
 
           
 

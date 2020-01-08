@@ -35,6 +35,7 @@ import NumberFormat from 'react-number-format';
             taxes: 'oui',
             historique_detenteur: 'oui',
             avant_nature: 'oui',
+            isFormSubmitted: false
 
         }
     }
@@ -64,39 +65,44 @@ import NumberFormat from 'react-number-format';
       
       }
 
-      enregistrerPersonnel = (e) => {
+      enregistrercategorieVehicule = (e) => {
         e.preventDefault()
           if(this.verificationFormulaire() == null){
            // console.log(this.state)
+           this.setState({isFormSubmitted: true})
             axios.post('/api/ajouter_categorie_vehicule', {
                 nom_type: this.nom_type.value,
                 type: this.type.value,
                 cout: this.cout.value,
                 montant_forfait: this.montant_forfait.value,
-                encombrement: this.state.encombrement,
-                cartes: this.state.cartes,
-                entretien_planifies: this.state.entretien_planifies,
-                amortissement: this.state.amortissement,
-                garantie: this.state.garantie,
-                nombre_place: this.state.nombre_place,
-                puissance: this.state.puissance,
-                kilometrage: this.state.kilometrage,
-                compteur_horraire: this.state.compteur_horraire,
-                option: this.state.option,
-                etat: this.state.etat,
-                roues: this.state.roues,
-                liens: this.state.liens,
-                taxes: this.state.taxes,
-                historique_detenteur: this.state.historique_detenteur,
-                avant_nature: this.state.avant_nature,
+                // encombrement: this.state.encombrement,
+                // cartes: this.state.cartes,
+                // entretien_planifies: this.state.entretien_planifies,
+                // amortissement: this.state.amortissement,
+                // garantie: this.state.garantie,
+                // nombre_place: this.state.nombre_place,
+                // puissance: this.state.puissance,
+                // kilometrage: this.state.kilometrage,
+                // compteur_horraire: this.state.compteur_horraire,
+                // option: this.state.option,
+                // etat: this.state.etat,
+                // roues: this.state.roues,
+                // liens: this.state.liens,
+                // taxes: this.state.taxes,
+                // historique_detenteur: this.state.historique_detenteur,
+                // avant_nature: this.state.avant_nature,
 
             }).then(response => {
                 
                const action = {type: "ADD_CATEGORIE_VEHICULE", value: response.data}
                this.props.dispatch(action)
+               this.setState({isFormSubmitted: false})
 
-             this.props.history.push('/categories_véhicules')
-            }).catch(error => console.log(error))
+             this.props.history.goBack()
+            }).catch(error => {
+                this.setState({isFormSubmitted: true})
+                console.log(error)
+            } )
 
           }else{
               //console.log(this.verificationFormulaire())
@@ -116,7 +122,7 @@ import NumberFormat from 'react-number-format';
                         <div className="card-body"><h5 className="card-title">Fichier des Catégories de véhicules
 
                         </h5>
-                            <form className="" onChange={this.setField} onSubmit={this.enregistrerPersonnel}>
+                            <form className="" onChange={this.setField} onSubmit={this.enregistrercategorieVehicule}>
 
                                 <div className="form-row">
                                     <div className="col-md-6">
@@ -170,7 +176,7 @@ import NumberFormat from 'react-number-format';
 
                               
 
-                                <div className="form-row">
+                                {/* <div className="form-row">
                                    
                                     <div className="col-md-3">
                                         <div className="position-relative form-group">
@@ -685,10 +691,10 @@ import NumberFormat from 'react-number-format';
                                         </div>
                                     </div>
                                 </div>
-                                <hr />
+                                <hr /> */}
                             
 
-                                <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
+                                <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
                             
                                 <span type="submit" onClick={() => this.props.history.goBack()}
                                  className="mt-2 btn btn-warning pull-right">Retour</span>

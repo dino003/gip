@@ -110,6 +110,8 @@ import inputStyle from '../../../utils/inputStyle'
                 this.setState({isFormSubmitted: true})
                 axios.post('/api/ajouter_vehicule_reservation', {
                     vehicule: vehicule.id,
+                    vehicule_id: vehicule.id,
+
                     personne_reservant: this.personne_reservant.value,
                     date_fin_reservation: this.date_fin_reservation.value,
                     heure_fin_reservation: this.heure_fin_reservation.value,

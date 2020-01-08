@@ -38,6 +38,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
             taxes: 'oui',
             historique_detenteur: 'oui',
             avant_nature: 'oui',
+            isFormSubmitted: false
 
         }
     }
@@ -68,10 +69,9 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
         return  <span style={{textAlign: 'center'}}>
 
         <Loader
-            type="BallTriangle"
-            color="#00BFFF"
-            height={100}
-            width={100}
+          
+            height={500}
+            width={300}
          />
          </span>
     }
@@ -92,36 +92,42 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
       enregistrerPersonnel = (e) => {
         e.preventDefault()
           if(this.verificationFormulaire() == null){
+              this.setState({isFormSubmitted: true})
            // console.log(this.state)
             axios.post('/api/modifier_categorie_vehicule/' + this.state.categorieVehiculeModif.id, {
                 nom_type: this.nom_type.value,
                 type: this.type.value,
                 cout: this.cout.value,
                 montant_forfait: this.montant_forfait.value,
-                encombrement: this.state.encombrement,
-                cartes: this.state.cartes,
-                entretien_planifies: this.state.entretien_planifies,
-                amortissement: this.state.amortissement,
-                garantie: this.state.garantie,
-                nombre_place: this.state.nombre_place,
-                puissance: this.state.puissance,
-                kilometrage: this.state.kilometrage,
-                compteur_horraire: this.state.compteur_horraire,
-                option: this.state.option,
-                etat: this.state.etat,
-                roues: this.state.roues,
-                liens: this.state.liens,
-                taxes: this.state.taxes,
-                historique_detenteur: this.state.historique_detenteur,
-                avant_nature: this.state.avant_nature,
+                // encombrement: this.state.encombrement,
+                // cartes: this.state.cartes,
+                // entretien_planifies: this.state.entretien_planifies,
+                // amortissement: this.state.amortissement,
+                // garantie: this.state.garantie,
+                // nombre_place: this.state.nombre_place,
+                // puissance: this.state.puissance,
+                // kilometrage: this.state.kilometrage,
+                // compteur_horraire: this.state.compteur_horraire,
+                // option: this.state.option,
+                // etat: this.state.etat,
+                // roues: this.state.roues,
+                // liens: this.state.liens,
+                // taxes: this.state.taxes,
+                // historique_detenteur: this.state.historique_detenteur,
+                // avant_nature: this.state.avant_nature,
 
             }).then(response => {
                 
                const action = {type: "EDIT_CATEGORIE_VEHICULE", value: response.data}
                this.props.dispatch(action)
+               this.setState({isFormSubmitted: false})
 
-             this.props.history.push('/categories_véhicules')
-            }).catch(error => console.log(error))
+
+             this.props.history.goBack()
+            }).catch(error => {
+                this.setState({isFormSubmitted: true})
+                 console.log(error)
+            } )
 
           }else{
               //console.log(this.verificationFormulaire())
@@ -204,7 +210,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
                               
 
-                                <div className="form-row">
+                                {/* <div className="form-row">
                                    
                                     <div className="col-md-3">
                                         <div className="position-relative form-group">
@@ -719,10 +725,10 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         </div>
                                     </div>
                                 </div>
-                                <hr />
+                                <hr /> */}
                             
 
-                                <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
+                            <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
                            
                                 <span onClick={() => this.props.history.goBack()}
                                  className="mt-2 btn btn-warning pull-right">Retour</span>

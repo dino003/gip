@@ -137,7 +137,7 @@ class UtilisationVehiculeEtat extends Component {
                                         {etatVehiculeUtilisationParVehicule.map((etatCourant, index) => <React.Fragment key={index} >
                                             <thead>
                                                 <tr >
-                                                    <th colSpan="6">{this.props.info_societe ? this.props.info_societe.societe.toUpperCase() : 'AGOSOFTPARC' + 'Véhicules'}</th>
+                                                    <th colSpan="6">{this.props.info_societe ? `${this.props.info_societe.societe.toUpperCase()} Etat Utilisations des véhicules` : 'AGOSOFTPARC Etat Utilisations des véhicules'}</th>
                                                     <th colSpan="2">DATE: {moment(today).format('DD/MM/YYYY')}</th>
                                                     {/* <th colSpan="2">Référence: PA 00058</th> */}
                                                 </tr>

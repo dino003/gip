@@ -53,7 +53,6 @@ class InterventionVehiculeEtat extends Component {
     }
 
     createP = () => {
-        const etatVehiculeUtilisationParVehicule = this.props.interventions.length ? groupBy(this.props.interventions, 'vehicule_id') : null
         // console.log(etatVehiculeUtilisationParVehicule[0])
         // var doc = new jsPDF('l');
         var doc = new jsPDF('l', 'pt', 'a3');
@@ -139,7 +138,7 @@ class InterventionVehiculeEtat extends Component {
                                         {etatVehiculeUtilisationParVehicule.map((etatCourant, index) => <React.Fragment key={index} >
                                             <thead>
                                                 <tr >
-                                                    <th colSpan="6">{this.props.info_societe ? this.props.info_societe.societe.toUpperCase() : 'AGOSOFTPARC' + 'Véhicules'}</th>
+                                                    <th colSpan="6">{this.props.info_societe ? `${this.props.info_societe.societe.toUpperCase()} Etat Interventions sur les véhicules` : 'AGOSOFTPARC Etat Interventions sur les véhicules'}</th>
                                                     <th colSpan="2">DATE: {moment(today).format('DD/MM/YYYY')}</th>
                                                     {/* <th colSpan="2">Référence: PA 00058</th> */}
                                                 </tr>
