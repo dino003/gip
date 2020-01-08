@@ -94,12 +94,12 @@ class ConsommationVehiculeEtat extends Component {
 
     render() {
 
-        const etats = this.props.consommations.length ? groupBy(this.props.consommations, 'vehicule_id') : []
-        const etatVehiculeConsommation = etats.sort(function (a, b) {
-            // Turn your strings into dates, and then subtract them
-            // to get a value that is either negative, positive, or zero.
-            return new Date(a.date_conso) - new Date(b.date_conso);
-        });
+        const etatVehiculeConsommation = this.props.consommations.length ? groupBy(this.props.consommations, 'vehicule_id') : []
+        // const etatVehiculeConsommation = etats.sort(function (a, b) {
+        //     // Turn your strings into dates, and then subtract them
+        //     // to get a value that is either negative, positive, or zero.
+        //     return new Date(a.date_conso) - new Date(b.date_conso);
+        // });
         const { isFormOpened } = this.state
 
         return (
