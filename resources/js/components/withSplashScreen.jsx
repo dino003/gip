@@ -54,6 +54,14 @@ function withSplashScreen(WrappedComponent) {
             this.props.dispatch(action)
         }));
     } 
+
+    fetchInfoAlerte(){
+        queue.push(() => axios.get('/api/alertes').then((response) => {
+            
+            const action = {type: "GET_PARAM_GENERAUX_ALERTE", value: response.data}
+            this.props.dispatch(action)
+        }));
+    } 
     
     fetchInfoParamGenerauxModules(){
         queue.push(() => axios.get('/api/parametre_modules').then((response) => {
@@ -394,9 +402,9 @@ function withSplashScreen(WrappedComponent) {
         );
     }
 
-    componentWillUnmount() {
-        clearInterval(this.timerID);
-      }
+    // componentWillUnmount() {
+    //     clearInterval(this.timerID);
+    //   }
 
       tick() {
           if(this.state.percentage == 100) return
@@ -405,60 +413,61 @@ function withSplashScreen(WrappedComponent) {
         });
       }
 
-    componentDidMount(){
+    // componentDidMount(){
      
 
-       this.timerID = setInterval(
-        () => this.tick(),
-        1000
-      );
+    //    this.timerID = setInterval(
+    //     () => this.tick(),
+    //     1000
+    //   );
 
-         this.fetchInfoSociete();
-         this.fetchInfoParamGenerauxReservationOrdre();
-         this.fetchInfoParamGenerauxModules();
-         this.fetchInfoParamGenerauxPersonnels();
-         this.fetchInfoParamGenerauxJournal();
-         this.fetchInfoParamGenerauxStock();
-         this.fetchTypeEntites()
-         this.fetchTva();
-         this.fetchStructures()
-         this.fetchAnneesBudgetaires();
-         this.fetchCategories_vehicules();
-         this.fetchMarques()
-         this.fetchEntites();
-         this.fetchPersonnels();
-         this.fetchTiers();
-         this.fetchContratAssurances();
-         this.fetchUtilisateurs();
-         this.fetchModeleVehicules();
-         this.fetchCodeIncidents()
-         this.fetchNatureEnergies();
-         this.fetchNatureInterventions();
-         this.fetchOperationInterventions();
-         this.fetchNatureConsommations();
-         this.fetchReservation();
-         this.fetchNatureAmendes();
-         this.fetchOrdresMissions();
-         this.fetchNatureSinistres();
-         this.fetchNatureDepenseRecettes();
-         this.fetchNatureReservations();
-         this.fetchFamillePiecesdetachees();
-         this.fetchNatureTaxes();
-         this.fetchCoutConsommables();
-         this.fetchUtilisations();
-         this.fetchBudgetEntites();
-         this.fetchInterventions();
-         this.fetchConsommations();
-         this.fetchCommandes();
-         this.fetchArticlesStock();
-         this.fetchEntreesStock();
-         this.fetchSortiesStock();
-         this.fetchDepenseRecettes();
-         this.fetchAmendes();
-         this.fetchBudgetVehicules();
-         this.fetchVehicules();
+    //      this.fetchInfoSociete();
+    //      this.fetchInfoParamGenerauxReservationOrdre();
+    //      this.fetchInfoAlerte();
+    //      this.fetchInfoParamGenerauxModules();
+    //      this.fetchInfoParamGenerauxPersonnels();
+    //      this.fetchInfoParamGenerauxJournal();
+    //      this.fetchInfoParamGenerauxStock();
+    //      this.fetchTypeEntites()
+    //      this.fetchTva();
+    //      this.fetchStructures()
+    //      this.fetchAnneesBudgetaires();
+    //      this.fetchCategories_vehicules();
+    //      this.fetchMarques()
+    //      this.fetchEntites();
+    //      this.fetchPersonnels();
+    //      this.fetchTiers();
+    //      this.fetchContratAssurances();
+    //      this.fetchUtilisateurs();
+    //      this.fetchModeleVehicules();
+    //      this.fetchCodeIncidents()
+    //      this.fetchNatureEnergies();
+    //      this.fetchNatureInterventions();
+    //      this.fetchOperationInterventions();
+    //      this.fetchNatureConsommations();
+    //      this.fetchReservation();
+    //      this.fetchNatureAmendes();
+    //      this.fetchOrdresMissions();
+    //      this.fetchNatureSinistres();
+    //      this.fetchNatureDepenseRecettes();
+    //      this.fetchNatureReservations();
+    //      this.fetchFamillePiecesdetachees();
+    //      this.fetchNatureTaxes();
+    //      this.fetchCoutConsommables();
+    //      this.fetchUtilisations();
+    //      this.fetchBudgetEntites();
+    //      this.fetchInterventions();
+    //      this.fetchConsommations();
+    //      this.fetchCommandes();
+    //      this.fetchArticlesStock();
+    //      this.fetchEntreesStock();
+    //      this.fetchSortiesStock();
+    //      this.fetchDepenseRecettes();
+    //      this.fetchAmendes();
+    //      this.fetchBudgetVehicules();
+    //      this.fetchVehicules();
  
-     }
+    //  }
 
      
 
@@ -505,7 +514,7 @@ function withSplashScreen(WrappedComponent) {
 
     render() {
     
-      if (!store.getState().vehicules.items) return this.LoadingMessage();
+     // if (!store.getState().vehicules.items) return this.LoadingMessage();
 
       // otherwise, show the desired route
       return <WrappedComponent {...this.props} />;

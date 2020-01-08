@@ -8,18 +8,27 @@ class Alerte extends Component {
         
     }
 
-    enregisterParamReservationOrdre = (e) => {
+    enregistrerAlerte = (e) => {
         e.preventDefault();
         let objet = {
-            vehicule_fonction_reservable: this.vehicule_fonction_reservable.checked,
-            admin_seul_modif: this.admin_seul_modif.checked,
-            admin_seul_supp: this.admin_seul_supp.checked,
-            edition_automatique: this.edition_automatique.checked,
-            interdire_chevauchement: this.interdire_chevauchement.checked,
-            nombre_jour_a_ne_pas_depasser: this.nombre_jour_a_ne_pas_depasser.value,
-            jour_par_date: this.jour_par_date.value,
+            entretien_prevu_x_jour_alerte: this.entretien_prevu_x_jour_alerte.checked,
+            date_entretien_vehicule_depasse: this.date_entretien_vehicule_depasse.checked,
+           
+            stock_minimun_article_depasse: this.stock_minimun_article_depasse.checked,
+            stock_null_article: this.stock_null_article.checked,
+           
+            entretien_planifie_prevu_x_kilometre_alerte: this.entretien_planifie_prevu_x_kilometre_alerte.checked,
+            entretien_planifie_prevu_x_jour_alerte: this.entretien_planifie_prevu_x_jour_alerte.checked,
+
+            entretien_planifie_kilometrage_prevu_depasse: this.entretien_planifie_kilometrage_prevu_depasse.checked,
+           
+           
+            entretien_prevu_x_jour: this.entretien_prevu_x_jour.value,
+            entretien_planifie_prevu_x_jour: this.entretien_planifie_prevu_x_jour.value,
+            entretien_planifie_prevu_x_kilometre: this.entretien_planifie_prevu_x_kilometre.value,
+
         }
-        this.props.onSubmitParamReservationOrdreMission( objet )
+        this.props.onSubmitAlerte( objet )
      }
 
      setField = (event) => {
@@ -39,12 +48,37 @@ class Alerte extends Component {
         return (
             <div className="main-card mb-3 card">
             <div className="card-body">
-            {item != undefined && <form className="" onSubmit={this.enregisterParamReservationOrdre}>
+            {item != undefined && <form className="" onSubmit={this.enregistrerAlerte}>
+                                <div className="form-row">
+                                <div className="col-md-12">
+                                        <div className="position-relative form-group">
+                                            <label >Le paramètrage ci-dessous détermine les évennements pour lesquels vous voulez déclencher une alerte. </label>
+                                   </div>
+                            </div>
+                                </div>
                                 <div className="form-row">
                                    
-                                    <div className="col-md-7">
+                                    <div className="col-md-5">
                                         <div className="position-relative form-group">
-                                            <label >Un véhicule de fonction peut-il être pris en compte lors d'une reservation ?</label>
+                                            <label >Un entretien véhicule est prévu dans X jours </label>
+                                           
+                                        </div>
+                                    </div>
+
+                                    <div className="col-md-2">
+                                    <div className="position-relative form-group">
+
+                                      <input name="entretien_prevu_x_jour" type="number"
+                                       onChange={this.setField}
+                                       className="form-control"
+                                       defaultValue={item.entretien_prevu_x_jour}
+                                       ref={entretien_prevu_x_jour => this.entretien_prevu_x_jour = entretien_prevu_x_jour} />
+                                    </div>
+                               </div>
+
+                               <div className="col-md-2">
+                                        <div className="position-relative form-group">
+                                            <label >Alerte Active </label>
                                            
                                         </div>
                                     </div>
@@ -53,12 +87,11 @@ class Alerte extends Component {
                                     <div className="col-md-2">
                                       
                       
-
-                                           <input name="vehicule_fonction_reservable" type="checkbox"
+                                           <input name="entretien_prevu_x_jour_alerte" type="checkbox"
                                             onChange={this.setField}
-                                            defaultChecked={item.vehicule_fonction_reservable}
+                                            defaultChecked={item.entretien_prevu_x_jour_alerte}
 
-                                            ref={vehicule_fonction_reservable => this.vehicule_fonction_reservable = vehicule_fonction_reservable} />
+                                            ref={entretien_prevu_x_jour_alerte => this.entretien_prevu_x_jour_alerte = entretien_prevu_x_jour_alerte} />
                                     </div>
 
                                   
@@ -70,74 +103,91 @@ class Alerte extends Component {
                                    
                                    <div className="col-md-7">
                                        <div className="position-relative form-group">
-                                           <label >Faut-il que seul l'administrateur puisse modifier une réservation enregistrée ?</label>
+                                           <label >La date d'un entretien véhicule est dépassée ==> Alerte Active </label>
                                           
                                        </div>
                                    </div>
 
 
-                                   <div className="col-md-2">
+                                   <div className="col-md-1">
                                      
 
-                                          <input name="admin_seul_modif" type="checkbox"
+                                          <input name="date_entretien_vehicule_depasse" type="checkbox"
                                             onChange={this.setField}
-                                            defaultChecked={item.admin_seul_modif}
+                                            defaultChecked={item.date_entretien_vehicule_depasse}
 
-                                            ref={admin_seul_modif => this.admin_seul_modif = admin_seul_modif} />
+                                            ref={date_entretien_vehicule_depasse => this.date_entretien_vehicule_depasse = date_entretien_vehicule_depasse} />
                                    </div>
                                  
                                </div>
 
                                <div className="form-row">
                                    
-                                   <div className="col-md-7">
+                                   <div className="col-md-9">
                                        <div className="position-relative form-group">
-                                           <label >Faut-il que seul l'administrateur puisse supprimer une réservation enregistrée ?</label>
+                                           <label >Stock de matériels et fournitures Alerte si le stock minimum dépassé pour un article ==> Alerte Active </label>
                                           
                                        </div>
                                    </div>
 
 
-                                   <div className="col-md-2">
+                                   <div className="col-md-1">
                                      
-                                   
 
-                                          <input name="admin_seul_supp" type="checkbox"
+                                          <input name="stock_minimun_article_depasse" type="checkbox"
                                             onChange={this.setField}
-                                            defaultChecked={item.admin_seul_supp}
+                                            defaultChecked={item.stock_minimun_article_depasse}
 
-                                            ref={admin_seul_supp => this.admin_seul_supp = admin_seul_supp} />
+                                            ref={stock_minimun_article_depasse => this.stock_minimun_article_depasse = stock_minimun_article_depasse} />
                                    </div>
                                  
                                </div>
 
                                <div className="form-row">
                                    
-                                   <div className="col-md-7">
+                                   <div className="col-md-9">
                                        <div className="position-relative form-group">
-                                           <label >Suite à la création d'une réservation, faut-il systématiquement éditer la fiche réservation ?</label>
+                                           <label >Stock de matériels et fournitures Alerte si le stock est nul pour un article ==> Alerte Active </label>
                                           
                                        </div>
                                    </div>
 
 
-                                   <div className="col-md-2">
+                                   <div className="col-md-1">
                                      
-                                          <input name="edition_automatique" type="checkbox"
+
+                                          <input name="stock_null_article" type="checkbox"
                                             onChange={this.setField}
-                                            defaultChecked={item.edition_automatique}
+                                            defaultChecked={item.stock_null_article}
 
-                                            ref={edition_automatique => this.edition_automatique = edition_automatique} />
+                                            ref={stock_null_article => this.stock_null_article = stock_null_article} />
                                    </div>
                                  
                                </div>
 
                                <div className="form-row">
                                    
-                                   <div className="col-md-7">
+                                   <div className="col-md-5">
                                        <div className="position-relative form-group">
-                                           <label >Lors de la création d'une réservation, si celle-ci chevauche une autre, faut-il systématiquement interdire ce chevauchement ou demander
-                                               l'autorisation à l'utilisateur ?</label>
+                                           <label >Entretien planifié - prévu dans X kilomètres </label>
+                                          
+                                       </div>
+                                   </div>
+
+                                   <div className="col-md-2">
+                                   <div className="position-relative form-group">
+
+                                     <input name="entretien_planifie_prevu_x_kilometre" type="number"
+                                      onChange={this.setField}
+                                      className="form-control"
+                                      defaultValue={item.entretien_planifie_prevu_x_kilometre}
+                                      ref={entretien_planifie_prevu_x_kilometre => this.entretien_planifie_prevu_x_kilometre = entretien_planifie_prevu_x_kilometre} />
+                                   </div>
+                              </div>
+
+                              <div className="col-md-2">
+                                       <div className="position-relative form-group">
+                                           <label >Alerte Active </label>
                                           
                                        </div>
                                    </div>
@@ -145,67 +195,109 @@ class Alerte extends Component {
 
                                    <div className="col-md-2">
                                      
-                           
+                     
+                                          <input name="entretien_planifie_prevu_x_kilometre_alerte" type="checkbox"
+                                           onChange={this.setField}
+                                           defaultChecked={item.entretien_planifie_prevu_x_kilometre_alerte}
 
-                                          <input name="interdire_chevauchement" type="checkbox"
+                                           ref={entretien_planifie_prevu_x_kilometre_alerte => this.entretien_planifie_prevu_x_kilometre_alerte = entretien_planifie_prevu_x_kilometre_alerte} />
+                                   </div>
+
+                                 
+
+                                 
+                               </div>
+
+                               <div className="form-row">
+                                   
+                                   <div className="col-md-7">
+                                       <div className="position-relative form-group">
+                                           <label >Entretien planifié - le kilometrage prévu est dépassé ==> Alerte Active </label>
+                                          
+                                       </div>
+                                   </div>
+
+
+                                   <div className="col-md-1">
+                                     
+
+                                          <input name="entretien_planifie_kilometrage_prevu_depasse" type="checkbox"
                                             onChange={this.setField}
-                                            defaultChecked={item.interdire_chevauchement}
+                                            defaultChecked={item.entretien_planifie_kilometrage_prevu_depasse}
 
-                                            ref={interdire_chevauchement => this.interdire_chevauchement = interdire_chevauchement} />
+                                            ref={entretien_planifie_kilometrage_prevu_depasse => this.entretien_planifie_kilometrage_prevu_depasse = entretien_planifie_kilometrage_prevu_depasse} />
                                    </div>
                                  
                                </div>
-
-                               <div className="form-row">
-                                   
-                                   <div className="col-md-7">
-                                       <div className="position-relative form-group">
-                                           <label >Pour les réservations et ordres de missions, un contrôle permet le blocage d'une demande supérieure à la date de début 
-                                               + le nombre de jours ci-contre ! si zero pas de contrôle </label>
-                                          
-                                       </div>
-                                   </div>
-
-
-                                   <div className="col-md-2">
-                                     
-                                   <input name="nombre_jour_a_ne_pas_depasser"  type="number"
-
-                                            ref={nombre_jour_a_ne_pas_depasser => this.nombre_jour_a_ne_pas_depasser = nombre_jour_a_ne_pas_depasser}
-                                            defaultValue={item.nombre_jour_a_ne_pas_depasser}
-
-                                             className="form-control" />
-                                   </div>
-                                 
-                               </div>
-
-                               <div className="form-row">
-                                   
-                                   <div className="col-md-7">
-                                       <div className="position-relative form-group">
-                                           <label >Pour les réservations, un contrôle permet le blocage d'une réservation dont le nombre de jours 
-                                               est supérieur au nombre de jours indiqué ci-contre ! si zero pas de contrôle </label>
-                                          
-                                       </div>
-                                   </div>
-
-
-                                   <div className="col-md-2">
-                                     
-                                   <input name="jour_par_date"  type="number"
-                                            ref={jour_par_date => this.jour_par_date = jour_par_date}
-                                            defaultValue={item.jour_par_date}
-
-                                             className="form-control" />
-                                   </div>
-                                 
-                               </div>
-
-                                 
 
                                
-                             
-                               {!this.props.isFormReservationOrdreSubmitted ? <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button> : <button disabled  className="mt-2 btn btn-primary">Merci de patienter <i className="fa fa-spinner fa-spin fa-1x fa-fw"></i></button>}
+                               <div className="form-row">
+                                   
+                                   <div className="col-md-5">
+                                       <div className="position-relative form-group">
+                                           <label >Entretien planifié - prévu dans X jours </label>
+                                          
+                                       </div>
+                                   </div>
+
+                                   <div className="col-md-2">
+                                   <div className="position-relative form-group">
+
+                                     <input name="entretien_planifie_prevu_x_jour" type="number"
+                                      onChange={this.setField}
+                                      className="form-control"
+                                      defaultValue={item.entretien_planifie_prevu_x_jour}
+                                      ref={entretien_planifie_prevu_x_jour => this.entretien_planifie_prevu_x_jour = entretien_planifie_prevu_x_jour} />
+                                   </div>
+                              </div>
+
+                              <div className="col-md-2">
+                                       <div className="position-relative form-group">
+                                           <label >Alerte Active </label>
+                                          
+                                       </div>
+                                   </div>
+
+
+                                   <div className="col-md-2">
+                                     
+                     
+                                          <input name="entretien_planifie_prevu_x_jour_alerte" type="checkbox"
+                                           onChange={this.setField}
+                                           defaultChecked={item.entretien_planifie_prevu_x_jour_alerte}
+
+                                           ref={entretien_planifie_prevu_x_jour_alerte => this.entretien_planifie_prevu_x_jour_alerte = entretien_planifie_prevu_x_jour_alerte} />
+                                   </div>
+
+                                 
+
+                                 
+                               </div>
+
+                               <div className="form-row">
+                                   
+                                   <div className="col-md-7">
+                                       <div className="position-relative form-group">
+                                           <label >Entretien planifié - la date prévue est dépassée ==> Alerte Active </label>
+                                          
+                                       </div>
+                                   </div>
+
+
+                                   <div className="col-md-1">
+                                     
+
+                                          <input name="entretien_planifie_date_prevu_depasse" type="checkbox"
+                                            onChange={this.setField}
+                                            defaultChecked={item.entretien_planifie_date_prevu_depasse}
+
+                                            ref={entretien_planifie_date_prevu_depasse => this.entretien_planifie_date_prevu_depasse = entretien_planifie_date_prevu_depasse} />
+                                   </div>
+                                 
+                               </div>
+
+
+                               {!this.props.isFormAlerteSubmitted ? <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button> : <button disabled  className="mt-2 btn btn-primary">Merci de patienter <i className="fa fa-spinner fa-spin fa-1x fa-fw"></i></button>}
                            
                                 
                             </form>}

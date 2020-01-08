@@ -45,6 +45,7 @@ import ModulesReducer from './parametres_generaux/ModulesReducer'
 import ParamStockReducer from './parametres_generaux/ParamStockReducer'
 import ParamPersonnelReducer from './parametres_generaux/ParamPersonnelReducer'
 import ParamJournalReducer from './parametres_generaux/ParamJournalReducer'
+import AlertReducer from './parametres_generaux/AlerteReducer'
 
 const allReducers = combineReducers({
     types_entites: TypeEntiteReducer,
@@ -92,7 +93,8 @@ const allReducers = combineReducers({
     param_generaux_modules: ModulesReducer,
     param_stock: ParamStockReducer,
     param_personnels: ParamPersonnelReducer,
-    param_journal: ParamJournalReducer
+    param_journal: ParamJournalReducer,
+    param_alerte: AlertReducer
     
 })
 

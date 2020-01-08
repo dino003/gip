@@ -37,6 +37,14 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
             this.props.dispatch(action)
         }));
     } 
+
+    fetchInfoAlerte(){
+        queue.push(() => axios.get('/api/alertes').then((response) => {
+            
+            const action = {type: "GET_PARAM_GENERAUX_ALERTE", value: response.data}
+            this.props.dispatch(action)
+        }));
+    } 
     
     fetchInfoParamGenerauxModules(){
         queue.push(() => axios.get('/api/parametre_modules').then((response) => {
@@ -391,6 +399,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
       //  this.props.dispatch(action2)
         this.fetchInfoSociete();
         this.fetchInfoParamGenerauxReservationOrdre();
+        this.fetchInfoAlerte();
         this.fetchInfoParamGenerauxModules();
         this.fetchInfoParamGenerauxPersonnels();
         this.fetchInfoParamGenerauxJournal();

@@ -77,8 +77,6 @@ import ModifierReservation from '../pages/forms/Vehicules/ModifierReservation';
 import EditionListTable from '../pages/editions/EditionListTable';
 import MasterEdition from '../components/layouts/MasterEdition';
 import VehiculeEtatForm from '../pages/editions/forms/VehiculeEtatForm';
-import VehiculesParEntiteVehicule from '../pages/editions/etats/vehicules/VehiculesParEntiteVehicule';
-import UtilisationParUtilisateurVehicules from '../pages/editions/etats/utilisations/UtilisationParUtilisateurVehicules';
 import Missions from '../pages/gestion/Missions';
 import AjouterMission from '../pages/forms/AjouterMission';
 import ModifierMission from '../pages/forms/ModifierMission';
@@ -103,6 +101,8 @@ import Vehicules from '../pages/Vehicules';
 import ReservationsGeneral from '../pages/gestion/ReservationsGeneral';
 import AjouterReservationGeneral from '../pages/forms/Vehicules/AjouterReservationGeneral';
 import ModifierReservationGeneral from '../pages/forms/Vehicules/ModifierReservationGeneral';
+import VehiculesEtat from '../pages/editions/etats/vehicules/VehiculesEtat';
+import UtilisationVehiculeEtat from '../pages/editions/etats/utilisations/UtilisationVehiculeEtat';
 
 
 
@@ -244,8 +244,8 @@ const NavBack = () => (
   <MasterEdition path="/gestion_du_parc_automobile/conception-etat-vehicule" component={VehiculeEtatForm} />
  
  
-  <MasterEdition path="/gestion_du_parc_automobile/edition-vehicules-par-entites-vehicules" component={VehiculesParEntiteVehicule} />
-  <MasterEdition path="/gestion_du_parc_automobile/edition-utilisations-par-utilisateur-vehicules" component={UtilisationParUtilisateurVehicules} />
+  <MasterEdition path="/gestion_du_parc_automobile/edition-vehicules" component={VehiculesEtat} />
+  <MasterEdition path="/gestion_du_parc_automobile/edition-utilisations-vehicules" component={UtilisationVehiculeEtat} />
 
 {/*  fin de la partie qui concerne les etats  */}
 

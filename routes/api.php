@@ -539,6 +539,17 @@ Route::post('ajouter_ou_modifier_parametre_personnels', 'ParamPersonnelControlle
 
 //*********** fin parametre generaux personnels ********************************************************* 
 
+//****************** parametre generaux personnels  ********************************************************/
+Route::get('alertes', 'AlerteController@index');
+
+// ajouter 
+Route::post('ajouter_ou_modifier_alertes', 'AlerteController@storeOuUpdate');
+// modifier
+
+
+//*********** fin parametre generaux personnels ********************************************************* 
+
+
 Route::get('tt', 'UserController@index');
 
 //var dt = new Date( "12-18-1995" );

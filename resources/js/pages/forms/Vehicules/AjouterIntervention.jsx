@@ -80,9 +80,12 @@ import inputStyle from '../../../utils/inputStyle'
         e.preventDefault()
 
           if(this.verificationFormulaire() == null){
+            const vehiculeSelect = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
+
               this.setState({isFormSubmitted : true})
             axios.post('/api/ajouter_vehicule_intervention', {
-                vehicule: this.props.vehiculeSeleted.id,
+                vehicule: vehiculeSelect.id,
+                vehicule_id: vehiculeSelect.id, 
                 nature_intervention: this.nature_intervention.value,
                 categorie: this.categorie.value,
                 libelle_complementaire: this.libelle_complementaire.value ,

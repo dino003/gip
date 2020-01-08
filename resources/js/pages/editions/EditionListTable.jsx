@@ -167,10 +167,10 @@ class EditionListTable extends Component {
                             <table className="mb-0 table table-bordered" >
                                 <thead>
                                     <tr>
-                                        <th>Nature</th>
+                                        {/* <th>Nature</th> */}
                                         <th>Libéllé Etat</th>
                                         <th>Référence</th>
-                                        <th>Sélection ?</th>
+                                        {/* <th>Sélection ?</th> */}
                                       
 
                                     </tr>
@@ -181,47 +181,16 @@ class EditionListTable extends Component {
                                         <th colSpan="12" style={{ backgroundColor: 'gray' }} >  Les Vehicules </th>
 
                                     </tr>
-                                    <tr>
+                                 
 
-                                        <td >Véhicules</td>
-                                        <td >Liste du parc de véhicule</td>
+                                    <tr onDoubleClick={() => this.props.history.push('/gestion_du_parc_automobile/edition-vehicules')}>
+                                        {/* <td >Véhicules</td> */}
+                                        <td >Liste des véhicules du parc</td>
                                         <td >PA_000</td>
-                                        <td > <span><i className="fa fa-eye"></i></span> </td>
-                                      
-
-                                    </tr>
-
-                                    <tr onDoubleClick={() => this.props.history.push('/gestion_du_parc_automobile/edition-vehicules-par-entites-vehicules')}>
-                                        <td >Véhicules</td>
-                                        <td >Liste des véhicules par Entité et Véhicule</td>
-                                        <td >PA_000</td>
-                                        <td > <span><i className="fa fa-eye"></i></span> </td>
+                                        {/* <td > <span><i className="fa fa-eye"></i></span> </td> */}
 
                                     </tr>
                                     
-                                    <tr >
-                                        <td >Véhicules</td>
-                                        <td >Liste des véhicules par Tiers, Entité, Véhicule</td>
-                                        <td >PA_000</td>
-                                        <td > <span><i className="fa fa-eye"></i></span> </td>
-
-                                    </tr>
-
-                                    <tr>
-                                        <td >Véhicules</td>
-                                        <td >Liste des véhicules par Tiers, Véhicule</td>
-                                        <td >PA_000</td>
-                                        <td > <span><i className="fa fa-eye"></i></span> </td>
-
-                                    </tr>
-
-                                    <tr>
-                                        <td >Véhicules</td>
-                                        <td >Liste des véhicules par Tiers Assureur, Entité, Véhicule</td>
-                                        <td >PA_000</td>
-                                        <td >Oui</td>
-
-                                    </tr>
 
                                 </tbody>
 
@@ -230,52 +199,33 @@ class EditionListTable extends Component {
                                         <th colSpan="12" style={{ backgroundColor: 'gray' }} >  LES UTILISATIONS DES VEHICULES ( UTILISATION DU COMPTEUR KILOMETRIQUE) </th>
 
                                     </tr>
+                                
+                                    
+                                    <tr onDoubleClick={() => this.props.history.push('/gestion_du_parc_automobile/edition-utilisations-vehicules')}>
+                                        <td >Utilisations des véhicules </td>
+                                        <td >PA_000</td>
+
+                                    </tr>
+
+                                </tbody>
+
+                                <tbody>
                                     <tr>
-
-                                        <td >Utilisations (Kms)</td>
-                                        <td > Utilisations des véhicules par Entités</td>
-                                        <td >PA_000</td>
-                                        <td >Oui</td>
-                                      
+                                        <th colSpan="12" style={{ backgroundColor: 'gray' }} >  LES INTERVENTIONS SUR LES VEHICULES  </th>
 
                                     </tr>
-
-                                    <tr >
-                                        <td >Utilisations (Kms)</td>
-                                        <td >Utilisations des véhicules</td>
-                                        <td >PA_000</td>
-                                        <td >Oui</td>
-
-                                    </tr>
+                                
                                     
                                     <tr onDoubleClick={() => this.props.history.push('/gestion_du_parc_automobile/edition-utilisations-par-utilisateur-vehicules')}>
-                                        <td >Utilisations (Kms)</td>
-                                        <td >Utilisations des véhicules par Utilisateurs</td>
+                                        <td >Interventions des véhicules </td>
                                         <td >PA_000</td>
-                                        <td >Oui</td>
-
-                                    </tr>
-
-                                    <tr>
-                                        <td >Utilisations (Kms)</td>
-                                        <td >Liste des Utilisation (Kms) par Tiers, Véhicule</td>
-                                        <td >PA_000</td>
-                                        <td >Oui</td>
-
-                                    </tr>
-
-                                    <tr>
-                                        <td >Utilisations (Kms)</td>
-                                        <td >Liste des véhicules par Tiers Assureur, Entité, Véhicule</td>
-                                        <td >PA_000</td>
-                                        <td >Oui</td>
 
                                     </tr>
 
                                 </tbody>
                             </table>
 
-                            <table className="mb-0 table table-bordered" id="complex-table">
+                            {/* <table className="mb-0 table table-bordered" id="complex-table">
                                 <caption>Nom de l'etat</caption>
                                 <thead>
                                 <tr style={{backgroundColor: 'gray'}}> 
@@ -283,7 +233,7 @@ class EditionListTable extends Component {
                                     <th colSpan="6">PRAREP PROPACOM BOUAKE </th> 
                                  </tr>
 
-                                 {/* <tr>
+                                 <tr>
                                       <td colSpan="2"> 
                                  <strong>Pay to:</strong><br />
                                   Acme Billing Co.<br /> 123 Main St.<br />
@@ -295,7 +245,7 @@ class EditionListTable extends Component {
                                      Southeast Northwestershire, MA 54321 
                                      </td> 
                                      
-                                </tr> */}
+                                </tr>
 
 
                                 </thead>
@@ -348,7 +298,7 @@ class EditionListTable extends Component {
                                     </tfoot>
 
 
-                            </table>
+                            </table> */}
 
                             {/* <table className="mb-0 table table-bordered" id="complex-table">
                                 <caption>Nom de l'etat</caption>
