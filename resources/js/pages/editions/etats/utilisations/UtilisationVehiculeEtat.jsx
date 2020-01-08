@@ -10,6 +10,10 @@ import VehiculeEtatForm from '../../forms/VehiculeEtatForm';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
+const red = {
+    color: 'red'
+}
+
 
 
 class UtilisationVehiculeEtat extends Component {
@@ -49,8 +53,8 @@ class UtilisationVehiculeEtat extends Component {
     createP = () => {
         const etatVehiculeUtilisationParVehicule = this.props.utilisations.length ? groupBy(this.props.utilisations, 'vehicule_id') : null
         // console.log(etatVehiculeUtilisationParVehicule[0])
-       // var doc = new jsPDF('l');
-       var doc= new jsPDF('l', 'pt', 'a3');
+        // var doc = new jsPDF('l');
+        var doc = new jsPDF('l', 'pt', 'a3');
 
         doc.autoTable({
             html: '#export',
@@ -126,108 +130,85 @@ class UtilisationVehiculeEtat extends Component {
                                 </h5>
 
 
-
                                 {etatVehiculeUtilisationParVehicule.length ? <React.Fragment>
-                                    {isFormOpened ?
 
-                                        <VehiculeEtatForm /> :
+                                {isFormOpened ? VehiculeEtatForm :
+                                    <table className="mb-0 table table-bordered " id="export">
+                                        {etatVehiculeUtilisationParVehicule.map((etatCourant, index) => <React.Fragment key={index} >
+                                            <thead>
+                                                <tr >
+                                                    <th colSpan="6">{this.props.info_societe ? this.props.info_societe.societe.toUpperCase() : 'AGOSOFTPARC' + 'Véhicules'}</th>
+                                                    <th colSpan="2">DATE: {moment(today).format('DD/MM/YYYY')}</th>
+                                                    {/* <th colSpan="2">Référence: PA 00058</th> */}
+                                                </tr>
 
-
-                                        <div className="">
-
-
-                                            <table className="mb-0 table table-bordered " id="export">
-                                                {etatVehiculeUtilisationParVehicule.map((etatCourant, index) =>
-                                                    <React.Fragment key={index} >
-
-                                                        <thead>
-                                                            <tr >
-                                                            <th colSpan="6">{this.props.info_societe ? this.props.info_societe.societe.toUpperCase() : 'AGOSOFTPARC' + 'Véhicules'}</th>
-                                                                <th colSpan="2">DATE: {moment(today).format('DD/MM/YYYY')}</th>
-                                                                {/* <th colSpan="2">Référence: PA 00058</th> */}
-                                                            </tr>
-
-                                                            <tr style={{ backgroundColor: 'gray' }}>
-                                                                <th colSpan="12">Véhicule: {etatCourant[0].vehicule ? etatCourant[0].vehicule.immatriculation : null} </th>
-                                                            </tr>
+                                                <tr style={{ backgroundColor: 'gray' }}>
+                                                    <th colSpan="12">Véhicule: {etatCourant[0].vehicule ? etatCourant[0].vehicule.immatriculation : null} </th>
+                                                </tr>
 
 
-                                                        </thead>
+                                            </thead>
 
 
 
-                                                        <tbody>
-                                                            <tr>
-                                                                <th >Date Début</th>
-                                                                <th>Heure</th>
-                                                                <th>Date Fin</th>
-                                                                <th>Heure</th>
-                                                                <th>Kms cmptr</th>
-                                                                <th>Kms parcourus </th>
-                                                                <th>But de l'utilisation</th>
-                                                                <th>Départ</th>
-                                                                <th>Destination</th>
+                                            <tbody>
+                                                <tr>
+                                                    <th >Date Début</th>
+                                                    <th>Heure</th>
+                                                    <th>Date Fin</th>
+                                                    <th>Heure</th>
+                                                    <th>Kms cmptr</th>
+                                                    <th>Kms parcourus </th>
+                                                    <th>But de l'utilisation</th>
+                                                    <th>Départ</th>
+                                                    <th>Destination</th>
 
 
-                                                            </tr>
-                                                        </tbody>
+                                                </tr>
+                                            </tbody>
 
-                                                        {etatCourant.map((utilisation, index) => <React.Fragment key={index}>
-
-
-                                                            <tbody>
-
-                                                                <tr>
-                                                                    <td style={{ width: '100px' }}>{moment(utilisation.date_debut_utilisation).format('DD/MM/YYYY')}</td>
-                                                                    <td style={{ width: '20px' }}>{utilisation.heure_debut.slice(0, 5)}</td>
-                                                                    <td style={{ width: '100px' }}>{moment(utilisation.date_fin_utilisation).format('DD/MM/YYYY')}</td>
-                                                                    <td style={{ width: '20px' }}>{utilisation.heure_de_fin.slice(0, 5)}</td>
-                                                                    <td style={{ width: '60px' }}>{utilisation.kilometrage_compteur_debut ? formatageNombre(utilisation.kilometrage_compteur_debut) : null}</td>
-                                                                    <td style={{ width: '80px' }}>{utilisation.kilometres_parcourus ? formatageNombre(utilisation.kilometres_parcourus) : null}</td>
-                                                                    <td >{utilisation.nature_utilisation ? utilisation.nature_utilisation.libelle : null}</td>
-                                                                    <td>{utilisation.lieu_depart}</td>
-                                                                    <td>{utilisation.destination}</td>
+                                            {etatCourant.map((utilisation, index) => <tbody key={index}>
+                                                <tr>
+                                                    <td >{moment(utilisation.date_debut_utilisation).format('DD/MM/YYYY')}</td>
+                                                    <td>{utilisation.heure_debut.slice(0, 5)}</td>
+                                                    <td>{moment(utilisation.date_fin_utilisation).format('DD/MM/YYYY')}</td>
+                                                    <td>{utilisation.heure_de_fin.slice(0, 5)}</td>
+                                                    <td>{utilisation.kilometrage_compteur_debut ? formatageNombre(utilisation.kilometrage_compteur_debut) : null}</td>
+                                                    <td>{utilisation.kilometres_parcourus ? formatageNombre(utilisation.kilometres_parcourus) : null}</td>
+                                                    <td >{utilisation.nature_utilisation ? utilisation.nature_utilisation.libelle : null}</td>
+                                                    <td>{utilisation.lieu_depart}</td>
+                                                    <td>{utilisation.destination}</td>
 
 
-                                                                </tr>
-                                                                {etatCourant[etatCourant.length - 1].id == utilisation.id ?
-                                                                    <tr style={{ backgroundColor: 'yellow' }}>
-                                                                        <th colSpan="6">Nombre d'utilisations du véhicule <span style={{ color: 'red' }}><em>{etatCourant[0].vehicule.immatriculation}</em></span> ( {etatCourant.length.toString().length == 1 ? `0${etatCourant.length}` : etatCourant.length} )</th>
-                                                                        <th colSpan="6"> Kms parcourus Véhicule <span style={{ color: 'red' }}><em>{etatCourant[0].vehicule.immatriculation}</em></span> ({formatageNombre(calculSommeColonne(etatCourant))})</th>
-                                                                    </tr>
-                                                                    : null}
+                                                </tr>
 
-                                                            </tbody>
+                                                {etatCourant[etatCourant.length - 1].id == utilisation.id ?
+                                                    <tr style={{ backgroundColor: 'yellow' }}>
+                                                        <th colSpan="6">Nombre d'utilisations du véhicule <span style={red}><em >{etatCourant[0].vehicule.immatriculation}</em></span> ( {etatCourant.length.toString().length == 1 ? `0${etatCourant.length}` : etatCourant.length} )</th>
+                                                        <th colSpan="6"> Kms parcourus Véhicule <span style={{ color: 'red' }}><em>{etatCourant[0].vehicule.immatriculation}</em></span> ({formatageNombre(calculSommeColonne(etatCourant))})</th>
 
+                                                    </tr> : null}
 
-                                                        </React.Fragment>)}
+                                            </tbody>)}
 
+                                        </React.Fragment>)}
+                                    </table>}
 
-                                                    </React.Fragment>
-
-                                                )}
-
-                                            </table>
-
-
-
-
-
-                                        </div>}
-                                </React.Fragment> : <p style={{textAlign: 'center'}}><span>
-                                    Aucune donnée trouvée
-                                    </span> </p> }
-
-
-
+                                    </React.Fragment> : <p style={{ textAlign: 'center' }}><span>
+                                            Aucune donnée trouvée
+                                    </span> </p>}
+                            
+                            
+                            
+                            
                             </div>
-                        </div>
                     </div>
                 </div>
-
-
-
             </div>
+
+
+
+            </div >
         )
     }
 }
