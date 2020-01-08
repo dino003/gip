@@ -216,8 +216,23 @@ class EditionListTable extends Component {
                                     </tr>
                                 
                                     
-                                    <tr onDoubleClick={() => this.props.history.push('/gestion_du_parc_automobile/edition-utilisations-par-utilisateur-vehicules')}>
-                                        <td >Interventions des véhicules </td>
+                                    <tr onDoubleClick={() => this.props.history.push('/gestion_du_parc_automobile/edition-interventions-vehicules')}>
+                                        <td >Interventions sur les véhicules </td>
+                                        <td >PA_000</td>
+
+                                    </tr>
+
+                                </tbody>
+
+                                <tbody>
+                                    <tr>
+                                        <th colSpan="12" style={{ backgroundColor: 'gray' }} >  LES CONSOMMATIONS DES VEHICULES  </th>
+
+                                    </tr>
+                                
+                                    
+                                    <tr onDoubleClick={() => this.props.history.push('/gestion_du_parc_automobile/edition-consommations-vehicules')}>
+                                        <td >Consommations des véhicules </td>
                                         <td >PA_000</td>
 
                                     </tr>

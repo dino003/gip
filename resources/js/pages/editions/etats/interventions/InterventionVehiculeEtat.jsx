@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import today from '../../../../utils/today';
 import moment from 'moment';
-import { groupBy, calculSommeColonne, formatageNombre } from '../../../../utils/Repository'
+import { groupBy, calculSommeColonne, formatageNombre, formatageSomme, calculSommeColonneSommeIntervention } from '../../../../utils/Repository'
 import VehiculeEtatForm from '../../forms/VehiculeEtatForm';
 
 import jsPDF from 'jspdf';
@@ -13,6 +13,8 @@ import 'jspdf-autotable';
 const red = {
     color: 'red'
 }
+
+
 
 
 
@@ -166,25 +168,22 @@ class InterventionVehiculeEtat extends Component {
                                                 </tr>
                                             </tbody>
 
-                                            {etatCourant.map((utilisation, index) => <tbody key={index}>
+                                            {etatCourant.map((intervention, index) => <tbody key={index}>
                                                 <tr>
-                                                    <td >{moment(utilisation.date_debut_utilisation).format('DD/MM/YYYY')}</td>
-                                                    <td>{utilisation.heure_debut.slice(0, 5)}</td>
-                                                    <td>{moment(utilisation.date_fin_utilisation).format('DD/MM/YYYY')}</td>
-                                                    <td>{utilisation.heure_de_fin.slice(0, 5)}</td>
-                                                    <td>{utilisation.kilometrage_compteur_debut ? formatageNombre(utilisation.kilometrage_compteur_debut) : null}</td>
-                                                    <td>{utilisation.kilometres_parcourus ? formatageNombre(utilisation.kilometres_parcourus) : null}</td>
-                                                    <td >{utilisation.nature_utilisation ? utilisation.nature_utilisation.libelle : null}</td>
-                                                    <td>{utilisation.lieu_depart}</td>
-                                                    <td>{utilisation.destination}</td>
-
-
+                                                <td >{intervention.vehicule ? intervention.vehicule.type_vehicule_statut : null}</td>
+                                                <td >{intervention.marque ? intervention.marque.nom_marque : null}</td>
+                                                    <td>{ intervention.date_debut ? moment(intervention.date_debut).format('DD/MM/YYYY') : null}</td>
+                                                    <td >{intervention.nature_intervention ? intervention.nature_intervention.nom_intervention : null}</td>
+                                                    <td>{intervention.kilometrage ? formatageNombre(intervention.kilometrage) : null}</td>
+                                                    <td >{intervention.tiers ? intervention.tiers.code : null}</td>
+                                                    <td >{intervention.cout_ttc_intervention ? formatageSomme(intervention.cout_ttc_intervention)  : null}</td>
+                                                   
                                                 </tr>
 
-                                                {etatCourant[etatCourant.length - 1].id == utilisation.id ?
+                                                {etatCourant[etatCourant.length - 1].id == intervention.id ?
                                                     <tr style={{ backgroundColor: 'yellow' }}>
                                                         <th colSpan="6">Nombre d'interventions du véhicule <span style={red}><em >{etatCourant[0].vehicule.immatriculation}</em></span> ( {etatCourant.length.toString().length == 1 ? `0${etatCourant.length}` : etatCourant.length} )</th>
-                                                        <th colSpan="6"> Kms parcourus Véhicule <span style={{ color: 'red' }}><em>{etatCourant[0].vehicule.immatriculation}</em></span> ({formatageNombre(calculSommeColonne(etatCourant))})</th>
+                                                        <th colSpan="6"> Coût Total <span style={{ color: 'red' }}><em>{etatCourant[0].vehicule.immatriculation}</em></span> ({formatageSomme(calculSommeColonneSommeIntervention(etatCourant))})</th>
 
                                                     </tr> : null}
 

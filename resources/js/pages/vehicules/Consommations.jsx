@@ -116,8 +116,8 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
             <th>Conducteur</th>
             <th>Quantité</th>
             <th>TTC</th>
-            <th>TVA</th>
-            <th>HT</th>
+            {/* <th>TVA</th> */}
+            {/* <th>HT</th> */}
             <th>Tiers</th>
             <th>Libéllé</th>
 

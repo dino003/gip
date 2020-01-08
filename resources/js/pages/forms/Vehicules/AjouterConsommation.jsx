@@ -50,6 +50,19 @@ import inputStyle from '../../../utils/inputStyle'
         }, () => this.getPrixUnitaire(this.consomable.value) );
     }
 
+    setFieldTypeConso = (event) => {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        this.setState({
+            [name]: value
+        }, () => {
+            const type = this.props.natures_consommations.find(nat => nat.id == this.state.type_consomation).nature_consomation
+            this.libelle.value = type
+        } );
+    }
+
     setFieldPrixUnitaireEtQuantite = (event) => {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -65,6 +78,21 @@ import inputStyle from '../../../utils/inputStyle'
         } );
     }
 
+    setFieldPrixTTC = (event) => {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        this.setState({
+            [name]: value
+        }, () => {
+            //if(this.quantite_consomee.value == '' && this.prix_unitaire_ht.value != ''){
+                let result = Number(this.montant_ttc.value) / Number(this.prix_unitaire_ht.value)
+                this.quantite_consomee.value = parseFloat(result).toFixed(2)
+           // }
+        } );
+    }
+
   
 
     getPrixUnitaire(id){
@@ -72,16 +100,15 @@ import inputStyle from '../../../utils/inputStyle'
             const cout_conso = this.props.couts_consommables.find(conso => conso.id == id)
         
             this.prix_unitaire_ht.value = cout_conso.cout_unitaire
-            if(this.quantite_consomee.value){
-                this.montant_ttc.value = Number(this.quantite_consomee.value) * Number(this.prix_unitaire_ht.value)
-            }
+            // if(this.quantite_consomee.value){
+            //     this.montant_ttc.value = Number(this.quantite_consomee.value) * Number(this.prix_unitaire_ht.value)
+            // }
 
 
         }else{
             this.prix_unitaire_ht.value = ''
 
         }
-      
         
     }
 
@@ -123,13 +150,17 @@ import inputStyle from '../../../utils/inputStyle'
           }
       }
 
-      enregistrerIntervention = (e) => {
+      enregistrerConsommation = (e) => {
         e.preventDefault()
 
           if(this.verificationFormulaire() == null){
+            const vehiculeSelect = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
+
               this.setState({isFormSubmitted: true})
             axios.post('/api/ajouter_vehicule_consommation', {
-                vehicule: this.props.vehiculeSeleted.id,
+                vehicule: vehiculeSelect.id,
+                vehicule_id: vehiculeSelect.id,
+
                 type_consomation: this.type_consomation.value,
                 tiers: this.tiers.value,
                 date_conso: this.date_conso.value ,
@@ -220,12 +251,12 @@ import inputStyle from '../../../utils/inputStyle'
                             }                               
                           </h5>
                           <br />
-                            <form className="" onChange={this.setField}  onSubmit={this.enregistrerIntervention}>
+                            <form className="" onChange={this.setField}  onSubmit={this.enregistrerConsommation}>
                                 <div className="form-row">
 
                                 <div className="col-md-3">
                                     <label  className="">Type de consommation</label>
-                                        <select name="type_consomation" onChange={this.setField}
+                                        <select name="type_consomation" onChange={this.setFieldTypeConso}
                                             ref={type_consomation => this.type_consomation = type_consomation}
                                             style={inputStyle}
 
@@ -270,7 +301,7 @@ import inputStyle from '../../../utils/inputStyle'
                                     </div>
 
                                     <div className="col-md-3">
-                                            <label >Libéllé</label>
+                                            <label >Libéllé Consommation</label>
 
                                             <input name="libelle"
                                             ref={libelle => this.libelle = libelle}
@@ -389,6 +420,7 @@ import inputStyle from '../../../utils/inputStyle'
                                             <label >Prix unitaire </label>
                                             <input name="prix_unitaire_ht"
                                             defaultValue={this.state.prix_unitaire_ht}
+                                            readOnly
                                             onChange={this.setFieldPrixUnitaireEtQuantite}
                                             ref={prix_unitaire_ht => this.prix_unitaire_ht = prix_unitaire_ht}
 
@@ -400,6 +432,7 @@ import inputStyle from '../../../utils/inputStyle'
                                         <div className="position-relative form-group">
                                             <label >Quantité </label>
                                             <input name="quantite_consomee"
+                                            readOnly
                                             onChange={this.setFieldPrixUnitaireEtQuantite}
                                             ref={quantite_consomee => this.quantite_consomee = quantite_consomee}
 
@@ -412,7 +445,8 @@ import inputStyle from '../../../utils/inputStyle'
                                             <label >Montant TTC</label>
                                             <input name="montant_ttc"  type="number"
                                             style={inputStyle}
-                                            onChange={this.setPrixTTc}
+                                            readOnly={!this.state.consomable}
+                                            onChange={this.setFieldPrixTTC}
                                             ref={montant_ttc => this.montant_ttc = montant_ttc}
                                              className="form-control" />
                                              </div>

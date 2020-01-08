@@ -26,18 +26,18 @@ import {formatageSomme} from '../../utils/Repository'
             
              <tr > 
                    
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.vehicule.immatriculation || 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.type_consomation ? item.type_consomation.nature_consomation : 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_conso ? moment(item.date_conso).format('DD/MM/YYYY') : 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.vehicule.immatriculation || ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.type_consomation ? item.type_consomation.nature_consomation : ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_conso ? moment(item.date_conso).format('DD/MM/YYYY') : ''}</td>
 
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.conducteur ? item.conducteur.nom : 'Non Renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.conducteur ? item.conducteur.nom : 'PERSONNE PAR DEFAUT'}</td>
 
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.quantite_consomee || 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.montant_ttc ? formatageSomme(item.montant_ttc) : 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.montant_tva ? formatageSomme(item.montant_tva) : 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.montant_ht ? formatageSomme(item.montant_ht) : 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.tiers ? item.tiers.code : 'Non Renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.libelle || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.quantite_consomee || '0'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.montant_ttc ? formatageSomme(item.montant_ttc) : ''}</td>
+            {/* <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.montant_tva ? formatageSomme(item.montant_tva) : 'Non renseigné'}</td> */}
+            {/* <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.montant_ht ? formatageSomme(item.montant_ht) : 'Non renseigné'}</td> */}
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.tiers ? item.tiers.code : ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.libelle || ''}</td>
 
 
             <td>
