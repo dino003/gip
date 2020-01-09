@@ -9,6 +9,7 @@ import VehiculeEtatForm from '../../forms/VehiculeEtatForm';
 
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import InterventionVehiculeEtatForm from '../../forms/InterventionVehiculeEtatForm';
 
 const red = {
     color: 'red'
@@ -30,7 +31,11 @@ class InterventionVehiculeEtat extends Component {
             isFormOpened: false,
             consommations: [],
             loading: false,
+             etatVehiculeInterventionParVehicule : this.props.interventions.length ? groupBy(this.props.interventions, 'vehicule_id') : []
+
         }
+
+        this.onFormInterventionEtatSubmit = this.onFormInterventionEtatSubmit.bind(this)
 
 
     }
@@ -38,6 +43,45 @@ class InterventionVehiculeEtat extends Component {
 
     componentDidMount() {
 
+    }
+
+    onFormInterventionEtatSubmit(data){
+        this.setState({isFormOpened: false})
+     
+        var dateInterventionComprisePremiere = data.date_debut_intervention_comprise_premiere ? Date.parse(data.date_debut_intervention_comprise_premiere) : null
+        var dateInterventionCompriseDeuxieme = data.date_debut_intervention_comprise_deuxieme ? Date.parse(data.date_debut_intervention_comprise_deuxieme) : null
+
+       const resultats = this.props.interventions.filter(ut => {
+           let date_debut_intervention = Date.parse(ut.date_debut)
+           return  (data.type_vehicule_statut != "Tous" ? ut.vehicule.type_vehicule_statut == data.type_vehicule_statut : ut.vehicule.type_vehicule_statut == "Service" || ut.vehicule.type_vehicule_statut == "Fonction" || ut.vehicule.type_vehicule_statut == "Flotte") 
+           &&
+        (data.etat_vehicule_status != "Tous" ? ut.vehicule.etat_vehicule_status == data.etat_vehicule_status : ut.vehicule.etat_vehicule_status == "En service" || ut.vehicule.etat_vehicule_status == "Commande" || ut.vehicule.etat_vehicule_status == "Vendu" || ut.vehicule.etat_vehicule_status == "Restitué" || ut.vehicule.etat_vehicule_status == "Sorti") 
+         &&
+        (data.mode_acquisition != "Tous" ? ut.vehicule.mode_acquisition == data.mode_acquisition : ut.vehicule.mode_acquisition == "0" || ut.vehicule.mode_acquisition == "1" || ut.vehicule.mode_acquisition == "2" || ut.vehicule.mode_acquisition == "4" || ut.vehicule.mode_acquisition =="5" ) 
+         &&
+        (data.mode_acquisition_type_vehicule != "Tous" ? ut.vehicule.mode_acquisition_type_vehicule == data.mode_acquisition_type_vehicule : ut.vehicule.mode_acquisition_type_vehicule == "Véhicule de la société" || ut.vehicule.mode_acquisition_type_vehicule == "Véhicule personnel" )
+         && 
+         (data.categorie_intervention != "Tous" ? ut.nature_intervention.categorie == data.categorie_intervention : ut.nature_intervention.categorie == "Rappel constructeur" || ut.nature_intervention.categorie == "Divers" || ut.nature_intervention.categorie == "Matériel/Consomable" || ut.nature_intervention.categorie == "Rep.Sinistre" || ut.nature_intervention.categorie == "Réparation" || ut.nature_intervention.categorie == "Entretien" )
+         && 
+        
+         (dateInterventionComprisePremiere && dateInterventionCompriseDeuxieme ? dateInterventionComprisePremiere <= date_debut_intervention && date_debut_intervention <= dateInterventionCompriseDeuxieme  : true )
+         &&
+         (data.vehicule ?  ut.vehicule.id  == data.vehicule : true )
+          &&
+     
+       (data.entite_physique ? ut.vehicule.entite_physique ? ut.vehicule.entite_physique.id == data.entite_physique : true : true) 
+       &&
+      (data.tiers ? ut.tiers ? ut.tiers.id == data.tiers : true : true ) 
+      &&
+      (data.nature_intervention ? ut.nature_intervention ? ut.nature_intervention.id == data.nature_intervention : true : true )
+  
+    }
+         
+       )
+
+       this.setState({
+        etatVehiculeInterventionParVehicule: groupBy(resultats, 'vehicule_id')
+       })
     }
 
 
@@ -53,27 +97,14 @@ class InterventionVehiculeEtat extends Component {
     }
 
     createP = () => {
-        // console.log(etatVehiculeUtilisationParVehicule[0])
-        // var doc = new jsPDF('l');
+       
         var doc = new jsPDF('l', 'pt', 'a3');
 
         doc.autoTable({
             html: '#export',
             theme: 'grid'
         });
-        //doc.autoTable({startY: 30, head: this.headRows(), body: this.bodyRows(25)});
-        //   for (var j = 0; j < etatVehiculeUtilisationParVehicule.length; j++) {
-        //     doc.autoTable({
-        //       //  head: headRows(), 
-        //         head: [['Date de Début', 'Heure', 'Date de fin', 'Heure', 'Kms cmptr', 'Kms Parcourus', 'But de l\'utilisation', 'Départ', 'Destination']],
-        //         body: etatVehiculeUtilisationParVehicule[0],
-        //         startY: doc.autoTable.previous.finalY + 10,
-        //         pageBreak: 'avoid',
-        //     });
-        // }
-        //  doc.save('table.pdf');
-        //  doc.output('dataurlnewwindow');
-        // doc.output('datauri');              //opens the data uri in current window
+       
         window.open(doc.output('bloburl'), '_blank')
 
 
@@ -90,9 +121,9 @@ class InterventionVehiculeEtat extends Component {
 
     render() {
 
-        const etatVehiculeUtilisationParVehicule = this.props.interventions.length ? groupBy(this.props.interventions, 'vehicule_id') : []
+       // const etatVehiculeInterventionParVehicule = this.props.interventions.length ? groupBy(this.props.interventions, 'vehicule_id') : []
 
-        const { isFormOpened } = this.state
+        const { isFormOpened, etatVehiculeInterventionParVehicule } = this.state
 
         return (
             <div className="">
@@ -104,9 +135,7 @@ class InterventionVehiculeEtat extends Component {
                                 <h5 className="card-title">
                                     <span className="pull-right">
                                         <button className="mb-2 mr-2 btn-transition btn btn-outline-warning" onClick={() => this.props.history.goBack()}>Retour</button>
-
-                                        {etatVehiculeUtilisationParVehicule.length ? <React.Fragment>
-                                            <button title={!isFormOpened ? 'Affinner' : 'Revenir aux Etats'}
+                                        <button title={!isFormOpened ? 'Affinner' : 'Revenir aux Etats'}
                                                 className={!isFormOpened ? 'mb-2 mr-2 btn-transition btn btn-outline-primary' : 'mb-2 mr-2 btn-transition btn btn-outline-warning'}
                                                 onClick={this.toggleForm}
                                             >
@@ -114,28 +143,29 @@ class InterventionVehiculeEtat extends Component {
 
                                                 {!isFormOpened ? 'Affinner' : 'Quitter'}
                                             </button>
-
-
-
+                                        {etatVehiculeInterventionParVehicule.length ? <React.Fragment>
+                        
                                             <ReactHTMLTableToExcel
                                                 id="test-table-xls-button"
                                                 className="mb-2 mr-2 btn-transition btn btn-outline-success"
                                                 table="export"
                                                 filename="Liste des interventions des véhicules"
                                                 sheet="feuille1"
-                                                buttonText="Ecran -> Excel" />
+                                                buttonText="Etat -> Excel" />
 
-                                            <button className="mb-2 mr-2 btn-transition btn btn-outline-info" onClick={this.createP}>Imprimer</button>
+                                            <button className="mb-2 mr-2 btn-transition btn btn-outline-info" onClick={this.createP}>Etat PDF</button>
                                         </React.Fragment> : null}
                                     </span>
                                 </h5>
 
 
-                                {etatVehiculeUtilisationParVehicule.length ? <React.Fragment>
+                                {/* {etatVehiculeInterventionParVehicule.length ? <React.Fragment> */}
 
-                                {isFormOpened ? <VehiculeEtatForm /> :
-                                    <table className="mb-0 table table-bordered " id="export">
-                                        {etatVehiculeUtilisationParVehicule.map((etatCourant, index) => <React.Fragment key={index} >
+                                {isFormOpened ? <InterventionVehiculeEtatForm onFormInterventionEtatSubmit={this.onFormInterventionEtatSubmit} /> :
+                                    <React.Fragment>
+                                        {etatVehiculeInterventionParVehicule.length ?
+                                         <table className="mb-0 table table-bordered " id="export">
+                                        {etatVehiculeInterventionParVehicule.map((etatCourant, index) => <React.Fragment key={index} >
                                             <thead>
                                                 <tr >
                                                     <th colSpan="6">{this.props.info_societe ? `${this.props.info_societe.societe.toUpperCase()} Etat Interventions sur les véhicules` : 'AGOSOFTPARC Etat Interventions sur les véhicules'}</th>
@@ -189,11 +219,15 @@ class InterventionVehiculeEtat extends Component {
                                             </tbody>)}
 
                                         </React.Fragment>)}
-                                    </table>}
-
-                                    </React.Fragment> : <p style={{ textAlign: 'center' }}><span>
+                                    </table> : <p style={{ textAlign: 'center' }}><span>
                                             Aucune donnée trouvée
                                     </span> </p>}
+                                    </React.Fragment>
+                                   }
+
+                                    {/* </React.Fragment> : <p style={{ textAlign: 'center' }}><span>
+                                            Aucune donnée trouvée
+                                    </span> </p>} */}
                             
                             
                             

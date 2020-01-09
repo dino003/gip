@@ -9,6 +9,7 @@ import VehiculeEtatForm from '../../forms/VehiculeEtatForm';
 
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import ReservationVehiculeEtatForm from '../../forms/ReservationVehiculeEtatForm';
 
 const red = {
     color: 'red'
@@ -34,8 +35,11 @@ class ReservationVehiculeEtat extends Component {
             isFormOpened: false,
             reservations: [],
             loading: false,
+             etatVehiculeConsommation : this.props.reservations.length ? groupBy(this.props.reservations.filter(reser => !reser.abandonne), 'vehicule_id') : []
+
         }
 
+        this.onFormReservationEtatSubmit = this.onFormReservationEtatSubmit.bind(this)
 
     }
 
@@ -57,31 +61,40 @@ class ReservationVehiculeEtat extends Component {
     }
 
     createP = () => {
-        // console.log(etatVehiculeConsommation[0])
-        // var doc = new jsPDF('l');
+     
         var doc = new jsPDF('l', 'pt', 'a3');
 
         doc.autoTable({
             html: '#export',
             theme: 'grid'
         });
-        //doc.autoTable({startY: 30, head: this.headRows(), body: this.bodyRows(25)});
-        //   for (var j = 0; j < etatVehiculeConsommation.length; j++) {
-        //     doc.autoTable({
-        //       //  head: headRows(), 
-        //         head: [['Date de Début', 'Heure', 'Date de fin', 'Heure', 'Kms cmptr', 'Kms Parcourus', 'But de l\'utilisation', 'Départ', 'Destination']],
-        //         body: etatVehiculeConsommation[0],
-        //         startY: doc.autoTable.previous.finalY + 10,
-        //         pageBreak: 'avoid',
-        //     });
-        // }
-        //  doc.save('table.pdf');
-        //  doc.output('dataurlnewwindow');
-        // doc.output('datauri');              //opens the data uri in current window
+ 
         window.open(doc.output('bloburl'), '_blank')
 
+    }
 
+    onFormReservationEtatSubmit(data){
+        this.setState({isFormOpened: false})
+        var debut = data.date_reservation_comprise_premiere ? Date.parse(data.date_reservation_comprise_premiere) : null
+        var fin = data.date_reservation_comprise_deuxieme ? Date.parse(data.date_reservation_comprise_deuxieme) : null
 
+       const resultats = this.props.reservations.filter(ut => {
+           let dateDebutUtili = Date.parse(ut.date_debut_reservation)
+           let dateFinUtili = Date.parse(ut.date_fin_reservation)
+           return  (debut && fin ? debut >= dateDebutUtili && debut <= dateFinUtili || fin >= dateDebutUtili && fin <= dateFinUtili || debut <= dateDebutUtili && fin >= dateFinUtili : true )
+        &&
+         (data.vehicule ?  ut.vehicule.id  == data.vehicule : true )
+          &&
+       (data.entite_physique ? ut.vehicule.entite_physique ? ut.vehicule.entite_physique.id == data.entite_physique : true : true) 
+       &&
+      (data.personne ? ut.personne_reservant ? ut.personne_reservant.id == data.personne : true : true ) 
+       }
+         
+       )
+
+       this.setState({
+        etatVehiculeConsommation: groupBy(resultats, 'vehicule_id')
+       })
     }
 
 
@@ -94,13 +107,13 @@ class ReservationVehiculeEtat extends Component {
 
     render() {
 
-        const etatVehiculeConsommation = this.props.reservations.length ? groupBy(this.props.reservations.filter(reser => !reser.abandonne), 'vehicule_id') : []
+       // const etatVehiculeConsommation = this.props.reservations.length ? groupBy(this.props.reservations.filter(reser => !reser.abandonne), 'vehicule_id') : []
         // const etatVehiculeConsommation = etats.sort(function (a, b) {
         //     // Turn your strings into dates, and then subtract them
         //     // to get a value that is either negative, positive, or zero.
         //     return new Date(a.date_conso) - new Date(b.date_conso);
         // });
-        const { isFormOpened } = this.state
+        const { isFormOpened, etatVehiculeConsommation } = this.state
 
         return (
             <div className="">
@@ -112,9 +125,7 @@ class ReservationVehiculeEtat extends Component {
                                 <h5 className="card-title">
                                     <span className="pull-right">
                                         <button className="mb-2 mr-2 btn-transition btn btn-outline-warning" onClick={() => this.props.history.goBack()}>Retour</button>
-
-                                        {etatVehiculeConsommation.length ? <React.Fragment>
-                                            <button title={!isFormOpened ? 'Affinner' : 'Revenir aux Etats'}
+                                        <button title={!isFormOpened ? 'Affinner' : 'Revenir aux Etats'}
                                                 className={!isFormOpened ? 'mb-2 mr-2 btn-transition btn btn-outline-primary' : 'mb-2 mr-2 btn-transition btn btn-outline-warning'}
                                                 onClick={this.toggleForm}
                                             >
@@ -122,27 +133,27 @@ class ReservationVehiculeEtat extends Component {
 
                                                 {!isFormOpened ? 'Affinner' : 'Quitter'}
                                             </button>
-
-
-
+                                        {etatVehiculeConsommation.length ? <React.Fragment>
+                                         
                                             <ReactHTMLTableToExcel
                                                 id="test-table-xls-button"
                                                 className="mb-2 mr-2 btn-transition btn btn-outline-success"
                                                 table="export"
                                                 filename="Liste des reservations des véhicules"
                                                 sheet="feuille1"
-                                                buttonText="Ecran -> Excel" />
+                                                buttonText="Etat -> Excel" />
 
-                                            <button className="mb-2 mr-2 btn-transition btn btn-outline-info" onClick={this.createP}>Imprimer</button>
+                                            <button className="mb-2 mr-2 btn-transition btn btn-outline-info" onClick={this.createP}>Etat PDF</button>
                                         </React.Fragment> : null}
                                     </span>
                                 </h5>
 
 
-                                {etatVehiculeConsommation.length ? <React.Fragment>
 
-                                {isFormOpened ? <VehiculeEtatForm /> :
-                                    <table className="mb-0 table table-bordered " id="export">
+                                {isFormOpened ? <ReservationVehiculeEtatForm onFormReservationEtatSubmit={this.onFormReservationEtatSubmit} /> :
+                                    <React.Fragment>
+                                        {etatVehiculeConsommation.length ?
+                                         <table className="mb-0 table table-bordered " id="export">
                                         {etatVehiculeConsommation.map((etatCourant, index) => <React.Fragment key={index} >
                                             <thead>
                                                 <tr >
@@ -200,15 +211,13 @@ class ReservationVehiculeEtat extends Component {
                                             </tbody>)}
 
                                         </React.Fragment>)}
-                                    </table>}
-
-                                    </React.Fragment> : <p style={{ textAlign: 'center' }}><span>
+                                    </table> : <p style={{ textAlign: 'center' }}><span>
                                             Aucune donnée trouvée
                                     </span> </p>}
-                            
-                            
-                            
-                            
+                                    </React.Fragment>
+                                    
+                                   }
+
                             </div>
                     </div>
                 </div>

@@ -55,7 +55,7 @@ class UtilisationVehiculeEtat extends Component {
     }
 
     onFormUtilisationSubmit(data){
-        this.toggleForm()
+        this.setState({isFormOpened: false})
         var debut = data.date_comprise_premiere ? Date.parse(data.date_comprise_premiere) : null
         var fin = data.date_comprise_deuxieme ? Date.parse(data.date_comprise_deuxieme) : null
 
@@ -112,8 +112,7 @@ class UtilisationVehiculeEtat extends Component {
     render() {
 
         // const etatVehiculeUtilisationParVehicule = this.props.utilisations.length ? groupBy(this.props.utilisations, 'vehicule_id') : []
-        const {etatVehiculeUtilisationParVehicule} = this.state
-        const { isFormOpened } = this.state
+        const { isFormOpened, etatVehiculeUtilisationParVehicule } = this.state
 
         return (
             <div className="">
@@ -125,9 +124,7 @@ class UtilisationVehiculeEtat extends Component {
                                 <h5 className="card-title">
                                     <span className="pull-right">
                                         <button className="mb-2 mr-2 btn-transition btn btn-outline-warning" onClick={() => this.props.history.goBack()}>Retour</button>
-
-                                        {etatVehiculeUtilisationParVehicule.length ? <React.Fragment>
-                                            <button title={!isFormOpened ? 'Affinner' : 'Revenir aux Etats'}
+                                        <button title={!isFormOpened ? 'Affinner' : 'Revenir aux Etats'}
                                                 className={!isFormOpened ? 'mb-2 mr-2 btn-transition btn btn-outline-primary' : 'mb-2 mr-2 btn-transition btn btn-outline-warning'}
                                                 onClick={this.toggleForm}
                                             >
@@ -135,8 +132,8 @@ class UtilisationVehiculeEtat extends Component {
 
                                                 {!isFormOpened ? 'Affinner' : 'Quitter'}
                                             </button>
-
-
+                                        {etatVehiculeUtilisationParVehicule.length ? <React.Fragment>
+                                         
                                             {!isFormOpened ? <React.Fragment>
                                                 <ReactHTMLTableToExcel
                                                 id="test-table-xls-button"
@@ -156,10 +153,13 @@ class UtilisationVehiculeEtat extends Component {
                                 </h5>
 
 
-                                {etatVehiculeUtilisationParVehicule.length ? <React.Fragment>
+                                {/* {etatVehiculeUtilisationParVehicule.length ? <React.Fragment> */}
 
                                 {isFormOpened ? <UtilisationVehiculeEtatForm onFormUtilisationSubmit={this.onFormUtilisationSubmit} /> :
-                                    <table className="mb-0 table table-bordered " id="export">
+                                 
+                                 <React.Fragment>
+                                     {etatVehiculeUtilisationParVehicule.length ?
+                                       <table className="mb-0 table table-bordered " id="export">
                                         {etatVehiculeUtilisationParVehicule.map((etatCourant, index) => <React.Fragment key={index} >
                                             <thead>
                                                 <tr >
@@ -218,11 +218,14 @@ class UtilisationVehiculeEtat extends Component {
                                             </tbody>)}
 
                                         </React.Fragment>)}
-                                    </table>}
+                                    </table>
+                                    : <p style={{ textAlign: 'center' }}><span>
+                                    Aucune donnée trouvée
+                                     </span> </p>} 
+                                  </React.Fragment> 
+                                 }
 
-                                    </React.Fragment> : <p style={{ textAlign: 'center' }}><span>
-                                            Aucune donnée trouvée
-                                    </span> </p>}
+                                
                             
                             
                             

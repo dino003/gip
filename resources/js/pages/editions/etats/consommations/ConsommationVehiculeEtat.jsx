@@ -9,6 +9,7 @@ import VehiculeEtatForm from '../../forms/VehiculeEtatForm';
 
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import ConsommationVehiculeEtatForm from '../../forms/ConsommationVehiculeEtatForm';
 
 const red = {
     color: 'red'
@@ -34,7 +35,10 @@ class ConsommationVehiculeEtat extends Component {
             isFormOpened: false,
             consommations: [],
             loading: false,
+         etatVehiculeConsommation: this.props.consommations.length ? groupBy(this.props.consommations, 'vehicule_id') : []
+
         }
+        this.onFormConsommationSubmit = this.onFormConsommationSubmit.bind(this)
 
 
     }
@@ -84,6 +88,56 @@ class ConsommationVehiculeEtat extends Component {
 
     }
 
+    onFormConsommationSubmit(data){
+        this.setState({isFormOpened: false})
+        var entreeAuParcPremiere = data.date_entree_comprise_premiere ? Date.parse(data.date_entree_comprise_premiere) : null
+        var entreeAuParcDeuxieme = data.date_entree_comprise_deuxieme ? Date.parse(data.date_entree_comprise_deuxieme) : null
+
+        var dateConsoPremiere = data.date_conso_comprise_premiere ? Date.parse(data.date_conso_comprise_premiere) : null
+        var dateConsoDeuxieme = data.date_conso_comprise_deuxieme ? Date.parse(data.date_conso_comprise_deuxieme) : null
+
+       const resultats = this.props.consommations.filter(ut => {
+           let dateEntreeParc = Date.parse(ut.vehicule.date_entree_au_parc)
+           let dateConso = Date.parse(ut.date_conso)
+           return  (data.type_vehicule_statut != "Tous" ? ut.vehicule.type_vehicule_statut == data.type_vehicule_statut : ut.vehicule.type_vehicule_statut == "Service" || ut.vehicule.type_vehicule_statut == "Fonction" || ut.vehicule.type_vehicule_statut == "Flotte") 
+           &&
+        (data.etat_vehicule_status != "Tous" ? ut.vehicule.etat_vehicule_status == data.etat_vehicule_status : ut.vehicule.etat_vehicule_status == "En service" || ut.vehicule.etat_vehicule_status == "Commande" || ut.vehicule.etat_vehicule_status == "Vendu" || ut.vehicule.etat_vehicule_status == "Restitué" || ut.vehicule.etat_vehicule_status == "Sorti") 
+         &&
+        (data.mode_acquisition != "Tous" ? ut.vehicule.mode_acquisition == data.mode_acquisition : ut.vehicule.mode_acquisition == "0" || ut.vehicule.mode_acquisition == "1" || ut.vehicule.mode_acquisition == "2" || ut.vehicule.mode_acquisition == "4" || ut.vehicule.mode_acquisition =="5" ) 
+         &&
+        (data.mode_acquisition_type_vehicule != "Tous" ? ut.vehicule.mode_acquisition_type_vehicule == data.mode_acquisition_type_vehicule : ut.vehicule.mode_acquisition_type_vehicule == "Véhicule de la société" || ut.vehicule.mode_acquisition_type_vehicule == "Véhicule personnel" )
+         && 
+         (entreeAuParcPremiere && entreeAuParcDeuxieme ? entreeAuParcPremiere <= dateEntreeParc && dateEntreeParc <= entreeAuParcDeuxieme  : true )
+         && 
+         (dateConsoPremiere && dateConsoDeuxieme ? dateConsoPremiere <= dateConso && dateConso <= dateConsoDeuxieme  : true )
+         &&
+         (data.vehicule ?  ut.vehicule.id  == data.vehicule : true )
+          &&
+     (data.conducteur ? ut.conducteur ? ut.conducteur.id == data.conducteur : true : true )
+       &&
+       (data.entite_physique ? ut.vehicule.entite_physique ? ut.vehicule.entite_physique.id == data.entite_physique : true : true) 
+       &&
+      (data.tiers ? ut.tiers ? ut.tiers.id == data.tiers : true : true ) 
+      &&
+      (data.type_consomation ? ut.type_consomation ? ut.type_consomation.id == data.type_consomation : true : true )
+      &&
+      (data.marque ? ut.vehicule.marque ? ut.vehicule.marque.id == data.marque : true : true )
+      &&
+      (data.energie ? ut.vehicule.energie ? ut.vehicule.energie.id == data.energie : true : true )
+      &&
+      (data.numero_carte ?  ut.numero_carte  == data.numero_carte : true )
+      &&
+      (data.numero_conducteur ?  ut.numero_conducteur  == data.numero_conducteur : true )
+
+    }
+         
+       )
+
+       this.setState({
+        etatVehiculeConsommation: groupBy(resultats, 'vehicule_id')
+       })
+    }
+
 
 
     toggleForm = () => {
@@ -94,13 +148,13 @@ class ConsommationVehiculeEtat extends Component {
 
     render() {
 
-        const etatVehiculeConsommation = this.props.consommations.length ? groupBy(this.props.consommations, 'vehicule_id') : []
+       // const etatVehiculeConsommation = this.props.consommations.length ? groupBy(this.props.consommations, 'vehicule_id') : []
         // const etatVehiculeConsommation = etats.sort(function (a, b) {
         //     // Turn your strings into dates, and then subtract them
         //     // to get a value that is either negative, positive, or zero.
         //     return new Date(a.date_conso) - new Date(b.date_conso);
         // });
-        const { isFormOpened } = this.state
+        const { isFormOpened, etatVehiculeConsommation } = this.state
 
         return (
             <div className="">
@@ -112,9 +166,7 @@ class ConsommationVehiculeEtat extends Component {
                                 <h5 className="card-title">
                                     <span className="pull-right">
                                         <button className="mb-2 mr-2 btn-transition btn btn-outline-warning" onClick={() => this.props.history.goBack()}>Retour</button>
-
-                                        {etatVehiculeConsommation.length ? <React.Fragment>
-                                            <button title={!isFormOpened ? 'Affinner' : 'Revenir aux Etats'}
+                                        <button title={!isFormOpened ? 'Affinner' : 'Revenir aux Etats'}
                                                 className={!isFormOpened ? 'mb-2 mr-2 btn-transition btn btn-outline-primary' : 'mb-2 mr-2 btn-transition btn btn-outline-warning'}
                                                 onClick={this.toggleForm}
                                             >
@@ -122,27 +174,32 @@ class ConsommationVehiculeEtat extends Component {
 
                                                 {!isFormOpened ? 'Affinner' : 'Quitter'}
                                             </button>
+                                            {etatVehiculeConsommation.length ? <React.Fragment>
+                                        
+                                         {!isFormOpened ? <React.Fragment>
+                                             <ReactHTMLTableToExcel
+                                             id="test-table-xls-button"
+                                             className="mb-2 mr-2 btn-transition btn btn-outline-success"
+                                             table="export"
+                                             filename="Liste des utilisations des véhicules"
+                                             sheet="feuille1"
+                                             buttonText="Etat -> Excel" />
 
-
-
-                                            <ReactHTMLTableToExcel
-                                                id="test-table-xls-button"
-                                                className="mb-2 mr-2 btn-transition btn btn-outline-success"
-                                                table="export"
-                                                filename="Liste des consommations des véhicules"
-                                                sheet="feuille1"
-                                                buttonText="Ecran -> Excel" />
-
-                                            <button className="mb-2 mr-2 btn-transition btn btn-outline-info" onClick={this.createP}>Imprimer</button>
-                                        </React.Fragment> : null}
+                                         <button className="mb-2 mr-2 btn-transition btn btn-outline-info" onClick={this.createP}>Etat PDF</button>
+                                         
+                                         </React.Fragment> : null}
+                                       
+                                    
+                                     </React.Fragment> : null}
                                     </span>
                                 </h5>
 
 
-                                {etatVehiculeConsommation.length ? <React.Fragment>
 
-                                {isFormOpened ? <VehiculeEtatForm /> :
-                                    <table className="mb-0 table table-bordered " id="export">
+                                {isFormOpened ? <ConsommationVehiculeEtatForm onFormConsommationSubmit={this.onFormConsommationSubmit} /> :
+                                    <React.Fragment>
+                                        {etatVehiculeConsommation.length ?
+                                         <table className="mb-0 table table-bordered " id="export">
                                         {etatVehiculeConsommation.map((etatCourant, index) => <React.Fragment key={index} >
                                             <thead>
                                                 <tr >
@@ -192,7 +249,7 @@ class ConsommationVehiculeEtat extends Component {
 
                                                 {etatCourant[etatCourant.length - 1].id == conso.id ?
                                                     <tr style={{ backgroundColor: 'yellow' }}>
-                                                        <th colSpan="6">Nombre de ligne deconsommations du véhicule <span style={red}><em >{etatCourant[0].vehicule.immatriculation}</em></span> ( {etatCourant.length.toString().length == 1 ? `0${etatCourant.length}` : etatCourant.length} )</th>
+                                                        <th colSpan="6">Nombre de ligne de consommations du véhicule <span style={red}><em >{etatCourant[0].vehicule.immatriculation}</em></span> ( {etatCourant.length.toString().length == 1 ? `0${etatCourant.length}` : etatCourant.length} )</th>
                                                         <th colSpan="6"> Coût Total <span style={{ color: 'red' }}><em>{etatCourant[0].vehicule.immatriculation}</em></span> ({formatageSomme(calculSommeColonneConsommation(etatCourant))})</th>
 
                                                     </tr> : null}
@@ -200,14 +257,12 @@ class ConsommationVehiculeEtat extends Component {
                                             </tbody>)}
 
                                         </React.Fragment>)}
-                                    </table>}
-
-                                    </React.Fragment> : <p style={{ textAlign: 'center' }}><span>
+                                    </table> : <p style={{ textAlign: 'center' }}><span>
                                             Aucune donnée trouvée
                                     </span> </p>}
-                            
-                            
-                            
+                                    </React.Fragment>
+                                   }
+
                             
                             </div>
                     </div>
