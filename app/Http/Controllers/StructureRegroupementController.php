@@ -44,8 +44,11 @@ class StructureRegroupementController extends Controller
      */
     public function store(Request $request)
     {
-       
-         return $this->model->create($request->only($this->model->getModel()->fillable));
+        $str = new StructureRegroupement;
+
+         $creation = $str->create($request->only($this->model->getModel()->fillable));
+         
+        return response()->json( StructureRegroupement::with(['children.children.children.children.children.children.children.children.children.children'])->find($creation->id));
 
     }
 
@@ -81,10 +84,10 @@ class StructureRegroupementController extends Controller
      */
     public function update(Request $request, $id)
     {
-          // update model and only pass in the fillable fields
-        $this->model->update($request->only($this->model->getModel()->fillable), $id);
+        $user =  $this->model->update($request->only($this->model->getModel()->fillable), $id);
 
-       return $this->model->show($id);
+        // return response()->json(User::with(['autorisation'])->find($user->id) );
+         return response()->json(StructureRegroupement::with('children.children.children.children.children.children.children.children.children.children')->find($id) );
     }
 
     /**

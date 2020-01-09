@@ -22,7 +22,7 @@ class StructureRegroupement extends Model
 
     public function children()
     {
-        return $this->hasMany('App\StructureRegroupement', 'parent', 'id');
+        return $this->hasMany('App\StructureRegroupement', 'regroupement_appartenance', 'id');
     }
 
     

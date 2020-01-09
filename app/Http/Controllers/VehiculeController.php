@@ -23,7 +23,7 @@ class VehiculeController extends Controller
        // return $this->model->get();
         $vehicules = Vehicule::with(['entite_comptable', 'entite_physique',
         'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
-         'chauffeur_atitre', 'contrat_assurance', 'energie'])->orderBy('id', 'desc')->get();
+         'chauffeur_atitre', 'contrat_assurance.compagnie_assurance', 'energie'])->orderBy('id', 'desc')->get();
 
          return response()->json($vehicules);
     }

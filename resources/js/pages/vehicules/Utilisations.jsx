@@ -29,7 +29,8 @@ import { Container, Button, Link } from 'react-floating-action-button'
             isEdit: false,
             objetModif: undefined,
             editIndex: undefined,
-            utilisations: []
+            utilisations: [],
+            isFormSubmitted: false
 
         }   
     }
@@ -51,36 +52,14 @@ import { Container, Button, Link } from 'react-floating-action-button'
 
     onDelete = (id) => {
 
-        confirmAlert({
-            title: 'Suppression',
-            message: 'Voulez-vous vraiment supprimer ?',
-            buttons: [
-              {
-                label: 'OUI',
-                onClick: () => {
-                    const action = {type: "REMOVE_UTILISATION", value: id}
-                    this.props.dispatch(action)
-                   
-                    axios.delete('/api/supprimer_vehicule_utilisation/' + id).then(_ =>  toast.success("Supprimé avec succès !", {
-                        position: toast.POSITION.BOTTOM_CENTER
-                      }))
-                } 
-              },
-              {
-                label: 'ANNULER',
-                onClick: () => {}
-              }
-            ]
-          });
-
-        // let conf = confirm('Voulez-vous vraiment supprimer ?')
-        // if(conf === true){
-        //     const action = {type: "REMOVE_UTILISATION", value: id}
-        //     this.props.dispatch(action)
-        //    // this.setState({entitesState : this.state.entitesState.filter(ent => ent.id !== id)})
-        //     axios.delete('/api/supprimer_vehicule_utilisation/' + id)
+        let conf = confirm('Voulez-vous vraiment supprimer ?')
+        if(conf === true){
+            const action = {type: "REMOVE_UTILISATION", value: id}
+            this.props.dispatch(action)
+           // this.setState({entitesState : this.state.entitesState.filter(ent => ent.id !== id)})
+            axios.delete('/api/supprimer_vehicule_utilisation/' + id)
             
-        // }
+        }
        
     }
 
@@ -231,6 +210,7 @@ import { Container, Button, Link } from 'react-floating-action-button'
        //  e.preventDefault()
         let modif = this.state.objetModif
         const utili = this.props.personnels.find(per => per.id == utilisateur)
+        this.setState({isFormSubmitted: true})
 
           axios.post('/api/modifier_vehicule_utilisation/' + modif.id, {
                   // vehicule: this.props.vehiculeSeleted.id,
@@ -255,7 +235,12 @@ import { Container, Button, Link } from 'react-floating-action-button'
           }).then(response => {
             const action = {type: "EDIT_UTILISATION", value: response.data}
             this.props.dispatch(action)
-          }).catch(error => console.log(error))
+            this.setState({isFormSubmitted: false})
+
+          }).catch(error => {
+            this.setState({isFormSubmitted: false})
+            console.log(error)
+        } )
     
            // console.log(sin)
       }
@@ -266,6 +251,7 @@ import { Container, Button, Link } from 'react-floating-action-button'
           const utili = this.props.personnels.find(per => per.id == this.utilisateur.value)
 
           if(this.verificationFormulaire() == null){
+              this.setState({isFormSubmitted: true})
            await axios.post('/api/ajouter_vehicule_utilisation', 
                {
                    vehicule: vehicule.id,
@@ -299,10 +285,14 @@ import { Container, Button, Link } from 'react-floating-action-button'
                 var vehicule2 = this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
                 const action3 = {type: "EDIT_SELECTED", value: vehicule2}
                 this.props.dispatch(action3)
+                this.setState({isFormSubmitted: false})
 
                 this.closeEdit();
             })
-             .catch(error => console.log(error));
+             .catch(error => {
+                this.setState({isFormSubmitted: false})
+                console.log(error)
+             } );
         
 
           }else{
@@ -692,7 +682,7 @@ import { Container, Button, Link } from 'react-floating-action-button'
                                 </div>
 
                             
-                                <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
+                                <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
                         </form>
                       
                     </div>

@@ -14,30 +14,16 @@ class VehiculeEtatForm extends Component {
         super(props);
         this.state = {
             // date_creation: new Date(),
-            hidePassword: true,
-            userNameIsUsed: false,
+           
             type_vehicule_statut: 'Tous',
             mode_acquisition: 'Tous',
             etat_vehicule_status: 'Tous',
             mode_acquisition_type_vehicule: 'Tous',
 
-            modification_vehicule: 'oui',
-            suppresion_vehicule: 'oui',
-            commande_vehicule: 'oui',
-            utilisation_vehicule: 'L/E',
-            reservations: 'L/E',
-            intervention: 'L/E',
-            contrat_assurance: 'L/E',
-            ordre_de_mission: 'L/E',
-            consomation_vehicule: 'L/E',
-            cout_vehicule: 'L/E',
-            gestion_stock_piece: 'L/E',
-            amende_vehicule: 'L/E',
-            module_des_commandes: 'L/E',
-
-
-
         }
+
+        this.submitVehiculeEtatForm = this.submitVehiculeEtatForm.bind(this);
+
     }
 
 
@@ -53,103 +39,34 @@ class VehiculeEtatForm extends Component {
         });
     }
 
-    managePasswordVisibility = () => {
-        // function used to change password visibility
-        this.setState({ hidePassword: !this.state.hidePassword });
-
-    }
-
-    checkUser = async () => {
-        if (this.username.value) {
-            const response = await axios.post('/api/verif_user', { username: this.username.value })
-
-            const res = response.data;
-
-            if (res == true) {
-                this.setState({ userNameIsUsed: false })
-                return true;
-            }
-            this.setState({ userNameIsUsed: true })
-
-            return false;
-        }
-
-    }
-
-    renderUserNameConfirm = () => {
-        if (this.username.value) {
-            if (this.checkUser()) {
-
-            }
-        }
-    }
-
-    verificationFormulaire() {
-        if (this.checkUser()) {
-            if (this.username.value == undefined || !this.username.value.length) {
-                return "Le Code utilisateur est obligatoire !"
-            } else if (this.name.value == undefined || !this.name.value.length) {
-                return "Le Nom est obligatoire !"
-            } else if (this.entite.value == undefined || !this.entite.value.length) {
-                return "L' entité d'affectation est obligatoire !"
-            } else if (this.password.value == undefined || !this.password.value.length) {
-                return "Le Mot de passe est obligatoire !"
-            }
-            else {
-                return null
-            }
-        } else {
-            return "Ce code utilisateur est déja utilisé !"
-        }
-    }
-
-    enregistrerPersonnel = (e) => {
+    submitVehiculeEtatForm(e){
         e.preventDefault()
-        if (this.verificationFormulaire() == null) {
-            // console.log(this.state)
-            axios.post('/api/ajouter_user', {
-                name: this.name.value,
-                username: this.username.value,
-                email: this.email.value,
-                date_creation: this.date_creation.value,
-                date_modification: this.date_modification.value,
-                entite: this.entite.value,
-                matricule: this.matricule.value,
-                telephonne_bureau: this.telephonne_bureau.value,
-                portable: this.portable.value,
-                password: this.password.value,
-                creation_vehicule: this.state.creation_vehicule,
-                modification_vehicule: this.state.modification_vehicule,
-                suppresion_vehicule: this.state.suppresion_vehicule,
-                commande_vehicule: this.state.commande_vehicule,
-                utilisation_vehicule: this.state.utilisation_vehicule,
-                reservations: this.state.reservations,
-                intervention: this.state.intervention,
-                contrat_assurance: this.state.contrat_assurance,
-                ordre_de_mission: this.state.ordre_de_mission,
-                consomation_vehicule: this.state.consomation_vehicule,
-                cout_vehicule: this.state.cout_vehicule,
-                gestion_stock_piece: this.state.gestion_stock_piece,
-                amende_vehicule: this.state.amende_vehicule,
-                module_des_commandes: this.state.module_des_commandes,
+        let data = {
+            type_vehicule_statut: this.state.type_vehicule_statut,
+            etat_vehicule_status: this.state.etat_vehicule_status,
+            mode_acquisition: this.state.mode_acquisition,
+            mode_acquisition_type_vehicule: this.state.mode_acquisition_type_vehicule,
+            date_entree_au_parc1: this.date_entree_au_parc1.value,
+            date_entree_au_parc2: this.date_entree_au_parc2.value,
+            entite_physique: this.state.entite_physique ? this.state.entite_physique.id : undefined,
+            entite_comptable: this.state.entite_comptable ? this.state.entite_comptable.id : undefined,
 
-
-
-            }).then(response => {
-
-                const action = { type: "ADD_UTILISATEUR", value: response.data }
-                this.props.dispatch(action)
-
-                this.props.history.push('/gestion-des-utilisateurs')
-            }).catch(error => console.log(error))
-
-        } else {
-            //console.log(this.verificationFormulaire())
-            toast.error(this.verificationFormulaire(), {
-                position: toast.POSITION.BOTTOM_CENTER
-            });
+            tiers: this.state.tiers ? this.state.tiers.id : undefined,
+            assureur: this.state.assureur ? this.state.assureur.id : undefined,
+            marque: this.state.marque ? this.state.marque.id : undefined,
+            modele: this.modele.value
         }
+
+        this.props.onFormVehiculeEtatSubmit(data)
+
+    //    console.log(this.filterData(data))
+    //    console.log(data)
     }
+
+ 
+
+  
+ 
     setFieldSelect(name, value) {
      
         let obj = {};
@@ -166,7 +83,7 @@ class VehiculeEtatForm extends Component {
 
                 <React.Fragment >
           
-                        <form className="" onChange={this.setField} onSubmit={this.enregistrerPersonnel}>
+                        <form className="" onChange={this.setField} onSubmit={this.submitVehiculeEtatForm}>
                             <div className="form-row">
 
                                 <div className="col-md-2">
@@ -311,8 +228,8 @@ class VehiculeEtatForm extends Component {
                                         <label className="form-check-label">
                                             Achetés  <input type="radio" name="mode_acquisition"
                                                 onChange={this.setField}
-                                                checked={this.state.mode_acquisition === "Achat"}
-                                                value="Achat" className="" /></label>
+                                                checked={this.state.mode_acquisition === "0"}
+                                                value="0" className="" /></label>
                                     </div>
                                 </div>
                                 <div className="col-md-1">
@@ -321,8 +238,8 @@ class VehiculeEtatForm extends Component {
                                             Loués  <input type="radio" name="mode_acquisition"
 
                                                 onChange={this.setField}
-                                                checked={this.state.mode_acquisition === "Location courte"}
-                                                value="Location courte" className="" /></label>
+                                                checked={this.state.mode_acquisition === "4"}
+                                                value="4" className="" /></label>
                                     </div>
                                 </div>
                                 <div className="col-md-1">
@@ -330,8 +247,8 @@ class VehiculeEtatForm extends Component {
                                         <label className="form-check-label">
                                             Leasing  <input type="radio" name="mode_acquisition"
                                                 onChange={this.setField}
-                                                checked={this.state.mode_acquisition === "Leasing"}
-                                                value="Leasing" className="" /></label>
+                                                checked={this.state.mode_acquisition === "1"}
+                                                value="1" className="" /></label>
                                     </div>
                                 </div>
                                 <div className="col-md-2">
@@ -339,8 +256,8 @@ class VehiculeEtatForm extends Component {
                                         <label className="form-check-label">
                                             Loués longue durée  <input type="radio" name="mode_acquisition"
                                                 onChange={this.setField}
-                                                checked={this.state.mode_acquisition === "Location Longue Durée"}
-                                                value="Location Longue Durée" className="" /></label>
+                                                checked={this.state.mode_acquisition === "5"}
+                                                value="5" className="" /></label>
                                     </div>
                                 </div>
                                 <div className="col-md-1">
@@ -348,8 +265,8 @@ class VehiculeEtatForm extends Component {
                                         <label className="form-check-label">
                                             Prêt  <input type="radio" name="mode_acquisition"
                                                 onChange={this.setField}
-                                                checked={this.state.mode_acquisition === "Pret"}
-                                                value="Pret" className="" /></label>
+                                                checked={this.state.mode_acquisition === "2"}
+                                                value="2" className="" /></label>
                                     </div>
                                 </div>
 
@@ -436,42 +353,7 @@ class VehiculeEtatForm extends Component {
 
                             </div>
 
-                            <div className="form-row">
-
-                                <div className="col-md-3">
-                                    <div className="position-relative form-group">
-                                        <label className="center">Date de sortie du parc compris entre</label>
-                                    </div>
-                                </div>
-                                <div className="col-md-3">
-                                    <div className="position-relative form-group">
-                                        <input name="username"
-                                            ref={username => this.username = username}
-
-                                            type="date" className="form-control"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="col-md-1">
-                                    <div className="position-relative form-group">
-                                        <label className="center">ET</label>
-                                    </div>
-                                </div>
-
-                                <div className="col-md-3">
-                                    <div className="position-relative form-group">
-
-
-                                        <input name="password"
-                                            ref={password => this.password = password}
-                                            type="date" className="form-control" />
-
-                                    </div>
-                                </div>
-
-
-                            </div>
+              
 
 
                             <div className="form-row">
@@ -479,13 +361,13 @@ class VehiculeEtatForm extends Component {
                                     <label className="">Sélection entité Comptable</label>
                                 
                                     <Select
-                                        name="entite"
+                                        name="entite_comptatble"
                                         placeholder="Selectionnez une entité"
                                         noOptionsMessage={() => "Aucune Entité pour l'instant"}
                                         options={this.props.entites}
                                         getOptionLabel={option => option.entite}
                                         getOptionValue={option => option.id}
-                                        onChange={this.setFieldSelect.bind(this, "entite")}
+                                        onChange={this.setFieldSelect.bind(this, "entite_comptatble")}
                                         
                                       />
 
@@ -507,50 +389,14 @@ class VehiculeEtatForm extends Component {
 
                                 </div>
 
+                    
                                 <div className="col-md-3">
-                                    <label className="">Sélection Regroupement entités Comptables</label>
-                                 
-                                    <Select
-                                        name="structure_comptable"
-                                        placeholder="Selectionnez une structure"
-                                        noOptionsMessage={() => "Aucune Entité pour l'instant"}
-                                        options={this.props.structures_etablissements}
-                                        getOptionLabel={option => option.code_regroupement}
-                                        getOptionValue={option => option.id}
-                                        onChange={this.setFieldSelect.bind(this, "structure_comptable")}
-                                        
-                                      />
-
-                                </div>
-
-                                <div className="col-md-3">
-                                    <label className="">Sélection Regroupement entités Physiques</label>
-
-                                    <Select
-                                        name="structure_physique"
-                                        placeholder="Selectionnez une structure"
-                                        noOptionsMessage={() => "Aucune Entité pour l'instant"}
-                                        options={this.props.structures_etablissements}
-                                        getOptionLabel={option => option.code_regroupement}
-                                        getOptionValue={option => option.id}
-                                        onChange={this.setFieldSelect.bind(this, "structure_physique")}
-                                        
-                                      />
-
-                                </div>
-
-
-
-                            </div>
-
-                            <div className="form-row">
-                                <div className="col-md-3">
-                                    <label className="">Sélection d'un Tiers: achat/location</label>
+                                    <label className="">Sélection d'un Tiers: Achât/location</label>
 
                                     <Select
                                         name="tiers"
-                                        placeholder="Selectionnez une entité"
-                                        noOptionsMessage={() => "Aucune Entité pour l'instant"}
+                                        placeholder="Selectionnez un Tiers"
+                                        noOptionsMessage={() => "Aucun Tiers trouvé"}
                                         options={this.props.tiers}
                                         getOptionLabel={option => `${option.code} ${option.nom}`}
                                         getOptionValue={option => option.id}
@@ -577,19 +423,36 @@ class VehiculeEtatForm extends Component {
 
                                 </div>
 
-                                <div className="col-md-2">
-                                    <div className="position-relative form-group">
-                                        <label >Marque</label>
-                                        <input name="telephonne_bureau"
-                                            ref={telephonne_bureau => this.telephonne_bureau = telephonne_bureau}
-                                            type="text" className="form-control" /></div>
+
+                            </div>
+
+                            <div className="form-row">
+                          
+
+                          
+
+                                <div className="col-md-3">
+                                    <label className="">Sélection d'une marque</label>
+                                 
+
+                                    <Select
+                                        name="marque"
+                                        placeholder="Selectionnez une marque"
+                                        noOptionsMessage={() => "Aucune donnée pour l'instant"}
+                                        options={this.props.marques}
+                                        getOptionLabel={option => `${option.nom_marque}`}
+                                        getOptionValue={option => option.id}
+                                        onChange={this.setFieldSelect.bind(this, "marque")}
+                                        
+                                      />
+
                                 </div>
 
-                                <div className="col-md-2">
+                                <div className="col-md-3">
                                     <div className="position-relative form-group">
                                         <label >Modèle</label>
-                                        <input name="portable"
-                                            ref={portable => this.portable = portable}
+                                        <input name="modele"
+                                            ref={modele => this.modele = modele}
                                             type="text" className="form-control" />
                                     </div>
                                 </div>
@@ -597,11 +460,11 @@ class VehiculeEtatForm extends Component {
 
                             </div>
 
-                            <div className="form-row">
+                            {/* <div className="form-row">
 
                                 <div className="col-md-4">
                                     <div className="position-relative form-group">
-                                        <label className="center">Date dernier controle technique compris entre</label>
+                                        <label className="center">Date dernier contrôle technique compris entre</label>
                                     </div>
                                 </div>
                                 <div className="col-md-3">
@@ -632,9 +495,9 @@ class VehiculeEtatForm extends Component {
                                 </div>
 
 
-                            </div>
+                            </div> */}
 
-                            <div className="form-row">
+                            {/* <div className="form-row">
 
                                 <div className="col-md-4">
                                     <div className="position-relative form-group">
@@ -669,9 +532,9 @@ class VehiculeEtatForm extends Component {
                                 </div>
 
 
-                            </div>
+                            </div> */}
 
-                            <div className="form-row">
+                            {/* <div className="form-row">
                                 <div className="col-md-5">
                                     <div className="position-relative form-group">
                                         <label >Matricule de l'utilisateur dans l'établissement</label>
@@ -705,12 +568,12 @@ class VehiculeEtatForm extends Component {
                                             type="text" className="form-control" />
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
 
 
 
 
-                            <div className="form-row">
+                            {/* <div className="form-row">
 
                                 <div className="col-md-1">
                                     <div className="position-relative form-group">
@@ -754,50 +617,9 @@ class VehiculeEtatForm extends Component {
                                                 value="non" className="" /></label>
                                     </div>
                                 </div>
-                                <div className="col-md-2"></div>
-                                <div className="col-md-1">
-                                    <div className="position-relative form-group">
-                                        <label className="center">Pneus neige</label>
-                                    </div>
-                                </div>
-                                <div className="col-md-2">
-                                    <div className="position-relative form-group">
-                                        <label className="">
-                                            Avec ou sans  <input type="radio"
-                                                name="modification_vehicule"
-                                                onChange={this.setField}
-                                                checked={this.state.modification_vehicule === "oui"}
-
-                                                value="oui"
-                                                className="" /> </label>
-                                    </div>
-                                </div>
-
-                                <div className="col-md-1">
-                                    <div className="position-relative form-group">
-                                        <label className="form-check-label">
-                                            Sans  <input type="radio"
-                                                onChange={this.setField}
-                                                name="modification_vehicule"
-                                                checked={this.state.modification_vehicule === "non"}
-
-                                                value="non" className="" /></label>
-                                    </div>
-                                </div>
-
-                                <div className="col-md-1">
-                                    <div className="position-relative form-group">
-                                        <label className="form-check-label">
-                                            Avec  <input type="radio"
-                                                onChange={this.setField}
-                                                name="modification_vehicule"
-                                                checked={this.state.modification_vehicule === "non"}
-
-                                                value="non" className="" /></label>
-                                    </div>
-                                </div>
+                              
                             </div>
-                            <hr />
+                            <hr /> */}
 
 
                             <button type="submit" className="mt-2 btn btn-primary">Valider</button>

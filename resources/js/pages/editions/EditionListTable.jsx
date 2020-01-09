@@ -176,6 +176,7 @@ class EditionListTable extends Component {
                                     </tr>
                                 </thead>
 
+                             
                                 <tbody>
                                     <tr>
                                         <th colSpan="12" style={{ backgroundColor: 'gray' }} >  Les Vehicules </th>
@@ -418,6 +419,8 @@ class EditionListTable extends Component {
 const mapStateToProps = state => {
     return {
         consommations: state.consommations.items,
+        param_generaux_modules: state.param_generaux_modules.items,
+
         loading: state.consommations.loading,
         vehiculeSeleted: state.vehiculeSeleted.vehicule
 

@@ -230,11 +230,11 @@ class ParametreGeneraux extends Component {
                         <span>Personnel</span>
                     </a>
                 </li>
-                <li className="nav-item">
+                {/* <li className="nav-item">
                     <a role="tab" className="nav-link" id="tab-1" data-toggle="tab" href="#tab-content-1">
                         <span>Assurances</span>
                     </a>
-                </li>
+                </li> */}
                 {/* <li className="nav-item">
                     <a role="tab" className="nav-link" id="tab-1" data-toggle="tab" href="#tab-content-1">
                         <span>Techniques </span>
