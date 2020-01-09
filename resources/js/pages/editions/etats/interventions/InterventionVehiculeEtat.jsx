@@ -143,7 +143,7 @@ class InterventionVehiculeEtat extends Component {
 
                                                 {!isFormOpened ? 'Affinner' : 'Quitter'}
                                             </button>
-                                        {etatVehiculeInterventionParVehicule.length ? <React.Fragment>
+                                        {!isFormOpened && etatVehiculeInterventionParVehicule.length ? <React.Fragment>
                         
                                             <ReactHTMLTableToExcel
                                                 id="test-table-xls-button"
@@ -184,6 +184,8 @@ class InterventionVehiculeEtat extends Component {
 
                                             <tbody>
                                                 <tr>
+                                                <th >Véhicule </th>
+
                                                     <th >Type </th>
                                                     <th>Marque</th>
                                                     <th>Date </th>
@@ -199,6 +201,8 @@ class InterventionVehiculeEtat extends Component {
 
                                             {etatCourant.map((intervention, index) => <tbody key={index}>
                                                 <tr>
+                                                <td >{intervention.vehicule ? intervention.vehicule.immatriculation.toUpperCase() : null}</td>
+
                                                 <td >{intervention.vehicule ? intervention.vehicule.type_vehicule_statut : null}</td>
                                                 <td >{intervention.marque ? intervention.marque.nom_marque : null}</td>
                                                     <td>{ intervention.date_debut ? moment(intervention.date_debut).format('DD/MM/YYYY') : null}</td>

@@ -491,13 +491,13 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
             </div>   
              <div className="app-header__content">
                 <div className="app-header-left">
-                    <div className={this.state.navVisible ? "search-wrapper" : "search-wrapper active"}>
+                    {/* <div className={this.state.navVisible ? "search-wrapper" : "search-wrapper active"}>
                         <div className="input-holder">
                             <input type="text" className="search-input" placeholder="Taper pour rechercher" />
                             <button onClick={this.toggleVisible} className={!this.state.navVisible ? "close" : "search-icon"}><span></span></button>
                         </div>
                         <button onClick={this.toggleVisible} className="close"></button>
-                    </div>
+                    </div> */}
                     <ul className="header-menu nav">
                         {/*
                         <li className="nav-item">

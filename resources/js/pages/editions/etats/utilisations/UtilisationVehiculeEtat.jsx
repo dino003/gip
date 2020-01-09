@@ -179,10 +179,12 @@ class UtilisationVehiculeEtat extends Component {
 
                                             <tbody>
                                                 <tr>
+                                                <th >Véhicule</th>
+
                                                     <th >Date Début</th>
-                                                    <th>Heure</th>
+                                                    {/* <th>Heure</th> */}
                                                     <th>Date Fin</th>
-                                                    <th>Heure</th>
+                                                    {/* <th>Heure</th> */}
                                                     <th>Kms cmptr</th>
                                                     <th>Kms parcourus </th>
                                                     <th>But de l'utilisation</th>
@@ -195,10 +197,12 @@ class UtilisationVehiculeEtat extends Component {
 
                                             {etatCourant.map((utilisation, index) => <tbody key={index}>
                                                 <tr>
+                                                <td >{utilisation.vehicule ? utilisation.vehicule.immatriculation.toUpperCase() : null}</td>
+
                                                     <td >{moment(utilisation.date_debut_utilisation).format('DD/MM/YYYY')}</td>
-                                                    <td>{utilisation.heure_debut.slice(0, 5)}</td>
+                                                    {/* <td>{utilisation.heure_debut.slice(0, 5)}</td> */}
                                                     <td>{moment(utilisation.date_fin_utilisation).format('DD/MM/YYYY')}</td>
-                                                    <td>{utilisation.heure_de_fin.slice(0, 5)}</td>
+                                                    {/* <td>{utilisation.heure_de_fin.slice(0, 5)}</td> */}
                                                     <td>{utilisation.kilometrage_compteur_debut ? formatageNombre(utilisation.kilometrage_compteur_debut) : null}</td>
                                                     <td>{utilisation.kilometres_parcourus ? formatageNombre(utilisation.kilometres_parcourus) : null}</td>
                                                     <td >{utilisation.nature_utilisation ? utilisation.nature_utilisation.libelle : null}</td>

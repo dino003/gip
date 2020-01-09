@@ -35,7 +35,7 @@ class ReservationVehiculeEtat extends Component {
             isFormOpened: false,
             reservations: [],
             loading: false,
-             etatVehiculeConsommation : this.props.reservations.length ? groupBy(this.props.reservations.filter(reser => !reser.abandonne), 'vehicule_id') : []
+             etatReservationVehicule : this.props.reservations.length ? groupBy(this.props.reservations.filter(reser => !reser.abandonne), 'vehicule_id') : []
 
         }
 
@@ -93,7 +93,7 @@ class ReservationVehiculeEtat extends Component {
        )
 
        this.setState({
-        etatVehiculeConsommation: groupBy(resultats, 'vehicule_id')
+        etatReservationVehicule: groupBy(resultats, 'vehicule_id')
        })
     }
 
@@ -107,13 +107,13 @@ class ReservationVehiculeEtat extends Component {
 
     render() {
 
-       // const etatVehiculeConsommation = this.props.reservations.length ? groupBy(this.props.reservations.filter(reser => !reser.abandonne), 'vehicule_id') : []
-        // const etatVehiculeConsommation = etats.sort(function (a, b) {
+       // const etatReservationVehicule = this.props.reservations.length ? groupBy(this.props.reservations.filter(reser => !reser.abandonne), 'vehicule_id') : []
+        // const etatReservationVehicule = etats.sort(function (a, b) {
         //     // Turn your strings into dates, and then subtract them
         //     // to get a value that is either negative, positive, or zero.
         //     return new Date(a.date_conso) - new Date(b.date_conso);
         // });
-        const { isFormOpened, etatVehiculeConsommation } = this.state
+        const { isFormOpened, etatReservationVehicule } = this.state
 
         return (
             <div className="">
@@ -133,7 +133,7 @@ class ReservationVehiculeEtat extends Component {
 
                                                 {!isFormOpened ? 'Affinner' : 'Quitter'}
                                             </button>
-                                        {etatVehiculeConsommation.length ? <React.Fragment>
+                                        { !isFormOpened && etatReservationVehicule.length  ?  <React.Fragment>
                                          
                                             <ReactHTMLTableToExcel
                                                 id="test-table-xls-button"
@@ -144,6 +144,7 @@ class ReservationVehiculeEtat extends Component {
                                                 buttonText="Etat -> Excel" />
 
                                             <button className="mb-2 mr-2 btn-transition btn btn-outline-info" onClick={this.createP}>Etat PDF</button>
+                                            
                                         </React.Fragment> : null}
                                     </span>
                                 </h5>
@@ -152,9 +153,9 @@ class ReservationVehiculeEtat extends Component {
 
                                 {isFormOpened ? <ReservationVehiculeEtatForm onFormReservationEtatSubmit={this.onFormReservationEtatSubmit} /> :
                                     <React.Fragment>
-                                        {etatVehiculeConsommation.length ?
+                                        {etatReservationVehicule.length ?
                                          <table className="mb-0 table table-bordered " id="export">
-                                        {etatVehiculeConsommation.map((etatCourant, index) => <React.Fragment key={index} >
+                                        {etatReservationVehicule.map((etatCourant, index) => <React.Fragment key={index} >
                                             <thead>
                                                 <tr >
                                                     <th colSpan="6">{this.props.info_societe ? `${this.props.info_societe.societe.toUpperCase()} Etat de Réservations des véhicules` : 'AGOSOFTPARC Etat des Réservations des véhicules'}</th>

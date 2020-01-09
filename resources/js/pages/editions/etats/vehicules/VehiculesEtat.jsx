@@ -89,9 +89,7 @@ class VehiculesEtat extends Component {
                                 <h5 className="card-title">
                                     <span className="pull-right">
                                         <button className="mb-2 mr-2 btn-transition btn btn-outline-warning" onClick={() => this.props.history.goBack()}>Retour</button>
-
-                                        {vehs.length ? <React.Fragment>
-                                            <button title={!isFormOpened ? 'Affinner' : 'Revenir aux Etats'}
+                                        <button title={!isFormOpened ? 'Affinner' : 'Revenir aux Etats'}
                                                 className={!isFormOpened ? 'mb-2 mr-2 btn-transition btn btn-outline-primary' : 'mb-2 mr-2 btn-transition btn btn-outline-warning'}
                                                 onClick={this.toggleForm}
                                             >
@@ -99,9 +97,8 @@ class VehiculesEtat extends Component {
 
                                                 {!isFormOpened ? 'Affinner' : 'Quitter'}
                                             </button>
-
-
-
+                                        {!isFormOpened && vehs.length ? <React.Fragment>
+                                           
                                             <ReactHTMLTableToExcel
                                                 id="test-table-xls-button"
                                                 className="mb-2 mr-2 btn-transition btn btn-outline-success"
