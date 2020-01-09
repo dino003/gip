@@ -9,6 +9,7 @@ import VehiculeEtatForm from '../../forms/VehiculeEtatForm';
 
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import UtilisationVehiculeEtatForm from '../../forms/UtilisationVehiculeEtatForm';
 
 const red = {
     color: 'red'
@@ -28,7 +29,10 @@ class UtilisationVehiculeEtat extends Component {
             isFormOpened: false,
             consommations: [],
             loading: false,
+             etatVehiculeUtilisationParVehicule : this.props.utilisations.length ? groupBy(this.props.utilisations, 'vehicule_id') : []
         }
+
+        this.onFormUtilisationSubmit = this.onFormUtilisationSubmit.bind(this)
 
 
     }
@@ -50,32 +54,50 @@ class UtilisationVehiculeEtat extends Component {
         });
     }
 
+    onFormUtilisationSubmit(data){
+        this.toggleForm()
+        var debut = data.date_comprise_premiere ? Date.parse(data.date_comprise_premiere) : null
+        var fin = data.date_comprise_deuxieme ? Date.parse(data.date_comprise_deuxieme) : null
+
+       const resultats = this.props.utilisations.filter(ut => {
+           let dateDebutUtili = Date.parse(ut.date_debut_utilisation)
+           let dateFinUtili = Date.parse(ut.date_fin_utilisation)
+           return  (data.type_vehicule_statut != "Tous" ? ut.vehicule.type_vehicule_statut == data.type_vehicule_statut : ut.vehicule.type_vehicule_statut == "Service" || ut.vehicule.type_vehicule_statut == "Fonction" || ut.vehicule.type_vehicule_statut == "Flotte") 
+           &&
+        (data.etat_vehicule_status != "Tous" ? ut.vehicule.etat_vehicule_status == data.etat_vehicule_status : ut.vehicule.etat_vehicule_status == "En service" || ut.vehicule.etat_vehicule_status == "Commande" || ut.vehicule.etat_vehicule_status == "Vendu" || ut.vehicule.etat_vehicule_status == "Restitué" || ut.vehicule.etat_vehicule_status == "Sorti") 
+         &&
+        (data.mode_acquisition != "Tous" ? ut.vehicule.mode_acquisition == data.mode_acquisition : ut.vehicule.mode_acquisition == "0" || ut.vehicule.mode_acquisition == "1" || ut.vehicule.mode_acquisition == "2" || ut.vehicule.mode_acquisition == "4" || ut.vehicule.mode_acquisition =="5" ) 
+         &&
+        (data.mode_acquisition_type_vehicule != "Tous" ? ut.vehicule.mode_acquisition_type_vehicule == data.mode_acquisition_type_vehicule : ut.vehicule.mode_acquisition_type_vehicule == "Véhicule de la société" || ut.vehicule.mode_acquisition_type_vehicule == "Véhicule personnel" )
+         && 
+         (debut && fin ? debut >= dateDebutUtili && debut <= dateFinUtili || fin >= dateDebutUtili && fin <= dateFinUtili || debut <= dateDebutUtili && fin >= dateFinUtili : true )
+        &&
+         (data.vehicule ?  ut.vehicule.id  == data.vehicule : true )
+          &&
+     (data.chaufeur ? ut.chauffeur.id == data.chaufeur : true )
+       &&
+       (data.entite_physique ? ut.vehicule.entite_physique ? ut.vehicule.entite_physique.id == data.entite_physique : true : true) 
+       &&
+      (data.utilisateur ? ut.utilisateur ? ut.utilisateur.id == data.utilisateur : true : true ) 
+       }
+         
+       )
+
+       this.setState({
+           etatVehiculeUtilisationParVehicule: groupBy(resultats, 'vehicule_id')
+       })
+    }
+
     createP = () => {
-        const etatVehiculeUtilisationParVehicule = this.props.utilisations.length ? groupBy(this.props.utilisations, 'vehicule_id') : null
-        // console.log(etatVehiculeUtilisationParVehicule[0])
-        // var doc = new jsPDF('l');
+      
         var doc = new jsPDF('l', 'pt', 'a3');
 
         doc.autoTable({
             html: '#export',
             theme: 'grid'
         });
-        //doc.autoTable({startY: 30, head: this.headRows(), body: this.bodyRows(25)});
-        //   for (var j = 0; j < etatVehiculeUtilisationParVehicule.length; j++) {
-        //     doc.autoTable({
-        //       //  head: headRows(), 
-        //         head: [['Date de Début', 'Heure', 'Date de fin', 'Heure', 'Kms cmptr', 'Kms Parcourus', 'But de l\'utilisation', 'Départ', 'Destination']],
-        //         body: etatVehiculeUtilisationParVehicule[0],
-        //         startY: doc.autoTable.previous.finalY + 10,
-        //         pageBreak: 'avoid',
-        //     });
-        // }
-        //  doc.save('table.pdf');
-        //  doc.output('dataurlnewwindow');
-        // doc.output('datauri');              //opens the data uri in current window
+    
         window.open(doc.output('bloburl'), '_blank')
-
-
 
     }
 
@@ -89,8 +111,8 @@ class UtilisationVehiculeEtat extends Component {
 
     render() {
 
-        const etatVehiculeUtilisationParVehicule = this.props.utilisations.length ? groupBy(this.props.utilisations, 'vehicule_id') : []
-
+        // const etatVehiculeUtilisationParVehicule = this.props.utilisations.length ? groupBy(this.props.utilisations, 'vehicule_id') : []
+        const {etatVehiculeUtilisationParVehicule} = this.state
         const { isFormOpened } = this.state
 
         return (
@@ -115,16 +137,20 @@ class UtilisationVehiculeEtat extends Component {
                                             </button>
 
 
-
-                                            <ReactHTMLTableToExcel
+                                            {!isFormOpened ? <React.Fragment>
+                                                <ReactHTMLTableToExcel
                                                 id="test-table-xls-button"
                                                 className="mb-2 mr-2 btn-transition btn btn-outline-success"
                                                 table="export"
                                                 filename="Liste des utilisations des véhicules"
                                                 sheet="feuille1"
-                                                buttonText="Ecran -> Excel" />
+                                                buttonText="Etat -> Excel" />
 
-                                            <button className="mb-2 mr-2 btn-transition btn btn-outline-info" onClick={this.createP}>Imprimer</button>
+                                            <button className="mb-2 mr-2 btn-transition btn btn-outline-info" onClick={this.createP}>Etat PDF</button>
+                                            
+                                            </React.Fragment> : null}
+                                          
+                                       
                                         </React.Fragment> : null}
                                     </span>
                                 </h5>
@@ -132,7 +158,7 @@ class UtilisationVehiculeEtat extends Component {
 
                                 {etatVehiculeUtilisationParVehicule.length ? <React.Fragment>
 
-                                {isFormOpened ? VehiculeEtatForm :
+                                {isFormOpened ? <UtilisationVehiculeEtatForm onFormUtilisationSubmit={this.onFormUtilisationSubmit} /> :
                                     <table className="mb-0 table table-bordered " id="export">
                                         {etatVehiculeUtilisationParVehicule.map((etatCourant, index) => <React.Fragment key={index} >
                                             <thead>

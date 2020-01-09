@@ -141,7 +141,7 @@ class ReservationVehiculeEtat extends Component {
 
                                 {etatVehiculeConsommation.length ? <React.Fragment>
 
-                                {isFormOpened ? VehiculeEtatForm :
+                                {isFormOpened ? <VehiculeEtatForm /> :
                                     <table className="mb-0 table table-bordered " id="export">
                                         {etatVehiculeConsommation.map((etatCourant, index) => <React.Fragment key={index} >
                                             <thead>

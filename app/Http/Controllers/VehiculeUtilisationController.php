@@ -22,7 +22,7 @@ class VehiculeUtilisationController extends Controller
     public function index()
     {
        // return $this->model->all();
-       $utilisations_par_vehicules = VehiculeUtilisation::with(['vehicule',
+       $utilisations_par_vehicules = VehiculeUtilisation::with(['vehicule.entite_physique',
                                                          'nature_utilisation', 'chauffeur'])
                                                          ->with('utilisateur.entite_affectation')
                                                          ->orderBy('date_debut_utilisation', 'desc')
@@ -62,7 +62,7 @@ class VehiculeUtilisationController extends Controller
 
         $vehicule->save();
   
-         return response()->json(VehiculeUtilisation::with(['vehicule',
+         return response()->json(VehiculeUtilisation::with(['vehicule.entite_physique',
          'nature_utilisation', 'chauffeur'])
          ->with('utilisateur.entite_affectation')->find($creation->id));
 
@@ -104,7 +104,7 @@ class VehiculeUtilisationController extends Controller
 
        $this->model->update($request->only($this->model->getModel()->fillable), $id);
 
-        return response()->json(VehiculeUtilisation::with(['vehicule', 'utilisateur',
+        return response()->json(VehiculeUtilisation::with(['vehicule.entite_physique', 'utilisateur',
         'nature_utilisation', 'chauffeur'])->find($id));
     }
 

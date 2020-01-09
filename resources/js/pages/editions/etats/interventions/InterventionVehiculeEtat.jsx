@@ -133,7 +133,7 @@ class InterventionVehiculeEtat extends Component {
 
                                 {etatVehiculeUtilisationParVehicule.length ? <React.Fragment>
 
-                                {isFormOpened ? VehiculeEtatForm :
+                                {isFormOpened ? <VehiculeEtatForm /> :
                                     <table className="mb-0 table table-bordered " id="export">
                                         {etatVehiculeUtilisationParVehicule.map((etatCourant, index) => <React.Fragment key={index} >
                                             <thead>
