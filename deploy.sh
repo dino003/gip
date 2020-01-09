@@ -25,3 +25,5 @@ php artisan -v queue:restart
 
 php artisan up
 
+#http://parcauto.kognishare.com/api/deploy_autre 
+
