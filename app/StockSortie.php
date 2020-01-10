@@ -7,7 +7,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class StockSortie extends Model
 {
-  //  use UsesTenantConnection;
+    use UsesTenantConnection;
 
         
       protected $table = 'stock_sorties';

@@ -7,7 +7,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class ParamModule extends Model
 {
-       // use UsesTenantConnection;
+        use UsesTenantConnection;
 
        protected $table = 'parametre_generaux_modules';
 

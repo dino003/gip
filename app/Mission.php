@@ -7,7 +7,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class Mission extends Model
 {
-    // use UsesTenantConnection;
+     use UsesTenantConnection;
     protected $table = 'missions';
 
     public $timestamps = false;

@@ -7,7 +7,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class StructureRegroupement extends Model
 {
-    //use UsesTenantConnection;
+    use UsesTenantConnection;
 
     protected $table = 'parametrage_structure_regroupements';
 

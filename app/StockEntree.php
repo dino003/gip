@@ -7,7 +7,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class StockEntree extends Model
 {
-   // use UsesTenantConnection;
+    use UsesTenantConnection;
 
    
    protected $table = 'stocks_entrees';

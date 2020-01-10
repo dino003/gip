@@ -7,7 +7,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class ParamStock extends Model
 {
-        // use UsesTenantConnection;
+         use UsesTenantConnection;
 
         protected $table = 'parametre_generaux_stocks';
 

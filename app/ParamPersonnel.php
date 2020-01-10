@@ -7,7 +7,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class ParamPersonnel extends Model
 {
-      // use UsesTenantConnection;
+       use UsesTenantConnection;
 
       protected $table = 'parametre_generaux_personnels';
 

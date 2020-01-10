@@ -9,7 +9,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class Entite extends Model
 {
-   // use UsesTenantConnection;
+    use UsesTenantConnection;
     protected $table = 'parametrage_entites';
 
     protected $guarded = ['id'];

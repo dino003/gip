@@ -8,7 +8,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class OperationIntervention extends Model
 {
-   // use UsesTenantConnection;
+    use UsesTenantConnection;
 
     protected $table = 'parametrage_operations_interventions';
 

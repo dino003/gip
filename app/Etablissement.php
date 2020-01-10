@@ -7,7 +7,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class Etablissement extends Model
 {
-   // use UsesTenantConnection;
+    use UsesTenantConnection;
 
    protected $table = 'parametre_generaux_etablissements';
 

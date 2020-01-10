@@ -7,7 +7,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class ParamJournal extends Model
 {
-     // use UsesTenantConnection;
+      use UsesTenantConnection;
 
      protected $table = 'parametres_generaux_journal';
 

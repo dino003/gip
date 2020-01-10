@@ -8,7 +8,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class CategorieVehicule extends Model
 {
-   // use UsesTenantConnection;
+    use UsesTenantConnection;
     protected $table = 'parametrage_codifications_categories_vehicules';
 
     public $timestamps = false;

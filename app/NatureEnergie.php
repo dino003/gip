@@ -7,7 +7,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class NatureEnergie extends Model
 {
-   // use UsesTenantConnection;
+    use UsesTenantConnection;
     protected $table = 'parametrage_nature_energies';
 
     public $timestamps = false;

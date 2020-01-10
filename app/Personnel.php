@@ -7,7 +7,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class Personnel extends Model
 {
-  //  use UsesTenantConnection;
+    use UsesTenantConnection;
 
     protected $table = 'personnels';
 

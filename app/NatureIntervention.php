@@ -7,7 +7,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class NatureIntervention extends Model
 {
-   // use UsesTenantConnection;
+    use UsesTenantConnection;
 
     protected $table = 'parametrage_nature_interventions';
 
