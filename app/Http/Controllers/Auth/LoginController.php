@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use App\User;
 use Illuminate\Http\Request;
+use App\User;
+use Illuminate\Validation\Rule;
+use Hyn\Tenancy\Models\Hostname;
 
 
 class LoginController extends Controller
@@ -28,7 +30,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/gestion_du_parc_automobile/parc';
 
     /**
      * Create a new controller instance.
@@ -63,6 +65,37 @@ class LoginController extends Controller
             'email' => 'string|exists:users',
             'username' => 'string|exists:users',
         ], $messages);
+    }
+
+
+    public function showDomainForm() {
+        return view('auth.domain');
+    }
+
+    public function showLoginFormTenant() {
+        return view('login_tenant');
+    }
+
+    public function routeToTenant( Request $request ) {        
+        $invalidSubdomains = config( 'app.invalid_subdomains' );
+        $validatedData = $request->validate([
+            'account' => [
+                'required', 
+                'string',
+                Rule::notIn( $invalidSubdomains ),
+                'regex:/^[A-Za-z0-9](?:[A-Za-z0-9\-]{0,61}[A-Za-z0-9])$/'
+            ],
+        ]);
+
+        $fqdn = $validatedData['account'] . '.' . config( 'app.url_base' );
+        $hostExists = Hostname::where( 'fqdn', $fqdn )->exists();
+        $port = $request->server('SERVER_PORT') == 8000 ? ':8000' : '';
+        if ( $hostExists ) {
+            return redirect( ( $request->secure() ? 'https://' : 'http://' ) . $fqdn . $port . '/login' );
+        } else {
+            return redirect('register')
+            ->withInput();
+        }
     }
 
    

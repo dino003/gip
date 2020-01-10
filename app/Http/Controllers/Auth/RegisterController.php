@@ -7,9 +7,20 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+
+
+use Hyn\Tenancy\Contracts\Repositories\HostnameRepository;
 use Hyn\Tenancy\Contracts\Repositories\WebsiteRepository;
 use Hyn\Tenancy\Models\Hostname;
 use Hyn\Tenancy\Models\Website;
+use Hyn\Tenancy\Environment;
+
+
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Validation\Rule;
+
+
 
 class RegisterController extends Controller
 {
@@ -31,7 +42,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/gestion_du_parc_automobile/parc';
 
     /**
      * Create a new controller instance.
@@ -63,9 +74,22 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        $invalidSubdomains = config('app.invalid_subdomains');
+
         return Validator::make($data, [
+            'account' => [
+                'required', 
+                'string',
+                Rule::notIn( $invalidSubdomains ),
+                'regex:/^[A-Za-z0-9](?:[A-Za-z0-9\-]{0,61}[A-Za-z0-9])$/'
+            ],
+
+            'fqdn' => ['required', 'string', 'unique:hostnames'],
+
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'username' => ['required', 'string', 'max:255'],
+
+            'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -78,10 +102,50 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+         // Use the Tenancy package command to create the tenant
+         $hostname = $this->createTenant( $data['fqdn'] );
+
+           // swap the environment over to the hostname
+        app( Environment::class )->hostname( $hostname );
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'username' => $data['username'],
+
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    private function createTenant( $fqdn )
+    {
+        // first create the 'website'
+        $website = new Website;
+        app( WebsiteRepository::class )->create( $website );
+
+        // now associate the 'website' with a hostname
+        $hostname = new Hostname;
+        $hostname->fqdn = $fqdn;
+        app( HostnameRepository::class )->attach( $hostname, $website );
+
+        return $hostname;
+    }
+
+    public function register(Request $request) {
+        // we'll add in our fqdn here
+        $data = $request->all();
+        if ( isset( $data['account'] ) ) {
+            $fqdn = $data['account'] . '.' . config('app.url_base');
+            $request->merge(['fqdn' => $fqdn]);
+        }
+
+        // validate with the validator below
+        $this->validator($request->all())->validate();
+
+        // new registered user event
+        event(new Registered($user = $this->create($request->all())));
+
+        $port = $request->server('SERVER_PORT') == 8000 ? ':8000' : '';
+        return redirect( ( $request->secure() ? 'https://' : 'http://' ) . $fqdn . $port . '/login?success=1' );
     }
 }

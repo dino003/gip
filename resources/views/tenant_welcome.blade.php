@@ -64,30 +64,21 @@
         </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
+    <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
                     <a href="{{ url('/gestion_du_parc_automobile/parc') }}">Le Parc</a>
                     @else
                         <a href="{{ route('login') }}">Connexion</a>
-                        
-                        <!-- <a href="{{ url('/gestion_du_parc_automobile/parc') }}">Le Parc</a> -->
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Inscription</a>
-                            
-                        @endif
                     @endauth
                 </div>
             @endif
 
             <div class="content">
                 <div class="title m-b-md">
-                {{ config('app.name') }}
+                    {{ config('app.name') }}
                 </div>
-
-
             </div>
         </div>
     </body>
