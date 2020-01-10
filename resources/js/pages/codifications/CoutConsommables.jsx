@@ -182,7 +182,7 @@ import CoutConsommableItem from '../../components/codifications/CoutConsommableI
                                                  : (
                                                     <span>
                                                    
-                                                    {this.state.libelle && this.state.libelle.length && this.state.cout_unitaire && this.state.cout_unitaire.length > 2 ? (
+                                                    {this.state.libelle && this.state.libelle.length && this.state.cout_unitaire ? (
                                                          <button onClick={this.handleSubmit} className="mb-2 mr-2 btn-transition btn btn-outline-success">
                                                              <i className="fa fa-send"></i> {' '}
 

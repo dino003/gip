@@ -71,8 +71,7 @@ class CreateTenant extends Command
         $user = User::create([
             'name' => $name,
             'email' => $email,
-            'trial_ends_at' => now()->addDays(40),
-
+           // 'trial_ends_at' => now()->addDays(40),
             'password' => Hash::make( $password )
         ]);
 
