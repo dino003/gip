@@ -44,7 +44,8 @@ export default class ShowPassword extends Component {
         const { isPassword} = this.state
         return (
             
-        <span onClick={this.toggleVisible} style={{cursor: 'pointer'}} className={isPassword ? 'btn btn-success' : 'btn btn-info'}> {!isPassword ? 'Masquer' : 'Voir'}</span>
+        <span onClick={this.toggleVisible} style={{cursor: 'pointer'}} className={isPassword ? 'input-group-text btn btn-success lnr lnr-eye' : 'input-group-text btn btn-info lnr lnr-lock'}> {!isPassword ? 'Masquer' : 'Voir'}</span>
+      
         )
     }
 }

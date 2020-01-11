@@ -385,6 +385,80 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
         );
     }
 
+
+
+
+    enregistrerStructureSiVide = async () => {
+        if(!this.props.structures_etablissements.length){
+            await axios.post('/api/ajouter_structure_etablissement_si_vide', 
+            {
+                code_regroupement: 'SIEGE',
+                nom_regroupement: 'SIEGE ETABLISSEMENT'
+         }
+         ).then(response => {
+              const action = {type: "ADD_STRUCTURE_ETABLISSEMENT", value: response.data}
+              this.props.dispatch(action)
+        
+         })
+          .catch(error => {
+             console.log(error)
+          } );
+        }
+      
+    }
+
+    enregistrerPersonnelSiVide = () => {
+         
+           if(!this.props.personnels.length){
+            axios.post('/api/ajouter_personnel_si_vide', {
+                nom: 'PERSONNE PAR DEFAUT',
+                default: true,
+                personne_prioritaire: true,
+              //  entite_affectation: this.entite_affectation.value,
+               // nom_entite_affectation: this.nom_entite_affectation.value,
+            }).then(response => {
+                
+               const action = {type: "ADD_PERSONNEL", value: response.data}
+               this.props.dispatch(action)
+            }).catch(error => {
+                 console.log(error) } )
+           }
+      }
+
+      async ajoutertypeEntiteSiVide(){
+
+        if(!this.props.types_entites.length){
+          await axios.post('/api/ajouter_type_entite_si_vide', {
+                type_entite: 'SIEGE'
+            }).then(response => {
+                const action = {type: "ADD_TYPE_ENTITE", value: response.data}
+                this.props.dispatch(action)
+            }).catch(error => console.log(error))
+    
+        }
+
+    } 
+
+    async ajouterFournisseursiVide(){
+
+        if(!this.props.tiers.length){
+        
+              axios.post('/api/ajouter_tier_si_vide', {
+                  code: 'FOURNISSEUR PAR DEFAUT',
+                
+              })
+              .then(response => {
+                 const action = {type: "ADD_TIER", value: response.data}
+                   this.props.dispatch(action)
+            
+               
+              }).catch(error => {
+                   console.log(error) } )
+             
+        }
+
+    } 
+
  
 
  
@@ -425,6 +499,12 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
         this.fetchReservation();
         this.fetchNatureAmendes();
         this.fetchOrdresMissions();
+
+        
+            // premier personnel et Tier
+            this.enregistrerPersonnelSiVide();
+            this.ajouterFournisseursiVide();
+
         this.fetchNatureSinistres();
         this.fetchNatureDepenseRecettes();
         this.fetchNatureReservations();
@@ -435,7 +515,11 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
         this.fetchBudgetEntites();
         this.fetchInterventions();
         this.fetchConsommations();
-        this.fetchCommandes();
+
+           // ajouter structure de base
+           this.enregistrerStructureSiVide()
+           this.ajoutertypeEntiteSiVide();
+
         this.fetchArticlesStock();
         this.fetchEntreesStock();
         this.fetchSortiesStock();
@@ -443,6 +527,8 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
         this.fetchAmendes();
         this.fetchBudgetVehicules();
         this.fetchVehicules();
+        this.fetchCommandes();
+
 
     }
 
@@ -613,7 +699,11 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
 
 const mapStateToProps = state => {
     return {
-        user: state.auth.user
+        user: state.auth.user,
+        personnels: state.personnels.items,
+        structures_etablissements: state.structures_etablissements.items,
+        tiers: state.tiers.items,
+        types_entites: state.types_entites.items
       
     }
   }

@@ -29,6 +29,24 @@ Route::post('deploy_autre', function(){
 });
 
 
+//---------------------- setup des informations par defaut --------------------------------------------------------**********
+
+// premiere structure
+Route::post('ajouter_structure_etablissement_si_vide', 'SetupController@ajouterPremiereStructure');
+// premier personnel
+Route::post('ajouter_personnel_si_vide', 'SetupController@ajouterPremierPersonnel');
+
+// premier Tier 
+Route::post('ajouter_tier_si_vide', 'SetupController@ajouterPremierTier');
+// premiere type entité
+Route::post('ajouter_type_entite_si_vide', 'SetupController@ajouterPremiereTypeEntite');
+
+
+
+
+//*********fin setup des informations par defaut ************----------------------------------------------------------- */
+
+
 //----------------------Cout consomables --------------------------------------------------------**********
 Route::get('couts_consomables', 'CoutConsomableController@index');
 // voir

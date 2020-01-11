@@ -18,6 +18,14 @@
 
     <!-- Styles -->
     <link href="{{ URL::asset('css/app.css') }}" rel="stylesheet">
+
+    @yield('other_css')
+
+    <style>
+        .accueil_form_image{
+            background-image: url("/garde/images/module_560.png") 
+    }
+    </style>
 </head>
 <body>
     <div id="appi">
@@ -49,6 +57,12 @@
                                 </li>
                             @endif
                         @else
+
+                        @if (auth()->user()->free_trial_days_left > 0)
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">{{ auth()->user()->free_trial_days_left }} Jours Restant pour la période d\'évaluation'.</a>
+                            </li>
+                        @endif
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>

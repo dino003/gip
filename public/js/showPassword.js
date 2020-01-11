@@ -29459,7 +29459,7 @@ function (_Component) {
         style: {
           cursor: 'pointer'
         },
-        className: isPassword ? 'btn btn-success' : 'btn btn-info'
+        className: isPassword ? 'input-group-text btn btn-success lnr lnr-eye' : 'input-group-text btn btn-info lnr lnr-lock'
       }, " ", !isPassword ? 'Masquer' : 'Voir');
     }
   }]);

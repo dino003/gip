@@ -23,7 +23,13 @@ class User extends Authenticatable
         'id'
     ];
 
+    protected $dates = [
+        'periode_essai'
+    ];
+
     public $timestamps = false;
+
+  
 
     /**
      * The attributes that should be hidden for arrays.
@@ -43,11 +49,20 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $dates = ['trial_ends_at'];
 
     public function autorisation()
     {
         return $this->hasOne(UserFonction::class, 'user', 'id');
+    }
+
+    public function getFreeTrialDaysLeftAttribute()
+    {
+        // Future field that will be implemented after payments
+        if ($this->plan_until) { 
+            return 0;
+        }
+
+        return now()->diffInDays($this->periode_essai, false);
     }
 
   

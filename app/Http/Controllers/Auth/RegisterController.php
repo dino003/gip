@@ -116,6 +116,8 @@ class RegisterController extends Controller
             'username' => $data['username'],
             'isAdmin' => true,
             'password' => Hash::make($data['password']),
+            'periode_essai' => now()->addDays(config('app.free_trial_days')),
+
         ]);
 
          
