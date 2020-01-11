@@ -102,6 +102,8 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        ini_set('max_execution_time', '300');
+
          // Use the Tenancy package command to create the tenant
          $hostname = $this->createTenant( $data['fqdn'] );
 
@@ -147,5 +149,9 @@ class RegisterController extends Controller
 
         $port = $request->server('SERVER_PORT') == 8000 ? ':8000' : '';
         return redirect( ( $request->secure() ? 'https://' : 'http://' ) . $fqdn . $port . '/login?success=1' );
+    
+      //  $port = $request->server('SERVER_PORT') == 8000 ? ':8000' : '';
+      //  return redirect( ( $request->secure() ? 'https://' : 'http://' ) . $fqdn  . '/login?success=1' );
+    
     }
 }

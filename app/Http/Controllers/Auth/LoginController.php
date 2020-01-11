@@ -10,6 +10,7 @@ use Illuminate\Validation\Rule;
 use Hyn\Tenancy\Models\Hostname;
 
 
+
 class LoginController extends Controller
 {
     /*
@@ -96,6 +97,8 @@ class LoginController extends Controller
             return redirect('register')
             ->withInput();
         }
+
+  
     }
 
    

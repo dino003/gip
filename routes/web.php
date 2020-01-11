@@ -72,7 +72,7 @@ Route::middleware('tenant.exists')->group(function () {
       })->where('path', '.*')->middleware('auth');
  
      // Login Routes
-     Route::get('login', 'Auth\LoginController@showLoginFormTenant')->name('login');
+     Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
      Route::post('login', 'Auth\LoginController@login');
      Route::post('logout', 'Auth\LoginController@logout')->name('logout');
      
