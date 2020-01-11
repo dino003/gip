@@ -17,6 +17,8 @@ class CreateUsersTable extends Migration {
 			$table->bigInteger('id', true)->unsigned();
 			$table->string('name');
 			$table->string('email')->nullable()->unique();
+			$table->boolean('isAdmin')->default(0);
+
 			$table->date('date_limite_mot_de_passe')->nullable();
 			$table->date('date_creation')->nullable();
 			$table->date('date_modification')->nullable();

@@ -108,10 +108,9 @@ import CoutConsommableItem from '../../components/codifications/CoutConsommableI
         return  <span style={{textAlign: 'center'}}>
 
         <Loader
-            type="BallTriangle"
-            color="#00BFFF"
-            height={100}
-            width={100}
+           
+            height={500}
+            width={300}
          />
          </span>
     }

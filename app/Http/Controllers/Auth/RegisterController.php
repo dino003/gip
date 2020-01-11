@@ -110,13 +110,15 @@ class RegisterController extends Controller
            // swap the environment over to the hostname
         app( Environment::class )->hostname( $hostname );
 
-        return User::create([
+        return  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'username' => $data['username'],
-
+            'isAdmin' => true,
             'password' => Hash::make($data['password']),
         ]);
+
+         
     }
 
     private function createTenant( $fqdn )
@@ -148,7 +150,12 @@ class RegisterController extends Controller
         event(new Registered($user = $this->create($request->all())));
 
         $port = $request->server('SERVER_PORT') == 8000 ? ':8000' : '';
-        return redirect( ( $request->secure() ? 'https://' : 'http://' ) . $fqdn . $port . '/login?success=1' );
+
+        $redirection =  ( $request->secure() ? 'https://' : 'http://' ) . $fqdn . $port . '/login?success=1' ;
+
+       return response()->json($redirection);
+       
+       // return redirect( ( $request->secure() ? 'https://' : 'http://' ) . $fqdn . $port . '/login?success=1' );
     
       //  $port = $request->server('SERVER_PORT') == 8000 ? ':8000' : '';
       //  return redirect( ( $request->secure() ? 'https://' : 'http://' ) . $fqdn  . '/login?success=1' );

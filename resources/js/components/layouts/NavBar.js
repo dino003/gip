@@ -399,6 +399,8 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
       //  this.props.dispatch(action2)
         this.fetchInfoSociete();
         this.fetchInfoParamGenerauxReservationOrdre();
+        this.fetchUtilisateurs();
+
         this.fetchInfoAlerte();
         this.fetchInfoParamGenerauxModules();
         this.fetchInfoParamGenerauxPersonnels();
@@ -414,7 +416,6 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
         this.fetchPersonnels();
         this.fetchTiers();
         this.fetchContratAssurances();
-        this.fetchUtilisateurs();
         this.fetchModeleVehicules();
         this.fetchCodeIncidents()
         this.fetchNatureEnergies();
@@ -576,16 +577,17 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
                                             <h6 tabIndex="-1" className="dropdown-header">Header</h6>
                                             <button type="button" tabIndex="0" className="dropdown-item">Actions</button>
                                             <div tabIndex="-1" className="dropdown-divider"></div>
-                                            <button type="button" tabIndex="0" className="dropdown-item">Dividers</button>
+                                            <button type="button" tabIndex="0" className="dropdown-item">Déconnexion</button>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="widget-content-left  ml-3 header-user-info">
                                     <div className="widget-heading">
-                                        Alina Mclourd
+                                        {this.props.user.username.slice(0, 12)}
                                     </div>
+                                    
                                     <div className="widget-subheading">
-                                        VP People Manager
+                                    {this.props.user.email.slice(0, 20)}
                                     </div>
                                 </div>
                                 {/* <div className="widget-content-right header-user-info ml-3">
@@ -609,4 +611,11 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     }
 }
 
-export default connect(null, null)(NavBar)
+const mapStateToProps = state => {
+    return {
+        user: state.auth.user
+      
+    }
+  }
+
+export default connect(mapStateToProps)(NavBar)

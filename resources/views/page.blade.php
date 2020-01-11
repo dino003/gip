@@ -7,13 +7,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>{{ config('app.name', 'Laravel') }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
-    <meta name="description" content="This is an example dashboard created using build-in elements and components.">
+    <meta name="description" content="Logiciel Professionnel de gestion du parc automobile.">
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link href="https://cdn.webdatarocks.com/latest/webdatarocks.min.css" rel="stylesheet" />
-<script src="https://cdn.webdatarocks.com/latest/webdatarocks.toolbar.min.js"></script>
-<script src="https://cdn.webdatarocks.com/latest/webdatarocks.js"></script>
+  
 
     <!--
     =========================================================
@@ -28,66 +26,14 @@
         <link href="{{asset('main.css')}}" rel="stylesheet">
 
        <style>
-           .modalDynamique {
-    width: 500px;
-    background: white;
-    border: 1px solid #ccc;
-    transition: 1.1s ease-out;
-    box-shadow: 
-      -2rem 2rem 2rem rgba(black, 0.2);
-    filter: blur(0);
-    transform: scale(1);  
-    opacity: 1;
-    visibility: visible;
-    &.off {
-      opacity: 0;
-      visibility: hidden;
-      filter: blur(8px);
-      transform: scale(0.33);
-      box-shadow: 1rem 0 0 rgba(black, 0.2);
-    }
-    @supports (offset-rotate: 0deg) {
-      // offset-rotation: 0deg;
-      offset-rotate: 0deg;
-      offset-path: path("M 250,100 S -300,500 -700,-200");
-      &.off {
-        offset-distance: 100%;
-      }
-    }
-    @media (prefers-reduced-motion) {
-      offset-path: none;
-    }
-    h2 {
-      border-bottom: 1px solid #ccc;
-      padding: 1rem;
-      margin: 0;
-    }
-    .content {
-      padding: 1rem;
-    }
-    .actions {
-      border-top: 1px solid #ccc;
-      background: #eee;
-      padding: 0.5rem 1rem;
-      button {
-        border: 0;
-        background: #78f89f;
-        border-radius: 5px;
-        padding: 0.5rem 1rem;
-        font-size: 0.8rem;
-        line-height: 1;
-      }
-    }
-  }
-
-   html,body{ overflow-x:hidden; } 
-
+         html,body{ overflow-x:hidden; } 
 
        </style>
     </head>
     <body >
 
-            <div id="react"></div>
+            <div id="react" data-user_id="{{Auth::user()->id}}" data-user_name="{{Auth::user()->name}}" data-username="{{Auth::user()->username}}"  >
+            </div>
   
 
 <script type="text/javascript" src="{{asset('js/app.js')}}"></script>

@@ -12,4 +12,7 @@ const mix = require('laravel-mix');
  */
 
 mix.react('resources/js/app.js', 'public/js')
+mix.react('resources/js/backend_scripts_react/register.js', 'public/js')
+mix.react('resources/js/backend_scripts_react/showPassword.js', 'public/js')
+
    .sass('resources/sass/app.scss', 'public/css');

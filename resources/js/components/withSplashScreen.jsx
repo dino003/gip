@@ -423,6 +423,8 @@ function withSplashScreen(WrappedComponent) {
 
          this.fetchInfoSociete();
          this.fetchInfoParamGenerauxReservationOrdre();
+         this.fetchUtilisateurs();
+
          this.fetchInfoAlerte();
          this.fetchInfoParamGenerauxModules();
          this.fetchInfoParamGenerauxPersonnels();
@@ -438,7 +440,6 @@ function withSplashScreen(WrappedComponent) {
          this.fetchPersonnels();
          this.fetchTiers();
          this.fetchContratAssurances();
-         this.fetchUtilisateurs();
          this.fetchModeleVehicules();
          this.fetchCodeIncidents()
          this.fetchNatureEnergies();
@@ -513,9 +514,15 @@ function withSplashScreen(WrappedComponent) {
       }
 
     render() {
-    
+     if(this.props.user_id){
+        var authUser = this.props.utilisateurs.find(user => user.id == this.props.user_id)
+        if(authUser) {
+            const action = {type: "GET_AUTH", value: authUser}
+            this.props.dispatch(action)
+        }
+        }
       if (!store.getState().vehicules.items) return this.LoadingMessage();
-
+        // console.log(this.props)
       // otherwise, show the desired route
       return <WrappedComponent {...this.props} />;
     }
@@ -526,7 +533,8 @@ function withSplashScreen(WrappedComponent) {
 
 const mapStateToProps = state => {
     return {
-        vehicules: state.vehicules.items
+        vehicules: state.vehicules.items,
+        utilisateurs: state.utilisateurs.items
       
     }
   }

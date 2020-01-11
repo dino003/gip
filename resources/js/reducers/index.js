@@ -46,8 +46,10 @@ import ParamStockReducer from './parametres_generaux/ParamStockReducer'
 import ParamPersonnelReducer from './parametres_generaux/ParamPersonnelReducer'
 import ParamJournalReducer from './parametres_generaux/ParamJournalReducer'
 import AlertReducer from './parametres_generaux/AlerteReducer'
+import AuthReducer from './auth/AuthReducer'
 
 const allReducers = combineReducers({
+    auth: AuthReducer,
     types_entites: TypeEntiteReducer,
     structures_etablissements: StructureEtablissementReducer,
     entites: EntitesReducer,
