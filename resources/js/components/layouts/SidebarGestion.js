@@ -12,7 +12,7 @@ const active = {
 
         const {param_generaux_modules} = this.props
         return (
-            <div className="app-sidebar sidebar-shadow ">
+            <div className={this.props.theme && this.props.theme.sidebar ? `${this.props.theme.sidebar}` : 'app-sidebar sidebar-shadow'}>
             {/*             <div className="app-sidebar sidebar-shadow bg-asteroid sidebar-text-light">
 */}                    <div className="app-header__logo">
                         <div className="logo-src"></div>
@@ -158,6 +158,8 @@ const mapStateToProps = state => {
     return {
         param_generaux_modules: state.param_generaux_modules.items,
         param_generaux_reservation_ordre: state.param_generaux_reservation_ordre.items,
+        theme: state.theme.items
+
 
     }
   }

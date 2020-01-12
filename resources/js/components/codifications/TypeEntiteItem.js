@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 
-export default class TypeEntiteItem extends Component {
+import {connect} from 'react-redux'
+
+ class TypeEntiteItem extends Component {
 
     constructor(props) {
         super(props);
@@ -38,6 +40,7 @@ export default class TypeEntiteItem extends Component {
     
     render() {
         const {item} = this.props
+        const firstElement = this.props.types_entites.find(el => el.type_entite == "SIEGE")
         return (
             <tr>
                 {/*<td>{item.type_entite}</td> */}
@@ -49,9 +52,11 @@ export default class TypeEntiteItem extends Component {
 
                     <span className="pull-right">
                         {!this.state.isEdit ? 
-                         <button onClick={this.props.onDelete.bind(this, item.id)} className="mb-2 mr-2 btn-transition btn btn-outline-danger pull-right">
+                        <React.Fragment>
+                         {item == firstElement ? null :   <button onClick={this.props.onDelete.bind(this, item.id)} className="mb-2 mr-2 btn-transition btn btn-outline-danger pull-right">
                          <i className="fa fa-trash"></i>
-                    </button> :
+                    </button>}
+                        </React.Fragment> :
                      <span>
                      <button onClick={this.onEdit} className="mb-2 mr-2 btn-transition btn btn-outline-warning pull-right">
                           <i className="fa fa-times"></i>
@@ -70,3 +75,12 @@ export default class TypeEntiteItem extends Component {
         );
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        types_entites: state.types_entites.items,
+
+    }
+  }
+
+export default connect(mapStateToProps)(TypeEntiteItem)

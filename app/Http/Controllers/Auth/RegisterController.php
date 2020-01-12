@@ -3,6 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\StructureRegroupement;
+use App\TypeEntite;
+use App\Tier;
+use App\Personnel;
+use App\Entite;
+use App\Theme;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -110,7 +117,7 @@ class RegisterController extends Controller
            // swap the environment over to the hostname
         app( Environment::class )->hostname( $hostname );
 
-        return  User::create([
+        $user =  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'username' => $data['username'],
@@ -119,6 +126,58 @@ class RegisterController extends Controller
             'periode_essai' => now()->addDays(config('app.free_trial_days')),
 
         ]);
+
+        //  structure par  defaut
+        $struc = new StructureRegroupement;
+
+        $struc->code_regroupement = $request->get('code_regroupement');
+        $struc->nom_regroupement = $request->get('nom_regroupement');
+
+        $struc->save();
+
+        // fin structure par  defaut
+
+
+        //  type entite par  defaut
+        $ent = new TypeEntite;
+        $ent->type_entite = $request->get('type_entite');
+        $ent->save();
+
+    // fin type entite par  defaut
+
+
+    //  fournisseur par  defaut
+
+        $tier = new Tier;
+
+        $tier->code = $request->get('code');
+
+        $tier->save();
+
+    // fin fournisseur par  defaut
+
+
+    // personne par Par defaut 
+        $pers = new Personnel;
+
+        $pers->nom = $request->get('nom');
+        $pers->default = $request->get('default');
+        $pers->personne_prioritaire = $request->get('personne_prioritaire');
+      //  $pers->entite_affectation = $request->get('nom');
+        $pers->save();
+
+        // fin personne par par defaut
+
+        // theme par defaut 
+            $theme = new Theme;
+            $theme->navbar = "app-header header-shadow bg-primary header-text-light";
+            $theme->sidebar = "app-sidebar sidebar-shadow";
+            $theme->save();
+
+
+        // fin theme
+
+        return $user;
 
          
     }
@@ -153,11 +212,11 @@ class RegisterController extends Controller
 
         $port = $request->server('SERVER_PORT') == 8000 ? ':8000' : '';
 
-        $redirection =  ( $request->secure() ? 'https://' : 'http://' ) . $fqdn . $port . '/login?success=1' ;
+       // $redirection =  ( $request->secure() ? 'https://' : 'http://' ) . $fqdn . $port . '/login?success=1' ;
 
-       return response()->json($redirection);
+      // return response()->json($redirection);
        
-       // return redirect( ( $request->secure() ? 'https://' : 'http://' ) . $fqdn . $port . '/login?success=1' );
+        return redirect( ( $request->secure() ? 'https://' : 'http://' ) . $fqdn . $port . '/login?success=1' );
     
       //  $port = $request->server('SERVER_PORT') == 8000 ? ':8000' : '';
       //  return redirect( ( $request->secure() ? 'https://' : 'http://' ) . $fqdn  . '/login?success=1' );

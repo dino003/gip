@@ -3,8 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Carbon;
+//use Illuminate\Support\Carbon;
 use Laravel\Cashier\Cashier;
+use Carbon\Carbon;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -22,8 +23,8 @@ class AppServiceProvider extends ServiceProvider
             $this->app->register(\Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class);
         }
 
-
-        Cashier::ignoreMigrations();
+        Carbon::setLocale(LC_TIME, config('app.locale'));
+       // Cashier::ignoreMigrations();
     }
 
     /**

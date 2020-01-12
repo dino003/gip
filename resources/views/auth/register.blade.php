@@ -7,7 +7,7 @@
 
     <div class="container-contact100">
 		<div class="wrap-contact100">
-            <form class="contact100-form " method="POST" action="{{ route('register') }}">
+            <form class="contact100-form " id="register_form" method="POST" action="{{ route('register') }}">
                         @csrf
             <!-- <div class="main-card mb-6 card"> -->
                                             <!-- <div class="card-body"> -->
@@ -93,7 +93,27 @@
                                                     <br>
                                                   
                                                     
-                                     <div class="form-group row mb-0" id="register_button_for_react"></div>
+                                     <div class="form-group row mb-0">
+
+                                     <div class="col-md-6" id="submit_button" >
+                                        <button 
+                                        type="submit" 
+                                            class="btn btn-primary">
+                                            Valider
+                                        </button> 
+
+                                    </div>
+                                     
+                                     <div class="col-md-12" id="waiting_message" style="display: none;">
+                                        <span >
+                                            <em style="color: red;"> Configuration et préparation de vos données; Cette opération peut prendre quelques minutes.</em>
+                                            <div class="spinner-border text-danger" role="status">
+                                            <span class="sr-only">Chargement...</span>
+                                                </div>
+                                        </span>
+                                     </div>
+                                    
+                                     </div>
     
                                                     <br /><br /><br /><br /><br /><br /><br />
                                                 </div>
@@ -306,12 +326,37 @@
 @section('other_script')
 
 
-<script src="https://unpkg.com/react@16/umd/react.production.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.js" crossorigin></script>
+<script src="https://unpkg.com/react@16/umd/react.developpement.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.developpement.js" crossorigin></script>
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
-  <script type="text/javascript" src="{{URL::asset('js/register.js')}}"></script>
+  <!-- <script type="text/javascript" src="{{URL::asset('js/register.js')}}"></script> -->
   <script type="text/javascript" src="{{URL::asset('js/showPassword.js')}}"></script>
+
+  <script type="text/javascript">
+
+    function logSubmit(){
+        var waiting = document.getElementById('waiting_message');
+        var log = document.getElementById('submit_button');
+        if(waiting.style.display === "none"){
+            waiting.style.display = "block";
+        }else{
+            waiting.style.display = "none";
+
+        }
+
+        if(log.style.display === "none"){
+            log.style.display = "block";
+        }else{
+            log.style.display = "none";
+
+        }
+    }
+
+    const form = document.getElementById('register_form');
+     form.addEventListener('submit', logSubmit )
+
+  </script>
 
 
 

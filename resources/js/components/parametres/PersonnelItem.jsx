@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
+import {connect} from 'react-redux'
 
-export default class PersonnelItem extends Component {
+ class PersonnelItem extends Component {
     constructor(props) {
         super(props);
         
@@ -9,6 +10,8 @@ export default class PersonnelItem extends Component {
 
     render() {
         const {item, index} = this.props
+        const personneDefaut = this.props.personnels.find(el => el.nom == "PERSONNE PAR DEFAUT")
+
         return (
             <tr>
                                       
@@ -23,9 +26,11 @@ export default class PersonnelItem extends Component {
             <td>
 
                 <span className="pull-right">
-                    <button onClick={this.props.onDelete.bind(this, item.id)} className="mb-2 mr-2 btn-transition btn btn-outline-danger pull-right">
+                   
+
+                {item == personneDefaut ? null : <button onClick={this.props.onDelete.bind(this, item.id)} className="mb-2 mr-2 btn-transition btn btn-outline-danger pull-right">
                     <i className="fa fa-trash"></i>
-                </button>
+                </button>}
 
                 </span>
                 </td>
@@ -34,3 +39,12 @@ export default class PersonnelItem extends Component {
         )
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        personnels: state.personnels.items,
+
+    }
+  }
+
+export default connect(mapStateToProps)(PersonnelItem)

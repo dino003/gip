@@ -14,6 +14,7 @@ class User extends Authenticatable
 {
     use Notifiable, UsesTenantConnection;
 
+
     /**
      * The attributes that are mass assignable.
      *
@@ -24,7 +25,8 @@ class User extends Authenticatable
     ];
 
     protected $dates = [
-        'periode_essai'
+        'periode_essai',
+        'fin_abonnement'
     ];
 
     public $timestamps = false;
@@ -55,14 +57,50 @@ class User extends Authenticatable
         return $this->hasOne(UserFonction::class, 'user', 'id');
     }
 
+    public function getEndAbonnementDateAttribute(){
+        if($this->getFreeTrialDaysLeftAttribute() == null) return null;
+
+        if ($this->fin_abonnement)  return $this->fin_abonnement->format('d/m/Y');
+
+        if ($this->periode_essai)  return $this->periode_essai->format('d/m/Y');
+        
+
+
+    }
+
     public function getFreeTrialDaysLeftAttribute()
     {
-        // Future field that will be implemented after payments
-        if ($this->plan_until) { 
-            return 0;
+      //  setlocale(LC_TIME, 'fr');
+
+        // on est plus en periode d'évaluation
+        if ($this->fin_abonnement) { 
+            // si la date d'abonnement est passée
+            if( now()->gte($this->fin_abonnement) ) return null;
+           // return $this->fin_abonnement->format('d/m/Y');
+            return now()->diffInDays($this->fin_abonnement, false); // retourne le nombre de jours
+
         }
 
+        if(now()->gte($this->periode_essai) ) return null;
+        
         return now()->diffInDays($this->periode_essai, false);
+
+
+    //    $ne = $this->periode_essai->copy()->addDays(10);
+    //      //  $ne = $this->periode_essai->copy()->addDays(10);
+
+    //     $diff = now()->diffInDays($ne); 
+    //     return $diff;
+
+        /*
+            @if (auth()->user()->free_trial_days_left > 0)
+                    <li class="nav-item">
+                    <a class="nav-link" href="#">Fin évaluation dans {{ auth()->user()->free_trial_days_left }} Jours .</a>
+                </li>
+                end_abonnement_date
+            @endif
+        */
+        //return now()->diffInDays($this->periode_essai, false);
     }
 
   

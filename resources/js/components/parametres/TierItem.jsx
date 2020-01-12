@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
+import {connect} from 'react-redux'
 
-export default class EntiteItem extends Component {
+
+class TierItem extends Component {
     constructor(props) {
         super(props);
         
@@ -10,6 +12,8 @@ export default class EntiteItem extends Component {
 
     render() {
         const {item, index} = this.props
+        const fournisseurPardefaut = this.props.tiers.find(el => el.code == "FOURNISSEUR PAR DEFAUT")
+
         return (
             <tr>
                                       
@@ -25,9 +29,9 @@ export default class EntiteItem extends Component {
             <td>
 
                 <span className="pull-right">
-                    <button onClick={this.props.onDelete.bind(this, item.id)} className="mb-2 mr-2 btn-transition btn btn-outline-danger pull-right">
+                {item == fournisseurPardefaut ? null : <button onClick={this.props.onDelete.bind(this, item.id)} className="mb-2 mr-2 btn-transition btn btn-outline-danger pull-right">
                     <i className="fa fa-trash"></i>
-                </button>
+                </button>}
 
                 </span>
                 </td>
@@ -36,3 +40,12 @@ export default class EntiteItem extends Component {
         )
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        tiers: state.tiers.items,
+
+    }
+  }
+
+export default connect(mapStateToProps)(TierItem)

@@ -1,15 +1,16 @@
 import React, { Component } from 'react'
 import {NavLink} from 'react-router-dom'
+import {connect} from 'react-redux'
 
 const active = {
     backgroundColor: 'orange'
 }
 
-export default class SidebarParametre extends Component {
+ class SidebarParametre extends Component {
 
     render() {
         return (
-            <div className="app-sidebar sidebar-shadow ">
+            <div className={this.props.theme && this.props.theme.sidebar ? `${this.props.theme.sidebar}` : 'app-sidebar sidebar-shadow'}>
             {/*             <div className="app-sidebar sidebar-shadow bg-asteroid sidebar-text-light">
 */}                    <div className="app-header__logo">
                         <div className="logo-src"></div>
@@ -115,3 +116,14 @@ export default class SidebarParametre extends Component {
         )
     }
 }
+
+const mapStateToProps = state => {
+    return {
+     
+        theme: state.theme.items
+
+
+    }
+  }
+
+export default connect(mapStateToProps)(SidebarParametre)

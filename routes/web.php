@@ -65,11 +65,13 @@ Route::middleware('tenant.exists')->group(function () {
 
     Route::get('/', function () {
         return view('tenant_welcome');
-    });
+    })->middleware('auth')->name('tenant.welcome');
 
-      Route::get('/gestion_du_parc_automobile/{path?}', function () {
-          return view('page');
-      })->where('path', '.*')->middleware('auth');
+    //   Route::get('/gestion_du_parc_automobile/{path?}', function () {
+    //       return view('page');
+    //   })->where('path', '.*')->middleware('auth');
+
+      Route::get('/gestion_du_parc_automobile/{path?}', 'HomeController@renderReactPage')->where('path', '.*')->name('parc.dashboar');
  
      // Login Routes
      Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
@@ -90,6 +92,9 @@ Route::middleware('tenant.exists')->group(function () {
      // Register Routes
     //  Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
     //  Route::post('register', 'Auth\RegisterController@register');
+
+    Route::get('/home', 'HomeController@index')->name('home');
+
  }); 
 
 
@@ -101,4 +106,3 @@ Route::middleware('tenant.exists')->group(function () {
 
  Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');

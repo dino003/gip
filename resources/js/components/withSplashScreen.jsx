@@ -37,6 +37,14 @@ function withSplashScreen(WrappedComponent) {
       };
     }
 
+    fetchTheme(){
+        queue.push(() => axios.get('/api/theme_defaut').then((response) => {
+            
+            const action = {type: "GET_THEME", value: response.data}
+            this.props.dispatch(action)
+        }));
+    } 
+
   
 
     fetchInfoSociete(){
@@ -492,7 +500,7 @@ function withSplashScreen(WrappedComponent) {
         () => this.tick(),
         1000
       );
-
+        this.fetchTheme();
          this.fetchInfoSociete();
          this.fetchInfoParamGenerauxReservationOrdre();
          this.fetchUtilisateurs();
@@ -505,14 +513,12 @@ function withSplashScreen(WrappedComponent) {
          this.fetchTypeEntites()
          this.fetchTva();
          this.fetchStructures()
-         this.fetchAnneesBudgetaires();
          this.fetchCategories_vehicules();
          this.fetchMarques()
          this.fetchEntites();
          this.fetchPersonnels();
          this.fetchTiers();
          this.fetchContratAssurances();
-         this.fetchModeleVehicules();
          this.fetchCodeIncidents()
          this.fetchNatureEnergies();
          this.fetchNatureInterventions();
@@ -523,8 +529,8 @@ function withSplashScreen(WrappedComponent) {
          this.fetchOrdresMissions();
 
             // premier personnel et Tier
-            this.enregistrerPersonnelSiVide();
-            this.ajouterFournisseursiVide();
+            // this.enregistrerPersonnelSiVide();
+            // this.ajouterFournisseursiVide();
 
          this.fetchNatureSinistres();
          this.fetchNatureDepenseRecettes();
@@ -532,23 +538,31 @@ function withSplashScreen(WrappedComponent) {
          this.fetchFamillePiecesdetachees();
          this.fetchNatureTaxes();
          this.fetchCoutConsommables();
+       
+
+        // ajouter structure de base
+        // this.enregistrerStructureSiVide()
+        // this.ajoutertypeEntiteSiVide();
+
+       
+         this.fetchDepenseRecettes();
+         this.fetchAmendes();
+         this.fetchBudgetVehicules();
+
+         this.fetchVehicules();
+
+         this.fetchCommandes();
          this.fetchUtilisations();
          this.fetchBudgetEntites();
          this.fetchInterventions();
          this.fetchConsommations();
-
-        // ajouter structure de base
-        this.enregistrerStructureSiVide()
-        this.ajoutertypeEntiteSiVide();
-
+         this.fetchModeleVehicules();
+         this.fetchAnneesBudgetaires();
          this.fetchArticlesStock();
          this.fetchEntreesStock();
          this.fetchSortiesStock();
-         this.fetchDepenseRecettes();
-         this.fetchAmendes();
-         this.fetchBudgetVehicules();
-         this.fetchVehicules();
-         this.fetchCommandes();
+
+
 
  
      }
@@ -600,8 +614,14 @@ function withSplashScreen(WrappedComponent) {
      if(this.props.user_id){
         var authUser = this.props.utilisateurs.find(user => user.id == this.props.user_id)
         if(authUser) {
+            var abonnement = {
+                nombre_de_jours_restant: this.props.nombre_de_jours_restant,
+                date_fin_abonnement: this.props.date_fin_abonnement
+            }
             const action = {type: "GET_AUTH", value: authUser}
             this.props.dispatch(action)
+            const action2 = {type: "GET_ABONNEMENT", value: abonnement}
+            this.props.dispatch(action2)
         }
         }
       if (!store.getState().vehicules.items) return this.LoadingMessage();

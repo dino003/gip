@@ -32,8 +32,12 @@
     </head>
     <body >
 
-            <div id="react" data-user_id="{{Auth::user()->id}}" data-user_name="{{Auth::user()->name}}" data-username="{{Auth::user()->username}}"  >
-            </div>
+            <div id="react" 
+            data-nombre_de_jours_restant="{{$nombre_de_jours_restant}}" 
+            data-date_fin_abonnement="{{$date_fin_abonnement}}"
+            data-user_id="{{Auth::user()->id}}"
+             
+                ></div>
   
 
 <script type="text/javascript" src="{{asset('js/app.js')}}"></script>

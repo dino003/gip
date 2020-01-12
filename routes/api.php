@@ -567,6 +567,16 @@ Route::post('ajouter_ou_modifier_alertes', 'AlerteController@storeOuUpdate');
 
 //*********** fin parametre generaux personnels ********************************************************* 
 
+//****************** parametre themes  ********************************************************/
+Route::get('theme_defaut', 'ThemeController@index');
+
+// ajouter 
+Route::post('ajouter_ou_modifier_theme_defaut', 'ThemeController@storeOuUpdate');
+// modifier
+
+
+//*********** fin parametre themes *********************************************************
+
 
 Route::get('tt', 'UserController@index');
 

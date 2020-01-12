@@ -21,6 +21,14 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
         }
     }
 
+    fetchTheme(){
+        queue.push(() => axios.get('/api/theme_defaut').then((response) => {
+            
+            const action = {type: "GET_THEME", value: response.data}
+            this.props.dispatch(action)
+        }));
+    } 
+
 
     fetchInfoSociete(){
         queue.push(() => axios.get('/api/infos_societe').then((response) => {
@@ -471,63 +479,65 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
 
       //  const action2 = {type: "START_VEHICULE"}
       //  this.props.dispatch(action2)
-        this.fetchInfoSociete();
-        this.fetchInfoParamGenerauxReservationOrdre();
-        this.fetchUtilisateurs();
+    //   this.fetchTheme();
+    //     this.fetchInfoSociete();
+    //     this.fetchInfoParamGenerauxReservationOrdre();
+    //     this.fetchUtilisateurs();
 
-        this.fetchInfoAlerte();
-        this.fetchInfoParamGenerauxModules();
-        this.fetchInfoParamGenerauxPersonnels();
-        this.fetchInfoParamGenerauxJournal();
-        this.fetchInfoParamGenerauxStock();
-        this.fetchTypeEntites()
-        this.fetchTva();
-        this.fetchStructures()
-        this.fetchAnneesBudgetaires();
-        this.fetchCategories_vehicules();
-        this.fetchMarques()
-        this.fetchEntites();
-        this.fetchPersonnels();
-        this.fetchTiers();
-        this.fetchContratAssurances();
-        this.fetchModeleVehicules();
-        this.fetchCodeIncidents()
-        this.fetchNatureEnergies();
-        this.fetchNatureInterventions();
-        this.fetchOperationInterventions();
-        this.fetchNatureConsommations();
-        this.fetchReservation();
-        this.fetchNatureAmendes();
-        this.fetchOrdresMissions();
+    //     this.fetchInfoAlerte();
+    //     this.fetchInfoParamGenerauxModules();
+    //     this.fetchInfoParamGenerauxPersonnels();
+    //     this.fetchInfoParamGenerauxJournal();
+    //     this.fetchInfoParamGenerauxStock();
+    //     this.fetchTypeEntites()
+    //     this.fetchTva();
+    //     this.fetchStructures()
+    //     this.fetchAnneesBudgetaires();
+    //     this.fetchCategories_vehicules();
+    //     this.fetchMarques()
+    //     this.fetchEntites();
+    //     this.fetchPersonnels();
+    //     this.fetchTiers();
+    //     this.fetchContratAssurances();
+    //     this.fetchModeleVehicules();
+    //     this.fetchCodeIncidents()
+    //     this.fetchNatureEnergies();
+    //     this.fetchNatureInterventions();
+    //     this.fetchOperationInterventions();
+    //     this.fetchNatureConsommations();
+    //     this.fetchReservation();
+    //     this.fetchNatureAmendes();
+    //     this.fetchOrdresMissions();
 
         
-            // premier personnel et Tier
-            this.enregistrerPersonnelSiVide();
-            this.ajouterFournisseursiVide();
+    //         // premier personnel et Tier
+    //         // this.enregistrerPersonnelSiVide();
+    //         // this.ajouterFournisseursiVide();
 
-        this.fetchNatureSinistres();
-        this.fetchNatureDepenseRecettes();
-        this.fetchNatureReservations();
-        this.fetchFamillePiecesdetachees();
-        this.fetchNatureTaxes();
-        this.fetchCoutConsommables();
-        this.fetchUtilisations();
-        this.fetchBudgetEntites();
-        this.fetchInterventions();
-        this.fetchConsommations();
+    //     this.fetchNatureSinistres();
+    //     this.fetchNatureDepenseRecettes();
+    //     this.fetchNatureReservations();
+    //     this.fetchFamillePiecesdetachees();
+    //     this.fetchNatureTaxes();
+    //     this.fetchCoutConsommables();
+       
 
-           // ajouter structure de base
-           this.enregistrerStructureSiVide()
-           this.ajoutertypeEntiteSiVide();
+    //        // ajouter structure de base
+    //     //    this.enregistrerStructureSiVide()
+    //     //    this.ajoutertypeEntiteSiVide();
 
-        this.fetchArticlesStock();
-        this.fetchEntreesStock();
-        this.fetchSortiesStock();
-        this.fetchDepenseRecettes();
-        this.fetchAmendes();
-        this.fetchBudgetVehicules();
-        this.fetchVehicules();
-        this.fetchCommandes();
+    //     this.fetchArticlesStock();
+    //     this.fetchEntreesStock();
+    //     this.fetchSortiesStock();
+    //     this.fetchDepenseRecettes();
+    //     this.fetchAmendes();
+    //     this.fetchBudgetVehicules();
+    //     this.fetchVehicules();
+    //     this.fetchCommandes();
+    //     this.fetchUtilisations();
+    //     this.fetchBudgetEntites();
+    //     this.fetchInterventions();
+    //     this.fetchConsommations();
 
 
     }
@@ -544,7 +554,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
     
     render() {
         return (
-                 <div className="app-header header-shadow bg-night-sky header-text-light">
+                 <div className={this.props.theme && this.props.theme.navbar ? `${this.props.theme.navbar}` : 'app-header header-shadow bg-night-sky header-text-light'}>
  
             <div className="app-header__logo">
                 <div className="logo-src"></div>
@@ -645,6 +655,16 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
 
 
                         </li>
+
+                        
+                        <li className="nav-item">
+                        <span  className="nav-link" style={{ 'fontSize': '0.9em'}}>
+                            {this.props.abonnement ? `${this.props.abonnement.nombre_de_jours_restant} Jours Restant(s)` : null}
+                        </span>
+
+
+                        </li>
+
                     </ul>        
                     </div>
                 <div className="app-header-right">
@@ -703,7 +723,11 @@ const mapStateToProps = state => {
         personnels: state.personnels.items,
         structures_etablissements: state.structures_etablissements.items,
         tiers: state.tiers.items,
-        types_entites: state.types_entites.items
+        types_entites: state.types_entites.items,
+        theme: state.theme.items,
+        abonnement: state.abonnement.abonnement
+
+
       
     }
   }

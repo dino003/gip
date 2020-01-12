@@ -11,7 +11,7 @@ const active = {
     render() {
         const {vehiculeSeleted, param_generaux_modules, param_generaux_reservation_ordre } = this.props
         return (
-            <div className="app-sidebar sidebar-shadow ">
+            <div className={this.props.theme && this.props.theme.sidebar ? `${this.props.theme.sidebar}` : 'app-sidebar sidebar-shadow'}>
                 {/*             <div className="app-sidebar sidebar-shadow bg-asteroid sidebar-text-light">
  */}
                     <div className="app-header__logo">
@@ -296,6 +296,8 @@ const mapStateToProps = state => {
         vehiculeSeleted: state.vehiculeSeleted.vehicule,
         param_generaux_modules: state.param_generaux_modules.items,
         param_generaux_reservation_ordre: state.param_generaux_reservation_ordre.items,
+        theme: state.theme.items
+
 
     }
   }

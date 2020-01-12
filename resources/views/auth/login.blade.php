@@ -17,7 +17,7 @@
                 @endif
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route('login') }}" id="login_form">
                         @csrf
 
                         <div class="form-group row">
@@ -64,9 +64,15 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" id="connexion_butt"  class="btn btn-primary">
                                     {{ __('Connnexion') }}
                                 </button>
+
+                               
+
+                                <div class="spinner-border text-primary" style="display: none;" id="patientez" role="status">
+                                    <span class="sr-only">Patientez...</span>
+                                </div>
 
                                 @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
@@ -82,6 +88,39 @@
     </div>
 </div>
  
+@endsection
+
+@section('other_script')
+
+
+
+  <script type="text/javascript">
+
+    function logSubmit(){
+        var patientez = document.getElementById('patientez');
+        var connexion_butt = document.getElementById('connexion_butt');
+        if(patientez.style.display === "none"){
+            patientez.style.display = "block";
+        }else{
+            patientez.style.display = "none";
+
+        }
+
+        if(connexion_butt.style.display === "none"){
+            connexion_butt.style.display = "block";
+        }else{
+            connexion_butt.style.display = "none";
+
+        }
+    }
+
+    const form = document.getElementById('login_form');
+     form.addEventListener('submit', logSubmit )
+
+  </script>
+
+
+
 @endsection
 
 

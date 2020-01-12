@@ -11,10 +11,24 @@ export default class Register extends Component {
         this.state = {
             isFormSubmitted: false
         }
+
+        this.toggleState = this.toggleState.bind(this);
+    }
+
+    toggleState(){
+       
+        this.setState({
+            isFormSubmitted: true
+        })
     }
     
 
     render() {
+
+        const form = document.getElementById('register_form');
+       // form.addEventListener('submit', this.toggleState() )
+       form.on('submit', this.toggleState())
+
         return (
           <React.Fragment>
          
@@ -30,7 +44,7 @@ export default class Register extends Component {
         </div>
                :  <div className="col-md-6">
        <button disabled={this.state.isFormSubmitted} 
-       type="submit"
+       type="submit" 
         className="btn btn-primary">
            {this.state.isFormSubmitted ? 'Traitement en cours...' : 'Valider'}
        </button> 

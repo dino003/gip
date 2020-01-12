@@ -11,6 +11,7 @@ import StockForm from '../components/parametre_generaux_forms/StockForm';
 import PersonnelForm from '../components/parametre_generaux_forms/PersonnelForm';
 import JournalEvenementForm from '../components/parametre_generaux_forms/JournalEvenementForm'
 import Alerte from '../components/parametre_generaux_forms/Alerte';
+import Themes from '../components/parametre_generaux_forms/Themes';
 
 
 
@@ -19,12 +20,14 @@ class ParametreGeneraux extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isOpened: false,
             isFormEtablissementSubmitted: false,
             isFormReservationOrdreSubmitted: false,
             isFormModuleSubmitted: false,
             isFormStockSubmitted: false,
             isFormPersonnelSubmitted: false,
-            isFormAlerteSubmitted: false
+            isFormAlerteSubmitted: false,
+            isThemsubmit: false
  
         }
         this.onFormInfoEtablissemntSubmit = this.onFormInfoEtablissemntSubmit.bind(this)
@@ -34,6 +37,41 @@ class ParametreGeneraux extends Component {
         this.onFormPersonnelSubmit = this.onFormPersonnelSubmit.bind(this)
         this.onJournalFormSubmit = this.onJournalFormSubmit.bind(this)
         this.onSubmitAlerte = this.onSubmitAlerte.bind(this)
+        this.toggleThemeScreen = this.toggleThemeScreen.bind(this);
+        this.onThemeChangeSubmit = this.onThemeChangeSubmit.bind(this);
+    }
+
+    toggleThemeScreen(){
+       // e.preventDefault();
+        this.setState({
+            isOpened: !this.state.isOpened
+        })
+    }
+
+    onThemeChangeSubmit(nav, sid){
+       
+        this.setState({isThemsubmit: true})
+        axios.post('/api/ajouter_ou_modifier_theme_defaut', {
+            navbar: nav,
+            sidebar: sid
+        })
+        .then(response => { 
+           const action = {type: "ADD_THEME", value: response.data}
+             this.props.dispatch(action)
+             this.setState({isThemsubmit: false})
+             toast.success('Sauvegardé avec succès', {
+                position: toast.POSITION.BOTTOM_CENTER
+              });
+
+        }).catch(error => {
+            console.log(error)
+            this.setState({isThemsubmit: false})
+            toast.error('L\'Enregistrement a échoué', {
+                position: toast.POSITION.BOTTOM_CENTER
+              });
+
+        })
+
     }
 
     onFormInfoEtablissemntSubmit(objet){
@@ -261,6 +299,12 @@ class ParametreGeneraux extends Component {
                         <span>Journal événements</span>
                     </a>
                 </li>
+
+                <li className="nav-item">
+                    <a role="tab" onClick={this.toggleThemeScreen} className="nav-link" id="tab-1" data-toggle="tab" href="#tab_theme">
+                        <span>Thèmes</span>
+                    </a>
+                </li>
                 {/* <li className="nav-item">
                     <a role="tab" className="nav-link" id="tab-1" data-toggle="tab" href="#tab-content-1">
                         <span>Grid</span>
@@ -387,6 +431,15 @@ class ParametreGeneraux extends Component {
             </div>
         </div>
         </div>
+
+        {/* themes pas dans le tab */}
+                <Themes isOpened={this.state.isOpened} 
+                toggleThemeScreen={this.toggleThemeScreen}
+                onThemeChangeSubmit={this.onThemeChangeSubmit}
+                isThemsubmit={this.state.isThemsubmit}
+                 />
+
+        {/* fin theme */}
 
         <ToastContainer autoClose={4000} />
 

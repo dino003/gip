@@ -47,9 +47,13 @@ import ParamPersonnelReducer from './parametres_generaux/ParamPersonnelReducer'
 import ParamJournalReducer from './parametres_generaux/ParamJournalReducer'
 import AlertReducer from './parametres_generaux/AlerteReducer'
 import AuthReducer from './auth/AuthReducer'
+import ThemeReducer from './parametres_generaux/ThemeReducer'
+import AbonnementReducer from './auth/AbonnementReducer'
 
 const allReducers = combineReducers({
     auth: AuthReducer,
+    theme: ThemeReducer,
+    abonnement: AbonnementReducer,
     types_entites: TypeEntiteReducer,
     structures_etablissements: StructureEtablissementReducer,
     entites: EntitesReducer,
