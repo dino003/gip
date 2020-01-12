@@ -173,15 +173,16 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
     
 
     render() {
-        const objetEdit = this.props.contrat_assurances.find(contrat => contrat.id == this.props.match.params.contrat_assurance_id)
-
+      //  const objetEdit = this.props.contrat_assurances.find(contrat => contrat.id == this.props.match.params.contrat_assurance_id);
+        const vehiculeSelect = this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id);
+        const objetEdit = vehiculeSelect.contrat_assurance ? vehiculeSelect.contrat_assurance : undefined ;
        if(objetEdit !== undefined){
         return (
             <div className="app-main__inner">
               
                     <div className="main-card mb-3 card">
                         <div className="card-body">
-                            <h5 className="card-title">Contrat d'assurance N°
+                            <h5 className="card-title">Contrat d'assurance N° <span style={{color: 'red'}}>{objetEdit.numero_contrat_police}</span>
                                                          
                           </h5>
                             <form className="" onChange={this.setField}  onSubmit={this.modifierContratAssurance}>
@@ -189,9 +190,9 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                
                                 <div className="form-row">
 
-                                <div className="col-md-4">
+                                {/* <div className="col-md-4">
                  
-                                    {this.state.global !== undefined ?  <React.Fragment>
+                                    {this.state.global !== undefined ?    <React.Fragment>
                                   {!this.state.global ?
                                              <label  className=""> Sélection de véhicule</label> :
                                              <label>Contrat global</label> }
@@ -202,6 +203,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         <Select
                                         
                                         name="vehicule"
+                                        isDisabled={true}
+
                                         placeholder="Selectionnez un véhicule"
                                         noOptionsMessage={() => "Aucun Véhicule pour l'instant"}
                                         options={this.props.vehicules}
@@ -222,6 +225,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                      
                                         <Select
                                         name="vehicule"
+                                        isDisabled={true}
                                         placeholder="Selectionnez un véhicule"
                                         noOptionsMessage={() => "Aucun Véhicule pour l'instant"}
                                         options={this.props.vehicules}
@@ -234,12 +238,12 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                     }
                                   </React.Fragment>}
                                 
-                                        </div>
+                                        </div> */}
 
                                     <div className="col-md-2">
                                         <div className="position-relative form-group">
                                             <label >N° de contrat/Police * </label>
-                                            <input name="numero_contrat_police"  type="text"
+                                            <input name="numero_contrat_police" readOnly  type="text"
                                             onChange={this.setField}
                                             defaultValue={objetEdit.numero_contrat_police}
 
@@ -252,7 +256,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                     <div className="col-md-3">
                                         <div className="position-relative form-group">
                                             <label >Date du contrat *</label>
-                                            <input name="date_contrat"  type="date"
+                                            <input name="date_contrat" readOnly  type="date"
                                             style={inputStyle}
                                             defaultValue={objetEdit.date_contrat}
 
@@ -262,7 +266,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                              </div>
                                     </div>
 
-                                    <div className="col-md-2">
+                                    {/* <div className="col-md-2">
                                         <div className="position-relative form-group">
                                             <label >Contrat global ?</label>
                                              </div>
@@ -272,12 +276,13 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         <div className="position-relative form-group">
                                             <input name="global"  type="checkbox"
                                             style={inputStyle}
+                                            readOnly
                                             onChange={this.setField}
                                             defaultChecked={objetEdit.global}
                                             ref={global => this.global = global}
                                              />
                                              </div>
-                                    </div>
+                                    </div> */}
 
                                   
                                 </div>
@@ -292,7 +297,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                     <div className="col-md-3">
                                         <div className="position-relative form-group">
                                             <label >Date de debut *</label>
-                                            <input name="periode_date_debut"  type="date"
+                                            <input name="periode_date_debut" readOnly  type="date"
                                             style={inputStyle}
                                             readOnly
                                             defaultValue={objetEdit.periode_date_debut}
@@ -306,7 +311,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                     <div className="col-md-3">
                                         <div className="position-relative form-group">
                                             <label >Date de fin *</label>
-                                            <input name="periode_date_fin"  type="date"
+                                            <input name="periode_date_fin" readOnly  type="date"
                                             style={inputStyle}
                                             defaultValue={objetEdit.periode_date_fin}
 
@@ -319,7 +324,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                     <div className="col-md-3">
                                         <div className="position-relative form-group">
                                             <label >Date de prise d'effet *</label>
-                                            <input name="date_prise_effet"  type="date"
+                                            <input name="date_prise_effet" readOnly  type="date"
                                             style={inputStyle}
                                             onChange={this.setField}
                                             defaultValue={objetEdit.date_prise_effet}
@@ -339,6 +344,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
                                         <Select
                                         name="compagnie_assurance"
+                                        isDisabled={true}
+
                                         placeholder="Selectionnez la compagnie"
                                         noOptionsMessage={() => "Aucun Tiers pour l'instant"}
                                         options={this.props.tiers}
@@ -356,7 +363,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         <select name="courtier" onChange={this.setField}
                                             ref={courtier => this.courtier = courtier}
                                             defaultValue={objetEdit.courtier.id}
-
+                                            readOnly
                                           className="form-control">
                                               
                                         <option defaultValue={null}></option>
@@ -375,7 +382,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
                                             <input name="valeur_assuree"
                                              defaultValue={objetEdit.valeur_assuree}
-
+                                            readOnly
                                             ref={valeur_assuree => this.valeur_assuree = valeur_assuree}
                                               type="number" className="form-control" />
                                         </div>
@@ -385,7 +392,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
                                             <input name="montant_assuree"
                                             defaultValue={objetEdit.montant_assuree}
-
+                                            readOnly
                                                 onChange={this.setField}
                                             ref={montant_assuree => this.montant_assuree = montant_assuree}
                                               type="number" className="form-control" />
@@ -400,7 +407,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                             <label >Montant de la prime</label>
                                             <input name="montant_prime"  type="number"
                                             defaultValue={objetEdit.montant_prime}
-
+                                            readOnly
                                             ref={montant_prime => this.montant_prime = montant_prime}
                                              className="form-control" />
                                              </div>
@@ -411,7 +418,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
                                             <input name="pourcentage_assiete"
                                             defaultValue={objetEdit.pourcentage_assiete}
-
+                                            readOnly
                                             ref={pourcentage_assiete => this.pourcentage_assiete = pourcentage_assiete}
 
                                               type="number" className="form-control" /></div>
@@ -423,7 +430,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
                                             <input name="montant_franchise"
                                             defaultValue={objetEdit.montant_franchise}
-
+                                            readOnly
                                             ref={montant_franchise => this.montant_franchise = montant_franchise}
 
                                               type="number" className="form-control" /></div>
@@ -433,7 +440,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                 </div>
                           
 
-                                <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
+                                {/* <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button> */}
                            
                                 <span onClick={() => this.props.history.goBack()}
                                  className="mt-2 btn btn-warning pull-right">Retour</span>
