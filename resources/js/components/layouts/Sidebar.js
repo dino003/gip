@@ -72,7 +72,7 @@ const active = {
                                           {param_generaux_modules.utilisation_vehicules == 1 &&  <li>
                                         {vehiculeSeleted != undefined ?  <NavLink exact activeStyle={active} 
                                         to={{
-                                            pathname: `/gestion_du_parc_automobile/parc/utilisations-vehicules/${vehiculeSeleted.id}/${vehiculeSeleted.immatriculation}`,
+                                            pathname: `/gestion_du_parc_automobile/parc/utilisations-vehicules/${vehiculeSeleted.id}/${vehiculeSeleted.immatriculation}`
                                         }}
                                             >
                                             <i className="metismenu-icon pe-7s-menu"></i>
@@ -95,7 +95,7 @@ const active = {
 
                                             {vehiculeSeleted != undefined ?  <NavLink exact activeStyle={active} 
                                             to={{
-                                                pathname: `/gestion_du_parc_automobile/parc/interventions-vehicules/${vehiculeSeleted.id}/${vehiculeSeleted.immatriculation}`,
+                                                pathname: `/gestion_du_parc_automobile/parc/interventions-vehicules/${vehiculeSeleted.id}/${vehiculeSeleted.immatriculation}`
                                             }}
                                             >
                                                 <i className="metismenu-icon pe-7s-date"></i>
@@ -118,7 +118,7 @@ const active = {
                                  <li>
                                     {vehiculeSeleted != undefined ?  <NavLink exact activeStyle={active}
                                       to={{
-                                        pathname: `/gestion_du_parc_automobile/parc/consommations-vehicules/${vehiculeSeleted.id}/${vehiculeSeleted.immatriculation}`,
+                                        pathname: `/gestion_du_parc_automobile/parc/consommations-vehicules/${vehiculeSeleted.id}/${vehiculeSeleted.immatriculation}`
                                       }}
                                      >
                                         <i className="metismenu-icon pe-7s-monitor"></i>
@@ -141,7 +141,7 @@ const active = {
                                 <li >
                                     {vehiculeSeleted != undefined ?  <NavLink exact activeStyle={active} 
                                          to={{
-                                            pathname: `/gestion_du_parc_automobile/parc/amendes-vehicules/${vehiculeSeleted.id}/${vehiculeSeleted.immatriculation}`,
+                                            pathname: `/gestion_du_parc_automobile/parc/amendes-vehicules/${vehiculeSeleted.id}/${vehiculeSeleted.immatriculation}`
                                           }}
                                     >
                                         <i className="metismenu-icon pe-7s-rocket"></i>
@@ -171,7 +171,7 @@ const active = {
 
                                     </a>: <NavLink exact activeStyle={active} 
                                      to={{
-                                        pathname: `/gestion_du_parc_automobile/parc/reservation-vehicules/${vehiculeSeleted.id}/${vehiculeSeleted.immatriculation}`,
+                                        pathname: `/gestion_du_parc_automobile/parc/reservation-vehicules/${vehiculeSeleted.id}/${vehiculeSeleted.immatriculation}`
                                       }}
                                      >
                                         <i className="metismenu-icon pe-7s-repeat"></i>
@@ -198,7 +198,7 @@ const active = {
                                 <li>
                                     {vehiculeSeleted != undefined ?  <NavLink exact activeStyle={active} 
                                     to={{
-                                        pathname: `/gestion_du_parc_automobile/parc/budgets-vehicules/${vehiculeSeleted.id}/${vehiculeSeleted.immatriculation}`,
+                                        pathname: `/gestion_du_parc_automobile/parc/budgets-vehicules/${vehiculeSeleted.id}/${vehiculeSeleted.immatriculation}`
                                       }}
                                     >
                                         <i className="metismenu-icon pe-7s-tools"></i>
@@ -223,7 +223,7 @@ const active = {
                                 <li>
                                     {vehiculeSeleted != undefined ?  <NavLink exact activeStyle={active} 
                                     to={{
-                                        pathname: `/gestion_du_parc_automobile/parc/depense-recettes-vehicules/${vehiculeSeleted.id}/${vehiculeSeleted.immatriculation}`,
+                                        pathname: `/gestion_du_parc_automobile/parc/depense-recettes-vehicules/${vehiculeSeleted.id}/${vehiculeSeleted.immatriculation}`
                                       }}
                                     >
                                         <i className="metismenu-icon pe-7s-graph3"></i>
@@ -243,7 +243,10 @@ const active = {
 
 
                                 <li>
-                                    {vehiculeSeleted != undefined ?  <NavLink exact activeStyle={active} to="/contrat">
+                                    {vehiculeSeleted != undefined ?  <NavLink exact activeStyle={active}
+                                     to="/contrat"
+                                     to={{ pathname: `/gestion_du_parc_automobile/parc/contrat_assurance_de_vehicule/${vehiculeSeleted.id}/${vehiculeSeleted.immatriculation}` }}
+                                     >
                                         <i className="metismenu-icon pe-7s-note2"></i>
                                         Contrats Assurances
                                         <i className="metismenu-state-icon "></i>
