@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         Carbon::setLocale(LC_TIME, config('app.locale'));
-       // Cashier::ignoreMigrations();
+        Cashier::ignoreMigrations();
     }
 
     /**
