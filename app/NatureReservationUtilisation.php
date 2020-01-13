@@ -3,11 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class NatureReservationUtilisation extends Model
 {
-    use UsesTenantConnection;
 
     protected $table = 'parametrage_nature_reservations_utilisations';
 

@@ -3,11 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class DepenseRecette extends Model
 {
-    use UsesTenantConnection;
     protected $table = 'parametrage_natures_depenses_recettes';
 
     protected $guarded = ['id'];

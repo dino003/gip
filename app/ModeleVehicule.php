@@ -3,12 +3,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 
 class ModeleVehicule extends Model
 {
-    use UsesTenantConnection;
     protected $table = 'parametrage_codifications_modele_vehicules';
 
     protected $guarded = ['id'];

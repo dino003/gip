@@ -81,22 +81,15 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        $invalidSubdomains = config('app.invalid_subdomains');
+       // $invalidSubdomains = config('app.invalid_subdomains');
 
         return Validator::make($data, [
-            'account' => [
-                'required', 
-                'string',
-                Rule::notIn( $invalidSubdomains ),
-                'regex:/^[A-Za-z0-9](?:[A-Za-z0-9\-]{0,61}[A-Za-z0-9])$/'
-            ],
-
-            'fqdn' => ['required', 'string', 'unique:hostnames'],
+           
 
             'name' => ['required', 'string', 'max:255'],
-            'username' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255', 'unique:users'],
 
-            'email' => ['required', 'string', 'email', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -111,12 +104,7 @@ class RegisterController extends Controller
     {
         ini_set('max_execution_time', '300');
 
-         // Use the Tenancy package command to create the tenant
-         $hostname = $this->createTenant( $data['fqdn'] );
-
-           // swap the environment over to the hostname
-        app( Environment::class )->hostname( $hostname );
-
+         
         $user =  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -182,27 +170,12 @@ class RegisterController extends Controller
          
     }
 
-    private function createTenant( $fqdn )
-    {
-        // first create the 'website'
-        $website = new Website;
-        app( WebsiteRepository::class )->create( $website );
 
-        // now associate the 'website' with a hostname
-        $hostname = new Hostname;
-        $hostname->fqdn = $fqdn;
-        app( HostnameRepository::class )->attach( $hostname, $website );
-
-        return $hostname;
-    }
 
     public function register(Request $request) {
         // we'll add in our fqdn here
         $data = $request->all();
-        if ( isset( $data['account'] ) ) {
-            $fqdn = $data['account'] . '.' . config('app.url_base');
-            $request->merge(['fqdn' => $fqdn]);
-        }
+      
 
         // validate with the validator below
         $this->validator($request->all())->validate();
@@ -211,15 +184,7 @@ class RegisterController extends Controller
         event(new Registered($user = $this->create($request->all())));
 
         $port = $request->server('SERVER_PORT') == 8000 ? ':8000' : '';
+        return redirect( ( $request->secure() ? 'https://' : 'http://' )  . $port . '/login?success=1' );
 
-       // $redirection =  ( $request->secure() ? 'https://' : 'http://' ) . $fqdn . $port . '/login?success=1' ;
-
-      // return response()->json($redirection);
-       
-        return redirect( ( $request->secure() ? 'https://' : 'http://' ) . $fqdn . $port . '/login?success=1' );
-    
-      //  $port = $request->server('SERVER_PORT') == 8000 ? ':8000' : '';
-      //  return redirect( ( $request->secure() ? 'https://' : 'http://' ) . $fqdn  . '/login?success=1' );
-    
     }
 }

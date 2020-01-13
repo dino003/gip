@@ -3,11 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class Tier extends Model
 {
-    use UsesTenantConnection;
 
     protected $table = 'tiers';
 

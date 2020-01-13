@@ -3,12 +3,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 
 class OperationIntervention extends Model
 {
-    use UsesTenantConnection;
 
     protected $table = 'parametrage_operations_interventions';
 

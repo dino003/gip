@@ -3,11 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class CoutConsomable extends Model
 {
-    use UsesTenantConnection;
     protected $table = 'parametrage_cout_consomables';
 
     public $timestamps = false;

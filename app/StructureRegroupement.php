@@ -3,11 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class StructureRegroupement extends Model
 {
-    use UsesTenantConnection;
 
     protected $table = 'parametrage_structure_regroupements';
 

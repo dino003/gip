@@ -3,11 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class VehiculeConsomation extends Model
 {
-    use UsesTenantConnection;
 
     protected $table = 'vehicule_consomations';
 

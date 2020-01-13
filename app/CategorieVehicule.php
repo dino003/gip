@@ -3,12 +3,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 
 class CategorieVehicule extends Model
 {
-    use UsesTenantConnection;
     protected $table = 'parametrage_codifications_categories_vehicules';
 
     public $timestamps = false;

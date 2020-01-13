@@ -3,11 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class Mission extends Model
 {
-     use UsesTenantConnection;
     protected $table = 'missions';
 
     public $timestamps = false;

@@ -7,5 +7,4 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 
 class Fonction extends Model
 {
-    use UsesTenantConnection;
 }
