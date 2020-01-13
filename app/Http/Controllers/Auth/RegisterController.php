@@ -130,8 +130,8 @@ class RegisterController extends Controller
         //  structure par  defaut
         $struc = new StructureRegroupement;
 
-        $struc->code_regroupement = $request->get('code_regroupement');
-        $struc->nom_regroupement = $request->get('nom_regroupement');
+        $struc->code_regroupement = "SIEGE";
+        $struc->nom_regroupement = "SIEGE";
 
         $struc->save();
 
@@ -140,7 +140,7 @@ class RegisterController extends Controller
 
         //  type entite par  defaut
         $ent = new TypeEntite;
-        $ent->type_entite = $request->get('type_entite');
+        $ent->type_entite = "SIEGE";
         $ent->save();
 
     // fin type entite par  defaut
@@ -150,7 +150,7 @@ class RegisterController extends Controller
 
         $tier = new Tier;
 
-        $tier->code = $request->get('code');
+        $tier->code = "FOURNISSEUR PAR DEFAUT";
 
         $tier->save();
 
@@ -160,9 +160,9 @@ class RegisterController extends Controller
     // personne par Par defaut 
         $pers = new Personnel;
 
-        $pers->nom = $request->get('nom');
-        $pers->default = $request->get('default');
-        $pers->personne_prioritaire = $request->get('personne_prioritaire');
+        $pers->nom = "PERSONNE PAR DEFAUT";
+        $pers->default = 1;
+        $pers->personne_prioritaire = 1;
       //  $pers->entite_affectation = $request->get('nom');
         $pers->save();
 
