@@ -29429,14 +29429,11 @@ function (_Component) {
     key: "changeVisibility",
     value: function changeVisibility() {
       var pass = document.querySelector("#password");
-      var passConf = document.querySelector("#password-confirm");
 
       if (this.state.isPassword) {
         pass.setAttribute("type", "password");
-        passConf.setAttribute("type", "password");
       } else {
         pass.setAttribute("type", "text");
-        passConf.setAttribute("type", "text");
       }
     }
   }, {
@@ -29460,7 +29457,7 @@ function (_Component) {
           cursor: 'pointer'
         },
         className: isPassword ? 'input-group-text btn btn-success lnr lnr-eye' : 'input-group-text btn btn-info lnr lnr-lock'
-      }, " ", !isPassword ? 'Masquer' : 'Voir');
+      }, " ", !isPassword ? 'Masquer' : 'Montrer     ');
     }
   }]);
 

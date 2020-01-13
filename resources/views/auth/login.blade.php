@@ -1,115 +1,163 @@
+
 @extends('layouts.app')
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Connexion') }}</div>
-                @if( app('request')->input('success') == 1 )
-                <div class="row justify-content-center">
-                    <div class="col-md-8">
-                        <div class="alert alert-success" role="alert">
-                        Votre compte à été créé avec succès. Connectez-vous à votre compte avec les identifiants saisis précédement.
-                        </div>
-                    </div>
-                </div>
-                @endif
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}" id="login_form">
+
+    <div class="container-contact100">
+		<div class="wrap-contact100">
+            <form class="contact100-form " id="login_form" method="POST" action="{{ route('login') }}">
                         @csrf
+            <!-- <div class="main-card mb-6 card"> -->
+                                            <!-- <div class="card-body"> -->
+                                                <h5 class="card-title">{{ __('Authentification') }}</h5>
+                                                <div>
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Nom d\'utilisateur ou Addresse E-Mail') }}</label>
+                                               
+                                            
+                                                    <br>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend"><span class="input-group-text">{{ __('Nom d\'utilisateur ou  Email') }}</span></div>
+                                                        <input  type="text"  class="form-control{{ $errors->has('username') || $errors->has('email') ? ' is-invalid' : '' }}" name="login" value="{{ old('username') ?: old('email') }}" required autofocus />
+                                                    </div>
+                                                    @if ($errors->has('email') || $errors->has('username'))
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $errors->first('username') ?: $errors->first('email') }}</strong>
 
-                            <div class="col-md-6">
-                                <input id="login" type="text" class="form-control{{ $errors->has('username') || $errors->has('email') ? ' is-invalid' : '' }}"
-                                 name="login" value="{{ old('username') ?: old('email') }}"  autofocus>
+                                                        </span>
+                                                    @endif
+                                                    <br>
 
-                                 @if ($errors->has('username') || $errors->has('email'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('username') ?: $errors->first('email') }}</strong>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend"><span class="input-group-text">{{ __('Mot de Passe') }}</span></div>
+                                                        <input  type="password" id="password" class="form-control @error('password') is-invalid @enderror" name="password" value="{{ old('password') }}" required  />
+                                                        <div class="input-group-prepend" id="btn_show_register_password_react"></div>
 
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
+                                                    </div>
 
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Mot de passe') }}</label>
+                                                    @error('password')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror
+                                                    <br>
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                                    <div class="form-group row">
+                                                        <div class="col-md-6 offset-md-4">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+                                                                <label class="form-check-label" for="remember">
+                                                                    {{ __('Restez connecté') }}
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
-                        <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                                    @if (Route::has('password.request'))
+                                                        <a class="btn btn-link" href="{{ route('password.request') }}">
+                                                            {{ __('Mot de passe oublié ?') }}
+                                                        </a>
+                                                    @endif
+                                                    <br>
+                                                  
+                                                    
+                                     <div class="form-group row mb-0">
 
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Restez connecté') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+                                     <div class="col-md-6" id="submit_button" >
+                                        <button 
+                                        type="submit" 
+                                            class="btn btn-primary">
+                                            Connexion
+                                        </button> 
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" id="connexion_butt"  class="btn btn-primary">
-                                    {{ __('Connnexion') }}
-                                </button>
+                                    </div>
+                                     
+                                     <div class="col-md-12" id="waiting_message" style="display: none;">
+                                        <span >
+                                            <em style="color: blue;"> Merci de patienter.</em>
+                                            <div class="spinner-border text-primary" role="status">
+                                            <span class="sr-only">Chargement...</span>
+                                                </div>
+                                        </span>
+                                     </div>
+                                    
+                                     </div>
+    
+                                                    <br /><br /><br /><br /><br /><br /><br />
+                                                </div>
+                                           
+			</form>
 
-                               
+			<div class="contact100-more flex-col-c-m accueil_form_image" id="accueil_form_image">
+				
 
-                                <div class="spinner-border text-primary" style="display: none;" id="patientez" role="status">
-                                    <span class="sr-only">Patientez...</span>
-                                </div>
+				<div class="dis-flex size1 p-b-47">
+					<div class="txt1 p-r-25">
+						<span class="lnr lnr-envelope"></span>
+					</div>
 
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Mot de passe oublié ?') }}
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+					<div class="flex-col size2">
+						<span class="txt1 p-b-20">
+							 Support Général
+						</span>
+
+						<span class="txt3">
+							agosoft@agosoftci.com
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+   
     </div>
 </div>
- 
+@endsection
+
+@section('other_css')
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{{asset('garde/vendor/bootstrap/css/bootstrap.min.css ')}}">
+<!--===============================================================================================-->
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{asset('garde/fonts/Linearicons-Free-v1.0.0/icon-font.min.css ')}}">
+<!--===============================================================================================-->
+
+	<!-- <link rel="stylesheet" type="text/css" href="{{asset('garde/css/util.css ')}}"> -->
+	<link rel="stylesheet" type="text/css" href="{{asset('garde/css/main.css ')}}">
+<!--===============================================================================================-->
 @endsection
 
 @section('other_script')
 
 
+<script src="https://unpkg.com/react@16/umd/react.developpement.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.developpement.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+  <!-- <script type="text/javascript" src="{{URL::asset('js/register.js')}}"></script> -->
+  <script type="text/javascript" src="{{URL::asset('js/showPassword.js')}}"></script>
 
   <script type="text/javascript">
 
     function logSubmit(){
-        var patientez = document.getElementById('patientez');
-        var connexion_butt = document.getElementById('connexion_butt');
-        if(patientez.style.display === "none"){
-            patientez.style.display = "block";
+        var waiting = document.getElementById('waiting_message');
+        var log = document.getElementById('submit_button');
+        if(waiting.style.display === "none"){
+            waiting.style.display = "block";
         }else{
-            patientez.style.display = "none";
+            waiting.style.display = "none";
 
         }
 
-        if(connexion_butt.style.display === "none"){
-            connexion_butt.style.display = "block";
+        if(log.style.display === "none"){
+            log.style.display = "block";
         }else{
-            connexion_butt.style.display = "none";
+            log.style.display = "none";
 
         }
     }
@@ -122,6 +170,7 @@
 
 
 @endsection
+
 
 
 
