@@ -95,8 +95,8 @@
                 <div class="row">
                     <!--== Logo Start ==-->
                     <div class="col-lg-4">
-                        <a href="index2.html" class="logo">
-                            <img src="{{ asset('garde/assets/img/logo.png')}}" alt="JSOFT">
+                        <a href="#" class="logo">
+                            <img src="{{ asset('assets/images/log_princip_blanc.png')}}" alt="JSOFT" />
                         </a>
                     </div>
                     <!--== Logo End ==-->
@@ -172,7 +172,9 @@
                         <div class="display-table">
                             <div class="display-table-cell">
                                 <h1>AGOSOFTPARC!</h1>
-                                <p>LOGICIEL PROFESSIONEL DE <br> GESTION DU PARC AUTOMOBILE</p>
+                                <p>LOGICIEL PROFESSIONEL DE <br> GESTION DU PARC AUTOMOBILE</p><br />
+                                <a class="btn btn-primary" href="{{ route('register') }}">Essayer gratuitement pendant 30 jours</a>
+
 
                                 
                             </div>
