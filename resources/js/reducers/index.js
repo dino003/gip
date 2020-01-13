@@ -49,11 +49,13 @@ import AlertReducer from './parametres_generaux/AlerteReducer'
 import AuthReducer from './auth/AuthReducer'
 import ThemeReducer from './parametres_generaux/ThemeReducer'
 import AbonnementReducer from './auth/AbonnementReducer'
+import TracabiliteReducer from './vehicules/TracabiliteReducer'
 
 const allReducers = combineReducers({
     auth: AuthReducer,
     theme: ThemeReducer,
     abonnement: AbonnementReducer,
+    tracabilites: TracabiliteReducer,
     types_entites: TypeEntiteReducer,
     structures_etablissements: StructureEtablissementReducer,
     entites: EntitesReducer,

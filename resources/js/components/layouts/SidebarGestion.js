@@ -51,7 +51,8 @@ const active = {
                             
 
                                   
-                                 
+                                {param_generaux_modules && param_generaux_modules.reservations == 1 &&
+ 
                                 <li>
                                     <NavLink activeStyle={active} exact to="/gestion_du_parc_automobile/gestion-des-reservations-all">
                                         <i className="metismenu-icon pe-7s-home"></i>
@@ -61,6 +62,7 @@ const active = {
                                     </NavLink>
 
                                 </li>
+                                }
 
                                 {param_generaux_modules && 
 

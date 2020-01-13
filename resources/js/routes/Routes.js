@@ -107,6 +107,7 @@ import InterventionVehiculeEtat from '../pages/editions/etats/interventions/Inte
 import ConsommationVehiculeEtat from '../pages/editions/etats/consommations/ConsommationVehiculeEtat';
 import ReservationVehiculeEtat from '../pages/editions/etats/reservations/ReservationVehiculeEtat';
 import ContratAssuranceVehicule from '../pages/vehicules/ContratAssuranceVehicule';
+import Tracabilites from '../pages/vehicules/Tracabilites';
 
 
 
@@ -202,6 +203,9 @@ const NavBack = () => (
 
   <Master path="/gestion_du_parc_automobile/parc/contrat_assurance_de_vehicule/:vehicule_id/:imma" component={ContratAssuranceVehicule} />
   <Master path="/gestion_du_parc_automobile/parc/modification-reservation-vehicule/:vehicule_id/:imma/reservation/:reservation_id" component={ModifierReservation} />
+  
+  
+  <Master path="/gestion_du_parc_automobile/parc/journal_evenement/:vehicule_id/:imma" component={Tracabilites} />
 
 
 

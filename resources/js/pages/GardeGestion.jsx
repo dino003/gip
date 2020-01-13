@@ -11,7 +11,7 @@ export default class GardeGestion extends Component {
                                         <i className="pe-7s-note2 icon-gradient bg-premium-dark">
                                         </i>
                                     </div>
-                                    <div>Gestion pour Saas
+                                    <div>Gestion 
                                         <div className="page-title-subheading">Sélectionnez un onglet dans le panel de gauche pour Ajuster la Gestion de AGOSOFTPARC
                                         </div>
                                     </div>

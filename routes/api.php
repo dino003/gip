@@ -47,6 +47,22 @@ Route::post('ajouter_type_entite_si_vide', 'SetupController@ajouterPremiereTypeE
 //*********fin setup des informations par defaut ************----------------------------------------------------------- */
 
 
+//----------------------tracabilite --------------------------------------------------------**********
+Route::get('tracabilites', 'TracabiliteController@index');
+// voir
+//Route::get('voir_cout_consomable/{id}', 'TracabiliteController@show');
+
+// ajouter 
+Route::post('ajouter_tracabilite', 'TracabiliteController@store');
+// modifier
+//Route::post('modifier_cout_consomable/{id}', 'TracabiliteController@update');
+
+// supprimer
+Route::delete('supprimer_tracabilite/{id}', 'TracabiliteController@destroy');
+
+
+//*********fin tracabilite************----------------------------------------------------------- */
+
 //----------------------Cout consomables --------------------------------------------------------**********
 Route::get('couts_consomables', 'CoutConsomableController@index');
 // voir
