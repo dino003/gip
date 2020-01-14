@@ -415,9 +415,9 @@ function withSplashScreen(WrappedComponent) {
       }
 
       tick() {
-          if(this.state.percentage == 100) return
+          if(this.state.percentage >= 100) return
         this.setState({
-          percentage: this.state.percentage += 2
+          percentage: this.state.percentage += 4
         });
       }
 
@@ -507,49 +507,51 @@ function withSplashScreen(WrappedComponent) {
 
          this.fetchInfoAlerte();
          this.fetchInfoParamGenerauxModules();
-         this.fetchInfoParamGenerauxPersonnels();
-         this.fetchInfoParamGenerauxJournal();
-         this.fetchInfoParamGenerauxStock();
-         this.fetchTypeEntites()
-         this.fetchTva();
-         this.fetchStructures()
+       
          this.fetchCategories_vehicules();
          this.fetchMarques()
          this.fetchEntites();
          this.fetchPersonnels();
          this.fetchTiers();
          this.fetchContratAssurances();
-         this.fetchCodeIncidents()
-         this.fetchNatureEnergies();
+        
          this.fetchNatureInterventions();
          this.fetchOperationInterventions();
          this.fetchNatureConsommations();
          this.fetchReservation();
-         this.fetchNatureAmendes();
-         this.fetchOrdresMissions();
+        
 
-            // premier personnel et Tier
-            // this.enregistrerPersonnelSiVide();
-            // this.ajouterFournisseursiVide();
-
-         this.fetchNatureSinistres();
          this.fetchNatureDepenseRecettes();
          this.fetchNatureReservations();
          this.fetchFamillePiecesdetachees();
-         this.fetchNatureTaxes();
          this.fetchCoutConsommables();
        
 
-        // ajouter structure de base
-        // this.enregistrerStructureSiVide()
-        // this.ajoutertypeEntiteSiVide();
 
-       
+         this.fetchVehicules();
+
+         // debut navbar
+
+         this.fetchCodeIncidents()
+         this.fetchNatureEnergies();
+
+         this.fetchNatureSinistres();
+
+         this.fetchNatureTaxes();
+
+         this.fetchNatureAmendes();
+         this.fetchOrdresMissions();
+
+         this.fetchInfoParamGenerauxPersonnels();
+         this.fetchInfoParamGenerauxJournal();
+         this.fetchInfoParamGenerauxStock();
+         this.fetchTypeEntites()
+         this.fetchTva();
+         this.fetchStructures()
+
          this.fetchDepenseRecettes();
          this.fetchAmendes();
          this.fetchBudgetVehicules();
-
-         this.fetchVehicules();
 
          this.fetchCommandes();
          this.fetchUtilisations();
@@ -561,6 +563,8 @@ function withSplashScreen(WrappedComponent) {
          this.fetchArticlesStock();
          this.fetchEntreesStock();
          this.fetchSortiesStock();
+
+         // fin navbar
 
 
 

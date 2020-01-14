@@ -474,70 +474,73 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
    
 
     componentDidMount(){
-       // const action = {type: "START"}
-       // this.props.dispatch(action)
+      
 
-      //  const action2 = {type: "START_VEHICULE"}
-      //  this.props.dispatch(action2)
-    //   this.fetchTheme();
-    //     this.fetchInfoSociete();
-    //     this.fetchInfoParamGenerauxReservationOrdre();
-    //     this.fetchUtilisateurs();
+        // debut navbar
 
-    //     this.fetchInfoAlerte();
-    //     this.fetchInfoParamGenerauxModules();
-    //     this.fetchInfoParamGenerauxPersonnels();
-    //     this.fetchInfoParamGenerauxJournal();
-    //     this.fetchInfoParamGenerauxStock();
-    //     this.fetchTypeEntites()
-    //     this.fetchTva();
-    //     this.fetchStructures()
-    //     this.fetchAnneesBudgetaires();
-    //     this.fetchCategories_vehicules();
-    //     this.fetchMarques()
-    //     this.fetchEntites();
-    //     this.fetchPersonnels();
-    //     this.fetchTiers();
-    //     this.fetchContratAssurances();
-    //     this.fetchModeleVehicules();
-    //     this.fetchCodeIncidents()
-    //     this.fetchNatureEnergies();
-    //     this.fetchNatureInterventions();
-    //     this.fetchOperationInterventions();
-    //     this.fetchNatureConsommations();
-    //     this.fetchReservation();
-    //     this.fetchNatureAmendes();
-    //     this.fetchOrdresMissions();
+        // this.fetchCodeIncidents()
+        // this.fetchNatureEnergies();
 
-        
-    //         // premier personnel et Tier
-    //         // this.enregistrerPersonnelSiVide();
-    //         // this.ajouterFournisseursiVide();
+        // this.fetchNatureSinistres();
 
-    //     this.fetchNatureSinistres();
-    //     this.fetchNatureDepenseRecettes();
-    //     this.fetchNatureReservations();
-    //     this.fetchFamillePiecesdetachees();
-    //     this.fetchNatureTaxes();
-    //     this.fetchCoutConsommables();
+        // this.fetchNatureTaxes();
+
+        // this.fetchNatureAmendes();
+        // this.fetchOrdresMissions();
+
+        // this.fetchInfoParamGenerauxPersonnels();
+        // this.fetchInfoParamGenerauxJournal();
+        // this.fetchInfoParamGenerauxStock();
+        // this.fetchTypeEntites()
+        // this.fetchTva();
+        // this.fetchStructures()
+
+        // this.fetchDepenseRecettes();
+        // this.fetchAmendes();
+        // this.fetchBudgetVehicules();
+
+        // this.fetchCommandes();
+        // this.fetchUtilisations();
+        // this.fetchBudgetEntites();
+        // this.fetchInterventions();
+        // this.fetchConsommations();
+        // this.fetchModeleVehicules();
+        // this.fetchAnneesBudgetaires();
+        // this.fetchArticlesStock();
+        // this.fetchEntreesStock();
+        // this.fetchSortiesStock();
+
+        // // fin navbar
+
+        // this.fetchTheme();
+        // this.fetchInfoSociete();
+        // this.fetchInfoParamGenerauxReservationOrdre();
+        // this.fetchUtilisateurs();
+
+        // this.fetchInfoAlerte();
+        // this.fetchInfoParamGenerauxModules();
+      
+        // this.fetchCategories_vehicules();
+        // this.fetchMarques()
+        // this.fetchEntites();
+        // this.fetchPersonnels();
+        // this.fetchTiers();
+        // this.fetchContratAssurances();
+       
+        // this.fetchNatureInterventions();
+        // this.fetchOperationInterventions();
+        // this.fetchNatureConsommations();
+        // this.fetchReservation();
        
 
-    //        // ajouter structure de base
-    //     //    this.enregistrerStructureSiVide()
-    //     //    this.ajoutertypeEntiteSiVide();
+        // this.fetchNatureDepenseRecettes();
+        // this.fetchNatureReservations();
+        // this.fetchFamillePiecesdetachees();
+        // this.fetchCoutConsommables();
+      
 
-    //     this.fetchArticlesStock();
-    //     this.fetchEntreesStock();
-    //     this.fetchSortiesStock();
-    //     this.fetchDepenseRecettes();
-    //     this.fetchAmendes();
-    //     this.fetchBudgetVehicules();
-    //     this.fetchVehicules();
-    //     this.fetchCommandes();
-    //     this.fetchUtilisations();
-    //     this.fetchBudgetEntites();
-    //     this.fetchInterventions();
-    //     this.fetchConsommations();
+
+        // this.fetchVehicules();
 
 
     }
