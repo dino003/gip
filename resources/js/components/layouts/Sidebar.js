@@ -85,10 +85,10 @@ class Sidebar extends Component {
                                 </NavLink>
                             </li>
 
-                            {param_generaux_modules && (
+                            {param_generaux_modules ?
                                 <React.Fragment>
                                     {param_generaux_modules.utilisation_vehicules ==
-                                        1 && (
+                                        1 ?
                                         <li>
                                             {vehiculeSeleted != undefined ? (
                                                 <NavLink
@@ -113,10 +113,10 @@ class Sidebar extends Component {
                                                 </a>
                                             )}
                                         </li>
-                                    )}
+                                    : null}
 
                                     {param_generaux_modules.intervention_vehicules ==
-                                        1 && (
+                                        1 ?
                                         <li>
                                             {vehiculeSeleted != undefined ? (
                                                 <NavLink
@@ -140,11 +140,11 @@ class Sidebar extends Component {
                                                     <i className="metismenu-state-icon "></i>
                                                 </a>
                                             )}
-                                        </li>
-                                    )}
+                                        </li> : null
+                                    }
 
                                     {param_generaux_modules.consomation_vehicules ==
-                                        1 && (
+                                        1 ?
                                         <li>
                                             {vehiculeSeleted != undefined ? (
                                                 <NavLink
@@ -168,10 +168,10 @@ class Sidebar extends Component {
                                                     <i className="metismenu-state-icon "></i>
                                                 </a>
                                             )}
-                                        </li>
-                                    )}
+                                        </li> : null
+                                    }
 
-                                    {param_generaux_modules.amendes == 1 && (
+                                    {param_generaux_modules.amendes == 1 ?
                                         <li>
                                             {vehiculeSeleted != undefined ? (
                                                 <NavLink
@@ -195,11 +195,11 @@ class Sidebar extends Component {
                                                     <i className="metismenu-state-icon "></i>
                                                 </a>
                                             )}
-                                        </li>
-                                    )}
+                                        </li> : null
+                                    }
 
                                     {param_generaux_modules.reservations ==
-                                        1 && (
+                                        1 ?
                                         <li>
                                             {vehiculeSeleted != undefined ? (
                                                 !param_generaux_reservation_ordre.vehicule_fonction_reservable &&
@@ -236,11 +236,11 @@ class Sidebar extends Component {
                                                     <i className="metismenu-state-icon "></i>
                                                 </a>
                                             )}
-                                        </li>
-                                    )}
+                                        </li> : null
+                                    }
 
                                     {param_generaux_modules.budget_depenses_vehicules ==
-                                        1 && (
+                                        1 ?
                                         <li>
                                             {vehiculeSeleted != undefined ? (
                                                 <NavLink
@@ -264,11 +264,11 @@ class Sidebar extends Component {
                                                     <i className="metismenu-state-icon "></i>
                                                 </a>
                                             )}
-                                        </li>
-                                    )}
+                                        </li> : null
+                                    }
 
                                     {param_generaux_modules.budget_depenses_vehicules ==
-                                        1 && (
+                                        1 ?
                                         <li>
                                             {vehiculeSeleted != undefined ? (
                                                 <NavLink
@@ -292,11 +292,11 @@ class Sidebar extends Component {
                                                     <i className="metismenu-state-icon "></i>
                                                 </a>
                                             )}
-                                        </li>
-                                    )}
+                                        </li> : null
+                                    }
 
                                     {param_generaux_modules.contrat_assurance_sinistres ==
-                                        1 && (
+                                        1 ?
                                         <li>
                                             {vehiculeSeleted != undefined ? (
                                                 <NavLink
@@ -320,8 +320,8 @@ class Sidebar extends Component {
                                                     <i className="metismenu-state-icon "></i>
                                                 </a>
                                             )}
-                                        </li>
-                                    )}
+                                        </li> : null
+                                    }
 
                                     {/* {param_generaux_modules.budget_depenses_vehicules &&
 
@@ -340,7 +340,7 @@ class Sidebar extends Component {
                                 </li>
                                     } */}
 
-                                    {param_generaux_modules.journal_evenement && (
+                                    {param_generaux_modules.journal_evenement == 1 ?
                                         <li>
                                             {vehiculeSeleted != undefined ? (
                                                 <NavLink
@@ -364,10 +364,10 @@ class Sidebar extends Component {
                                                     <i className="metismenu-state-icon "></i>
                                                 </a>
                                             )}
-                                        </li>
-                                    )}
-                                </React.Fragment>
-                            )}
+                                        </li> : null
+                                    }
+                                </React.Fragment> : null
+                            }
                         </ul>
                     </div>
                 </div>
