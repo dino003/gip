@@ -1,13 +1,15 @@
+ 
  export const formatageSomme = (montant)  => {
-    var p = montant.toFixed(2).split(".");
-    return p[0].split("").reverse().reduce( (acc, montant, i) => {
-        return  montant == "-" ? acc : montant + (i && !(i % 3) ? "." : "") + acc;
+      var mont = parseFloat(montant)
+    var p = mont.toFixed(2).split(".");
+    return p[0].split("").reverse().reduce( (acc, mont, i) => {
+        return  mont == "-" ? acc : mont + (i && !(i % 3) ? "." : "") + acc;
     }, "")  + " F CFA";
 }
 
 export const formatageNombre = (nombre)  => {
 
-  nombre = nombre || 0
+   nombre = parseFloat(nombre) || 0
   var p = nombre.toFixed(2).split(".");
   return p[0].split("").reverse().reduce( (acc, nombre, i) => {
       return  nombre == "-" ? acc : nombre + (i && !(i % 3) ? "." : "") + acc;

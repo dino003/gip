@@ -181,7 +181,7 @@ import CoutConsommableItem from '../../components/codifications/CoutConsommableI
                                                  : (
                                                     <span>
                                                    
-                                                    {this.state.libelle && this.state.libelle.length && this.state.cout_unitaire ? (
+                                                    {this.libelle && this.libelle.value != '' && this.cout_unitaire && this.cout_unitaire.value != '' ? (
                                                          <button onClick={this.handleSubmit} className="mb-2 mr-2 btn-transition btn btn-outline-success">
                                                              <i className="fa fa-send"></i> {' '}
 
@@ -199,7 +199,7 @@ import CoutConsommableItem from '../../components/codifications/CoutConsommableI
                                      onChange={this.handleChange}
                                      style={{width: '30%'}} name="cout_unitaire"
                                       placeholder="Coût unitaire "
-                                     type="text" className="form-control pull-right" />
+                                     type="number" className="form-control pull-right" />
 
                                      <input 
                                      ref={libelle => this.libelle = libelle} 
