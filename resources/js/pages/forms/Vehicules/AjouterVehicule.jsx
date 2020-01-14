@@ -257,8 +257,8 @@ class AjouterVehicule extends Component {
         e.preventDefault()
         if (this.verificationFormulaire() == null) {
          
-        // this.confirmAlertBefore();
-         this.sendData()
+         this.confirmAlertBefore();
+        // this.sendData()
         } else {
             //console.log(this.verificationFormulaire())
             toast.error(this.verificationFormulaire(), {
