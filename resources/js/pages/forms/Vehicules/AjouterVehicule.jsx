@@ -672,7 +672,12 @@ class AjouterVehicule extends Component {
                                                 placeholder="Selectionnez un tiers"
                                                 noOptionsMessage={() => "Aucun Tiers pour l'instant"}
                                                 options={this.props.tiers}
-                                                getOptionLabel={option => `${option.code} ${option.nom.slice(0, 15)}`}
+                                                getOptionLabel={option => {
+                                                    if(option.nom){
+                                                        return `${option.code} ${option.nom.slice(0, 15)}`
+                                                    }
+                                                    return `${option.code}`
+                                                }}
                                                 getOptionValue={option => option.id}
                                                 // formatOptionLabel={formatOptionVehicule}
                                                 onChange={this.setFieldSelect.bind(this, "tiers")}
@@ -690,7 +695,12 @@ class AjouterVehicule extends Component {
                                                 placeholder="Selectionnez une Personne"
                                                 noOptionsMessage={() => "Aucune Personne pour l'instant"}
                                                 options={this.props.personnels}
-                                                getOptionLabel={option => `${option.nom} ${option.prenom.slice(0, 15)}`}
+                                                getOptionLabel={option => {
+                                                    if(option.prenom){
+                                                        return `${option.nom} ${option.prenom.slice(0, 15)}`
+                                                    }
+                                                    return `${option.nom}`
+                                                }}
                                                 getOptionValue={option => option.id}
                                                 // formatOptionLabel={formatOptionVehicule}
                                                 onChange={this.setFieldSelect.bind(this, "chauffeur_atitre")}
@@ -707,7 +717,12 @@ class AjouterVehicule extends Component {
                                                 placeholder="Selectionnez une Personne"
                                                 noOptionsMessage={() => "Aucune Personne pour l'instant"}
                                                 options={this.props.personnels}
-                                                getOptionLabel={option => `${option.nom} ${option.prenom.slice(0, 15)}`}
+                                                getOptionLabel={option => {
+                                                    if(option.prenom){
+                                                        return `${option.nom} ${option.prenom.slice(0, 15)}`
+                                                    }
+                                                    return `${option.nom}`
+                                                }}
                                                 getOptionValue={option => option.id}
                                                 // formatOptionLabel={formatOptionVehicule}
                                                 onChange={this.setFieldSelect.bind(this, "detenteur")}
