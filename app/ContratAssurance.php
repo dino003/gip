@@ -37,8 +37,10 @@ class ContratAssurance extends Model
    }
 
    //vehicule
+ 
+
    public function vehicules()
    {
-       return $this->hasOne('App\Vehicule', 'contrat_assurance_id', 'id');
+       return $this->hasMany('App\Vehicule', 'contrat_assurance_id', 'id');
    }
 }
