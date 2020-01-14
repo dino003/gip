@@ -7,6 +7,7 @@ import NumberFormat from 'react-number-format';
 import today from '../../../utils/today'
 import Select from 'react-select';
 import { colourStyles } from '../../../utils/Repository';
+import inputStyle from '../../../utils/inputStyle'
 
 
 const formatOptionVehicule = data => (
@@ -21,11 +22,11 @@ const formatOptionTiers = data => (
     </div>
 );
 
-const inputStyle = {
-    // backgroundColor: '#85b9e9' FEBFD2
-    backgroundColor: '#FEBFD2'
+// const inputStyle = {
+//     // backgroundColor: '#85b9e9' FEBFD2
+//     backgroundColor: '#FEBFD2'
 
-}
+// }
 
 // const date = new Date();
 

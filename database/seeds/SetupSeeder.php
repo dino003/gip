@@ -60,7 +60,9 @@ class SetupSeeder extends Seeder
 
         $tier = new Tier;
 
-        $tier->code = "FOURNISSEUR PAR DEFAUT";
+        $tier->code = "DEFAUT";
+        $tier->nom = "FOURNISSEUR PAR DEFAUT";
+
 
         $tier->save();
 
@@ -70,7 +72,9 @@ class SetupSeeder extends Seeder
     // personne par Par defaut 
         $pers = new Personnel;
 
+        $pers->nom = "DEFAUT";
         $pers->nom = "PERSONNE PAR DEFAUT";
+
         $pers->default = 1;
         $pers->personne_prioritaire = 1;
       //  $pers->entite_affectation = $request->get('nom');
