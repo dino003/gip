@@ -42,8 +42,51 @@ class AnneeBudgetaireController extends Controller
      */
     public function store(Request $request)
     {
+        $isEmptyAnneeBudgetaire = AnneeBudgetaire::count() == 0;
+
+        // $creation = $annee->create($request->only($annee->fillable));
+         if($isEmptyAnneeBudgetaire ){
+             $annee = new AnneeBudgetaire;
+ 
+             $annee->annee_budgetaire = $request->get('annee_budgetaire');
+             $annee->encours = 1;
+      
+             $annee->save();
+             return response()->json($annee);
+ 
+         }else{
+            // return $this->model->create($request->only($this->model->getModel()->fillable));
+ 
+            $annee = new AnneeBudgetaire;
+ 
+            $annee->annee_budgetaire = $request->get('annee_budgetaire');
+            $annee->encours = 0;
+ 
+            $annee->save();
+            return response()->json($annee);
+         }
+     
        
-         return $this->model->create($request->only($this->model->getModel()->fillable));
+        // return $this->model->create($request->only($this->model->getModel()->fillable));
+
+    }
+
+    public function marquerAnneeEnCours($annee_id){
+        $annees = AnneeBudgetaire::get();
+
+        foreach ($annees as $key => $value) {
+            if($value->encours){
+                $value->encours = !$value->encours;
+             $value->save();
+            }   
+        }
+
+        $tva = AnneeBudgetaire::find($annee_id);
+        $tva->encours = !$tva->encours;
+        $tva->save();
+
+       // return $this->model->show($tva->id);
+        return $this->model->all();
 
     }
 

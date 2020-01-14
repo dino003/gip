@@ -19,7 +19,8 @@ import AnneeBudgetaireItem from '../../components/codifications/AnneeBudgetaireI
         //         'Ditrection'
         
         //    ],
-            selection: []
+            selection: [],
+            isDefautDeclench: false
         }
 
         this.handleChange = this.handleChange.bind(this)
@@ -30,7 +31,16 @@ import AnneeBudgetaireItem from '../../components/codifications/AnneeBudgetaireI
 
   
 
+    onAnneeEnCours = (id) => {
+        this.setState({isDefautDeclench: !this.state.isDefautDeclench})
 
+       axios.get('/api/modifier_annee_en_cours/' + id).then(response => {
+           const action = {type: "GET_ANNEE_BUDGETAIRE", value: response.data}
+           this.props.dispatch(action) 
+        this.setState({isDefautDeclench: !this.state.isDefautDeclench})
+
+       })
+   }
 
     onDelete = (id) => {
      
@@ -182,7 +192,7 @@ import AnneeBudgetaireItem from '../../components/codifications/AnneeBudgetaireI
                                              key={item.id} 
                                              onEditItem={this.onEditSubmit}              
                                              onDelete={this.onDelete}
-                                             onChangeEnCours={this.onChangeEnCours}
+                                             onAnneeEnCours={this.onAnneeEnCours}
                                             item={item} />
                                        )  }         
                                            </tbody>
@@ -191,10 +201,9 @@ import AnneeBudgetaireItem from '../../components/codifications/AnneeBudgetaireI
                                     <span style={{textAlign: 'center'}}>
 
                                     <Loader
-                                        type="BallTriangle"
-                                        color="#00BFFF"
-                                        height={100}
-                                        width={100}
+                                      
+                                        height={500}
+                                        width={300}
                                      />
                                      </span>
                                 )}

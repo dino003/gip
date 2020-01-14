@@ -13,7 +13,19 @@ class AnneeBudgetaireItem extends Component {
 
         // this.onDelete = this.onDelete.bind(this)
         this.onEditSubmit = this.onEditSubmit.bind(this)
+        this.onDeclencherAnneeEnCours = this.onDeclencherAnneeEnCours.bind(this);
 
+    }
+
+    onDeclencherAnneeEnCours(){
+        const {item, onAnneeEnCours} = this.props
+        let confi = confirm(`Voulez-vous definir   ${item.annee_budgetaire} comme Année budgétaire en cours ?`);
+        if(confi) {
+           // this.setState({isDefautDeclench: !this.state.isDefautDeclench})
+            onAnneeEnCours(item.id)
+           // this.setState({isDefautDeclench: !this.state.isDefautDeclench})
+
+        } 
     }
 
 
@@ -41,7 +53,7 @@ class AnneeBudgetaireItem extends Component {
 
 
     render() {
-        const { item } = this.props
+        const { item, isDefautDeclench } = this.props
 
         if (this.state.isEdit) {
             return (
@@ -73,17 +85,17 @@ class AnneeBudgetaireItem extends Component {
                 <tr>
                  
                     <td onDoubleClick={this.onEdit}>{item.annee_budgetaire}</td>
-                            <td >  <input type="checkbox" defaultChecked={item.encours}
-                                onChange={this.props.onChangeEnCours.bind(this, item.id)} /> </td>
-                    
-                    <td>
-    
-                        <span className="pull-right">
-                                <button onClick={this.props.onDelete.bind(this, item.id)} className="mb-2 mr-2 btn-transition btn btn-outline-danger pull-right">
-                                    <i className="fa fa-trash"></i>
-                                </button> 
-                        </span>
-                    </td>
+                   
+
+                    {!isDefautDeclench ?  <td > <button title={item.encours == 0 ? `Marquer  ${item.annee_budgetaire} comme année budgétaire en cours` : null} disabled={item.encours == 1} className={item.encours == 0 ? 'mb-2 mr-2 btn btn-light' : 'mb-2 mr-2 btn btn-success'} onClick={this.onDeclencherAnneeEnCours}> {item.encours == 0 ? 'Non' : 'Oui'}</button></td> :  <td > <button disabled><i className="fa fa-spinner fa-spin fa-1x fa-fw"></i></button></td>}
+            <td>
+               {item.encours == 0 &&  <span className="pull-right">
+                    <button onClick={this.props.onDelete.bind(this, item.id)} className="mb-2 mr-2 btn-transition btn btn-outline-danger pull-right">
+                    <i className="fa fa-trash"></i>
+                </button>
+              
+                </span>}
+        </td>
                 </tr>
             );
         }

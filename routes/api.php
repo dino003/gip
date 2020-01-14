@@ -385,6 +385,9 @@ Route::post('modifier_annee_budgetaire/{id}', 'AnneeBudgetaireController@update'
 
 // supprimer
 Route::delete('supprimer_annee_budgetaire/{id}', 'AnneeBudgetaireController@destroy');
+
+// tva par defaut
+Route::get('modifier_annee_en_cours/{annee_id}', 'AnneeBudgetaireController@marquerAnneeEnCours');
 //*********** fin annee_budgetaire vehicules********************************************************* 
 
 //****************** taux_tva de vehicules ********************************************************/
