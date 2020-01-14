@@ -18,7 +18,7 @@ class CreateVehiculeDepensesRecettesTable extends Migration {
 			$table->bigInteger('vehicule')->unsigned()->nullable()->index('FK_depense_recette_vehicule');
 			$table->string('depense_ou_recette', 50)->nullable();
 			$table->date('date')->nullable();
-			$table->date('annee_budgetaire')->nullable();
+			$table->bigInteger('annee_budgetaire')->unsigned()->nullable()->index('FK_depense_recettes_annee_budgetaire');
 			$table->bigInteger('nature')->unsigned()->nullable()->index('FK_depense_recette_nature');
 			$table->bigInteger('tiers')->unsigned()->nullable()->index('FK_depense_recette_tiers');
 			$table->string('imputation_interne', 100)->nullable();

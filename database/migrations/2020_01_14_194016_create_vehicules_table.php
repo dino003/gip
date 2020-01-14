@@ -29,7 +29,7 @@ class CreateVehiculesTable extends Migration {
 			$table->bigInteger('contrat_assurance_id')->unsigned()->nullable()->index('FK_vehicule_contrat_assurance');
 			$table->boolean('neuf_occasion')->nullable()->default(0);
 			$table->date('date_entree_au_parc')->nullable();
-			$table->date('annee_mise_circulation')->nullable();
+			$table->smallInteger('annee_mise_circulation')->nullable();
 			$table->date('premiere_mise_circulation')->nullable();
 			$table->bigInteger('categorie')->unsigned()->nullable()->index('FK_vehicule_categorie');
 			$table->bigInteger('marque')->unsigned()->nullable()->index('FK_vehicule_marque');
@@ -49,11 +49,11 @@ class CreateVehiculesTable extends Migration {
 			$table->float('kilometrage_acquisition', 10, 0)->nullable()->default(0);
 			$table->float('kilometrage_nouvelle_acquisition', 10, 0)->nullable()->default(0);
 			$table->float('kilometrage_actuel', 10, 0)->nullable()->default(0);
-			$table->date('garantie_annee')->nullable();
+			$table->smallInteger('garantie_annee')->nullable();
 			$table->date('grantie_date_fin')->nullable();
 			$table->enum('garantie_en_cours', array('Garantie en cours','Garantie terminée'))->default('Garantie terminée');
 			$table->enum('amortissement_calcul', array('Pas Calcul','Dégressif','Linéaire'))->nullable()->default('Pas Calcul');
-			$table->date('amortissement_annee')->nullable();
+			$table->integer('amortissement_annee')->nullable();
 			$table->date('amortissement_date_fin')->nullable();
 			$table->enum('amortissement_etat', array('Amortissement en cours','Amorti'))->default('Amorti');
 			$table->smallInteger('usage_vehicule')->nullable();

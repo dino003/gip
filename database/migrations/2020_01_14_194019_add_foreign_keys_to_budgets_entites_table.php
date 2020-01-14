@@ -14,6 +14,7 @@ class AddForeignKeysToBudgetsEntitesTable extends Migration {
 	{
 		Schema::table('budgets_entites', function(Blueprint $table)
 		{
+			$table->foreign('annee_budgetaire', 'FK_budget_annee_budgetaire')->references('id')->on('annee_budgetaires')->onUpdate('SET NULL')->onDelete('SET NULL');
 			$table->foreign('entite', 'FK_budget_entite')->references('id')->on('parametrage_entites')->onUpdate('SET NULL')->onDelete('SET NULL');
 			$table->foreign('nature_ligne_budget', 'FK_budget_nature')->references('id')->on('parametrage_natures_depenses_recettes')->onUpdate('SET NULL')->onDelete('SET NULL');
 			$table->foreign('vehicule', 'FK_budget_vehicule')->references('id')->on('vehicules')->onUpdate('CASCADE')->onDelete('CASCADE');
@@ -30,6 +31,7 @@ class AddForeignKeysToBudgetsEntitesTable extends Migration {
 	{
 		Schema::table('budgets_entites', function(Blueprint $table)
 		{
+			$table->dropForeign('FK_budget_annee_budgetaire');
 			$table->dropForeign('FK_budget_entite');
 			$table->dropForeign('FK_budget_nature');
 			$table->dropForeign('FK_budget_vehicule');

@@ -28,7 +28,7 @@ class CreateBudgetsEntitesTable extends Migration {
 			$table->float('recette_pourcentage', 10, 0)->nullable();
 			$table->float('recette_reste', 10, 0)->nullable();
 			$table->text('commentaire', 65535)->nullable();
-			$table->date('annee_budgetaire')->nullable();
+			$table->bigInteger('annee_budgetaire')->unsigned()->nullable()->index('FK_budget_annee_budgetaire');
 		});
 	}
 

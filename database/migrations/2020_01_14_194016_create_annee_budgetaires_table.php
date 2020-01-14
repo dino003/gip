@@ -15,7 +15,7 @@ class CreateAnneeBudgetairesTable extends Migration {
 		Schema::create('annee_budgetaires', function(Blueprint $table)
 		{
 			$table->bigInteger('id', true)->unsigned();
-			$table->date('annee_budgetaire')->nullable();
+			$table->smallInteger('annee_budgetaire')->nullable();
 			$table->date('date_debut')->nullable();
 			$table->date('date_fin')->nullable();
 			$table->boolean('encours')->nullable()->default(0);

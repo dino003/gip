@@ -18,6 +18,7 @@ class AddForeignKeysToVehiculeDepensesRecettesTable extends Migration {
 			$table->foreign('tiers', 'FK_depense_recette_tiers')->references('id')->on('tiers')->onUpdate('SET NULL')->onDelete('SET NULL');
 			$table->foreign('taux_tvaR', 'FK_depense_recette_tva')->references('id')->on('parametre_taux_tva')->onUpdate('SET NULL')->onDelete('SET NULL');
 			$table->foreign('vehicule', 'FK_depense_recette_vehicule')->references('id')->on('vehicules')->onUpdate('CASCADE')->onDelete('CASCADE');
+			$table->foreign('annee_budgetaire', 'FK_depense_recettes_annee_budgetaire')->references('id')->on('annee_budgetaires')->onUpdate('SET NULL')->onDelete('SET NULL');
 		});
 	}
 
@@ -35,6 +36,7 @@ class AddForeignKeysToVehiculeDepensesRecettesTable extends Migration {
 			$table->dropForeign('FK_depense_recette_tiers');
 			$table->dropForeign('FK_depense_recette_tva');
 			$table->dropForeign('FK_depense_recette_vehicule');
+			$table->dropForeign('FK_depense_recettes_annee_budgetaire');
 		});
 	}
 
