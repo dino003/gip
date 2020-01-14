@@ -178,7 +178,7 @@ import TableHeader from '../components/TableHeader'
                      <div className="main-card mb-3 card">
 
                        <div className="card-body ">
-                           <h5 className="card-title">Gestion des véhicules
+                           <h5 className="card-title">Gestion des véhicules <span >({this.props.vehicules.length ? `: ${this.props.vehicules.length} Véhicules` : null})</span>
                           
                         
                           

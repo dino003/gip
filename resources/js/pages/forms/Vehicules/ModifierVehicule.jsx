@@ -265,9 +265,11 @@ class ModifierVehicule extends Component {
         if (this.state.mode_acquisition == '0' && this.acquisition_achat_prix_ttc.value == '' ) {
             message = "Vous N'avez pas renseigné le montant T T C de l'achat, Souhaitez-vous continuer ?"
             if(confirm(message)) return this.sendData()
+            return;
         }else if(this.state.mode_acquisition == '1' && this.acquisition_leasing_loyer_mensuel.value == ''){
             message = "Vous N'avez pas renseigné le loyer mensuel du leasing, Souhaitez-vous continuer ?"
             if(confirm(message)) return this.sendData()
+            return;
         }else if(  this.kilometrage_nouvelle_acquisition.value == ''){
             message = "Vous N'avez pas renseigné le Kilometrage lors de l'entrée au parc Souhaitez-vous continuer ?"
             if(confirm(message)) return this.sendData()
