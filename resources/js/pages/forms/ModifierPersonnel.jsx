@@ -112,7 +112,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                 lieu_delivrance: this.lieu_delivrance.value,
                 type_permis: this.type_permis.value,
                 numero_conducteur_pour_gestion_carte: this.numero_conducteur_pour_gestion_carte.value,
-                categorie: this.categorie.value,
+               // categorie: this.categorie.value,
                 entite_affectation: this.entite_affectation.value,
                 montant_aen: this.montant_aen.value,
                 numero_autorisation_octroye: this.numero_autorisation_octroye.value,
@@ -432,7 +432,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                             ref={numero_conducteur_pour_gestion_carte => this.numero_conducteur_pour_gestion_carte = numero_conducteur_pour_gestion_carte}
                                              type="text" className="form-control" /></div>
                                     </div>
-                                    <div className="col-md-5">
+                                    {/* <div className="col-md-5">
                                         <div className="position-relative form-group">
                                             <label >Catégorie de véhicule associé au statut de la personne</label>
                                             <select name="categorie"
@@ -443,7 +443,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                             <option ></option>
                                         </select>                                        
                                         </div>
-                                    </div>
+                                    </div> */}
                                     <div className="col-md-2">
                                     <div className="position-relative form-group">
                                             <label >Montant AEN</label>

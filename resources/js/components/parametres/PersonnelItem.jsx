@@ -20,8 +20,9 @@ import {connect} from 'react-redux'
             <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.prenom || ''}</td>
             <td   onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.matricule || ''}</td>
             <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.entite_affectation ? item.entite_affectation.entite : ''}</td>
-            <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.portable || ''}</td>
             <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.telephone || ''}</td>
+            <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.portable || ''}</td>
+
 
             <td>
 
