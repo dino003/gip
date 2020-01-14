@@ -239,12 +239,15 @@ class AjouterVehicule extends Component {
         if (this.state.mode_acquisition == '0' && this.acquisition_achat_prix_ttc.value == '' ) {
             message = "Vous N'avez pas renseigné le montant T T C de l'achat, Souhaitez-vous continuer ?"
             if(confirm(message)) return this.sendData()
+            return;
         }else if(this.state.mode_acquisition == '1' && this.acquisition_leasing_loyer_mensuel.value == ''){
             message = "Vous N'avez pas renseigné le loyer mensuel du leasing, Souhaitez-vous continuer ?"
             if(confirm(message)) return this.sendData()
+            return;
         }else if(  this.kilometrage_nouvelle_acquisition.value == ''){
             message = "Vous N'avez pas renseigné le Kilometrage lors de l'entrée au parc Souhaitez-vous continuer ?"
             if(confirm(message)) return this.sendData()
+            return;
         }
 
         return this.sendData() 
@@ -254,7 +257,8 @@ class AjouterVehicule extends Component {
         e.preventDefault()
         if (this.verificationFormulaire() == null) {
          
-         this.confirmAlertBefore();
+        // this.confirmAlertBefore();
+         this.sendData()
         } else {
             //console.log(this.verificationFormulaire())
             toast.error(this.verificationFormulaire(), {
@@ -1480,8 +1484,8 @@ class AjouterVehicule extends Component {
                                 <div className="card-body">
                                     <h5 className="card-title">Assurance</h5>
                                     {!this.props.contrat_assurances.length ?
-                                    <h4>Les éléments du contrat doivent obligatoirement voir été creés dans la gestion des contrats,
-                                        Vous pouvez cependant saisir hors contrat les valeur assurées et primes spécifiques
+                                    <h4>Les éléments du contrat doivent obligatoirement avoir été creés dans la gestion des contrats,
+                                        Vous pouvez cependant saisir hors contrat les valeurs assurées et primes spécifiques
                                     </h4> : null }
 
                                     <div className="form-row">
