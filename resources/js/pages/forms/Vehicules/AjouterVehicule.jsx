@@ -78,8 +78,11 @@ class AjouterVehicule extends Component {
 
 
     verificationFormulaire() {
+        var vehculeExiste = this.props.vehicules.find(ve => ve.immatriculation.toLowerCase() == this.immatriculation.value.toLocaleLowerCase())
         if (this.immatriculation.value == undefined || !this.immatriculation.value.length) {
             return "L'immatriculation est obligatoire !"
+        } else if ( vehculeExiste ) {
+            return "Un Véhicule Portant la même immatriculation exites déja !"
         } else if (this.state.entite_comptable == undefined ) {
             return "L'entité d'affectation comptable est obligatoire"
         } else if (this.state.entite_physique == undefined) {
@@ -1614,6 +1617,8 @@ class AjouterVehicule extends Component {
 const mapStateToProps = state => {
     return {
         categories_vehicules: state.categories_vehicules.items,
+        vehicules: state.vehicules.items,
+
         tiers: state.tiers.items,
         marques: state.marques.items,
         entites: state.entites.items,

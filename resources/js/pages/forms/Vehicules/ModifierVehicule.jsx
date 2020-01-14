@@ -100,6 +100,7 @@ class ModifierVehicule extends Component {
 
     verificationFormulaire() {
         const objetEdit = this.props.vehicules.find(vehicule => vehicule.id == this.props.match.params.vehicule_id)
+        var vehculeExiste = this.props.vehicules.find(ve => ve.id != objetEdit.id && ve.immatriculation.toLowerCase() == this.immatriculation.value.toLocaleLowerCase())
 
         if (this.immatriculation.value == '' ) {
             return "L'immatriculation est obligatoire !"
