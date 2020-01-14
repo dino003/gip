@@ -8,7 +8,7 @@
     <!--=== Favicon ===-->
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 
-    <title>Cardoor - Car Rental HTML Template</title>
+    <title>{{ config('app.name', 'Laravel') }} - Logiciel de gestion de parc automobile</title>
 
     <!--=== Bootstrap CSS ===-->
     <link href="{{ asset('garde/assets/css/bootstrap.min.css ')}}" rel="stylesheet">

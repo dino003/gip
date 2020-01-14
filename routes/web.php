@@ -36,6 +36,7 @@
      //      Route::get('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
       
      Route::get('/gestion_du_parc_automobile/{path?}', 'HomeController@renderReactPage')->where('path', '.*')->name('parc.dashboard');
+     Route::get('/gestion_du_parc_automobile/parc', 'HomeController@renderReactPage');
 
           Route::get('/home', 'HomeController@index')->name('home');
 
