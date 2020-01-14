@@ -110,9 +110,7 @@ class ModifierVehicule extends Component {
             return "La catégorie est obligatoire"
         } else if (this.state.marque == undefined && !objetEdit.marque) {
             return "La marque est obligatoire"
-        } else if (this.modele.value == '' ) {
-            return "Le modèle est obligatoire"
-        } else if (this.state.tiers == undefined && !objetEdit.tiers) {
+        }  else if (this.state.tiers == undefined && !objetEdit.tiers) {
             return "Le Tiers d'acquisition est obligatoire"
         }else if (this.state.contrat_assurance_id == undefined && this.props.contrat_assurances.length) {
             if(!this.props.contrat_assurances.find(contrat => contrat.defaut)) return "Le Véhicule doit être lié à contrat d'assurance"
@@ -157,7 +155,7 @@ class ModifierVehicule extends Component {
 
             precision_energie: this.precision_energie.value,
             modele: this.modele.value,
-            code_modele: this.code_modele.value,
+           // code_modele: this.code_modele.value,
             energie: this.state.energie ? this.state.energie.id : objetEdit.energie ? objetEdit.energie.id : null,
             type_vehicule_carte_grise: this.type_vehicule_carte_grise.value,
             numero_carte_grise: this.numero_carte_grise.value,
@@ -611,7 +609,7 @@ class ModifierVehicule extends Component {
                                     </div>
 
                                     <div className="form-row">
-
+                                    {/* 
                                         <div className="col-md-3">
                                             <div className="position-relative form-group">
                                                 <label >Code modèle *</label>
@@ -622,11 +620,11 @@ class ModifierVehicule extends Component {
                                                     type="text"
 
                                                     className="form-control" /></div>
-                                        </div>
+                                        </div> */}
 
                                         <div className="col-md-3">
                                             <div className="position-relative form-group">
-                                                <label > Modèle *</label>
+                                                <label > Genre *</label>
                                                 <input name="modele"
                                                     style={inputStyle}
                                                     defaultValue={objetEdit.modele}

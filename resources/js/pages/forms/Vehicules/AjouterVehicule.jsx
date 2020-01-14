@@ -88,8 +88,6 @@ class AjouterVehicule extends Component {
             return "La catégorie est obligatoire"
         } else if (this.state.marque == undefined ) {
             return "La marque est obligatoire"
-        } else if (this.modele.value == undefined || !this.modele.value.length) {
-            return "Le modèle est obligatoire"
         } else if (this.state.tiers == undefined ) {
             return "Le Tiers d'acquisition est obligatoire"
         }else if (this.state.contrat_assurance_id == undefined && this.props.contrat_assurances.length) {
@@ -133,7 +131,7 @@ class AjouterVehicule extends Component {
 
             precision_energie: this.precision_energie.value,
             modele: this.modele.value,
-            code_modele: this.code_modele.value,
+           // code_modele: this.code_modele.value,
             energie: this.state.energie ? this.state.energie.id : null,
             type_vehicule_carte_grise: this.type_vehicule_carte_grise.value,
             numero_carte_grise: this.numero_carte_grise.value,
@@ -577,7 +575,7 @@ class AjouterVehicule extends Component {
 
                                     <div className="form-row">
 
-                                        <div className="col-md-3">
+                                        {/* <div className="col-md-3">
                                             <div className="position-relative form-group">
                                                 <label >Code modèle *</label>
                                                 <input name="code_modele"
@@ -586,11 +584,11 @@ class AjouterVehicule extends Component {
                                                     type="text"
 
                                                     className="form-control" /></div>
-                                        </div>
+                                        </div> */}
 
                                         <div className="col-md-3">
                                             <div className="position-relative form-group">
-                                                <label > Modèle *</label>
+                                                <label > Genre *</label>
                                                 <input name="modele"
                                                     style={inputStyle}
 
