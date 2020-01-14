@@ -38,15 +38,15 @@ class AutoDeploy extends Command
     public function handle()
     {
         // script shell
-        exec('php artisan down');
+      //  exec('php artisan down');
         exec('git checkout -f');
         exec('git pull');
-        exec('composer install --no-interaction --no-dev --prefer-dist');
-        exec('npm install');
+      //  exec('composer install --no-interaction --no-dev --prefer-dist');
+      //  exec('npm install');
         exec('php artisan cache:clear');
         exec('php artisan config:clear');
         exec('php artisan config:cache');
-        exec('php artisan up');
+       // exec('php artisan up');
 
     }
 }

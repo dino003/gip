@@ -75,7 +75,7 @@ export default class CoutConsommableItem extends Component {
                     <tr>
                    
                       <td onDoubleClick={this.onEdit}>{item.libelle}</td>
-                      <td onDoubleClick={this.onEdit}>{item.cout_unitaire ? item.cout_unitaire : 0}</td> 
+                      <td onDoubleClick={this.onEdit}>{item.cout_unitaire ? formatageSomme( item.cout_unitaire) : 0}</td> 
 
                       
                         <td>

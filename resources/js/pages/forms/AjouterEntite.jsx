@@ -109,12 +109,12 @@ import inputStyle from '../../utils/inputStyle';
                 regroupement: this.regroupement.value,
                 rattachement: this.rattachement.value,
                 responsable: this.responsable.value,
-                numero_siret_entite: this.numero_siret_entite.value,
+              //  numero_siret_entite: this.numero_siret_entite.value,
                 lieu_prise_en_charge: this.lieu_prise_en_charge.value,
                 lieu_restitution: this.lieu_restitution.value,
                 lieu_stockage_double_cle: this.lieu_stockage_double_cle.value,
-                numero_centre_analytique: this.numero_centre_analytique.value,
-                numero_comptable: this.numero_comptable.value,
+               // numero_centre_analytique: this.numero_centre_analytique.value,
+               // numero_comptable: this.numero_comptable.value,
                 fax_responsable: this.fax_responsable.value,
                 telephonne_responsable: this.telephonne_responsable.value,
                 adresse_email: this.adresse_email.value,
@@ -311,7 +311,7 @@ import inputStyle from '../../utils/inputStyle';
                                         </div>
                                     </div>
 
-                                    <div className="form-row">
+                                    {/* <div className="form-row">
                                         <div className="col-md-2">
                                     <label  className="">N SIRET de l'entité</label>
                                     <input name="numero_siret_entite"
@@ -339,7 +339,7 @@ import inputStyle from '../../utils/inputStyle';
 
                                              type="text" className="form-control" />
                                         </div>
-                                    </div>
+                                    </div> */}
 
                                     <div className="form-row">
                                         <div className="col-md-4">
