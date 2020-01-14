@@ -37,10 +37,9 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
         return  <span style={{textAlign: 'center'}}>
 
         <Loader
-            type="BallTriangle"
-            color="#00BFFF"
-            height={100}
-            width={100}
+       
+            height={500}
+            width={300}
          />
          </span>
     }
@@ -87,7 +86,7 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
             const action = {type: "REMOVE_ENTITE", value: id}
             this.props.dispatch(action)
             this.setState({entitesState : this.state.entitesState.filter(ent => ent.id !== id)})
-           // axios.delete('api/supprimer_entite/' + id)
+            axios.delete('api/supprimer_entite/' + id)
         }
        
     }

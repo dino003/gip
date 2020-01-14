@@ -211,8 +211,8 @@ import ModifierNatureConsommation from '../forms/ModifierNatureConsommation';
             <div className="app-main__inner">
             <div className="main-card card" >
                        <div className="card-body ">
-                           <h5 className="card-title">Gestion des natures d'interventions
-                           <button title=" Ajouter une nouvelle nature d'intervention"
+                           <h5 className="card-title">Gestion des natures des consommations
+                           <button title=" Ajouter u"
                                       className="mb-2 mr-2 btn-transition btn btn-outline-primary pull-right"
                                       onClick={this.closeEdit}
                                       >
@@ -260,7 +260,7 @@ import ModifierNatureConsommation from '../forms/ModifierNatureConsommation';
 
                                         <option value="Entretien">Entretien</option>
                                         <option value="Réparation">Réparation</option>
-                                        <option value="Matériel/Consomable">Matériel/Consomable</option>
+                                        <option value="Matériel/Consomable">Matériel/Consommable</option>
                                         <option value="Autres/Divers">Autres/Divers</option>
                                         <option value="Frais">Frais</option>
 
