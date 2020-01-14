@@ -77,13 +77,13 @@ import inputStyle from '../../utils/inputStyle';
     }
 
       verificationFormulaire () {
-          if(this.state.entite == '' ){
+          if(this.entite.value == '' ){
               return "L'entité est obligatoire !"
-          }else if(this.state.nom_entite == '' ){
+          }else if(this.nom_entite.value == '' ){
               return "Le nom de l'entité est obligatoire !"
-          }else if(this.state.type_entite == '' ){
+          }else if(this.type_entite.value == '' ){
             return "Le type d'entité est obligatoire !"
-          }else if(this.state.regroupement == '' ){
+          }else if(this.regroupement.value == '' ){
             return "Le Regroupement est obligatoire !"
           } else{
               return null
@@ -145,7 +145,7 @@ import inputStyle from '../../utils/inputStyle';
             <div className="app-main__inner">
               
                     <div className="main-card mb-3 card">
-                        <div className="card-body"><h5 className="card-title">Gestion des Entités</h5>
+                        <div className="card-body"><h5 className="card-title">Gestion des Entités </h5>
                             <form className="" onChange={this.setField} onSubmit={this.enregistrerEntite}>
                                 <div className="form-row">
                                     <div className="col-md-5">

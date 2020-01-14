@@ -21,8 +21,8 @@ export default class EntiteItem extends Component {
             </td>
             */}
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.nom_entite}</td>
-            <td>{item.type_entite.type_entite}</td>
-            <td>{item.regroupement.regroupement_appartenance}</td>
+            <td>{item.type_entite ? item.type_entite.type_entite : ''}</td>
+            <td>{item.regroupement ? item.regroupement.regroupement_appartenance : ''}</td>
             <td>
 
                 <span className="pull-right">

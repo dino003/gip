@@ -117,7 +117,7 @@
                                 <li><a href="#pricing-area">Nos Offres</a></li>
                                 @if (Route::has('login'))
                                     @auth
-                                    <li> <a href="{{ route('parc.dashboard') }}">Le Parc</a></li>
+                                    <li> <a href="{{ url('/gestion_du_parc_automobile/parc') }}">Le Parc</a></li>
 
                                     @else
                                     <li> <a href="{{ route('login') }}">Connexion</a></li>
