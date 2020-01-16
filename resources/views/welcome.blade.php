@@ -175,13 +175,7 @@
                                 <h1>AGOSOFTPARC</h1>
                                 <p>LOGICIEL PROFESSIONEL DE <br> GESTION DU PARC AUTOMOBILE</p><br />
 
-                                <form action="{{ route('import.data') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <input type="file" name="fichier" class="form-control">
-                <br>
-                <button class="btn btn-success">Import User Data</button>
-                <a class="btn btn-warning" href="{{ url('/ex') }}">Export User Data</a>
-            </form>
+               
  
                             </div>
                         </div>
