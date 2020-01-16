@@ -151,7 +151,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
           if(this.verificationFormulaire() == null){
             axios.post('/api/modifier_vehicule_budget_vehicule/' + objetEdit.id, {
-                annee_budgetaire: this.state.objetEdit.annee_budgetaire,
+                annee_budgetaire: objetEdit.annee_budgetaire,
                // vehicule: this.props.vehiculeSeleted.id,
                 entite_vehicule: this.entite_vehicule.value,
                 nature_ligne_budget: this.nature_ligne_budget.value,
@@ -190,7 +190,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
     render() {
       const  objetEdit = this.props.budgetVehicules.find(bud => bud.id == this.props.match.params.budgetVehicule_id)
-        if(objetEdit !== undefined){
+      const vehiculeSelect = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
+      if(objetEdit !== undefined){
             return (
                 <div className="app-main__inner">
                   
@@ -212,7 +213,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                                 <input name="entite_vehicule"  type="text"
                                                 onChange={this.setField}
                                                 readOnly
-                                                defaultValue={this.props.vehiculeSeleted.entite_physique.entite}
+                                                defaultValue={vehiculeSelect.entite_physique ? vehiculeSelect.entite_physique.entite : null}
                                                 ref={entite_vehicule => this.entite_vehicule = entite_vehicule}
                                                  className="form-control" />
                                                  </div>
@@ -224,7 +225,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                              onChange={this.setFieldNatureDepenseRecette}
                                                 ref={nature_ligne_budget => this.nature_ligne_budget = nature_ligne_budget}
                                                 style={inputStyle}
-                                                defaultValue={objetEdit.nature_ligne_budget.id}
+                                                defaultValue={objetEdit.nature_ligne_budget ? objetEdit.nature_ligne_budget.id : null}
                                               className="form-control">
                                             <option defaultValue={null}></option>
     

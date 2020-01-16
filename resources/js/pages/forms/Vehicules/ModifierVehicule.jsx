@@ -1294,7 +1294,7 @@ class ModifierVehicule extends Component {
                                                     defaultValue={objetEdit.tech_hauteur}
 
                                                     ref={tech_hauteur => this.tech_hauteur = tech_hauteur}
-                                                    type="text" className="form-control" /></div>
+                                                    type="number" className="form-control" /></div>
                                         </div>
 
                                         <div className="col-md-2">
@@ -1304,7 +1304,7 @@ class ModifierVehicule extends Component {
                                                     defaultValue={objetEdit.tech_taille_pneu}
 
                                                     ref={tech_taille_pneu => this.tech_taille_pneu = tech_taille_pneu}
-                                                    type="text" className="form-control" /></div>
+                                                    type="number" className="form-control" /></div>
                                         </div>
 
                                         <div className="col-md-2">
@@ -1314,7 +1314,7 @@ class ModifierVehicule extends Component {
                                                     defaultValue={objetEdit.tech_pression_avant}
 
                                                     ref={tech_pression_avant => this.tech_pression_avant = tech_pression_avant}
-                                                    type="text" className="form-control" /></div>
+                                                    type="number" className="form-control" /></div>
                                         </div>
 
                                         <div className="col-md-3">
@@ -1324,7 +1324,7 @@ class ModifierVehicule extends Component {
                                                     defaultValue={objetEdit.tech_pression_arriere}
 
                                                     ref={tech_pression_arriere => this.tech_pression_arriere = tech_pression_arriere}
-                                                    type="text" className="form-control" /></div>
+                                                    type="number" className="form-control" /></div>
                                         </div>
 
                                     </div>
@@ -1342,7 +1342,7 @@ class ModifierVehicule extends Component {
                                                 <input name="kilometrage_nouvelle_acquisition"
                                                     defaultValue={objetEdit.kilometrage_nouvelle_acquisition}
                                                     ref={kilometrage_nouvelle_acquisition => this.kilometrage_nouvelle_acquisition = kilometrage_nouvelle_acquisition}
-                                                    type="text" className="form-control" /></div>
+                                                    type="number" className="form-control" /></div>
                                         </div>
 
                                         <div className="col-md-2">
@@ -1358,7 +1358,7 @@ class ModifierVehicule extends Component {
                                                     defaultValue={objetEdit.kilometrage_actuel}
 
                                                     ref={kilometrage_actuel => this.kilometrage_actuel = kilometrage_actuel}
-                                                    type="text" className="form-control" /></div>
+                                                    type="number" className="form-control" /></div>
                                         </div>
 
                                      
@@ -1557,7 +1557,7 @@ class ModifierVehicule extends Component {
                                                     defaultValue={objetEdit.acquisition_pret_date_debut}
 
                                                         ref={acquisition_pret_date_debut => this.acquisition_pret_date_debut = acquisition_pret_date_debut}
-                                                        type="text" className="form-control" /></div>
+                                                        type="date" className="form-control" /></div>
                                             </div>
 
                                             <div className="col-md-1">
@@ -1567,7 +1567,7 @@ class ModifierVehicule extends Component {
                                                     defaultValue={objetEdit.acquisition_pret_date_fin}
 
                                                         ref={acquisition_pret_date_fin => this.acquisition_pret_date_fin = acquisition_pret_date_fin}
-                                                        type="text" className="form-control" /></div>
+                                                        type="date" className="form-control" /></div>
                                             </div>
 
                                             <div className="col-md-2">
@@ -1577,7 +1577,7 @@ class ModifierVehicule extends Component {
                                                     defaultValue={objetEdit.acquisition_pret_kilometrage_debut}
 
                                                         ref={acquisition_pret_kilometrage_debut => this.acquisition_pret_kilometrage_debut = acquisition_pret_kilometrage_debut}
-                                                        type="text" className="form-control" /></div>
+                                                        type="number" className="form-control" /></div>
                                             </div>
 
                                             <div className="col-md-2">
@@ -1587,7 +1587,7 @@ class ModifierVehicule extends Component {
                                                     defaultValue={objetEdit.acquisition_pret_kilometrage_fin}
 
                                                         ref={acquisition_pret_kilometrage_fin => this.acquisition_pret_kilometrage_fin = acquisition_pret_kilometrage_fin}
-                                                        type="text" className="form-control" /></div>
+                                                        type="number" className="form-control" /></div>
                                             </div>
 
                                             <div className="col-md-3">
@@ -1597,7 +1597,7 @@ class ModifierVehicule extends Component {
                                                     defaultValue={objetEdit.acquisition_pret_motif}
 
                                                         ref={acquisition_pret_motif => this.acquisition_pret_motif = acquisition_pret_motif}
-                                                        type="text" className="form-control" /></div>
+                                                         className="form-control" /></div>
                                             </div>
 
                                         </div> : null
@@ -1843,8 +1843,8 @@ class ModifierVehicule extends Component {
                                 <div className="card-body">
                                     <h5 className="card-title">Assurance</h5>
                                     {!this.props.contrat_assurances.length ?
-                                    <h4>Les éléments du contrat doivent obligatoirement voir été creés dans la gestion des contrats,
-                                        Vous pouvez cependant saisir hors contrat les valeur assurées et primes spécifiques
+                                    <h4>Les éléments du contrat doivent obligatoirement avoir été creés dans la gestion des contrats,
+                                        Vous pouvez cependant saisir hors contrat les valeurs assurées et primes spécifiques
                                     </h4> : null }
 
                                     <div className="form-row">
@@ -1860,12 +1860,12 @@ class ModifierVehicule extends Component {
                                                         options={this.props.contrat_assurances}
                                                         getOptionLabel={option => `${option.numero_contrat_police}`}
                                                         getOptionValue={option => option.id}
-                                                        defaultValue={objetEdit.contrat_assurance ? objetEdit.contrat_assurance : this.props.contrat_assurances.find(contrat => contrat.defaut) }
+                                                        defaultValue={objetEdit.contrat_assurance ? objetEdit.contrat_assurance : this.props.contrat_assurances.find(contrat => contrat.defaut) ? this.props.contrat_assurances.find(contrat => contrat.defaut) : null  }
                                                         styles={colourStyles}
                                                         
                                                         // formatOptionLabel={formatOptionVehicule}
                                                         onChange={this.setFieldSelect.bind(this, "contrat_assurance_id")}
-                                                    /> : <input name="tech_couleur"
+                                                    /> : <input name="contrat_ass"
                                                         readOnly
                                                         defaultValue="Vous devez creer un contrat d'assurance"
                                                         type="text" className="form-control" />}

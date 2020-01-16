@@ -19,6 +19,9 @@
          return view('welcome');
      })->name('welcome');
 
+     Route::post('import_personnelo', 'PersonnelController@storeByImport')->name('import.data');
+
+
           // Login Routes
           Route::get('secure-authentication', 'Auth\LoginController@showLoginForm')->name('login');
           Route::post('secure-authentication', 'Auth\LoginController@login');

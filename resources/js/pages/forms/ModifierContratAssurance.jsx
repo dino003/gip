@@ -285,7 +285,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                 <div className="form-row">
                                 <div className="col-md-2">
                                         <div className="position-relative form-group">
-                                            <label >Période ===></label>
+                                            <label >Période de validité ===></label>
                                            
                                              </div>
                                     </div>
@@ -345,7 +345,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         getOptionLabel={option => option.code}
                                         getOptionValue={option => option.id}
                                         onChange={this.setFieldCompagnie}
-                                        defaultValue={objetEdit.compagnie_assurance}
+                                        defaultValue={objetEdit.compagnie_assurance ? objetEdit.compagnie_assurance : null}
                                         styles={colourStyles}
                                       />
                                 
@@ -355,7 +355,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                          <label  className="">Courtier</label>
                                         <select name="courtier" onChange={this.setField}
                                             ref={courtier => this.courtier = courtier}
-                                            defaultValue={objetEdit.courtier.id}
+                                            defaultValue={objetEdit.courtier ? objetEdit.courtier.id : null}
 
                                           className="form-control">
                                               

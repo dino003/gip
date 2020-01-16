@@ -131,6 +131,8 @@ import inputStyle from '../../../utils/inputStyle'
       verificationFormulaire () {
           if(this.nature_ligne_budget.value == ''){
               return "La nature de la ligne Budget est obligatoire !"
+          }else if(!this.props.annees_budgetaires.find(annee => annee.encours)){
+            return "Vous n'avez pas créé d'année budgétaire; enregistrement impossible"
           } else{
               return null
           }
@@ -142,7 +144,7 @@ import inputStyle from '../../../utils/inputStyle'
           if(this.verificationFormulaire() == null){
               this.setState({isFormSubmitted: true})
             axios.post('/api/ajouter_vehicule_budget_vehicule', {
-                annee_budgetaire: 1,
+                annee_budgetaire: this.props.annees_budgetaires.find(annee => annee.encours) ? this.props.annees_budgetaires.find(annee => annee.encours).annee_budgetaire : null,
                 vehicule: this.props.vehiculeSeleted.id,
                 entite_vehicule: this.entite_vehicule.value,
                 nature_ligne_budget: this.nature_ligne_budget.value,
@@ -190,6 +192,9 @@ import inputStyle from '../../../utils/inputStyle'
                 this.props.dispatch(action)
             }
         }
+
+        const vehiculeSelect = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
+
         return (
             <div className="app-main__inner">
               
@@ -211,7 +216,7 @@ import inputStyle from '../../../utils/inputStyle'
                                             <input name="entite_vehicule"  type="text"
                                             onChange={this.setField}
                                             readOnly
-                                            defaultValue={this.props.vehiculeSeleted ? this.props.vehiculeSeleted.entite_physique.entite : null}
+                                            defaultValue={vehiculeSelect.entite_physique ?  vehiculeSelect.entite_physique.entite : null}
                                             ref={entite_vehicule => this.entite_vehicule = entite_vehicule}
                                              className="form-control" />
                                              </div>
@@ -374,7 +379,7 @@ const mapStateToProps = state => {
     return {
         natures_depense_recettes: state.natures_depense_recettes.items,
         vehicules: state.vehicules.items,
-
+        annees_budgetaires: state.annees_budgetaires.items,
         vehiculeSeleted: state.vehiculeSeleted.vehicule,
     }
   }

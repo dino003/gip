@@ -26,7 +26,7 @@ import {formatageSomme} from '../../utils/Repository'
             
              <tr > 
                    
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.vehicule.immatriculation || ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.vehicule ? item.vehicule.immatriculation : ''}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.type_consomation ? item.type_consomation.nature_consomation : ''}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_conso ? moment(item.date_conso).format('DD/MM/YYYY') : ''}</td>
 

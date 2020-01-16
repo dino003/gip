@@ -9,6 +9,10 @@ import TableHeader from '../../../components/TableHeader'
 
 import { Container, Button, Link } from 'react-floating-action-button'
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import FileUpload from '../../../components/FileUpload'
+
+import {ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
  class Personnels extends Component {
@@ -17,12 +21,33 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
         super(props);
 
         this.state = {
-            loading: false,
+           // loading: true,
             isSearchInputVisible : false,
             personnelState: this.props.personnels
         }
+
+        this.onErrorUpload = this.onErrorUpload.bind(this);
+        this.onSuccesUpload = this.onSuccesUpload.bind(this);
         
     }
+
+    componentDidMount(){
+        
+    }
+
+    onErrorUpload(file){
+        alert(`L'importation a échoué veuillez vérifier le fichier ${file.name}`)
+    }
+
+    onSuccesUpload(){
+        toast.success('Importé avec succès', {
+            position: toast.POSITION.BOTTOM_CENTER
+          });
+    }
+
+    onClick = () => {
+        this.child.method() // do stuff
+      }
 
 
     toggleSearchInput = () => {
@@ -142,6 +167,12 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
    
                                         Ajouter
                                            </button> */}
+                                            <FileUpload
+                                             onRef={ref => (this.child = ref)}
+                                             onErrorUpload={this.onErrorUpload}
+                                             onSuccesUpload={this.onSuccesUpload}
+                                              />
+
                                            {this.props.personnels.length ?
                                            <ReactHTMLTableToExcel
                                               id="test-table-xls-button"
@@ -196,14 +227,14 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                             }
                            </h5> */}
                            <div className="table-responsive">
-                           {this.state.loading ? this.renderLoading() : 
+                           {this.props.loading ? this.renderLoading() : 
                             !this.props.personnels.length ? this.renderEmpty() : this.renderList()}
 
                            </div>
                        </div>
                    </div>
                 
-                   <Container>
+                   {/* <Container>
                         <Button
                         tooltip="Ajouter une personne"
                         icon="fas fa-plus"
@@ -212,7 +243,39 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
                         onClick={() => this.props.history.push(`/gestion_du_parc_automobile/ajouter_personnel`)}
                         />
-                </Container>
+                </Container> */}
+
+                <Container>
+           
+                <Button
+                tooltip="Importer un fichier du personnel"
+                icon="fas fa-download"
+               // rotate={true}
+               styles={{ cursor: 'pointer'}}
+
+                onClick={() => this.onClick()} />
+
+                <Button
+                tooltip="Ajouter une personne!"
+                icon="fas fa-plus"
+               // rotate={true}
+               styles={{ cursor: 'pointer'}}
+
+               onClick={() => this.props.history.push(`/gestion_du_parc_automobile/ajouter_personnel`)}
+               />
+            <Button
+               // tooltip="The big plus button!"
+                icon="fas fa-arrow-up"
+                styles={{backgroundColor: 'green', color: 'white', cursor: 'pointer'}}
+
+               // rotate={true}
+               // onClick={() => alert('FAB Rocks!')}
+                 />
+        </Container>
+
+        <ToastContainer autoClose={3000} />
+
+
        </div>
         )
     }
@@ -220,7 +283,9 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
 const mapStateToProps = state => {
     return {
-        personnels: state.personnels.items
+        personnels: state.personnels.items,
+        loading: state.personnels.loading,
+
     }
   }
 

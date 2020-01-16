@@ -112,7 +112,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
           if(this.verificationFormulaire() == null){
             axios.post('/api/modifier_vehicule_depense_recette/' + objetEdit.id, {
-                annee_budgetaire: this.annee_budgetaire.value,
+               // annee_budgetaire: this.annee_budgetaire.value,
                // vehicule: this.props.vehiculeSeleted.id,
                 depense_ou_recette: this.depense_ou_recette.value,
                 date: this.date.value,
@@ -200,6 +200,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                                 <label >Année budgétaire </label>
                                                 <input name="annee_budgetaire"  type="number"
                                                 defaultValue={objetEdit.annee_budgetaire}
+                                                readOnly
                                                 style={inputStyle}
                                                 ref={annee_budgetaire => this.annee_budgetaire = annee_budgetaire}
                                                  className="form-control" />
@@ -215,7 +216,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                     <div className="col-md-4">
                                              <label  className="">Nature</label>
                                             <select name="nature"
-                                            defaultValue={objetEdit.nature.id}
+                                            defaultValue={objetEdit.nature ? objetEdit.nature.id : null}
                                              onChange={this.setFieldNatureDepenseRecette}
                                                 ref={nature => this.nature = nature}
                                                 style={inputStyle}
@@ -245,7 +246,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         <div className="col-md-3">
                                              <label  className="">Tiers</label>
                                             <select name="tiers"
-                                            defaultValue={objetEdit.tiers.id}
+                                            defaultValue={objetEdit.tiers ? objetEdit.tiers.id : null}
                                              onChange={this.setField}
                                                 ref={tiers => this.tiers = tiers}
                                                 style={inputStyle}

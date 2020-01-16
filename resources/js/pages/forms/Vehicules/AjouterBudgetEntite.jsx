@@ -229,7 +229,8 @@ import year from '../../../utils/Year';
                                         <div className="position-relative form-group">
                                             <label >Année budgétaire </label>
                                             <input name="annee_budgetaire"  type="number"
-                                                defaultValue={year}
+                                                defaultValue={this.props.annees_budgetaires.find(annee => annee.encours) ? this.props.annees_budgetaires.find(annee => annee.encours).annee_budgetaire : ''}
+                                                readOnly
                                                 style={inputStyle}
                                             ref={annee_budgetaire => this.annee_budgetaire = annee_budgetaire}
                                              className="form-control" />
@@ -365,7 +366,9 @@ const mapStateToProps = state => {
     return {
         natures_depense_recettes: state.natures_depense_recettes.items,
         vehiculeSeleted: state.vehiculeSeleted.vehicule,
-        entites: state.entites.items
+        entites: state.entites.items,
+        annees_budgetaires: state.annees_budgetaires.items,
+
     }
   }
 

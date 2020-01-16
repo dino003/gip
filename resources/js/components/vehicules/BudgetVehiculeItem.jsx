@@ -25,10 +25,10 @@ import { formatageSomme } from '../../utils/Repository';
         return (
             
              <tr > 
-             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.annee_budgetaire || 'Non renseigné'}</td>
+             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.annee_budgetaire || ''}</td>
        
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.vehicule.immatriculation || 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.entite_vehicule || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.entite_vehicule || ''}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.imputation_interne || 'Non renseigné'}</td>
 
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.nature_ligne_budget ? item.nature_ligne_budget.nature_depense_recette : 'Non renseigné'}</td>

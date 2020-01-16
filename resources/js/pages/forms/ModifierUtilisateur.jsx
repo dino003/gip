@@ -226,7 +226,7 @@ import inputStyle from '../../utils/inputStyle';
                                     <label  className="">Affectation (entité d'appartenance)</label>
                                         <select name="entite" 
                                         ref={entite => this.entite = entite}
-                                        defaultValue={utilisateurModif.entite}
+                                        defaultValue={utilisateurModif.entite ? utilisateurModif.entite.entite : null }
                                          className="form-control">
                                             <option value={null}></option>
                                             {this.props.entites.map((ent, index) => 

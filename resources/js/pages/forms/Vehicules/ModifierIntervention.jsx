@@ -165,6 +165,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                                 <label >Kilometrage </label>
                                                 <input name="kilometrage"  type="number"
                                                 defaultValue={objetEdit.kilometrage}
+                                                readOnly
                                                 onChange={this.setField}
                                                 ref={kilometrage => this.kilometrage = kilometrage}
                                                  className="form-control" />
@@ -229,7 +230,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         <label  className="">Nature intervention</label>
                                             <select name="nature_intervention" onChange={this.setFieldNature}
                                                 ref={nature_intervention => this.nature_intervention = nature_intervention}
-                                                defaultValue={objetEdit.nature_intervention.id}
+                                                defaultValue={objetEdit.nature_intervention ? objetEdit.nature_intervention.id : null}
                                               className="form-control">
                                             <option defaultValue={null}></option>
     
@@ -264,7 +265,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                             <div className="col-md-3">
                                              <label  className="">Tiers</label>
                                             <select name="tiers" onChange={this.setField}
-                                            defaultValue={objetEdit.tiers.id}
+                                            defaultValue={objetEdit.tiers ? objetEdit.tiers.id : null}
                                                 ref={tiers => this.tiers = tiers}
                                                 style={inputStyle}
     

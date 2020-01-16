@@ -195,7 +195,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         <select name="personne_reservant" onChange={this.setField}
                                             ref={personne_reservant => this.personne_reservant = personne_reservant}
                                             style={inputStyle}
-                                            defaultValue={objetEdit.personne_reservant.id}
+                                            defaultValue={objetEdit.personne_reservant ? objetEdit.personne_reservant.id : null}
                                           className="form-control">
                                             {personeParDefaut != undefined && <option value={personeParDefaut.id}>{personeParDefaut.nom} {personeParDefaut.prenom}</option>}
                                         {this.props.personnels.map(pers => {
@@ -227,7 +227,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         <select name="objet_reservation" onChange={this.setField}
                                             ref={objet_reservation => this.objet_reservation = objet_reservation}
                                             style={inputStyle}
-                                            defaultValue={objetEdit.objet_reservation.id}
+                                            defaultValue={objetEdit.objet_reservation ? objetEdit.objet_reservation.id : null}
                                           className="form-control">
                                         <option defaultValue={null}></option>
                                         
@@ -311,8 +311,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                             ref={vehicule_parti => this.vehicule_parti = vehicule_parti}
                                             defaultValue={objetEdit.vehicule_parti}
                                           className="form-control">
-                                        <option value={0}>Non</option>
-                                        <option value={1}>Oui</option>
+                                        <option value="0">Non</option>
+                                        <option value="1">Oui</option>
                                         </select>
                                 
                                         </div>
@@ -323,8 +323,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         defaultValue={objetEdit.vehicule_retourne}
                                             ref={vehicule_retourne => this.vehicule_retourne = vehicule_retourne}
                                           className="form-control">
-                                        <option value={0}>Non</option>
-                                        <option value={1}>Oui</option>
+                                        <option value="0">Non</option>
+                                        <option value="1">Oui</option>
                                         </select>
                                 
                                         </div>
@@ -423,8 +423,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         defaultValue={objetEdit.vehicule_avec_chauffeur}
                                             ref={vehicule_avec_chauffeur => this.vehicule_avec_chauffeur = vehicule_avec_chauffeur}
                                           className="form-control">
-                                        <option value={0}>Non</option>
-                                        <option value={1}>Oui</option>
+                                        <option value="0">Non</option>
+                                        <option value="1">Oui</option>
                                         </select>
                                 
                                         </div>
@@ -436,8 +436,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
                                             ref={carte_carburant => this.carte_carburant = carte_carburant}
                                           className="form-control">
-                                        <option value={0}>Non</option>
-                                        <option value={1}>Oui</option>
+                                        <option value="0">Non</option>
+                                        <option value="1">Oui</option>
                                         </select>
                                 
                                         </div>
@@ -449,8 +449,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
                                             ref={carte_autoroute => this.carte_autoroute = carte_autoroute}
                                           className="form-control">
-                                        <option value={0}>Non</option>
-                                        <option value={1}>Oui</option>
+                                        <option value="0">Non</option>
+                                        <option value="1">Oui</option>
                                         </select>
                                 
                                         </div>

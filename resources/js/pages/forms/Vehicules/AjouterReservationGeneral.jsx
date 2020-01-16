@@ -357,8 +357,8 @@ import { colourStyles } from '../../../utils/Repository';
                                         <select name="vehicule_parti" onChange={this.setField}
                                             ref={vehicule_parti => this.vehicule_parti = vehicule_parti}
                                           className="form-control">
-                                        <option value={0}>Non</option>
-                                        <option value={1}>Oui</option>
+                                        <option value="0">Non</option>
+                                        <option value="1">Oui</option>
                                         </select>
                                 
                                         </div>
@@ -368,8 +368,8 @@ import { colourStyles } from '../../../utils/Repository';
                                         <select name="vehicule_retourne" onChange={this.setField}
                                             ref={vehicule_retourne => this.vehicule_retourne = vehicule_retourne}
                                           className="form-control">
-                                        <option value={0}>Non</option>
-                                        <option value={1}>Oui</option>
+                                        <option value="0">Non</option>
+                                        <option value="1">Oui</option>
                                         </select>
                                 
                                         </div> */}
@@ -464,8 +464,8 @@ import { colourStyles } from '../../../utils/Repository';
                                         <select name="vehicule_avec_chauffeur" onChange={this.setField}
                                             ref={vehicule_avec_chauffeur => this.vehicule_avec_chauffeur = vehicule_avec_chauffeur}
                                           className="form-control">
-                                        <option value={0}>Non</option>
-                                        <option value={1}>Oui</option>
+                                        <option value="0">Non</option>
+                                        <option value="1">Oui</option>
                                         </select>
                                 
                                         </div>
@@ -475,8 +475,8 @@ import { colourStyles } from '../../../utils/Repository';
                                         <select name="carte_carburant" onChange={this.setField}
                                             ref={carte_carburant => this.carte_carburant = carte_carburant}
                                           className="form-control">
-                                        <option value={0}>Non</option>
-                                        <option value={1}>Oui</option>
+                                        <option value="0">Non</option>
+                                        <option value="1">Oui</option>
                                         </select>
                                 
                                         </div>
@@ -486,8 +486,8 @@ import { colourStyles } from '../../../utils/Repository';
                                         <select name="carte_autoroute" onChange={this.setField}
                                             ref={carte_autoroute => this.carte_autoroute = carte_autoroute}
                                           className="form-control">
-                                        <option value={0}>Non</option>
-                                        <option value={1}>Oui</option>
+                                        <option value="0">Non</option>
+                                        <option value="1">Oui</option>
                                         </select>
                                 
                                         </div>

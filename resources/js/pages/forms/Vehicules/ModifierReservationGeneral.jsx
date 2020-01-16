@@ -243,7 +243,7 @@ import { colourStyles } from '../../../utils/Repository';
                                                 getOptionValue={option => option.id}
                                                 isOptionDisabled={option => !this.props.param_generaux_reservation_ordre.vehicule_fonction_reservable && option.type_vehicule_statut === 'Fonction'}
                                                 // formatOptionLabel={formatOptionVehicule}
-                                                defaultValue={objetEdit.vehicule}
+                                                defaultValue={objetEdit.vehicule ? objetEdit.vehicule : null}
                                                 onChange={this.setFieldSelectVehicule.bind(this, "vehicule")}
                                                 styles={colourStyles}
                                             />
@@ -260,7 +260,7 @@ import { colourStyles } from '../../../utils/Repository';
                                                 options={this.props.personnels}
                                                 getOptionLabel={option => `${option.nom} ${option.prenom.slice(0,15)}`}
                                                 getOptionValue={option => option.id}
-                                                defaultValue={objetEdit.personne_reservant}
+                                                defaultValue={objetEdit.personne_reservant ? objetEdit.personne_reservant : null}
 
                                                 // formatOptionLabel={formatOptionVehicule}
                                                 onChange={this.setFieldSelectPersonneReservant.bind(this, "personne_reservant")}
@@ -292,7 +292,7 @@ import { colourStyles } from '../../../utils/Repository';
                                                 options={this.props.natures_reservations}
                                                 getOptionLabel={option => option.libelle} 
                                                 getOptionValue={option => option.id}
-                                                defaultValue={objetEdit.objet_reservation}
+                                                defaultValue={objetEdit.objet_reservation ? objetEdit.objet_reservation : null}
 
                                                 // formatOptionLabel={formatOptionVehicule}
                                                 onChange={this.setFieldSelect.bind(this, "objet_reservation")}
@@ -363,8 +363,8 @@ import { colourStyles } from '../../../utils/Repository';
                                         <select name="vehicule_parti" onChange={this.setField}
                                             ref={vehicule_parti => this.vehicule_parti = vehicule_parti}
                                           className="form-control">
-                                        <option value={0}>Non</option>
-                                        <option value={1}>Oui</option>
+                                        <option value="0">Non</option>
+                                        <option value="1">Oui</option>
                                         </select>
                                 
                                         </div>
@@ -374,8 +374,8 @@ import { colourStyles } from '../../../utils/Repository';
                                         <select name="vehicule_retourne" onChange={this.setField}
                                             ref={vehicule_retourne => this.vehicule_retourne = vehicule_retourne}
                                           className="form-control">
-                                        <option value={0}>Non</option>
-                                        <option value={1}>Oui</option>
+                                        <option value="0">Non</option>
+                                        <option value="1">Oui</option>
                                         </select>
                                 
                                         </div> */}
@@ -475,8 +475,8 @@ import { colourStyles } from '../../../utils/Repository';
 
                                             ref={vehicule_avec_chauffeur => this.vehicule_avec_chauffeur = vehicule_avec_chauffeur}
                                           className="form-control">
-                                        <option value={0}>Non</option>
-                                        <option value={1}>Oui</option>
+                                        <option value="0">Non</option>
+                                        <option value="1">Oui</option>
                                         </select>
                                 
                                         </div>
@@ -488,8 +488,8 @@ import { colourStyles } from '../../../utils/Repository';
 
                                             ref={carte_carburant => this.carte_carburant = carte_carburant}
                                           className="form-control">
-                                        <option value={0}>Non</option>
-                                        <option value={1}>Oui</option>
+                                        <option value="0">Non</option>
+                                        <option value="1">Oui</option>
                                         </select>
                                 
                                         </div>
@@ -500,8 +500,8 @@ import { colourStyles } from '../../../utils/Repository';
                                                 defaultValue={objetEdit.carte_autoroute}
                                             ref={carte_autoroute => this.carte_autoroute = carte_autoroute}
                                           className="form-control">
-                                        <option value={0}>Non</option>
-                                        <option value={1}>Oui</option>
+                                        <option value="0">Non</option>
+                                        <option value="1">Oui</option>
                                         </select>
                                 
                                         </div>

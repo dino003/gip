@@ -364,6 +364,7 @@ import inputStyle from '../../../utils/inputStyle'
                                        {vehiculeSelect &&  <div className="position-relative form-group">
                                             <label >Kilometrage au compteur</label>
                                             <input name="kilometrage_au_compteur"  type="number"
+                                            readOnly
                                             defaultValue={vehiculeSelect.kilometrage_acquisition}
                                             onChange={this.setField}
                                             ref={kilometrage_au_compteur => this.kilometrage_au_compteur = kilometrage_au_compteur}

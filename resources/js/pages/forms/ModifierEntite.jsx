@@ -276,7 +276,7 @@ import inputStyle from '../../utils/inputStyle';
                                         <select name="regroupement"
                                             style={inputStyle}
                                          ref={regroupement => this.regroupement = regroupement}
-                                         defaultValue={entiteModif.regroupement.id}
+                                         defaultValue={entiteModif.regroupement ? entiteModif.regroupement.id : null}
                                           onChange={this.setFieldRegroupement}  className="form-control">
                                             <option value={null}></option>
                                           {this.props.structures_etablissements.map(st => 

@@ -417,7 +417,7 @@ function withSplashScreen(WrappedComponent) {
       tick() {
           if(this.state.percentage >= 100) return
         this.setState({
-          percentage: this.state.percentage += 4
+          percentage: this.state.percentage += 2
         });
       }
 
@@ -528,7 +528,6 @@ function withSplashScreen(WrappedComponent) {
        
 
 
-         this.fetchVehicules();
 
          // debut navbar
 
@@ -563,6 +562,9 @@ function withSplashScreen(WrappedComponent) {
          this.fetchArticlesStock();
          this.fetchEntreesStock();
          this.fetchSortiesStock();
+
+         this.fetchVehicules();
+
 
          // fin navbar
 

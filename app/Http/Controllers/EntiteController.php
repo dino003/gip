@@ -19,7 +19,7 @@ class EntiteController extends Controller
      */
     public function index()
     {
-        return $this->model->with(['typeEntite', 'regroupement'] )->get();
+        return $this->model->with(['typeEntite', 'regroupement', 'responsable_entite'] )->get();
     }
 
     /**
@@ -43,7 +43,7 @@ class EntiteController extends Controller
         $mod = new Entite;
        $creation = $mod->create($request->only($mod->fillable));
 
-       return response()->json(Entite::with(['typeEntite', 'regroupement'])->find($creation->id) );
+       return response()->json(Entite::with(['typeEntite', 'regroupement', 'responsable_entite'])->find($creation->id) );
       //  return $this->index();
 
        //  return $this->model->create($request->only($this->model->getModel()->fillable));
@@ -60,7 +60,7 @@ class EntiteController extends Controller
     public function show($id)
     {
       //  return $this->model->show($id);
-        return response()->json(Entite::with(['typeEntite', 'regroupement'])->find($id) );
+        return response()->json(Entite::with(['typeEntite', 'regroupement', 'responsable_entite'])->find($id) );
 
 
     }
@@ -89,7 +89,7 @@ class EntiteController extends Controller
         $this->model->update($request->only($this->model->getModel()->fillable), $id);
 
        // return response()->json(User::with(['autorisation'])->find($user->id) );
-        return response()->json(Entite::with(['typeEntite', 'regroupement'])->find($id) );
+        return response()->json(Entite::with(['typeEntite', 'regroupement', 'responsable_entite'])->find($id) );
 
     }
 

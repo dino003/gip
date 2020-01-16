@@ -168,7 +168,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                     <div className="col-md-4">
                                     <label  className="">Nature de l'amende</label>
                                         <select name="nature_amende" onChange={this.setField}
-                                            defaultValue={objetEdit.nature_amende.id}
+                                            defaultValue={objetEdit.nature_amende ?  objetEdit.nature_amende.id : null}
                                             ref={nature_amende => this.nature_amende = nature_amende}
                                             style={inputStyle}
 
@@ -203,7 +203,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         <div className="col-md-3">
                                     <label  className="">Conducteur</label>
                                         <select name="conducteur"
-                                        defaultValue={objetEdit.conducteur.id}
+                                        defaultValue={objetEdit.nature_amende ? objetEdit.nature_amende.id : null}
                                             ref={conducteur => this.conducteur = conducteur}
 
                                           className="form-control">
@@ -287,7 +287,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                     <label  className="">Organisme de réglement</label>
                                         <select name="organisme"
                                             ref={organisme => this.organisme = organisme}
-                                            defaultValue={objetEdit.organisme.id}
+                                            defaultValue={objetEdit.organisme ? objetEdit.organisme.id : null}
                                           className="form-control">
                                         <option defaultValue={null}></option>
 

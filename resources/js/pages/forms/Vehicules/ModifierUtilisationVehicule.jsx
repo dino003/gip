@@ -105,7 +105,7 @@ export default class ModifierUtilisationVehicule extends Component {
                                     <label htmlFor="exampleAddress" className="">Nature Utilisation</label>
                                     <select className="form-control"
                                      style={inputStyle}
-                                     defaultValue={item.nature_utilisation.id}
+                                     defaultValue={item.nature_utilisation ? item.nature_utilisation.id : null}
 
                                      ref={nature_utilisation => this.nature_utilisation = nature_utilisation}
                                         onChange={this.setField}
@@ -131,7 +131,7 @@ export default class ModifierUtilisationVehicule extends Component {
                                     <label htmlFor="exampleAddress" className="">Utilisateur</label>
                                     <select className="form-control"
                                      style={inputStyle}
-                                        defaultValue={item.utilisateur.id}
+                                        defaultValue={item.utilisateur ? item.utilisateur.id : null}
 
                                      ref={utilisateur => this.utilisateur = utilisateur}
                                         onChange={this.setField}

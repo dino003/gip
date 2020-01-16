@@ -60,5 +60,10 @@ class Entite extends Model
                 return $this->hasMany(Commande::class, 'facturation_entite', 'id');
             }
 
+            public function responsable_entite()
+            {
+                return $this->belongsTo('App\Personnel', 'responsable');
+            }
+
    
 }

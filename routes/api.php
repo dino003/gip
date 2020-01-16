@@ -142,6 +142,10 @@ Route::get('voir_personnel/{id}', 'PersonnelController@show');
 
 // ajouter 
 Route::post('ajouter_personnel', 'PersonnelController@store');
+
+//importter le personnel
+Route::post('import_personnel', 'PersonnelController@storeByImport');
+
 // modifier
 Route::post('modifier_personnel/{id}', 'PersonnelController@update');
 

@@ -27,15 +27,15 @@ import moment from 'moment'
             <tr style={{textDecoration: lineStyle}} > 
 
                    
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.vehicule.immatriculation || 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.entite_personne_reservant || 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_debut_reservation ? moment(item.date_debut_reservation).format('DD/MM/YYYY') : 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.vehicule ? item.vehicule.immatriculation : ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.entite_personne_reservant || ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_debut_reservation ? moment(item.date_debut_reservation).format('DD/MM/YYYY') : ''}</td>
 
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.heure_debut_reservation.slice(0, 5) || 'Non Renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_fin_reservation ? moment(item.date_fin_reservation).format('DD/MM/YYYY') : 'Non renseigné'}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.heure_fin_reservation.slice(0, 5) || 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.heure_debut_reservation.slice(0, 5) || ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_fin_reservation ? moment(item.date_fin_reservation).format('DD/MM/YYYY') : ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.heure_fin_reservation.slice(0, 5) || ''}</td>
 
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.objet_reservation ? item.objet_reservation.libelle : 'Non renseigné'}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.objet_reservation ? item.objet_reservation.libelle : ''}</td>
 
             <td > <input type="checkbox" disabled={true} checked={item.transforme_en_utilisation} /> </td>
 

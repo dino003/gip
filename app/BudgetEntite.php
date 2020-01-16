@@ -26,4 +26,9 @@ class BudgetEntite extends Model
         {
             return $this->belongsTo(DepenseRecette::class, 'nature_ligne_budget');
         }
+
+        // public function annee_budgetaire()
+        // {
+        //     return $this->belongsTo('App\AnneeBudgetaire', 'foreign_key', 'other_key');
+        // }
 }

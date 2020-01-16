@@ -52,15 +52,21 @@ class PersonnelController extends Controller
 
     }
 
+ 
+
         /**
     * @return \Illuminate\Support\Collection
     */
     public function storeByImport() 
     {
-        Excel::import(new PersonnelsImport,request()->file('nom_du_fichier_a_uploader'));
-           
+        Excel::import(new PersonnelsImport, request()->file('fichier'), null, \Maatwebsite\Excel\Excel::XLSX);
+
+    //    $path1 = $request->file('fichier')->store('temp'); 
+    //     $path=storage_path('app').'/'.$path1;  
+    //     Excel::import(new PersonnelsImport,$path);
+                
        // return back();
-        return response()->json(Personnel::with(['entite_affectation'])->find($creation->id));
+       return $this->model->with(['entite_affectation'] )->get();
 
     }
 

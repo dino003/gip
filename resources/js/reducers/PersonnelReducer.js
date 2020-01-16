@@ -10,13 +10,20 @@ function PersonnelReducer(state = initialState, action){
     let nextState
 
     switch (action.type) {
-        case 'START':
+        case 'START_UPLOAD':
                 nextState = {
                     ...state,
-                    items: [],
                     loading: true
                 }
          return nextState || state
+
+         case 'STOP_UPLOAD':
+            nextState = {
+                ...state,
+                loading: false
+            }
+     return nextState || state
+
         case 'ADD_PERSONNEL':
           
             nextState = {

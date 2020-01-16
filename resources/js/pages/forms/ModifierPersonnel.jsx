@@ -185,7 +185,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         <div className="col-md-4">
                                     <label  className="">Entité d'affectation</label>
                                         <select name="entite_affectation" 
-                                        defaultValue={personneModif.entite_affectation.id}
+                                        defaultValue={personneModif.entite_affectation ? personneModif.entite_affectation.id : null}
                                         style={inputStyle}
                                         onChange={this.setFieldEntiteAffectation}
                                         ref={entite_affectation => this.entite_affectation = entite_affectation}

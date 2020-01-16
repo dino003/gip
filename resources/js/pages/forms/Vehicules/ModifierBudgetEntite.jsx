@@ -199,7 +199,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         <select name="entite"
                                             ref={entite => this.entite = entite}
                                             style={inputStyle}
-                                            defaultValue={objetEdit.entite.id}
+                                            defaultValue={objetEdit.entite ? objetEdit.entite.id : null}
 
                                           className="form-control">
                                         <option defaultValue={null}></option>
@@ -218,7 +218,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                          onChange={this.setFieldNatureDepenseRecette}
                                             ref={nature_ligne_budget => this.nature_ligne_budget = nature_ligne_budget}
                                             style={inputStyle}
-                                            defaultValue={objetEdit.nature_ligne_budget.id}
+                                            defaultValue={objetEdit.nature_ligne_budget ? objetEdit.nature_ligne_budget.id : null}
 
                                           className="form-control">
                                         <option defaultValue={null}></option>
@@ -248,6 +248,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                             <label >Année budgétaire </label>
                                             <input name="annee_budgetaire"  type="number"
                                             defaultValue={objetEdit.annee_budgetaire}
+                                            readOnly
                                             style={inputStyle}
                                             ref={annee_budgetaire => this.annee_budgetaire = annee_budgetaire}
                                              className="form-control" />

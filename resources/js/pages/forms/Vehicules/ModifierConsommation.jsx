@@ -287,6 +287,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                                 <div className="position-relative form-group">
                                                     <label >Kilometrage</label>
                                                     <input name="kilometrage_au_compteur"  type="number"
+                                                    readOnly
                                                     defaultValue={objetEdit.kilometrage_au_compteur}
                                                     onChange={this.setField}
                                                     ref={kilometrage_au_compteur => this.kilometrage_au_compteur = kilometrage_au_compteur}

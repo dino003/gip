@@ -250,7 +250,6 @@ import Loader from 'react-loader-spinner'
                                                 <label >Prix Article</label>
                                                 <input name="prix_article"  type="number"
                                                 onChange={this.setField}
-                                                defaultValue={objetEdit.prix_article}
                                                 readOnly
                                                 style={inputStyle}
                                                 defaultValue={article.prix_article}
