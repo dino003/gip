@@ -26,7 +26,6 @@ class TiersImport implements ToModel
             'pays' => $row[8],
             'ville' => $row[9],
            
-
         ]);
     }
 }

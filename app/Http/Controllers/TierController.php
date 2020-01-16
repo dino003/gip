@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Tier;
 use Illuminate\Http\Request;
 use App\Repositories\Repository;
+use App\Imports\TiersImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TierController extends Controller
 {
@@ -43,6 +45,18 @@ class TierController extends Controller
     {
        
          return $this->model->create($request->only($this->model->getModel()->fillable));
+
+    }
+
+           /**
+    * @return \Illuminate\Support\Collection
+    */
+    public function storeByImport() 
+    {
+        Excel::import(new TiersImport, request()->file('fichier'), null, \Maatwebsite\Excel\Excel::XLSX);
+
+ 
+        return $this->model->all();
 
     }
 

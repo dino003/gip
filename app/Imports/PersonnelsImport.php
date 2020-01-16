@@ -20,6 +20,10 @@ class PersonnelsImport implements ToModel
             'fonction' => $row[2],
             'matricule' => $row[3],
             'adresse_email' => $row[4],
+            'portable' => $row[5],
+            'nationalite' => $row[6],
+            
+
 
            // 'password' => \Hash::make('123456'),
 

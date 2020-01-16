@@ -11,6 +11,20 @@ function TiersReducer(state = initialState, action){
     let nextState
 
     switch (action.type) {
+        case 'START_UPLOAD_TIER':
+            nextState = {
+                ...state,
+                loading: true
+            }
+     return nextState || state
+
+     case 'STOP_UPLOAD_TIER':
+        nextState = {
+            ...state,
+            loading: false
+        }
+    return nextState || state
+
         case 'ADD_TIER':
           
             nextState = {

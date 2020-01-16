@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 
- class FileUpload extends Component {
+ class TierFileUpload extends Component {
 
     constructor(props) {
         super(props);
@@ -52,7 +52,7 @@ import {connect} from 'react-redux'
         //     return { element: !prevState.element}
         // })
 
-        const url = '/api/import_personnel';
+        const url = '/api/import_tier';
        
 
         const formData = new FormData();
@@ -63,20 +63,20 @@ import {connect} from 'react-redux'
             }
         }
 
-        const action1 = {type: "START_UPLOAD"}
+        const action1 = {type: "START_UPLOAD_TIER"}
         this.props.dispatch(action1)
         
         axios.post(url, formData, config).then(res => {
 
-            const action = {type: "GET_PERSONNEL", value: res.data}
+            const action = {type: "GET_TIER", value: res.data}
             this.props.dispatch(action)
             
-            const action2 = {type: "STOP_UPLOAD"}
+            const action2 = {type: "STOP_UPLOAD_TIER"}
             this.props.dispatch(action2)
             this.props.onSuccesUpload(file)
 
         }).catch(error => {
-            const action3 = {type: "STOP_UPLOAD"}
+            const action3 = {type: "STOP_UPLOAD_TIER"}
             this.props.dispatch(action3)
             console.log(error)
             this.props.onErrorUpload(file)
@@ -107,4 +107,4 @@ const mapStateToProps = state => {
     }
   }
 
-export default connect(mapStateToProps)(FileUpload)
+export default connect(mapStateToProps)(TierFileUpload)

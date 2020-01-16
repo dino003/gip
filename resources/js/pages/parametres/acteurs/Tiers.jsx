@@ -10,6 +10,10 @@ import TableHeader from '../../../components/TableHeader'
 import { Container, Button, Link } from 'react-floating-action-button'
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
+import {ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import TierFileUpload from '../../../components/TierFileUpload'
+
 
  class Tiers extends Component {
 
@@ -19,10 +23,36 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
         this.state = {
             loading: false,
             isSearchInputVisible : false,
-            tiersState: this.props.entites
+            tiersState: this.props.entites,
+            isDocumentationVisible: false
         }
+
+        this.onErrorUpload = this.onErrorUpload.bind(this);
+        this.onSuccesUpload = this.onSuccesUpload.bind(this);
+        this.toggleDocumentation = this.toggleDocumentation.bind(this);
         
     }
+
+    toggleDocumentation(){
+        this.setState((prevState) => {
+            return {isDocumentationVisible: !prevState.isDocumentationVisible}
+        })
+    }
+
+    onErrorUpload(file){
+        alert(`L'importation a échoué veuillez vérifier le fichier ${file.name}`)
+    }
+
+    onSuccesUpload(){
+        toast.success('Importé avec succès', {
+            position: toast.POSITION.BOTTOM_CENTER
+          });
+    }
+
+    onClick = () => {
+        this.child.method() // do stuff
+      }
+
 
 
     toggleSearchInput = () => {
@@ -145,6 +175,13 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
    
                                         Ajouter
                                            </button> */}
+
+                                           <TierFileUpload 
+                                            onRef={ref => (this.child = ref)}
+                                            onErrorUpload={this.onErrorUpload}
+                                            onSuccesUpload={this.onSuccesUpload}
+                                            />
+
                                            {this.props.tiers.length ?
                                            <ReactHTMLTableToExcel
                                               id="test-table-xls-button"
@@ -199,23 +236,91 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                             }
                            </h5> */}
                            <div className="table-responsive">
-                           {this.state.loading ? this.renderLoading() : 
+                           {this.props.loading ? this.renderLoading() : 
                             !this.props.tiers.length ? this.renderEmpty() : this.renderList()}
 
                            </div>
                        </div>
                    </div>
                 
-                   <Container>
-                        <Button
-                        tooltip="Ajouter un Tiers"
-                        icon="fas fa-plus"
-                    // rotate={true}
-                        styles={{backgroundColor: 'green', color: 'white', cursor: 'pointer'}}
+           
 
-                        onClick={() => this.props.history.push(`/gestion_du_parc_automobile/ajouter-tiers`)}
-                        />
-                </Container>
+                <Container>
+
+                <Button
+           tooltip="Documentation Pour l'importation du fichier de tiers"
+           icon="fas fa-file"
+          // rotate={true}
+          styles={{ cursor: 'pointer'}}
+
+           onClick={() => this.toggleDocumentation()} />
+           
+           <Button
+           tooltip="Importer un fichier de tiers"
+           icon="fas fa-file-excel"
+          // rotate={true}
+          styles={{ cursor: 'pointer'}}
+
+           onClick={() => this.onClick()} />
+
+           <Button
+           tooltip="Ajouter un Tiers!"
+           icon="fas fa-plus"
+          // rotate={true}
+          styles={{ cursor: 'pointer'}}
+
+          onClick={() => this.props.history.push(`/gestion_du_parc_automobile/ajouter-tiers`)}
+          />
+       <Button
+          // tooltip="The big plus button!"
+           icon="fas fa-arrow-up"
+           styles={{backgroundColor: 'green', color: 'white', cursor: 'pointer'}}
+
+          // rotate={true}
+          // onClick={() => alert('FAB Rocks!')}
+            />
+   </Container>
+             <ToastContainer autoClose={3000} />
+
+
+
+            {/* documentation importation */}
+                {this.state.isDocumentationVisible ? <div className={this.state.isDocumentationVisible ? "ui-theme-settings settings-open" : "ui-theme-settings"}>
+            {this.state.isDocumentationVisible &&   <button type="button" onClick={this.toggleDocumentation}  className="btn-open-options btn btn-warning">
+                <i className="fa fa-times fa-w-16 fa-spin fa-2x"></i>
+            </button>}
+            <div className="theme-settings__inner">
+                <div className="scrollbar-container">
+                    <div className="theme-settings__options-wrapper">
+                        <h3 className="themeoptions-heading">Documentation 
+                        </h3>
+                      <br />
+                      <div className="card-shadow-primary border mb-3 card card-body border-primary">
+                          <h5 className="card-title">DOCUMENTATION</h5>
+                          Importation d'un fichier Excel d'extension .xlsx</div>
+                                        <div className="card-shadow-secondary border mb-3 card card-body border-secondary">
+                                            <h5 className="card-title">Formattage prescrit</h5>
+                                            <span><em style={{color: 'red'}}>A</em> ==> CODE</span> <br />
+                                            <span><em style={{color: 'red'}}>B</em> ==> NOM</span> <br />
+                                            <span><em style={{color: 'red'}}>C</em> ==> METIER</span> <br />
+                                            <span><em style={{color: 'red'}}>D</em> ==> ADRESSE</span> <br />
+                                            <span><em style={{color: 'red'}}>E</em> ==> CODE POSTAL</span> <br />
+                                            <span><em style={{color: 'red'}}>F</em> ==> TELEPHONNE</span> <br />
+                                            <span><em style={{color: 'red'}}>G</em> ==> FAX</span> <br />
+                                            <span><em style={{color: 'red'}}>H</em> ==> ADRESSE MESSAGERIE</span> <br />
+                                            <span><em style={{color: 'red'}}>I</em> ==> PAYS</span> <br />
+                                            <span><em style={{color: 'red'}}>J</em> ==> VILLE</span> <br />
+
+                                            </div>
+                      
+                    </div>
+                </div>
+            </div>
+        </div> : null}
+
+            {/* fin documentation */}
+
+
        </div>
         )
     }
@@ -223,7 +328,9 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
 const mapStateToProps = state => {
     return {
-        tiers: state.tiers.items
+        tiers: state.tiers.items,
+        loading: state.tiers.loading,
+
     }
   }
 

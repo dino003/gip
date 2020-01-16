@@ -128,6 +128,9 @@ Route::get('voir_tier/{id}', 'TierController@show');
 
 // ajouter 
 Route::post('ajouter_tier', 'TierController@store');
+
+//importter les tiers
+Route::post('import_tier', 'TierController@storeByImport');
 // modifier
 Route::post('modifier_tier/{id}', 'TierController@update');
 

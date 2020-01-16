@@ -23,16 +23,24 @@ import 'react-toastify/dist/ReactToastify.css';
         this.state = {
            // loading: true,
             isSearchInputVisible : false,
-            personnelState: this.props.personnels
+            personnelState: this.props.personnels,
+            isDocumentationVisible: false
         }
 
         this.onErrorUpload = this.onErrorUpload.bind(this);
         this.onSuccesUpload = this.onSuccesUpload.bind(this);
+        this.toggleDocumentation = this.toggleDocumentation.bind(this);
         
     }
 
     componentDidMount(){
         
+    }
+
+    toggleDocumentation(){
+        this.setState((prevState) => {
+            return {isDocumentationVisible: !prevState.isDocumentationVisible}
+        })
     }
 
     onErrorUpload(file){
@@ -246,17 +254,24 @@ import 'react-toastify/dist/ReactToastify.css';
                 </Container> */}
 
                 <Container>
+                <Button
+                tooltip="Documentation Pour l'importation du fichier du personnel"
+                icon="fas fa-file"
+                // rotate={true}
+                styles={{ cursor: 'pointer'}}
+
+                onClick={() => this.toggleDocumentation()} />
            
                 <Button
                 tooltip="Importer un fichier du personnel"
-                icon="fas fa-download"
+                icon="fas fa-file-excel"
                // rotate={true}
                styles={{ cursor: 'pointer'}}
 
                 onClick={() => this.onClick()} />
 
                 <Button
-                tooltip="Ajouter une personne!"
+                tooltip="Ajouter une personne"
                 icon="fas fa-plus"
                // rotate={true}
                styles={{ cursor: 'pointer'}}
@@ -274,6 +289,40 @@ import 'react-toastify/dist/ReactToastify.css';
         </Container>
 
         <ToastContainer autoClose={3000} />
+
+        
+            {/* documentation importation */}
+            {this.state.isDocumentationVisible ? <div className={this.state.isDocumentationVisible ? "ui-theme-settings settings-open" : "ui-theme-settings"}>
+            {this.state.isDocumentationVisible &&   <button type="button" onClick={this.toggleDocumentation}  className="btn-open-options btn btn-warning">
+                <i className="fa fa-times fa-w-16 fa-spin fa-2x"></i>
+            </button>}
+            <div className="theme-settings__inner">
+                <div className="scrollbar-container">
+                    <div className="theme-settings__options-wrapper">
+                        <h3 className="themeoptions-heading">Documentation 
+                        </h3>
+                      <br />
+                      <div className="card-shadow-primary border mb-3 card card-body border-primary">
+                          <h5 className="card-title">DOCUMENTATION FICHIER DU PERSONNEL</h5>
+                          Importation d'un fichier Excel d'extension .xlsx</div>
+                                        <div className="card-shadow-secondary border mb-3 card card-body border-secondary">
+                                            <h5 className="card-title">Formattage prescrit</h5>
+                                            <span><em style={{color: 'red'}}>A</em> ==> NOM</span> <br />
+                                            <span><em style={{color: 'red'}}>B</em> ==> PRENOM</span> <br />
+                                            <span><em style={{color: 'red'}}>C</em> ==> FONCTION</span> <br />
+                                            <span><em style={{color: 'red'}}>D</em> ==> MATRICULE</span> <br />
+                                            <span><em style={{color: 'red'}}>E</em> ==> ADRESSE EMAIL </span> <br />
+                                            <span><em style={{color: 'red'}}>F</em> ==> TELEPHONNE PORTABLE</span> <br />
+                                            <span><em style={{color: 'red'}}>G</em> ==> NATIONALITE</span> <br />
+                                           
+                                            </div>
+                      
+                    </div>
+                </div>
+            </div>
+        </div> : null}
+
+            {/* fin documentation */}
 
 
        </div>
