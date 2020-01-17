@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import moment from 'moment'
-import { formatageSomme } from '../../utils/Repository';
+import { formatageSomme, formatageNombre } from '../../utils/Repository';
 
  class VehiculeItem extends Component {
 
@@ -48,7 +48,7 @@ import { formatageSomme } from '../../utils/Repository';
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_entree_au_parc ? moment(item.date_entree_au_parc).format('DD/MM/YYYY') : ''}</td>
 
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.numero_carte_grise || ''}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.kilometrage_acquisition || ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.kilometrage_acquisition ? formatageNombre(item.kilometrage_acquisition) : 0}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.tech_chevaux_fiscaux || ''}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.energie ? item.energie.nom_energie : ''}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.tech_numero_serie || ''}</td>

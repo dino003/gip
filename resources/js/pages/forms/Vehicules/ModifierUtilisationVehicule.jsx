@@ -1,18 +1,28 @@
+
 import React, { Component } from 'react'
 import InputMask from 'react-input-mask';
+import {ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {connect} from 'react-redux'
+import MatriculeInput from '../../../components/MatriculeInput';
+
 import inputStyle from '../../../utils/inputStyle'
 
+import Loader from 'react-loader-spinner'
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
 
-export default class ModifierUtilisationVehicule extends Component {
 
+ class ModifierUtilisationVehicule extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            isFormSubmitted: false
         }
+      
     }
 
+ 
     setField = (event) => {
         //  this.setState({[e.target.name]: e.target.value})
           const target = event.target;
@@ -24,12 +34,87 @@ export default class ModifierUtilisationVehicule extends Component {
           });
         }
 
-        editing = (e) => {
-            e.preventDefault()
-            this.props.onEditSubmit(this.utilisatation_normal_ou_pret.value, this.nature_utilisation.value, this.utilisateur.value,this.chauffeur.value, this.date_debut_utilisation.value, this.heure_debut.value, this.date_fin_utilisation.value, this.heure_de_fin.value, this.kilometrage_compteur_debut.value,  this.kilometrage_compteur_retour.value, this.kilometres_parcourus.value, this.pourcentage_reservoire_debut.value, this.pourcentage_reservoire_retour.value, )
-                  this.props.closeEdit();
-        }
-        setField2 = (event) => {
+        getIdsUtilisations = () => {
+          const events = [];
+          this.props.utilisations.filter(ut => ut.vehicule.id == this.props.match.params.vehicule_id).map(event => {
+              return events.push(event.id)
+          })
+  
+          return events
+      }
+
+    
+        
+      onEditSubmit = (e) => {
+          e.preventDefault()
+          if(this.verificationFormulaire() == null){
+
+        const item = this.props.utilisations.find(utilisat => utilisat.id == this.props.match.params.utilisation_id)
+
+         this.setState({isFormSubmitted: true})
+         var id_derniere_utilisation = Math.max(...this.getIdsUtilisations(), 0);
+
+         var isDerniere = item.id == id_derniere_utilisation
+      //   var url = isDerniere ? '/api/modifier_vehicule_utilisation_derniere/' : '/api/modifier_vehicule_utilisation/' ;
+         const utili = this.props.personnels.find(per => per.id == this.utilisateur.value)
+
+           axios.post('/api/modifier_vehicule_utilisation/' +  item.id, {
+                   // vehicule: this.props.vehiculeSeleted.id,
+                  // vehicule_id: vehicule.id,
+                    utilisateur_id: this.utilisateur.value,
+                    chauffeur_id: this.chauffeur.value,
+                    utilisatation_normal_ou_pret: this.utilisatation_normal_ou_pret.value,
+                    utilisateur: this.utilisateur.value,
+                    entite_utilisateur: utili.entite_affectation ? utili.entite_affectation.id : null,
+                    entite_utilisateur_id: utili.entite_affectation? utili.entite_affectation.id : null,
+                    nature_utilisation: this.nature_utilisation.value,
+                    chauffeur: this.chauffeur.value,
+                    date_debut_utilisation: this.date_debut_utilisation.value,
+                    date_fin_utilisation: this.date_fin_utilisation.value,
+                    heure_debut: this.heure_debut.value,
+                    heure_de_fin: this.heure_de_fin.value,
+                    kilometrage_compteur_debut: this.kilometrage_compteur_debut.value,
+                    kilometrage_compteur_retour: this.kilometrage_compteur_retour.value,
+                    kilometres_parcourus: this.kilometres_parcourus.value,
+                    lieu_depart: this.lieu_depart.value,
+                    destination: this.destination.value,  
+           }).then(response => {
+               if(response.data.utilisation && response.data.vehicule){
+                 const action = {type: "EDIT_UTILISATION", value: response.data.utilisation}
+                 this.props.dispatch(action)
+ 
+                 const action2 = {type: "EDIT_VEHICULE", value: response.data.vehicule}
+                 this.props.dispatch(action2)
+                
+                 const action3 = {type: "EDIT_SELECTED", value: response.data.vehicule}
+                 this.props.dispatch(action3)
+ 
+                 this.setState({isFormSubmitted: false})
+                 this.props.history.goBack();
+
+               }else{
+                 const action = {type: "EDIT_UTILISATION", value: response.data}
+                 this.props.dispatch(action)
+                 this.setState({isFormSubmitted: false})
+                 this.props.history.goBack();
+
+               }
+            
+ 
+           }).catch(error => {
+             this.setState({isFormSubmitted: false})
+             console.log(error)
+         } )
+
+        }else{
+          //console.log(this.verificationFormulaire())
+          toast.error(this.verificationFormulaire(), {
+            position: toast.POSITION.BOTTOM_CENTER
+          });
+      }
+     
+       }
+        setKilometrageRetour = (event) => {
             //  this.setState({[e.target.name]: e.target.value})
               const target = event.target;
               const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -39,7 +124,17 @@ export default class ModifierUtilisationVehicule extends Component {
                 [name]: value
               }, () => {
                   //alert('ok')
-                this.kilometres_parcourus.value = this.kilometrage_compteur_retour.value - this.kilometrage_compteur_debut.value 
+                  const item = this.props.utilisations.find(utilisat => utilisat.id == this.props.match.params.utilisation_id)
+
+                  
+                  if(item.kilometrage_compteur_debut == 0 || item.kilometrage_compteur_debut == null ){
+
+                    this.kilometres_parcourus.value = parseInt(this.kilometrage_compteur_retour.value) 
+
+                  }else{
+                    this.kilometres_parcourus.value = parseInt(this.kilometrage_compteur_retour.value) - parseInt(item.kilometrage_compteur_debut)
+
+                  }
               });
             }
 
@@ -65,21 +160,33 @@ export default class ModifierUtilisationVehicule extends Component {
                 }
             }
     
+
+  
+
+   
+
     render() {
-        const {item, isOpen} = this.props
-        console.log(item)
-        return (
-            <div className={isOpen ? "ui-theme-settings settings-open" : "ui-theme-settings"}>
-            {isOpen &&   <button type="button" onClick={this.props.closeEdit.bind(this)} 
-             className="btn-open-options btn btn-warning">
-                <i className="fa fa-times fa-w-16 fa-spin fa-2x"></i>
-            </button>}
-            <div className="theme-settings__inner">
-                <div className="scrollbar-container">
-                    <div className="theme-settings__options-wrapper">
-                        <h3 className="themeoptions-heading">Modifier 
-                        </h3>
-                        <form  className="p-3" onSubmit={this.editing}>
+        const item = this.props.utilisations.find(utilisat => utilisat.id == this.props.match.params.utilisation_id)
+        
+        if(item !== undefined){
+            var id_derniere_utilisation = Math.max(...this.getIdsUtilisations(), 0)
+             var isDerniereUtilisi = item.id == id_derniere_utilisation;
+           //  var dernier = this.props.utilisations.filter(util => util.vehicule.id == this.props.match.vehicule_id).find(u => u.id == id_derniere_utilisation)
+            // console.log(this.props.utilisations.filter(util => util.vehicule.id == this.props.match.vehicule_id).map(u => u.id))
+           // console.log(this.getIdsUtilisations(), Math.max(...this.getIdsUtilisations(), 0) )
+           
+             return (
+                <div className="app-main__inner">
+                  
+                        <div className="main-card mb-3 card">
+                            <div className="card-body">
+                                <h5 className="card-title">Modification Utilisation
+                               
+                                {this.props.vehicules.length && 
+                            <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}/>
+                            }                                   
+                              </h5>
+                              <form  className="p-3" onSubmit={this.onEditSubmit}>
                             <br />
                             <div className="form-row">
                                 <div className="col-md-6">
@@ -259,8 +366,9 @@ export default class ModifierUtilisationVehicule extends Component {
                                         <div className="position-relative form-group">
                                             <label >Kilomètrage début</label>
                                             <input name="kilometrage_compteur_debut"
+                                            readOnly
                                             defaultValue={item.kilometrage_compteur_debut }
-                                ref={kilometrage_compteur_debut => this.kilometrage_compteur_debut = kilometrage_compteur_debut}
+                                            ref={kilometrage_compteur_debut => this.kilometrage_compteur_debut = kilometrage_compteur_debut}
                                               type="number" className="form-control" /></div>
                                     </div>
 
@@ -268,11 +376,10 @@ export default class ModifierUtilisationVehicule extends Component {
                                         <div className="position-relative form-group">
                                             <label > au retour </label>
                                             <input name="kilometrage_compteur_retour"
-                                            onBlur={this.setField2}
+                                            onChange={this.setKilometrageRetour}
                                             defaultValue={item.kilometrage_compteur_retour }
-
                                             ref={kilometrage_compteur_retour => this.kilometrage_compteur_retour = kilometrage_compteur_retour}
-                                              type="number" className="form-control" /></div>
+                                              type="number" className={this.kilometres_parcourus && parseInt(this.kilometres_parcourus.value) < 0 ? 'form-control is-invalid' : 'form-control' } /></div>
                                     </div>
 
                                     <div className="col-md-3">
@@ -314,16 +421,44 @@ export default class ModifierUtilisationVehicule extends Component {
                                 </div>
 
                             
-                                <button type="submit" className="mt-2 btn btn-primary">Enregistrer</button>
+                                <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
                       
                                 <span  onClick={() => this.props.history.goBack()}
                                  className="mt-2 btn btn-warning pull-right">Retour</span>
                         </form>
-                      
-                    </div>
-                </div>
-            </div>
-        </div>
-        )
+                            </div>
+                        </div>
+                    
+                        <ToastContainer autoClose={4000} />
+           </div>
+            )
+        }else{
+            return ( <span style={{textAlign: 'center'}}>
+
+            <Loader
+               
+                height={500}
+                width={300}
+             />
+             </span>)
+        }
+
+      
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        natures_interventions: state.natures_interventions.items,
+        vehicules: state.vehicules.items,
+        natures_reservations: state.natures_reservations.items,
+        personnels: state.personnels.items,
+
+        vehiculeSeleted: state.vehiculeSeleted.vehicule,
+        utilisations: state.utilisations.items,
+
+    }
+  }
+
+export default connect(mapStateToProps)(ModifierUtilisationVehicule)
+

@@ -25,6 +25,9 @@ Route::post('ajouter_vehicule_utilisation', 'VehiculeUtilisationController@store
 // modifier
 Route::post('modifier_vehicule_utilisation/{id}', 'VehiculeUtilisationController@update');
 
+// modifier
+Route::post('modifier_vehicule_utilisation_derniere/{id}', 'VehiculeUtilisationController@update_derniere');
+
 // supprimer
 Route::delete('supprimer_vehicule_utilisation/{id}', 'VehiculeUtilisationController@destroy');
 //*********** fin utilosation vehicules********************************************************* 

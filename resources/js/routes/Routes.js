@@ -108,6 +108,7 @@ import ConsommationVehiculeEtat from '../pages/editions/etats/consommations/Cons
 import ReservationVehiculeEtat from '../pages/editions/etats/reservations/ReservationVehiculeEtat';
 import ContratAssuranceVehicule from '../pages/vehicules/ContratAssuranceVehicule';
 import Tracabilites from '../pages/vehicules/Tracabilites';
+import ModifierUtilisationVehicule from '../pages/forms/Vehicules/ModifierUtilisationVehicule';
 
 
 
@@ -184,6 +185,9 @@ const NavBack = () => (
 
 
   <Master path="/gestion_du_parc_automobile/parc/utilisations-vehicules/:vehicule_id/:imma" component={Utilisations} />
+  <Master path="/gestion_du_parc_automobile/parc/modification-utilisation-vehicule/:vehicule_id/:imma/utilisation/:utilisation_id" component={ModifierUtilisationVehicule} />
+
+ 
   <Master path="/gestion_du_parc_automobile/parc/interventions-vehicules/:vehicule_id/:imma" component={Interventions} />
   <Master path="/gestion_du_parc_automobile/parc/creation-interventions-vehicules/:vehicule_id/:imma" component={AjouterIntervention} />
   <Master path="/gestion_du_parc_automobile/parc/modification-interventions-vehicules/:vehicule_id/:imma/intervention/:intervention_id" component={ModifierIntervention} />

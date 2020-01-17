@@ -15,6 +15,7 @@ import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import { Container, Button, Link } from 'react-floating-action-button'
+import moment from 'moment'
 
 
 
@@ -70,6 +71,41 @@ import { Container, Button, Link } from 'react-floating-action-button'
         })
     }
 
+    getIdsUtilisations = () => {
+        const events = [];
+        this.props.utilisations.filter(ut => ut.vehicule.id == this.props.match.params.vehicule_id).map(event => {
+            return events.push(event.id)
+        })
+        
+        return events
+    }
+
+    checkBeforeAjout = () => {
+        const isTrue = this.props.utilisations.filter(util => util.vehicule.id == this.props.match.params.vehicule_id).length > 0
+
+        if(isTrue){
+            var id_derniere_utilisation = Math.max(...this.getIdsUtilisations(), 0)
+            var derniere_utilisation = this.props.utilisations.filter(util => util.vehicule.id == this.props.match.params.vehicule_id).find(uti => uti.id == id_derniere_utilisation);
+    
+            var date_debut = derniere_utilisation.date_debut_utilisation;
+            var date_fin = derniere_utilisation.date_fin_utilisation;
+    
+    
+            var meme_jour = date_debut == date_fin
+            if(derniere_utilisation.kilometres_parcourus !== '' && derniere_utilisation.kilometres_parcourus !==null && derniere_utilisation.kilometres_parcourus > 0){
+                this.toggleVisible()
+            }else{
+               window.alert(`Ce Véhicule a été utilisé ${meme_jour ? 'le' : 'du'} ${date_debut ? moment(date_debut).format('DD/MM/YYYY') : ''} ${meme_jour ? '' : 'au'} ${meme_jour ? '' : date_fin ? moment(date_fin).format('DD/MM/YYYY') : '' } par ${derniere_utilisation.utilisateur ? derniere_utilisation.utilisateur.prenom + ' ' + derniere_utilisation.utilisateur.nom  : '' }
+               Mais le Kilometrage au retour n'a pas été renseigné;
+               Assurez-vous de renseigner cette information pour pouvoir a nouveau utiliser ce véhicule.`)
+            }
+        }else{
+            this.toggleVisible()
+         
+        }
+
+    }
+
     closeEdit = () => {
         this.setState({
             isEdit: false,
@@ -78,15 +114,10 @@ import { Container, Button, Link } from 'react-floating-action-button'
         }, () => this.toggleVisible())
     }
 
-    onEdit = ( id, index) => {
-        var utilisations = this.props.utilisations.filter(util => util.vehicule.id == this.props.match.vehicule_id)
-       // var struc = utilisations[index]
+    onEdit = ( id) => {
+       const vehic = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(vehicule => vehicule.id == this.props.match.params.vehicule_id)
+       this.props.history.push('/gestion_du_parc_automobile/parc/modification-utilisation-vehicule/' + vehic.id + '/' + vehic.immatriculation + '/utilisation/' + id)
 
-
-        this.setState({
-            objetModif: utilisations.find(util => util.id == id),
-            editIndex: index
-        }, () => this.passEdit())
 
 
     }
@@ -117,7 +148,7 @@ import { Container, Button, Link } from 'react-floating-action-button'
     }
 
     verificationFormulaire () {
-        if(this.kilometres_parcourus.value < 0 && this.kilometres_parcourus.value.length){
+        if(this.kilometres_parcourus.value.length && this.kilometres_parcourus.value < 0 ){
             return "Le nombre de kilomètre parcourus ne peut être négatif !"
         }else if(this.nature_utilisation.value == undefined || !this.nature_utilisation.value.length){
           return "La nature d'utilisation est obligatoire !"
@@ -129,10 +160,6 @@ import { Container, Button, Link } from 'react-floating-action-button'
             return "La date de début d'utilisation est obligatoire !"
           }else if(this.date_fin_utilisation.value == undefined || !this.date_fin_utilisation.value.length){
             return "La date de fin d'utilisation est obligatoire !"
-          }else if(this.heure_debut.value == undefined || !this.heure_debut.value.length){
-            return "L'heure de début d'utilisation est obligatoire !"
-          }else if(this.heure_de_fin.value == undefined || !this.heure_de_fin.value.length){
-            return "L'heure de fin d'utilisation est obligatoire !"
           }else{
             return null
         }
@@ -159,7 +186,17 @@ import { Container, Button, Link } from 'react-floating-action-button'
                 [name]: value
               }, () => {
                   //alert('ok')
-                this.kilometres_parcourus.value = this.kilometrage_compteur_retour.value - this.kilometrage_compteur_debut.value
+                  const vehiculeSelect = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
+                  
+                  if(vehiculeSelect.kilometrage_acquisition == null){
+
+                    this.kilometres_parcourus.value = parseInt(this.kilometrage_compteur_retour.value) 
+
+                  }else{
+                    this.kilometres_parcourus.value = parseInt(this.kilometrage_compteur_retour.value) - parseInt(vehiculeSelect.kilometrage_acquisition)
+
+                  }
+               // console.log(this.kilometrage_compteur_debut.value)
               //  this.kilometrage_compteur_retour.value = parseFloat(this.kilometres_parcourus.value) + parseFloat(this.kilometrage_compteur_debut.value)
 
               });
@@ -206,44 +243,6 @@ import { Container, Button, Link } from 'react-floating-action-button'
           this.setState(this.base)
       }
 
-      onEditSubmit = ( utilisatation_normal_ou_pret, nature_utilisation, utilisateur, chauffeur,date_debut_utilisation, heure_debut,date_fin_utilisation, heure_de_fin, kilometrage_compteur_debut, kilometrage_compteur_retour, kilometres_parcourus, lieu_depart, destination) => {
-       //  e.preventDefault()
-        let modif = this.state.objetModif
-        const utili = this.props.personnels.find(per => per.id == utilisateur)
-        this.setState({isFormSubmitted: true})
-
-          axios.post('/api/modifier_vehicule_utilisation/' + modif.id, {
-                  // vehicule: this.props.vehiculeSeleted.id,
-                 // vehicule_id: vehicule.id,
-                   utilisateur_id: utilisateur,
-                   chauffeur_id: chauffeur,
-                   utilisatation_normal_ou_pret: utilisatation_normal_ou_pret,
-                   utilisateur: utilisateur,
-                   entite_utilisateur: utili.entite_affectation? utili.entite_affectation.id : null,
-                   entite_utilisateur_id: utili.entite_affectation? utili.entite_affectation.id : null,
-                   nature_utilisation: nature_utilisation,
-                   chauffeur: chauffeur,
-                   date_debut_utilisation: date_debut_utilisation,
-                   date_fin_utilisation: date_fin_utilisation,
-                   heure_debut: heure_debut,
-                   heure_de_fin: heure_de_fin,
-                   kilometrage_compteur_debut: kilometrage_compteur_debut,
-                   kilometrage_compteur_retour: kilometrage_compteur_retour,
-                   kilometres_parcourus: kilometres_parcourus,
-                   lieu_depart: lieu_depart,
-                   destination: destination,  
-          }).then(response => {
-            const action = {type: "EDIT_UTILISATION", value: response.data}
-            this.props.dispatch(action)
-            this.setState({isFormSubmitted: false})
-
-          }).catch(error => {
-            this.setState({isFormSubmitted: false})
-            console.log(error)
-        } )
-    
-           // console.log(sin)
-      }
 
       enregistrerUtilisation = async (e) => {
           e.preventDefault()
@@ -276,21 +275,23 @@ import { Container, Button, Link } from 'react-floating-action-button'
 
             }
             ).then(response => {
-                const action = {type: "ADD_UTILISATION", value: response.data}
+                const action = {type: "ADD_UTILISATION", value: response.data.utilisation}
                 this.props.dispatch(action)
-                const val = {id: vehicule.id, kilometrage_acquisition: response.data.kilometrage_compteur_retour }
-                const action2 = {type: "EDIT_VEHICULE_KILOMETRAGE", value: val}
-
+               
+                const action2 = {type: "EDIT_VEHICULE", value: response.data.vehicule}
                 this.props.dispatch(action2)
-                var vehicule2 = this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
-                const action3 = {type: "EDIT_SELECTED", value: vehicule2}
+               
+                const action3 = {type: "EDIT_SELECTED", value: response.data.vehicule}
                 this.props.dispatch(action3)
+
                 this.setState({isFormSubmitted: false})
 
-                this.closeEdit();
+                this.toggleVisible();
             })
              .catch(error => {
                 this.setState({isFormSubmitted: false})
+                window.alert('Ajout à échoué ');
+
                 console.log(error)
              } );
         
@@ -382,8 +383,8 @@ import { Container, Button, Link } from 'react-floating-action-button'
             }
         const vehiculeSelect = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
         const utilisations = this.props.utilisations.filter(util => util.vehicule.id == this.props.match.params.vehicule_id)
-
-
+        
+       // console.log(vehiculeSelect.kilometrage_acquisition)
         return (
             <div className="app-main__inner">
             <div className="main-card card" >
@@ -430,7 +431,7 @@ import { Container, Button, Link } from 'react-floating-action-button'
                    </div>
 
                 
-    {!this.state.isEdit ? (
+    
    <div className={this.state.isOpen ? "ui-theme-settings settings-open" : "ui-theme-settings"}>
             {this.state.isOpen &&   <button type="button" onClick={this.closeEdit}  className="btn-open-options btn btn-warning">
                 <i className="fa fa-times fa-w-16 fa-spin fa-2x"></i>
@@ -630,12 +631,18 @@ import { Container, Button, Link } from 'react-floating-action-button'
                                     <div className="col-md-5">
                                         <div className="position-relative form-group">
                                             <label >Kilomètrage début</label>
-                                            <input name="kilometrage_compteur_debut"
+                                                {vehiculeSelect ?  <input name="kilometrage_compteur_debut"
                                             readOnly
                                             defaultValue={vehiculeSelect == undefined ?
-                                                null : vehiculeSelect.kilometrage_acquisition }
+                                                null : vehiculeSelect.kilometrage_acquisition == null ? 0 : vehiculeSelect.kilometrage_acquisition }
                                 ref={kilometrage_compteur_debut => this.kilometrage_compteur_debut = kilometrage_compteur_debut}
-                                              type="number" className="form-control" /></div>
+                                              type="number" className="form-control" /> :  <input name="kilometrage_compteur_debut"
+                                              readOnly
+                                              defaultValue={vehiculeSelect == undefined ?
+                                                  null : vehiculeSelect.kilometrage_acquisition == null ? 0 : vehiculeSelect.kilometrage_acquisition }
+                                  ref={kilometrage_compteur_debut => this.kilometrage_compteur_debut = kilometrage_compteur_debut}
+                                                type="number" className="form-control" />}
+                                              </div>
                                     </div>
 
                                     <div className="col-md-4">
@@ -653,7 +660,8 @@ import { Container, Button, Link } from 'react-floating-action-button'
                                             <label > parcourus </label>
                                             <input name="kilometres_parcourus"
                                              onChange={this.setFieldKilometrageParcourus}
-
+                                            readOnly
+                                            defaultValue="0"
                                             ref={kilometres_parcourus => this.kilometres_parcourus = kilometres_parcourus}
                                               type="number" className="form-control" /></div>
                                     </div>
@@ -688,16 +696,8 @@ import { Container, Button, Link } from 'react-floating-action-button'
                     </div>
                 </div>
             </div>
-        </div> ) 
-        : 
-        <ModifierUtilisationVehicule item={this.state.objetModif}
-        closeEdit={this.closeEdit}
-        onEditSubmit={this.onEditSubmit}
-        natures_reservations={this.props.natures_reservations}
-        personnels={this.props.personnels}
-         isOpen={this.state.isOpen} />
-
-    }
+        </div> 
+     
                  <ToastContainer autoClose={4000} />
 
                  <Container>
@@ -707,7 +707,7 @@ import { Container, Button, Link } from 'react-floating-action-button'
                     // rotate={true}
                         styles={{backgroundColor: 'green', color: 'white', cursor: 'pointer'}}
 
-                        onClick={this.closeEdit}
+                        onClick={this.toggleVisible}
                         />
                 </Container> 
        
