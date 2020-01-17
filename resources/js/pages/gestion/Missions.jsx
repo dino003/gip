@@ -7,6 +7,7 @@ import MissionItem from '../../components/gestion/MissionItem';
 
 import { Container, Button, Link } from 'react-floating-action-button'
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import '../../components/table.css'
 
   class Missions extends Component {
 
@@ -73,10 +74,10 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
         return (  <table className="mb-0 table" id="export" style={{width: '100%'}} >
         <thead>
         <tr>
-            <th colSpan="2">Numero</th>
-            <th>Date</th>
-            <th>Heure</th>
-            <th>Demandeur</th>
+            <th className="sticky-col first-col">Numero</th>
+            <th className="sticky-col second-col">Date</th>
+            <th className="sticky-col third-col">Heure</th>
+            <th className="sticky-col thour-col">Demandeur</th>
             <th>Etat</th>
             <th>Urgence</th>
             <th>Décideur</th>
@@ -85,7 +86,7 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
             <th>Nature mission</th>
             <th>Moyen de transport</th>
             <th>Mision</th>
-            <th colSpan="2">Actions</th>
+            <th >Reser.</th>
 
         </tr>
         </thead>
@@ -113,7 +114,7 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
            <div className="row">
            <div className={!this.props.missions == undefined ? 'col-lg-12' : 'col-lg-11'}>
 
-           <div className="main-card mb-3 card">
+           <div className="main-card mb-3 card" style={{width: '1000px'}}>
                        <div className="card-body ">
                            <h5 className="card-title">Gestion des Ordres de missions
                           
@@ -142,12 +143,16 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                                             
                                 
                             </h5>
-                           <div className="table-responsive">
-                           {this.props.loading ? this.renderLoading() : 
-                            !this.props.missions.length ? this.renderEmpty() : this.renderList()}
 
-                             
-                           </div>
+                            <br />
+                         
+                         <div className="view">
+                                  <div className="wrapper">
+                                  {this.props.loading ? this.renderLoading() : 
+                            !this.props.missions.length ? this.renderEmpty() : this.renderList()}
+                                  </div>
+                              </div>
+                         
                        </div>
                    </div>
                    </div>

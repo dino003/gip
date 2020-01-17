@@ -7,6 +7,8 @@ import ConsommationItem from '../../components/vehicules/ConsommationItem';
 
 import { Container, Button, Link } from 'react-floating-action-button'
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import '../../components/table.css'
+
 
   class Consommations extends Component {
 

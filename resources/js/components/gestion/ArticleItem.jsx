@@ -22,14 +22,14 @@ import {connect} from 'react-redux'
         return (
             
             <tr style={{backgroundColor: textColor}} onClick={this.props.onSelectArticle.bind(this, item)}> 
-             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.famille ?  item.famille.famille : ''}</td>
-             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.numero_article ? item.numero_article : ''}</td>
+             <td className="sticky-col first-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.famille ?  item.famille.famille : ''}</td>
+             <td className="sticky-col second-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.numero_article ? item.numero_article : ''}</td>
 
 
             
-             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.type_article == 1 ? 'P D' :  'Conso'}</td>
+             <td className="sticky-col third-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.type_article == 1 ? 'P D' :  'Conso'}</td>
 
-             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.marque ? item.marque.nom_marque : ''}</td>
+             <td className="sticky-col thour-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.marque ? item.marque.nom_marque : ''}</td>
              <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.modele || ''}</td>
              <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.libelle_article || ''}</td>
              <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.quantite_phisique_stock || 0}</td>

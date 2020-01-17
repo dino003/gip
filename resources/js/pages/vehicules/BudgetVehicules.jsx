@@ -7,6 +7,8 @@ import BudgetVehiculeItem from '../../components/vehicules/BudgetVehiculeItem';
 
 import { Container, Button, Link } from 'react-floating-action-button'
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import '../../components/table.css'
+
 
 
   class BudgetVehicules extends Component {

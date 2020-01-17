@@ -119,7 +119,7 @@ const active = {
                                                 Les Articles
                                              </NavLink>
                                             </li>
-                                            <li>
+                                            {/* <li>
                                                 <a href="elements-dropdowns.html">
                                                     <i className="metismenu-icon">
                                                     </i>Les Entrées en stock
@@ -130,7 +130,7 @@ const active = {
                                                     <i className="metismenu-icon">
                                                     </i>Les Sorties du stock
                                                 </a>
-                                            </li>
+                                            </li> */}
                                             {/* <li>    
                                                 <a href="elements-badges-labels.html">
                                                     <i className="metismenu-icon">

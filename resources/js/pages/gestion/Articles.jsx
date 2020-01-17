@@ -4,7 +4,7 @@ import Loader from 'react-loader-spinner'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import ArticleItem from '../../components/gestion/ArticleItem';
 
-
+import '../../components/table.css'
 import { Container, Button, Link } from 'react-floating-action-button'
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
@@ -83,10 +83,10 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
         return (  <table className="mb-0 table" id="export" style={{width: '100%'}} >
         <thead>
         <tr>
-            <th >Fammille</th>
-            <th>N° d'article</th>
-            <th>Type</th>
-            <th>Marque</th>
+            <th className="sticky-col first-col">Fammille</th>
+            <th className="sticky-col second-col">N° d'article</th>
+            <th className="sticky-col third-col">Type</th>
+            <th className="sticky-col thour-col">Marque</th>
             <th>Modèle</th>
             <th>Libéllé</th>
             <th>Qté stock</th>
@@ -125,7 +125,7 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
            <div className="row">
            <div className="col-lg-11">
 
-           <div className="main-card mb-3 card">
+           <div className="main-card mb-3 card" style={{width: '1000px'}}>
                        <div className="card-body ">
                            <h5 className="card-title">Gestion des Articles
                           
@@ -190,12 +190,15 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                                             
                                 
                             </h5>
-                           <div className="table-responsive">
-                           {this.props.loading ? this.renderLoading() : 
+                            <br />
+                         
+                         <div className="view">
+                                  <div className="wrapper">
+                                  {this.props.loading ? this.renderLoading() : 
                             !this.props.articles.length ? this.renderEmpty() : this.renderList()}
-
-                             
-                           </div>
+                                  </div>
+                              </div>
+                          
                        </div>
                    </div>
                    </div>

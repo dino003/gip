@@ -23,35 +23,13 @@ import moment from 'moment'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 const bigLocaliser =  momentLocalizer(moment)
 
-const allViews = Object.keys(Views).map(k => Views[k])
-
-const ColoredDateCellWrapper = ({ children }) =>
-  React.cloneElement(React.Children.only(children), {
-    style: {
-      backgroundColor: 'lightblue',
-    },
-  })
+import '../../components/table.css'
 
 import { Container, Button, Link } from 'react-floating-action-button'
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
 
-// const Basic = () => (
-//     <Calendar
-//       events={this.props.reservations}
-//       views={allViews}
-//       step={60}
-//       showMultiDayTimes
-//       startAccessor="date_debut_reservation"
-//       endAccessor="date_fin_reservation"
-//      // max={dates.add(dates.endOf(new Date(2015, 17, 1), 'day'), -1, 'hours')}
-//      // defaultDate={new Date(2015, 3, 1)}
-//       components={{
-//         timeSlotWrapper: ColoredDateCellWrapper,
-//       }}
-//       localizer={localizer}
-//     />
-//   )
+
 
   class ReservationsGeneral extends Component {
 
@@ -227,12 +205,13 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
         return (  <table className="mb-0 table" id="export">
         <thead>
         <tr>
-            <th>Véhicule</th>
-            <th>Entité de réservation</th>
-            <th>du</th>
+            <th className="sticky-col first-col">Véhicule</th>
+            <th className="sticky-col second-col">du</th>
+            <th className="sticky-col third-col">à</th>
+            <th className="sticky-col thour-col">au</th>
             <th>à</th>
-            <th>au</th>
-            <th>à</th>
+            <th >Entité de réservation</th>
+
             <th>Objet de la réservation</th>
             <th>Trans.Util ?</th>
             <th>Actions</th>
@@ -269,12 +248,13 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
         return (  <table className="mb-0 table" >
         <thead>
         <tr>
-            <th>Véhicule</th>
+            <th className="sticky-col first-col">Véhicule</th>
+            <th className="sticky-col second-col">du</th>
+            <th className="sticky-col third-col">à</th>
+            <th className="sticky-col thour-col">au</th>
+            <th>à</th>
             <th>Entité de réservation</th>
-            <th>du</th>
-            <th>à</th>
-            <th>au</th>
-            <th>à</th>
+
             <th>Objet de la réservation</th>
             <th>Trans.Util ?</th>
             <th>Actions</th>
@@ -394,23 +374,23 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
                     <div className="tab-pane tabs-animation fade show active" id="tab_reservations_en_cours" role="tabpanel">
 
-                           <div className="table-responsive">
-                            {this.props.loading ? this.renderLoading() : 
-                            !reservations.length ? this.renderEmpty() : this.renderList()} 
-                          
-
-
-                             
-                           </div>
+                           <div className="view">
+                                  <div className="wrapper">
+                                  {this.props.loading ? this.renderLoading() : 
+                            !reservations.length ? this.renderEmpty() : this.renderList()}
+                                  </div>
+                              </div>
                     </div>
 
                     <div className="tab-pane tabs-animation fade show" id="tab_historique_reservations" role="tabpanel">
 
-                        <div className="table-responsive">
-                        {this.props.loading ? this.renderLoading() : 
-                        !reservations.length ? this.renderEmpty() : this.renderListHistoriques()}
 
-                        </div>
+                        <div className="view">
+                                  <div className="wrapper">
+                                  {this.props.loading ? this.renderLoading() : 
+                        !reservations.length ? this.renderEmpty() : this.renderListHistoriques()}
+                                  </div>
+                              </div>
                     </div>
 
                     <div className="tab-pane tabs-animation fade show" id="tab_planning" role="tabpanel">

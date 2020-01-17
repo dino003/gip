@@ -34,7 +34,19 @@ import moment from 'moment'
             
              <tr > 
                  
-                 <td >
+               
+                 
+
+             <td className="sticky-col first-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.numero_contrat_police || ''}</td>
+
+            <td className="sticky-col second-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.compagnie_assurance ? item.compagnie_assurance.code : ''}</td>
+            <td className="sticky-col third-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.periode_date_debut ? moment(item.periode_date_debut).format('DD/MM/YYYY')  : ''}</td>
+            <td className="sticky-col thour-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.periode_date_fin ? moment(item.periode_date_fin).format('DD/MM/YYYY')  : ''}</td>
+           
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_contrat ? moment(item.date_contrat).format('DD/MM/YYYY') : ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_prise_effet ? moment(item.date_prise_effet).format('DD/MM/YYYY') : ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{ !item.global ? item.vehicules ? item.vehicules.immatriculation : '' : 'Tous'}</td>
+            <td >
                     {item.global == 1 &&   <Fragment>
                      {!isDefautDeclench ? 
                          
@@ -42,17 +54,6 @@ import moment from 'moment'
                  </Fragment>}
 
                  </td>  
-                 
-
-             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{ !item.global ? item.vehicules ? item.vehicules.immatriculation : '' : 'Tous'}</td>
-             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.numero_contrat_police || ''}</td>
-
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.compagnie_assurance ? item.compagnie_assurance.code : ''}</td>
-
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_contrat ? moment(item.date_contrat).format('DD/MM/YYYY') : ''}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_prise_effet ? moment(item.date_prise_effet).format('DD/MM/YYYY') : ''}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.periode_date_debut ? moment(item.periode_date_debut).format('DD/MM/YYYY')  : ''}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.periode_date_fin ? moment(item.periode_date_fin).format('DD/MM/YYYY')  : ''}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.global == 1 ? 'Oui' : 'Non'}</td>
 
             <td>

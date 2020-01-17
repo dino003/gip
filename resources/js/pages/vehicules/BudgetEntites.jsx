@@ -6,6 +6,8 @@ import BudgetEntiteItem from '../../components/vehicules/BudgetEntiteItem';
 
 import { Container, Button, Link } from 'react-floating-action-button'
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import '../../components/table.css'
+
 
 
   class BudgetEntites extends Component {
@@ -95,10 +97,10 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
         return (  <table className="mb-0 table" id="export" >
         <thead>
         <tr>
-            <th>Année</th>
-            <th>Entité</th>
-            <th>Imputation</th>
-            <th>Nature dépenses/recettes</th>
+            <th className="sticky-col first-col">Année</th>
+            <th className="sticky-col second-col">Entité</th>
+            <th className="sticky-col third-col">Imputation</th>
+            <th className="sticky-col thour-col">Nature </th>
             <th>Dépenses-budget</th>
             <th>Dépense-réalisation</th>
             <th>Dépense-%</th>
@@ -135,7 +137,7 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
             <div className="app-main__inner">
                 <div className="row">
                 <div className="col-lg-10">
-                <div className="main-card mb-3 card">
+                <div className="main-card mb-3 card" style={{width: '1000px'}}>
                        <div className="card-body ">
                            <h5 className="card-title">Gestion des budgets des entités
                           
@@ -163,13 +165,15 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                                             
                                 
                             </h5>
-                           <div className="table-responsive">
-                           {this.props.loading ? this.renderLoading() : 
+                            <br />
+                         
+                         <div className="view">
+                                  <div className="wrapper">
+                                  {this.props.loading ? this.renderLoading() : 
                             !this.props.budget_entites.length ? this.renderEmpty() : this.renderList()}
-
-
-                             
-                           </div>
+                                  </div>
+                              </div>
+                          
                        </div>
                    </div>
                 </div>

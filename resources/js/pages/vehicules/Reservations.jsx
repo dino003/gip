@@ -9,6 +9,8 @@ import ReservationItem from '../../components/vehicules/ReservationItem';
 
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import today from '../../utils/today';
+import '../../components/table.css'
+
 
 
 import { Container, Button, Link } from 'react-floating-action-button'
@@ -21,14 +23,6 @@ import moment from 'moment'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 const bigLocaliser = momentLocalizer(moment)
 
-const allViews = Object.keys(Views).map(k => Views[k])
-
-const ColoredDateCellWrapper = ({ children }) =>
-    React.cloneElement(React.Children.only(children), {
-        style: {
-            backgroundColor: 'lightblue',
-        },
-    })
 
 
 class Reservations extends Component {

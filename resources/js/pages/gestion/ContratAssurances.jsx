@@ -6,6 +6,7 @@ import ContratAssuranceItem from '../../components/gestion/ContratAssuranceItem'
 
 import { Container, Button, Link } from 'react-floating-action-button'
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import '../../components/table.css'
 
 
 
@@ -76,15 +77,18 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
         return (  <table className="mb-0 table" id="export">
         <thead>
         <tr>
-            <th>Défaut</th>
-            <th>Véhicule</th>
-            <th>Numero de contrat</th>
-            <th>Compagnie</th>
-            <th>Date Contrat</th>
-            <th>Effet</th>
-            <th>Début</th>
+        <th className="sticky-col first-col">Numero de contrat</th>
+        <th className="sticky-col second-col">Compagnie</th>
+        <th className="sticky-col third-col">Début</th>
 
-            <th>Fin</th>
+        <th className="sticky-col thour-col">Fin</th>
+        <th>Date Contrat</th>
+            <th>Effet</th>
+        <th >Véhicule</th>
+
+            <th>Défaut</th>
+            
+            
             <th>Global ?</th>
         </tr>
         </thead>
@@ -139,13 +143,15 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                                             
                                 
                             </h5>
-                           <div className="table-responsive">
-                           {this.props.loading ? this.renderLoading() : 
+                            <br />
+                            <div className="view">
+                                  <div className="wrapper">
+                                  {this.props.loading ? this.renderLoading() : 
                             !this.props.contrat_assurances.length ? this.renderEmpty() : this.renderList()}
 
-
-                             
-                           </div>
+                                  </div>
+                              </div>
+                          
                        </div>
                    </div>
 
