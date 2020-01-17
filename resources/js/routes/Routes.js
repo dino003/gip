@@ -5,8 +5,6 @@ import Master from '../components/layouts/Master'
 import MasterParametre from '../components/layouts/MasterParametre'
 import MasterCodification from '../components/layouts/MasterCodification'
 import MasterGestion from '../components/layouts/MasterGestion'
-
-import Dashboard from '../pages/Dashboard'
 import ParametreGeneraux from '../pages/ParametreGeneraux'
 import TypeEntite from '../pages/codifications/TypeEntite.jsx'
 import CategorieVehicule from '../pages/codifications/CategorieVehicule'
@@ -109,11 +107,17 @@ import ReservationVehiculeEtat from '../pages/editions/etats/reservations/Reserv
 import ContratAssuranceVehicule from '../pages/vehicules/ContratAssuranceVehicule';
 import Tracabilites from '../pages/vehicules/Tracabilites';
 import ModifierUtilisationVehicule from '../pages/forms/Vehicules/ModifierUtilisationVehicule';
+import Dashboard from '../pages/Dashboard.jsx';
 
 
 
 const NavBack = () => (
   <Switch>
+
+    {/* Dashboard */}
+    <MasterEdition path="/gestion_du_parc_automobile/global-dashboard" component={Dashboard} />
+
+    {/* fin dashboard */}
     <MasterParametre exact path="/gestion_du_parc_automobile/parametres_generaux" component={ParametreGeneraux} />
     <MasterParametre exact path="/gestion_du_parc_automobile/gestion_du_personnel" component={Personnels} />
     <MasterParametre exact path="/gestion_du_parc_automobile/ajouter_personnel" component={AjouterPersonnel} />

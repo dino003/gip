@@ -8,6 +8,7 @@ import MatriculeInput from '../../components/MatriculeInput';
 
 import { Container, Button, Link } from 'react-floating-action-button'
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import '../../components/table.css'
 
 
 
@@ -114,14 +115,15 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
         return (  <table className="mb-0 table" id="export" >
         <thead>
         <tr>
-            <th>Véhicule</th>
-            <th>Tiers</th>
-            <th>Début</th>
+            <th className="sticky-col first-col">Véhicule</th>
+            <th className="sticky-col second-col">Tiers</th>
+            <th className="sticky-col third-col">Début</th>
+            <th className="sticky-col thour-col">Coût</th>
+
             <th>Fin</th>
             <th>Nature intervention</th>
             <th>Catégorie intervention</th>
             <th>Kms</th>
-            <th>Coût</th>
 
         </tr>
         </thead>
@@ -182,13 +184,16 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                             }                                              
                                 
                             </h5>
-                           <div className="table-responsive">
-                           {!this.props.vehicules.length ? this.renderLoading() : 
+
+                            <br />
+                         
+                         <div className="view">
+                                  <div className="wrapper">
+                                  {!this.props.vehicules.length ? this.renderLoading() : 
                             !interventions.length ? this.renderEmpty() : this.renderList()}
-
-
-                             
-                           </div>
+                                  </div>
+                              </div>
+                          
                        </div>
                    </div>
 

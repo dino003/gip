@@ -207,12 +207,13 @@ class Reservations extends Component {
         return (<table className="mb-0 table" id="export">
             <thead>
                 <tr>
-                    <th>Véhicule</th>
+                    <th className="sticky-col first-col">Véhicule</th>
+                    <th className="sticky-col second-col">du</th>
+                    <th className="sticky-col third-col">à</th>
+                    <th className="sticky-col thour-col">au</th>
+                    <th>à</th>
                     <th>Entité de réservation</th>
-                    <th>du</th>
-                    <th>à</th>
-                    <th>au</th>
-                    <th>à</th>
+
                     <th>Objet de la réservation</th>
                     <th>Trans.Util ?</th>
                     <th>Actions</th>
@@ -241,12 +242,13 @@ class Reservations extends Component {
         return (<table className="mb-0 table" >
             <thead>
                 <tr>
-                    <th>Véhicule</th>
+                    <th className="sticky-col first-col">Véhicule</th>
+                    <th className="sticky-col second-col">du</th>
+                    <th className="sticky-col third-col">à</th>
+                    <th className="sticky-col thour-col">au</th>
+                    <th>à</th>
                     <th>Entité de réservation</th>
-                    <th>du</th>
-                    <th>à</th>
-                    <th>au</th>
-                    <th>à</th>
+
                     <th>Objet de la réservation</th>
                     <th>Trans.Util ?</th>
                     <th>Actions</th>
@@ -359,25 +361,26 @@ class Reservations extends Component {
                                 </div>
 
                                 <div className="tab-pane tabs-animation fade show " id="tab_reservations_en_cours" role="tabpanel">
-
-                                    <div className="table-responsive">
-                                        {this.props.loading ? this.renderLoading() :
-                                            !reservations.length ? this.renderEmpty() : this.renderList()}
-
-
-
-                                    </div>
+                         
+                         <div className="view">
+                                  <div className="wrapper">
+                                  {this.props.loading ? this.renderLoading() :
+                                        !reservations.length ? this.renderEmpty() : this.renderList()}
+                                  </div>
+                              </div>
                                 </div>
 
                                 <div className="tab-pane tabs-animation fade show" id="tab_historique_reservations" role="tabpanel">
 
-                                    <div className="table-responsive">
-                                        {this.props.loading ? this.renderLoading() :
+                                   
+                                    <div className="view">
+                                  <div className="wrapper">
+                                  {this.props.loading ? this.renderLoading() :
                                             !reservations.length ? this.renderEmpty() : this.renderListHistoriques()}
 
+                                  </div>
+                              </div>
 
-
-                                    </div>
                                 </div>
 
                             </div>

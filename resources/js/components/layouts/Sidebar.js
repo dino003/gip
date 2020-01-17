@@ -70,6 +70,20 @@ class Sidebar extends Component {
                                 Gestion du parc
                             </li>
 
+                            {/* <li>
+                                <NavLink
+                                    exact
+                                    activeStyle={active}
+                                    to={{
+                                        pathname: "/gestion_du_parc_automobile/global-dashboard"
+                                    }}
+                                >
+                                    <i className="metismenu-icon pe-7s-car"></i>
+                                    Tableau de bord
+                                    <i className="metismenu-state-icon "></i>
+                                </NavLink>
+                            </li> */}
+
                             <li>
                                 <NavLink
                                     exact

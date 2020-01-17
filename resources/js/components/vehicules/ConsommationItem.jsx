@@ -26,11 +26,11 @@ import {formatageSomme} from '../../utils/Repository'
             
              <tr > 
                    
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.vehicule ? item.vehicule.immatriculation : ''}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.type_consomation ? item.type_consomation.nature_consomation : ''}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_conso ? moment(item.date_conso).format('DD/MM/YYYY') : ''}</td>
+            <td className="sticky-col first-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.vehicule ? item.vehicule.immatriculation : ''}</td>
+            <td className="sticky-col second-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.type_consomation ? item.type_consomation.nature_consomation : ''}</td>
+            <td className="sticky-col third-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_conso ? moment(item.date_conso).format('DD/MM/YYYY') : ''}</td>
 
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.conducteur ? item.conducteur.nom : 'PERSONNE PAR DEFAUT'}</td>
+            <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.conducteur ? item.conducteur.nom : 'PERSONNE PAR DEFAUT'}</td>
 
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.quantite_consomee || '0'}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.montant_ttc ? formatageSomme(item.montant_ttc) : ''}</td>

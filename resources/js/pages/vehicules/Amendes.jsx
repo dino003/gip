@@ -112,11 +112,12 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
         return (  <table className="mb-0 table" id="export" >
         <thead>
         <tr>
-            <th>Véhicule</th>
-            <th>Date</th>
-            <th>Heure</th>
-            <th>Réception</th>
-            <th>Nature</th>
+            <th className="sticky-col first-col">Véhicule</th>
+            <th className="sticky-col second-col">Date</th>
+            <th className="sticky-col third-col">Heure</th>
+            <th className="sticky-col thour-col">Nature</th>
+
+            <th >Réception</th>
             <th>Conducteur</th>
             <th>Lieu</th>
             <th>Réglée par</th>
@@ -188,13 +189,15 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                             }                                              
                                 
                             </h5>
-                           <div className="table-responsive">
-                           {!this.props.vehicules.length ? this.renderLoading() : 
+                            <br />
+                         
+                           <div className="view">
+                                    <div className="wrapper">
+                                    {!this.props.vehicules.length ? this.renderLoading() : 
                             !amendes.length ? this.renderEmpty() : this.renderList()}
-
-
-                             
-                           </div>
+                                    </div>
+                                </div>
+                           
                        </div>
                    </div>
 

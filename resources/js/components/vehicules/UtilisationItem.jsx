@@ -32,10 +32,10 @@ export default class UtilisationItem extends Component {
                <tr>   
                 {/* <tr style={{backgroundColor: textColor}} onClick={this.onSelect}> */}
                    
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.vehicule ? item.vehicule.immatriculation : ''}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.utilisateur ? item.utilisateur.entite_affectation ? item.utilisateur.entite_affectation.entite : '' : ''}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.utilisateur ? item.utilisateur.nom  : ''}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.chauffeur ? item.chauffeur.nom : ''}</td>
+            <td className="sticky-col first-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.vehicule ? item.vehicule.immatriculation : ''}</td>
+            <td className="sticky-col second-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.utilisateur ? item.utilisateur.entite_affectation ? item.utilisateur.entite_affectation.entite : '' : ''}</td>
+            <td className="sticky-col third-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.utilisateur ? item.utilisateur.nom  : ''}</td>
+            <td className="sticky-col thour-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.chauffeur ? item.chauffeur.nom : ''}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.utilisatation_normal_ou_pret || ''}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.nature_utilisation ? item.nature_utilisation.libelle : ''}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_debut_utilisation ? moment(item.date_debut_utilisation).format('DD/MM/YYYY') : ''}</td>

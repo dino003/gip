@@ -26,10 +26,10 @@ export default class DepenseRecetteItem extends Component {
              <tr > 
                 <td onDoubleClick={this.props.onEdit.bind(this, item.id)}> {item.vehicule.entite_physique ?  item.vehicule.entite_physique.entite : ''}</td>
  
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.vehicule ? item.vehicule.immatriculation : ''}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.nature ? item.nature.nature_depense_recette : ''}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.imputation_interne || ''}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.depense_ou_recette || ''}</td>
+            <td className="sticky-col first-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.vehicule ? item.vehicule.immatriculation : ''}</td>
+            <td className="sticky-col second-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.nature ? item.nature.nature_depense_recette : ''}</td>
+            <td className="sticky-col third-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.imputation_interne || ''}</td>
+            <td className="sticky-col thour-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.depense_ou_recette || ''}</td>
 
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date ? moment(item.date).format('DD/MM/YYYY') : ''}</td>
 

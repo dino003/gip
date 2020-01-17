@@ -16,6 +16,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import { Container, Button, Link } from 'react-floating-action-button'
 import moment from 'moment'
+import '../../components/table.css'
 
 
 
@@ -335,11 +336,11 @@ import moment from 'moment'
         return (  <table className="mb-0 table" id="export" >
         <thead>
         <tr>
-        <th>Véhicule</th>
+        <th className="sticky-col first-col">Véhicule</th>
 
-            <th>Entité de l'utilisateur</th>
-            <th>Utilisateur</th>
-            <th>Chauffeur</th>
+            <th className="sticky-col second-col">Entité de l'utilisateur</th>
+            <th className="sticky-col third-col">Utilisateur</th>
+            <th className="sticky-col thour-col">Chauffeur</th>
             <th>Type</th>
             <th>Nature utilisation</th>
             <th>Date début</th>
@@ -419,14 +420,14 @@ import moment from 'moment'
                             <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}/> : null
                             }                                 
                             </h5>
-                           <div className="table-responsive">
-                   
-                           {!this.props.vehicules.length ? this.renderLoading() : 
+                            <br />
+                         
+                           <div className="view">
+                                    <div className="wrapper">
+                                    {!this.props.vehicules.length ? this.renderLoading() : 
                             !utilisations.length ? this.renderEmpty() : this.renderList()}
-
-
-                             
-                           </div>
+                                    </div>
+                                </div>
                        </div>
                    </div>
 

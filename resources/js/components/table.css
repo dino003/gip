@@ -1,0 +1,58 @@
+/* .wrapper {
+    overflow-x: scroll;
+}
+
+td {
+    min-width: 50px;
+}
+
+.fixed {
+    position: absolute;
+    background: #aaa;
+} */
+
+.view {
+	margin: auto;
+    width: 950px;
+}
+
+.wrapper {
+	position: relative;
+	overflow: auto;
+   	border: 1px solid black;
+  	white-space: nowrap;
+}
+
+.sticky-col {
+    position: sticky;
+    position: -webkit-sticky;    
+    background-color: white;
+}
+  
+.first-col {
+	width: 200px;
+    min-width: 100px;
+    max-width: 150px;
+	left: 0px;    
+}
+
+.second-col {
+	width: 150px;
+    min-width: 150px;
+    max-width: 150px;
+	left: 100px;    
+}
+
+.third-col {
+	width: 150px;
+    min-width: 150px;
+    max-width: 150px;
+	left: 250px;    
+}
+
+.thour-col {
+	width: 150px;
+    min-width: 150px;
+    max-width: 150px;
+	left: 400px;    
+}

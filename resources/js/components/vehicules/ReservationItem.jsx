@@ -27,13 +27,13 @@ import moment from 'moment'
             <tr style={{textDecoration: lineStyle}} > 
 
                    
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.vehicule ? item.vehicule.immatriculation : ''}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.entite_personne_reservant || ''}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_debut_reservation ? moment(item.date_debut_reservation).format('DD/MM/YYYY') : ''}</td>
+            <td className="sticky-col first-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.vehicule ? item.vehicule.immatriculation : ''}</td>
+            <td className="sticky-col second-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_debut_reservation ? moment(item.date_debut_reservation).format('DD/MM/YYYY') : ''}</td>
 
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.heure_debut_reservation.slice(0, 5) || ''}</td>
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_fin_reservation ? moment(item.date_fin_reservation).format('DD/MM/YYYY') : ''}</td>
+            <td className="sticky-col third-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.heure_debut_reservation.slice(0, 5) || ''}</td>
+            <td className="sticky-col thour-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_fin_reservation ? moment(item.date_fin_reservation).format('DD/MM/YYYY') : ''}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.heure_fin_reservation.slice(0, 5) || ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.entite_personne_reservant || ''}</td>
 
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.objet_reservation ? item.objet_reservation.libelle : ''}</td>
 
@@ -41,8 +41,8 @@ import moment from 'moment'
 
             <td>
 
-                <span className="pull-right">
-                <ul className="list-inline" style={{listStyle: 'none'}}>
+                {/* <span className="pull-right">
+                <ul className="list-inline" style={{listStyle: 'none'}}> */}
                     
                 <button onClick={this.props.onDelete.bind(this, item.id)}
                     title="Supprimer"
@@ -59,10 +59,10 @@ import moment from 'moment'
                             className="mb-2 mr-2 btn-transition btn btn-outline-info pull-right">
                     <i className="fa fa-calendar"></i> Départ Util.
                 </button>}
-                </ul>
+                {/* </ul>
                    
               
-                </span>
+                </span> */}
         </td>
             
 

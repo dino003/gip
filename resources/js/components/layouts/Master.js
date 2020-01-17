@@ -10,7 +10,7 @@ export default function Master({component: Component, ...rest}) {
     return (
         <Route {...rest} render={matchProps => (
           
-            <div className="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header closed-sidebar">
+            <div className="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header ">
             <NavBar />
         <div className="app-main">
             <Sidebar />
