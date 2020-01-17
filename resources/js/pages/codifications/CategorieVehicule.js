@@ -129,7 +129,8 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                            toggleSearchInput={this.toggleSearchInput}
                            toggleVisibleInput={this.toggleOpen}
                             isLink /> */}
-                               <span className="pull-right">
+                              <h5 className="card-title">Gestion des catégories de véhicules
+                              <span className="pull-right">
                                {this.props.categories_vehicules.length ?
                                              <ReactHTMLTableToExcel
                                                 id="test-table-xls-button"
@@ -139,6 +140,8 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                                                 sheet="feuille1"
                                                 buttonText="Ecran -> Liste"/> : null }
                                </span>
+                           </h5>
+                             
                            {/*
                            <h5 className="card-title">Gestion des entités
                            <span className="pull-right">

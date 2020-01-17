@@ -228,7 +228,7 @@ import ModifierOperationIntervention from '../forms/ModifierOperationInterventio
             <div className="app-main__inner">
             <div className="main-card card" >
                        <div className="card-body ">
-                           <h5 className="card-title">Gestion des natures d'interventions
+                           <h5 className="card-title">Gestion des opérations d'interventions
                            <button title=" Ajouter une nouvelle nature d'intervention"
                                       className="mb-2 mr-2 btn-transition btn btn-outline-primary pull-right"
                                       onClick={this.closeEdit}
