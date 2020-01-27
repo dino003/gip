@@ -183,62 +183,17 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                     <div className="main-card mb-3 card">
                         <div className="card-body">
                             <h5 className="card-title">Contrat d'assurance N° <span style={{color: 'red'}}>{objetEdit.numero_contrat_police}</span>
-                                                         
+
+                             
+                            {this.props.vehicules.length && 
+                            <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id).immatriculation}/>
+                            }                             
                           </h5>
                             <form className="" onChange={this.setField}  onSubmit={this.modifierContratAssurance}>
                           
                                
                                 <div className="form-row">
 
-                                {/* <div className="col-md-4">
-                 
-                                    {this.state.global !== undefined ?    <React.Fragment>
-                                  {!this.state.global ?
-                                             <label  className=""> Sélection de véhicule</label> :
-                                             <label>Contrat global</label> }
-                                            { this.state.global ? <input readOnly 
-                                            defaultValue="Ce Contrat couvre tous les véhicules"
-                                            className="form-control" /> : 
-                                     
-                                        <Select
-                                        
-                                        name="vehicule"
-                                        isDisabled={true}
-
-                                        placeholder="Selectionnez un véhicule"
-                                        noOptionsMessage={() => "Aucun Véhicule pour l'instant"}
-                                        options={this.props.vehicules}
-                                        getOptionLabel={option => option.immatriculation}
-                                        getOptionValue={option => option.id}
-                                        onChange={this.setFieldVehicule}
-                                        defaultValue={objetEdit.vehicules ? objetEdit.vehicules : null}
-                                        styles={colourStyles}
-                                      />
-                                    }
-                                  </React.Fragment> :    <React.Fragment>
-                                  {!objetEdit.global ?
-                                             <label  className=""> Sélection de véhicule</label> :
-                                             <label>Contrat global</label> }
-                                            { objetEdit.global ? <input readOnly 
-                                            defaultValue="Ce Contrat couvre tous les véhicules"
-                                            className="form-control" /> : 
-                                     
-                                        <Select
-                                        name="vehicule"
-                                        isDisabled={true}
-                                        placeholder="Selectionnez un véhicule"
-                                        noOptionsMessage={() => "Aucun Véhicule pour l'instant"}
-                                        options={this.props.vehicules}
-                                        getOptionLabel={option => option.immatriculation}
-                                        getOptionValue={option => option.id}
-                                        onChange={this.setFieldVehicule}
-                                        defaultValue={objetEdit.vehicules ? objetEdit.vehicules : null}
-                                        styles={colourStyles}
-                                      />
-                                    }
-                                  </React.Fragment>}
-                                
-                                        </div> */}
 
                                     <div className="col-md-2">
                                         <div className="position-relative form-group">

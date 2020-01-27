@@ -184,7 +184,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                             <h5 className="card-title">Gestion des Reservations du véhicule
                            
                             {this.props.vehicules.length && 
-                            <MatriculeInput text_attente={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id).immatriculation}/>
+                            <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id).immatriculation}/>
                             }                              
                           </h5>
                           <br />
