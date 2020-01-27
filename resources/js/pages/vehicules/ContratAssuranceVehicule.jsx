@@ -198,7 +198,7 @@ import MatriculeInput from '../../components/MatriculeInput'
                                 <div className="form-row">
 
 
-                                    <div className="col-md-2">
+                                    <div className="col-md-4">
                                         <div className="position-relative form-group">
                                             <label >N° de contrat/Police * </label>
                                             <input name="numero_contrat_police" readOnly  type="text"

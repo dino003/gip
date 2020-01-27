@@ -101,19 +101,19 @@ class Reservations extends Component {
     }
 
     ajoutUtilisation = objet => {
-        let vehicule = this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
+       // let vehicule = this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
 
         axios.post('/api/ajouter_vehicule_utilisation', objet).then(response => {
             const action = { type: "ADD_UTILISATION", value: response.data }
             this.props.dispatch(action)
 
-            const val = { id: vehicule.id, kilometrage_acquisition: response.data.kilometrage_compteur_retour }
+           // const val = { id: vehicule.id, kilometrage_acquisition: response.data.kilometrage_compteur_retour }
 
-            const action2 = { type: "EDIT_VEHICULE_KILOMETRAGE", value: val }
-            this.props.dispatch(action2)
+           // const action2 = { type: "EDIT_VEHICULE_KILOMETRAGE", value: val }
+          //  this.props.dispatch(action2)
 
-            const action3 = { type: "EDIT_SELECTED", value: vehicule }
-            this.props.dispatch(action3)
+           // const action3 = { type: "EDIT_SELECTED", value: vehicule }
+            //this.props.dispatch(action3)
 
         })
     }
@@ -128,13 +128,13 @@ class Reservations extends Component {
         })
             .then(response => {
                 let reser = response.data
-                let personne = this.props.personnels.find(per => per.id == reser.personne_reservant.id)
+                let personne = this.props.personnels.find(per => per.id == reser.personne_reservant.id) || null
                 var reservationTransformee = {
                     vehicule: reser.vehicule.id,
-                    utilisateur: reser.personne_reservant.id,
-                    entite_utilisateur: personne.entite_affectation ? personne.entite_affectation.id : null,
-                    nature_utilisation: reser.objet_reservation.id,
-                    chauffeur: reser.personne_reservant.id,
+                    utilisateur: reser.personne_reservant ? reser.personne_reservant.id : null,
+                    entite_utilisateur: personne ? personne.entite_affectation ? personne.entite_affectation.id : null : null,
+                    nature_utilisation: reser.objet_reservation ? reser.objet_reservation.id : null,
+                    chauffeur: reser.personne_reservant ? reser.personne_reservant.id : null,
                     date_debut_utilisation: reser.date_debut_reservation,
                     date_fin_utilisation: reser.date_fin_reservation,
                     heure_debut: reser.heure_debut_reservation,
@@ -210,7 +210,10 @@ class Reservations extends Component {
 
                     <th>Objet de la réservation</th>
                     <th>Trans.Util ?</th>
-                    <th>Actions</th>
+                    <th>Res.Utili.</th>
+                    <th>Départ.Utili.</th>
+                    <th>Supprimer</th>
+
 
 
                 </tr>

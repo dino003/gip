@@ -40,29 +40,26 @@ import moment from 'moment'
             <td > <input type="checkbox" disabled={true} checked={item.transforme_en_utilisation} /> </td>
 
             <td>
-
-                {/* <span className="pull-right">
-                <ul className="list-inline" style={{listStyle: 'none'}}> */}
-                    
-                <button onClick={this.props.onDelete.bind(this, item.id)}
+            <button onClick={this.props.onDelete.bind(this, item.id)}
                     title="Supprimer"
                      className="mb-2 mr-2 btn-transition btn btn-outline-danger pull-right">
                     <i className="fa fa-trash"></i>
                 </button>
-                       {!item.transforme_en_utilisation && <button onClick={this.props.onTransformutilisation.bind(this, item.id)} 
+            </td>
+            <td>
+            {!item.transforme_en_utilisation && <button onClick={this.props.onTransformutilisation.bind(this, item.id)} 
                             title="Transformation d'une réservation d'un véhicule en utilisation"
                             className="mb-2 mr-2 btn-transition btn btn-outline-info pull-right">
                     <i className="fa fa-share"></i> Res->Utili.
                 </button>}
+            </td>
+
+            <td>   
                 {!item.transforme_en_utilisation && <button onClick={this.props.onTransformationDepartReservation.bind(this, item.id)} 
                             title="Enregistrer le départ d'un véhicule"
                             className="mb-2 mr-2 btn-transition btn btn-outline-info pull-right">
                     <i className="fa fa-calendar"></i> Départ Util.
                 </button>}
-                {/* </ul>
-                   
-              
-                </span> */}
         </td>
             
 
