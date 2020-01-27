@@ -183,13 +183,15 @@ import MatriculeInput from '../../components/MatriculeInput'
               
                     <div className="main-card mb-3 card">
                         <div className="card-body">
-                            <h5 className="card-title">Contrat d'assurance N° <span style={{color: 'red'}}>{objetEdit.numero_contrat_police}</span>
+                            <h5 className="card-title">
+                                Contrat d'assurance N° <span style={{color: 'red'}}>{objetEdit.numero_contrat_police}</span>
 
                              
                             {this.props.vehicules.length && 
-                            <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id).immatriculation}/>
+                            <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}/>
                             }                             
                           </h5>
+                          <br />
                             <form className="" onChange={this.setField}  onSubmit={this.modifierContratAssurance}>
                           
                                
