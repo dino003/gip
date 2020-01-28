@@ -250,11 +250,12 @@ import '../../components/table.css'
                     (debut <= dateDebutDejaUtilise && fin >= dateFinDejaUtilise)
         })
         return (deja ) ? `Ce véhicule est déja en cours d'utilisation !
-        par : ${$deja.utilisateur ? deja.utilisateur.nom : ''} ` : null 
+        par : ${deja.utilisateur ? deja.utilisateur.nom : ''} ` : null 
 
  
        // return (tab.includes(true)) ? 'Ce véhicule est déja en cours d\'utilisation !' : null 
       }
+      
 
 
       enregistrerUtilisation = async (e) => {
