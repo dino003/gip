@@ -249,7 +249,7 @@ import '../../components/table.css'
                     (fin >= dateDebutDejaUtilise && fin <= dateFinDejaUtilise) ||
                     (debut <= dateDebutDejaUtilise && fin >= dateFinDejaUtilise)
         })
-        return (deja ) ? `Ce véhicule est déja en cours d'utilisation !
+        return (deja ) ? `Ce véhicule est en cours d'utilisation pour cette période  !
         par : ${deja.utilisateur ? deja.utilisateur.nom : ''} ` : null 
 
  
