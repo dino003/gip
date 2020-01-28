@@ -72,8 +72,8 @@ class Reservations extends Component {
                         vehicule: reser.vehicule.id,
                         vehicule_id: reser.vehicule.id,
 
-                        utilisation_normal_ou_pret: "Utilisation normale",
-
+                        utilisatation_normal_ou_pret: "Utilisation normale",
+                         
                         utilisateur_id: reser.personne_reservant ? reser.personne_reservant.id : null,
                         utilisateur: reser.personne_reservant ? reser.personne_reservant.id : null,
                         entite_utilisateur_id: personne ? personne.entite_affectation ? personne.entite_affectation.id : null : null,
@@ -130,7 +130,7 @@ class Reservations extends Component {
                 var reservationTransformee = {
                     vehicule: reser.vehicule.id,
                     vehicule_id: reser.vehicule.id,
-                    utilisation_normal_ou_pret: "Utilisation normale",
+                    utilisatation_normal_ou_pret: "Utilisation normale",
                     utilisateur: reser.personne_reservant ? reser.personne_reservant.id : null,
                     utilisateur_id: reser.personne_reservant ? reser.personne_reservant.id : null,
                     entite_utilisateur_id: personne ? personne.entite_affectation ? personne.entite_affectation.id : null : null,
