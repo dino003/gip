@@ -242,7 +242,9 @@ class Reservations extends Component {
 
                     <th>Objet de la réservation</th>
                     <th>Trans.Util ?</th>
-                    <th>Actions</th>
+                    <th>Res.Utili.</th>
+                    <th>Départ.Utili.</th>
+                    <th>Supprimer</th>
 
 
                 </tr>

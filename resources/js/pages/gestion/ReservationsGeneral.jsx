@@ -76,21 +76,21 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                     let personne = this.props.personnels.find(per => per.id == reser.personne_reservant.id)
                     var reservationTransformee = {
                         vehicule: reser.vehicule.id,
-                        utilisateur: reser.personne_reservant.id,
-                        entite_utilisateur: personne.entite_affectation ? personne.entite_affectation.id : null,
-                        nature_utilisation: reser.objet_reservation.id,
-                        chauffeur: reser.personne_reservant.id,
+                        utilisateur: reser.personne_reservant ? reser.personne_reservant.id : null,
+                        entite_utilisateur: personne ? personne.entite_affectation ? personne.entite_affectation.id : null : null,
+                        nature_utilisation: reser.objet_reservation ? reser.objet_reservation.id : null,
+                        chauffeur: reser.personne_reservant ? reser.personne_reservant.id : null,
                         date_debut_utilisation: reser.date_debut_reservation,
                         date_fin_utilisation: reser.date_fin_reservation,
                         heure_debut: reser.heure_debut_reservation,
                         heure_de_fin: reser.heure_fin_reservation,
                         kilometrage_compteur_debut: reser.kilometrage_vehicule_a_la_reservation,
                         kilometrage_compteur_retour: reser.kilometrage_prevu > 0 ? parseFloat(reser.kilometrage_vehicule_a_la_reservation) + parseFloat(reser.kilometrage_prevu) : reser.kilometrage_vehicule_a_la_reservation,
-                        kilometres_parcourus: reser.kilometrage_prevu,
+                        kilometres_parcourus: reser.kilometrage_prevu
                  }
     
                     this.ajoutUtilisation(reservationTransformee)
-                    const action = {type: "TRANSFORMATION_RESERVATION_UTILISATION", value: response.data}
+                    const action = {type: "EDIT_RESERVATION", value: response.data}
                     this.props.dispatch(action)
                     toast.success("La reservation a été transformée en utilisation !", {
                         position: toast.POSITION.BOTTOM_CENTER
@@ -137,22 +137,22 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                 let personne = this.props.personnels.find(per => per.id == reser.personne_reservant.id)
                 var reservationTransformee = {
                     vehicule: reser.vehicule.id,
-                    utilisateur: reser.personne_reservant.id,
-                    entite_utilisateur: personne.entite_affectation ? personne.entite_affectation.id : null,
-                    nature_utilisation: reser.objet_reservation.id,
-                    chauffeur: reser.personne_reservant.id,
+                    utilisateur: reser.personne_reservant ? reser.personne_reservant.id : null,
+                    entite_utilisateur: personne ? personne.entite_affectation ? personne.entite_affectation.id : null : null,
+                    nature_utilisation: reser.objet_reservation ? reser.objet_reservation.id : null,
+                    chauffeur: reser.personne_reservant ? reser.personne_reservant.id : null,
                     date_debut_utilisation: reser.date_debut_reservation,
                     date_fin_utilisation: reser.date_fin_reservation,
                     heure_debut: reser.heure_debut_reservation,
                     heure_de_fin: reser.heure_fin_reservation,
                     kilometrage_compteur_debut: reser.kilometrage_vehicule_a_la_reservation,
                     kilometrage_compteur_retour: reser.kilometrage_prevu > 0 ? parseFloat(reser.kilometrage_vehicule_a_la_reservation) + parseFloat(reser.kilometrage_prevu) : reser.kilometrage_vehicule_a_la_reservation,
-                    kilometres_parcourus: reser.kilometrage_prevu,
+                    kilometres_parcourus: reser.kilometrage_prevu
              }
 
                 this.ajoutUtilisation(reservationTransformee)
 
-                const action = {type: "TRANSFORMATION_RESERVATION_UTILISATION", value: response.data}
+                const action = {type: "EDIT_RESERVATION", value: response.data}
                 this.props.dispatch(action)
                 toast.success("La reservation a été transformée en utilisation !", {
                     position: toast.POSITION.BOTTOM_CENTER
@@ -163,6 +163,8 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
      
 
     onEdit = (id) => {
+        let reservation = this.props.reservations.find(reser => reser.id == id)
+        if (reservation.abandonne || reservation.transforme_en_utilisation) return;
         this.props.history.push('/gestion_du_parc_automobile/modification-reservation-vehicules-general/' + id)
     }
 
@@ -214,7 +216,10 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
             <th>Objet de la réservation</th>
             <th>Trans.Util ?</th>
-            <th>Actions</th>
+            <th>Res.Utili.</th>
+             <th>Départ.Utili.</th>
+             <th>Supprimer</th>
+
 
 
         </tr>
@@ -232,10 +237,7 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
          item={item} />
     )  }   
 
-        
-    
-
-          
+         
         </tbody>
     </table>)
 
@@ -257,7 +259,10 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
             <th>Objet de la réservation</th>
             <th>Trans.Util ?</th>
-            <th>Actions</th>
+            <th>Res.Utili.</th>
+            <th>Départ.Utili.</th>
+            <th>Supprimer</th>
+
 
 
         </tr>
