@@ -70,6 +70,8 @@ import inputStyle from '../../../utils/inputStyle'
           }
       }
 
+      
+
       checkIfReservationIsPossible = (debut, fin) => {
         var vehicule = this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
         var lesReservationsDuVehicule = this.props.reservations.filter(reser => reser.vehicule.id == vehicule.id && !reser.abandonne && !reser.transforme_en_utilisation)

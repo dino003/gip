@@ -87,6 +87,8 @@ class Reservations extends Component {
                         kilometrage_compteur_debut: reser.kilometrage_vehicule_a_la_reservation,
                         kilometrage_compteur_retour: reser.kilometrage_prevu > 0 ? parseFloat(reser.kilometrage_vehicule_a_la_reservation) + parseFloat(reser.kilometrage_prevu) : reser.kilometrage_vehicule_a_la_reservation,
                         kilometres_parcourus: reser.kilometrage_prevu,
+                        lieu_depart : reser.lieu_depart,
+                        destination : reser.destination_ville
                     }
 
                     this.ajoutUtilisation(reservationTransformee)
@@ -152,6 +154,8 @@ class Reservations extends Component {
                     kilometrage_compteur_debut: reser.kilometrage_vehicule_a_la_reservation,
                     kilometrage_compteur_retour: reser.kilometrage_prevu > 0 ? parseFloat(reser.kilometrage_vehicule_a_la_reservation) + parseFloat(reser.kilometrage_prevu) : reser.kilometrage_vehicule_a_la_reservation,
                     kilometres_parcourus: reser.kilometrage_prevu,
+                    lieu_depart : reser.lieu_depart,
+                    destination : reser.destination_ville
                 }
 
                 this.ajoutUtilisation(reservationTransformee)

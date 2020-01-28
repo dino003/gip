@@ -221,27 +221,39 @@ import '../../components/table.css'
     
                 }
 
-                checkIfUtilisationIsPossible = (debut, fin) => {
-                    var vehicule = this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
-                    var lesReservationsDuVehicule = this.props.reservations.filter(reser => reser.vehicule.id == vehicule.id && !reser.abandonne && !reser.transforme_en_utilisation)
-                   
-                    var tab = []
-                    var debut = Date.parse(debut)
-                    var fin = Date.parse(fin)
-            
-                    lesReservationsDuVehicule.map(veh => {
-                        let dateDebutDejaReserve = Date.parse(veh.date_debut_reservation)
-                        let dateFinDejaReserve = Date.parse(veh.date_fin_reservation)
-                        tab.push(debut >= dateDebutDejaReserve && debut <= dateFinDejaReserve)
-                        tab.push(fin >= dateDebutDejaReserve && fin <= dateFinDejaReserve)
-                        tab.push(debut <= dateDebutDejaReserve && fin >= dateFinDejaReserve)
-                    })
-             
-                    return (tab.includes(true)) ? 'Il y\'a déja une réservation pour ce véhicule et pour cette période' : null 
-                  }
 
       resetForm(){
           this.setState(this.base)
+      }
+
+      checkUtilisationisPossible = (date_debut_utilisation, date_fin_utilisation) => {
+        var vehicule = this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
+        var lesUtilisationsDuVehicule = this.props.utilisations.filter(util => util.vehicule.id == vehicule.id )
+       
+        var tab = []
+        var debut = Date.parse(date_debut_utilisation)
+        var fin = Date.parse(date_fin_utilisation)
+
+   /*      lesUtilisationsDuVehicule.map(utilisation => {
+            let dateDebutDejaUtilise = Date.parse(utilisation.date_debut_utilisation)
+            let dateFinDejaUtilise = Date.parse(utilisation.date_fin_utilisation )
+            tab.push(debut >= dateDebutDejaUtilise && debut <= dateFinDejaUtilise)
+            tab.push(fin >= dateDebutDejaUtilise && fin <= dateFinDejaUtilise)
+            tab.push(debut <= dateDebutDejaUtilise && fin >= dateFinDejaUtilise)
+        }) */
+
+        let deja = lesUtilisationsDuVehicule.find(uti => {
+            let dateDebutDejaUtilise = Date.parse(uti.date_debut_utilisation)
+            let dateFinDejaUtilise = Date.parse(uti.date_fin_utilisation )
+            return (debut >= dateDebutDejaUtilise && debut <= dateFinDejaUtilise) ||
+                    (fin >= dateDebutDejaUtilise && fin <= dateFinDejaUtilise) ||
+                    (debut <= dateDebutDejaUtilise && fin >= dateFinDejaUtilise)
+        })
+        return (deja ) ? `Ce véhicule est déja en cours d'utilisation !
+        par : ${$deja.utilisateur ? deja.utilisateur.nom : ''} ` : null 
+
+ 
+       // return (tab.includes(true)) ? 'Ce véhicule est déja en cours d\'utilisation !' : null 
       }
 
 
@@ -249,60 +261,64 @@ import '../../components/table.css'
           e.preventDefault()
           var vehicule = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
           const utili = this.props.personnels.find(per => per.id == this.utilisateur.value)
-
-          if(this.verificationFormulaire() == null){
-              this.setState({isFormSubmitted: true})
-           await axios.post('/api/ajouter_vehicule_utilisation', 
-               {
-                   vehicule: vehicule.id,
-                   vehicule_id: vehicule.id,
-                   utilisateur_id: this.utilisateur.value,
-                   chauffeur_id: this.chauffeur.value,
-                   utilisatation_normal_ou_pret: this.utilisatation_normal_ou_pret.value,
-                   utilisateur: this.utilisateur.value,
-                   entite_utilisateur: utili.entite_affectation ? utili.entite_affectation.id : null,
-                   entite_utilisateur_id: utili.entite_affectation ? utili.entite_affectation.id : null,
-                   nature_utilisation: this.nature_utilisation.value,
-                   chauffeur: this.chauffeur.value,
-                   date_debut_utilisation: this.date_debut_utilisation.value,
-                   date_fin_utilisation: this.date_fin_utilisation.value,
-                   heure_debut: this.heure_debut.value,
-                   heure_de_fin: this.heure_de_fin.value,
-                   kilometrage_compteur_debut: this.kilometrage_compteur_debut.value,
-                   kilometrage_compteur_retour: this.kilometrage_compteur_retour.value,
-                   kilometres_parcourus: this.kilometres_parcourus.value,
-                   lieu_depart: this.lieu_depart.value,
-                   destination: this.destination.value,   
-
+            if(this.checkUtilisationisPossible(this.date_debut_utilisation.value, this.date_fin_utilisation.value) == null){
+                if(this.verificationFormulaire() == null){
+                    this.setState({isFormSubmitted: true})
+                 await axios.post('/api/ajouter_vehicule_utilisation', 
+                     {
+                         vehicule: vehicule.id,
+                         vehicule_id: vehicule.id,
+                         utilisateur_id: this.utilisateur.value,
+                         chauffeur_id: this.chauffeur.value,
+                         utilisatation_normal_ou_pret: this.utilisatation_normal_ou_pret.value,
+                         utilisateur: this.utilisateur.value,
+                         entite_utilisateur: utili.entite_affectation ? utili.entite_affectation.id : null,
+                         entite_utilisateur_id: utili.entite_affectation ? utili.entite_affectation.id : null,
+                         nature_utilisation: this.nature_utilisation.value,
+                         chauffeur: this.chauffeur.value,
+                         date_debut_utilisation: this.date_debut_utilisation.value,
+                         date_fin_utilisation: this.date_fin_utilisation.value,
+                         heure_debut: this.heure_debut.value,
+                         heure_de_fin: this.heure_de_fin.value,
+                         kilometrage_compteur_debut: this.kilometrage_compteur_debut.value,
+                         kilometrage_compteur_retour: this.kilometrage_compteur_retour.value,
+                         kilometres_parcourus: this.kilometres_parcourus.value,
+                         lieu_depart: this.lieu_depart.value,
+                         destination: this.destination.value,   
+      
+                  }
+                  ).then(response => {
+                      const action = {type: "ADD_UTILISATION", value: response.data.utilisation}
+                      this.props.dispatch(action)
+                     
+                      const action2 = {type: "EDIT_VEHICULE", value: response.data.vehicule}
+                      this.props.dispatch(action2)
+                     
+                      const action3 = {type: "EDIT_SELECTED", value: response.data.vehicule}
+                      this.props.dispatch(action3)
+      
+                      this.setState({isFormSubmitted: false})
+      
+                      this.toggleVisible();
+                  })
+                   .catch(error => {
+                      this.setState({isFormSubmitted: false})
+                      window.alert('Ajout à échoué ');
+      
+                      console.log(error)
+                   } );
+              
+      
+                }else{
+                    //console.log(this.verificationFormulaire())
+                    toast.error(this.verificationFormulaire(), {
+                      position: toast.POSITION.BOTTOM_CENTER
+                    });
+                }
+            }else{
+                window.alert(  this.checkUtilisationisPossible(this.date_debut_utilisation.value, this.date_fin_utilisation.value) )
             }
-            ).then(response => {
-                const action = {type: "ADD_UTILISATION", value: response.data.utilisation}
-                this.props.dispatch(action)
-               
-                const action2 = {type: "EDIT_VEHICULE", value: response.data.vehicule}
-                this.props.dispatch(action2)
-               
-                const action3 = {type: "EDIT_SELECTED", value: response.data.vehicule}
-                this.props.dispatch(action3)
-
-                this.setState({isFormSubmitted: false})
-
-                this.toggleVisible();
-            })
-             .catch(error => {
-                this.setState({isFormSubmitted: false})
-                window.alert('Ajout à échoué ');
-
-                console.log(error)
-             } );
         
-
-          }else{
-              //console.log(this.verificationFormulaire())
-              toast.error(this.verificationFormulaire(), {
-                position: toast.POSITION.BOTTOM_CENTER
-              });
-          }
       }
 
     
