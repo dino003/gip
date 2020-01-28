@@ -110,8 +110,15 @@ class Reservations extends Component {
        // let vehicule = this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
 
         axios.post('/api/ajouter_vehicule_utilisation', objet).then(response => {
-            const action = { type: "ADD_UTILISATION", value: response.data }
+            const action = { type: "ADD_UTILISATION", value: response.data.utilisation }
             this.props.dispatch(action)
+
+            const action2 = {type: "EDIT_VEHICULE", value: response.data.vehicule}
+            this.props.dispatch(action2)
+           
+            const action3 = {type: "EDIT_SELECTED", value: response.data.vehicule}
+            this.props.dispatch(action3)
+
 
         })
     }
