@@ -112,7 +112,7 @@
                                         <li><a href="index3.html">Home 3</a></li>
                                     </ul>
                                 </li> -->
-                                <li><a class="active" href="#">Acceuil</a></li>
+                                <li><a class="active" href="#">Accueil</a></li>
                                 <li><a href="#service-area">Services</a></li>
                                 <li><a href="#pricing-area">Nos Offres</a></li>
                                 @if (Route::has('login'))

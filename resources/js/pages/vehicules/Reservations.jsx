@@ -70,7 +70,13 @@ class Reservations extends Component {
                     let personne = this.props.personnels.find(per => per.id == reser.personne_reservant.id) || null
                     var reservationTransformee = {
                         vehicule: reser.vehicule.id,
+                        vehicule_id: reser.vehicule.id,
+
+                        utilisation_normal_ou_pret: "Utilisation normale",
+
+                        utilisateur_id: reser.personne_reservant ? reser.personne_reservant.id : null,
                         utilisateur: reser.personne_reservant ? reser.personne_reservant.id : null,
+                        entite_utilisateur_id: personne ? personne.entite_affectation ? personne.entite_affectation.id : null : null,
                         entite_utilisateur: personne ? personne.entite_affectation ? personne.entite_affectation.id : null : null,
                         nature_utilisation: reser.objet_reservation ? reser.objet_reservation.id : null,
                         chauffeur: reser.personne_reservant ? reser.personne_reservant.id : null,
@@ -123,7 +129,12 @@ class Reservations extends Component {
                 let personne = this.props.personnels.find(per => per.id == reser.personne_reservant.id) || null
                 var reservationTransformee = {
                     vehicule: reser.vehicule.id,
+                    vehicule_id: reser.vehicule.id,
+                    utilisation_normal_ou_pret: "Utilisation normale",
                     utilisateur: reser.personne_reservant ? reser.personne_reservant.id : null,
+                    utilisateur_id: reser.personne_reservant ? reser.personne_reservant.id : null,
+                    entite_utilisateur_id: personne ? personne.entite_affectation ? personne.entite_affectation.id : null : null,
+
                     entite_utilisateur: personne ? personne.entite_affectation ? personne.entite_affectation.id : null : null,
                     nature_utilisation: reser.objet_reservation ? reser.objet_reservation.id : null,
                     chauffeur: reser.personne_reservant ? reser.personne_reservant.id : null,
