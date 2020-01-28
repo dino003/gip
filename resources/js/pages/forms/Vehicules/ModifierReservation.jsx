@@ -80,8 +80,10 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
       }
 
       checkIfReservationIsPossible = (debut, fin) => {
+        const objetEdit = this.props.reservations.find(reser => reser.id == this.props.match.params.reservation_id)
+
         var vehicule = this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
-        var lesReservationsDuVehicule = this.props.reservations.filter(reser => reser.vehicule.id == vehicule.id && reser.id !== this.state.objetEdit.id && !reser.abandonne && !reser.transforme_en_utilisation)
+        var lesReservationsDuVehicule = this.props.reservations.filter(reser => reser.vehicule.id == vehicule.id && reser.id !== objetEdit.id && !reser.abandonne && !reser.transforme_en_utilisation)
        
         var tab = []
         var debut = Date.parse(debut)
