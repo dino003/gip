@@ -142,6 +142,9 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
            
             const action3 = {type: "EDIT_SELECTED", value: response.data.vehicule}
             this.props.dispatch(action3)
+            this.setState({
+                reservations_visible_actuelement: this.props.reservations
+            })
 
 
         })
