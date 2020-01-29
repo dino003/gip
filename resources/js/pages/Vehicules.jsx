@@ -200,18 +200,21 @@ class Vehicules extends Component {
 
 
                                     </span> {'  '}
-                                    {this.props.vehicules.length > 2 ?
-
-                                        <TableHeader
-                                            searchChange={this.searchChange}
-                                            text_recherche="Recherchez par Immatriculation"
-                                            changeState={this.changeState}
-                                        /> : null}
-                                    {'  '}
+                             
 
                                     {this.props.vehiculeSeleted ? <MatriculeInput vehicule={this.props.vehiculeSeleted} text_attente="Aucune sélection" /> : null}
 
                                 </h5>
+                                <div className="row">
+                                {this.props.vehicules.length > 2 ?
+
+                                    <TableHeader
+                                        searchChange={this.searchChange}
+                                        text_recherche="Recherchez par Immatriculation"
+                                        changeState={this.changeState}
+                                    /> : null}
+                                    {'  '}
+                                </div>
                                 <br />
                                 {/* <div className="table-responsive"> */}
                                 {/* {this.props.loading ? this.renderLoading() : 
