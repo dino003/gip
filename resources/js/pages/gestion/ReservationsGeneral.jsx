@@ -76,7 +76,14 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                     let personne = this.props.personnels.find(per => per.id == reser.personne_reservant.id)
                     var reservationTransformee = {
                         vehicule: reser.vehicule.id,
+                        vehicule_id: reser.vehicule.id,
+
+                        utilisatation_normal_ou_pret: "Utilisation normale",
+                        utilisateur_id: reser.personne_reservant ? reser.personne_reservant.id : null,
+
                         utilisateur: reser.personne_reservant ? reser.personne_reservant.id : null,
+                        entite_utilisateur_id: personne ? personne.entite_affectation ? personne.entite_affectation.id : null : null,
+
                         entite_utilisateur: personne ? personne.entite_affectation ? personne.entite_affectation.id : null : null,
                         nature_utilisation: reser.objet_reservation ? reser.objet_reservation.id : null,
                         chauffeur: reser.personne_reservant ? reser.personne_reservant.id : null,
@@ -86,7 +93,9 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                         heure_de_fin: reser.heure_fin_reservation,
                         kilometrage_compteur_debut: reser.kilometrage_vehicule_a_la_reservation,
                         kilometrage_compteur_retour: reser.kilometrage_prevu > 0 ? parseFloat(reser.kilometrage_vehicule_a_la_reservation) + parseFloat(reser.kilometrage_prevu) : reser.kilometrage_vehicule_a_la_reservation,
-                        kilometres_parcourus: reser.kilometrage_prevu
+                        kilometres_parcourus: reser.kilometrage_prevu,
+                        lieu_depart : reser.lieu_depart,
+                        destination : reser.destination_ville
                  }
     
                     this.ajoutUtilisation(reservationTransformee)
@@ -107,7 +116,7 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
         }
 
         ajoutUtilisation = objet => {
-            let vehicule = this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
+       /*      let vehicule = this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
 
             axios.post('/api/ajouter_vehicule_utilisation', objet).then(response => {
                 const action = {type: "ADD_UTILISATION", value: response.data}
@@ -121,7 +130,21 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                 const action3 = {type: "EDIT_SELECTED", value: vehicule}
                 this.props.dispatch(action3)
 
-            })
+            }) */
+
+
+        axios.post('/api/ajouter_vehicule_utilisation', objet).then(response => {
+            const action = { type: "ADD_UTILISATION", value: response.data.utilisation }
+            this.props.dispatch(action)
+
+            const action2 = {type: "EDIT_VEHICULE", value: response.data.vehicule}
+            this.props.dispatch(action2)
+           
+            const action3 = {type: "EDIT_SELECTED", value: response.data.vehicule}
+            this.props.dispatch(action3)
+
+
+        })
         }
 
         transformationDepartReservation = id => {
@@ -137,6 +160,13 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                 let personne = this.props.personnels.find(per => per.id == reser.personne_reservant.id)
                 var reservationTransformee = {
                     vehicule: reser.vehicule.id,
+
+                    vehicule_id: reser.vehicule.id,
+                    utilisatation_normal_ou_pret: "Utilisation normale",
+                    utilisateur_id: reser.personne_reservant ? reser.personne_reservant.id : null,
+
+                    entite_utilisateur_id: personne ? personne.entite_affectation ? personne.entite_affectation.id : null : null,
+
                     utilisateur: reser.personne_reservant ? reser.personne_reservant.id : null,
                     entite_utilisateur: personne ? personne.entite_affectation ? personne.entite_affectation.id : null : null,
                     nature_utilisation: reser.objet_reservation ? reser.objet_reservation.id : null,
@@ -147,7 +177,9 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                     heure_de_fin: reser.heure_fin_reservation,
                     kilometrage_compteur_debut: reser.kilometrage_vehicule_a_la_reservation,
                     kilometrage_compteur_retour: reser.kilometrage_prevu > 0 ? parseFloat(reser.kilometrage_vehicule_a_la_reservation) + parseFloat(reser.kilometrage_prevu) : reser.kilometrage_vehicule_a_la_reservation,
-                    kilometres_parcourus: reser.kilometrage_prevu
+                    kilometres_parcourus: reser.kilometrage_prevu,
+                    lieu_depart : reser.lieu_depart,
+                    destination : reser.destination_ville
              }
 
                 this.ajoutUtilisation(reservationTransformee)
