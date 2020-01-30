@@ -113,7 +113,7 @@ class Sidebar extends Component {
                                                     }}
                                                 >
                                                     <i className="metismenu-icon pe-7s-menu"></i>
-                                                    Utilisations
+                                                    Sorties de véhicules
                                                     <i className="metismenu-state-icon "></i>
                                                 </NavLink>
                                             ) : (
@@ -122,7 +122,7 @@ class Sidebar extends Component {
                                                     title="Le lien est désactivé, veuillez sélectionner un véhicule"
                                                 >
                                                     <i className="metismenu-icon pe-7s-home"></i>
-                                                    Utilisations
+                                                    Sorties de véhicules
                                                     <i className="metismenu-state-icon "></i>
                                                 </a>
                                             )}
@@ -382,6 +382,31 @@ class Sidebar extends Component {
                                     }
                                 </React.Fragment> : null
                             }
+
+                                        <li>
+                                            {this.props.vehicules.length > 1 ? (
+                                                <NavLink
+                                                    exact
+                                                    activeStyle={active}
+                                                    to={{
+                                                        pathname: `/gestion_du_parc_automobile/parc/filtre_vehicules`
+                                                    }}
+                                                >
+                                                    <i className="metismenu-icon pe-7s-rocket"></i>
+                                                    Filtrer les Véhicules
+                                                    <i className="metismenu-state-icon "></i>
+                                                </NavLink>
+                                            ) : (
+                                                <a
+                                                    disabled
+                                                    title="Le lien est désactivé car il n'ya pas suffisamment de véhicules"
+                                                >
+                                                    <i className="metismenu-icon pe-7s-rocket"></i>
+                                                    Filtrer les Véhicules
+                                                    <i className="metismenu-state-icon "></i>
+                                                </a>
+                                            )}
+                                        </li> 
                         </ul>
                     </div>
                 </div>
@@ -395,8 +420,10 @@ const mapStateToProps = state => {
         vehiculeSeleted: state.vehiculeSeleted.vehicule,
         param_generaux_modules: state.param_generaux_modules.items,
         param_generaux_reservation_ordre:
-            state.param_generaux_reservation_ordre.items,
-        theme: state.theme.items
+        state.param_generaux_reservation_ordre.items,
+        theme: state.theme.items,
+        vehicules: state.vehicules.items
+
     };
 };
 

@@ -108,6 +108,7 @@ import ContratAssuranceVehicule from '../pages/vehicules/ContratAssuranceVehicul
 import Tracabilites from '../pages/vehicules/Tracabilites';
 import ModifierUtilisationVehicule from '../pages/forms/Vehicules/ModifierUtilisationVehicule';
 import Dashboard from '../pages/Dashboard.jsx';
+import FiltreVehicules from '../pages/FiltreVehicules';
 
 
 
@@ -221,6 +222,10 @@ const NavBack = () => (
   <Master path="/gestion_du_parc_automobile/parc/creation-depense-recettes-vehicules/:vehicule_id/:imma" component={AjouterDepenseRecette} />
 
   <Master path="/gestion_du_parc_automobile/parc/modification-depense-recettes-vehicules/:vehicule_id/:imma/dr/:depense_recette_id" component={ModifierDepenseRecette} />
+  
+  <Master path="/gestion_du_parc_automobile/parc/filtre_vehicules" component={FiltreVehicules} />
+
+  
   <MasterGestion path="/gestion_du_parc_automobile/parc/budgets-entites" component={BudgetEntites} />
 
   <MasterGestion path="/gestion_du_parc_automobile/parc/creation-budget-entites" component={AjouterBudgetEntite} />

@@ -8,11 +8,6 @@ import ReservationItem from '../../components/vehicules/ReservationItem'
 
 import Select from 'react-select'
 
-
-
-
-
-
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import today from '../../utils/today';
 
@@ -38,6 +33,7 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
         this.state = {
             reservations_visible_actuelement: this.props.reservations,
+            vehicule_selectionne: null
 
         }   
     }
@@ -323,7 +319,7 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
         let obj = {};
         obj[name] = value;
         this.setState(obj, () => {
-            let reservations = this.props.reservations.filter(reser => reser.vehicule.id == this.state.vehicule_selectionne.id)
+            let reservations =  this.state.vehicule_selectionne ? this.props.reservations.filter(reser => reser.vehicule.id == this.state.vehicule_selectionne.id) : this.props.reservations
             this.setState({
                 reservations_visible_actuelement: reservations
             })
@@ -333,13 +329,8 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
     
 
     render() {
-      //  console.log(new Date(this.props.reservations[0].date_fin_reservation + this.props.reservations[0].heure_fin_reservation))
-        // if(this.props.vehiculeSeleted == undefined && this.props.vehicules.length){
-        //     const action = {type: "EDIT_SELECTED", value:  this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}
-        //       this.props.dispatch(action)
-        //     }
-       // const vehiculeselect = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
-        const reservations = this.props.reservations
+   
+       const reservations = this.props.reservations
 
        if(this.props.vehicules.length){
         return (
@@ -376,7 +367,8 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                                     
                                         <Select
                                         name="vehicule_selectionne"
-                                        placeholder="Selectionnez ou saisissez un Véhicule"
+                                        isClearable
+                                        placeholder="Selectionnez ou saisissez "
                                         noOptionsMessage={() => "Aucun Véhicule  trouvé"}
                                         options={this.props.vehicules}
                                         getOptionLabel={option => option.immatriculation}
