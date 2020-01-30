@@ -34,9 +34,9 @@ class Vehicules extends Component {
     //     this.props.dispatch(action)    }
 
 
-    searchChange(search) {
+    searchChange() {
 
-        let vehicules_visibles_maintenant = this.props.vehicules.filter(vehicule => vehicule.immatriculation.includes(search.toLowerCase()))
+        let vehicules_visibles_maintenant = this.props.vehicules.filter(vehicule => vehicule.immatriculation.toLowerCase().includes(this.search.value.toLowerCase()))
         this.setState({
             vehicules_visibles_actuelement: vehicules_visibles_maintenant
         })
@@ -95,7 +95,7 @@ class Vehicules extends Component {
 
     renderEmpty() {
         return <span style={{ textAlign: 'center', color: 'red' }}>
-            Aucune donnée enregistrée !
+            Aucune véhicule trouvé !
         </span>
     }
 
@@ -180,7 +180,7 @@ class Vehicules extends Component {
                         <div className="main-card mb-3 card" style={{width: '1000px'}}>
 
                             <div className="card-body" >
-                                <h5 className="card-title">Gestion des véhicules <span >{this.props.vehicules.length ? `: ${this.props.vehicules.length} Véhicules` : null}</span>
+                                <h5 className="card-title">Gestion des véhicules <span >{ `: ${this.state.vehicules_visibles_actuelement.length} Véhicules`}</span>
 
 
 
@@ -188,14 +188,16 @@ class Vehicules extends Component {
 
 
 
-                                        {this.props.vehicules.length ?
+                                        {this.state.vehicules_visibles_actuelement.length ?
                                             <ReactHTMLTableToExcel
                                                 id="test-table-xls-button"
                                                 className="mb-2 mr-2 btn-transition btn btn-outline-success"
                                                 table="table-to-xls"
                                                 filename="Liste des véhicules"
                                                 sheet="Véhicules"
-                                                buttonText="Ecran -> Liste" /> : null}
+                                                buttonText="Ecran -> Liste" /> : <button disabled className="mb-2 mr-2 btn-transition btn btn-outline-success">
+                                                Ecran -> Liste
+                                                </button>}
 
 
 
@@ -205,26 +207,28 @@ class Vehicules extends Component {
                                     {this.props.vehiculeSeleted ? <MatriculeInput vehicule={this.props.vehiculeSeleted} text_attente="Aucune sélection" /> : null}
 
                                 </h5>
-                                <div className="row">
-                                            <span className="pull-right">
-                                            {this.props.vehicules.length > 2 ?
-
-                                            <TableHeader
-                                                searchChange={this.searchChange}
-                                                text_recherche="Recherchez par Immatriculation"
-                                                changeState={this.changeState}
-                                            /> : null}
-                                            {'  '}
-                                            </span>
-                                </div>
                                 <br />
-                                {/* <div className="table-responsive"> */}
-                                {/* {this.props.loading ? this.renderLoading() : 
-                            !this.props.vehicules.length ? this.renderEmpty() : this.renderList()} */}
+                                {this.props.vehicules.length > 2 ?
+
+                                <div className="row">
+                                    <div className="col-md-3"></div>
+                                    <div className="col-md-6">
+                                    
+                                  <input
+                                     ref={search => this.search = search}
+                                  onChange={this.searchChange}
+                                 type="text"  className="form-control pull-right" placeholder="Rechercher par Immatriculation" />
+               
+                                    </div>
+                                    <div className="col-md-3"></div>
+                                </div>
+                                : null}
+                                <br />
+                              
                                 <div className="view">
                                     <div className="wrapper">
                                     {this.props.loading ? this.renderLoading() : 
-                            !this.props.vehicules.length ? this.renderEmpty() : this.renderList()}  
+                            !this.state.vehicules_visibles_actuelement.length ? this.renderEmpty() : this.renderList()}  
                                     </div>
                                 </div>
 

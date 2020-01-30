@@ -92,7 +92,7 @@ class FiltreVehicules extends Component {
 
     renderEmpty() {
         return <span style={{ textAlign: 'center', color: 'red' }}>
-            Aucune donnée enregistrée !
+            Aucun véhicule trouvé !
         </span>
     }
 
@@ -187,7 +187,7 @@ class FiltreVehicules extends Component {
                         <div className="main-card mb-3 card" style={{width: '1000px'}}>
 
                             <div className="card-body" >
-                                <h5 className="card-title">Application de filtres <span >{this.state.vehicules_visibles_actuelement.length ? `: ${this.state.vehicules_visibles_actuelement.length} Véhicules` : null}</span>
+                                <h5 className="card-title">Application de filtres <span >{ `: ${this.state.vehicules_visibles_actuelement.length} Véhicules` }</span>
 
 
 
@@ -197,12 +197,16 @@ class FiltreVehicules extends Component {
 
                                         {this.state.vehicules_visibles_actuelement.length ?
                                             <ReactHTMLTableToExcel
+
                                                 id="test-table-xls-button"
                                                 className="mb-2 mr-2 btn-transition btn btn-outline-success"
                                                 table="table-to-xls"
                                                 filename="Liste des véhicules"
                                                 sheet="Véhicules"
-                                                buttonText="Ecran -> Liste" /> : null}
+                                                buttonText="Ecran -> Liste" /> : 
+                                                <button disabled className="mb-2 mr-2 btn-transition btn btn-outline-success">
+                                                    Ecran -> Liste
+                                                    </button>}
 
 
 
@@ -373,7 +377,7 @@ class FiltreVehicules extends Component {
                                 <div className="view">
                                     <div className="wrapper">
                                     {this.props.loading ? this.renderLoading() : 
-                            !this.props.vehicules.length ? this.renderEmpty() : this.renderList()}  
+                            !this.state.vehicules_visibles_actuelement.length ? this.renderEmpty() : this.renderList()}  
                                     </div>
                                 </div>
 

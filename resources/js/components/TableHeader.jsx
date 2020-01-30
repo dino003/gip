@@ -49,7 +49,8 @@ export default class TableHeader extends Component {
                 ref={search => this.search = search}
                 onChange={this.handleInputChange}
                  type="text" className="form-control pull-right" placeholder={text_recherche ? text_recherche : 'Taper pour rechercher'} />
-                }
+               
+               }
            </React.Fragment>
         
         )
