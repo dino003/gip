@@ -180,7 +180,7 @@ class Vehicules extends Component {
                         <div className="main-card mb-3 card" style={{width: '1000px'}}>
 
                             <div className="card-body" >
-                                <h5 className="card-title">Gestion des véhicules <span >{ `: ${this.state.vehicules_visibles_actuelement.length} Véhicules`}</span>
+                                <h5 className="card-title">Gestion des véhicules <span >{ `: ${this.state.vehicules_visibles_actuelement.length} Véhicule${this.state.vehicules_visibles_actuelement.length == 0 || this.state.vehicules_visibles_actuelement.length == 1 ? '' : 's'}`}</span>
 
 
 
