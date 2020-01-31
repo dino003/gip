@@ -65,6 +65,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
             return "Le tiers est obligatoire !"
         }else if(this.libelle_complementaire.value == '' ){
             return "Le libéllé est obligatoire !"
+        }else if(this.cout_ttc_intervention.value == '' ){
+            return "Vous n'avez pas saisi le coût de l'intervention !"
         } else{
               return null
           }
