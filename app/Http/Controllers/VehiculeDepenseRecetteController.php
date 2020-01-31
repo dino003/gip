@@ -21,7 +21,7 @@ class VehiculeDepenseRecetteController extends Controller
     public function index()
     {
         $depensesRecettes = VehiculeDepenseRecette::with(['vehicule.entite_physique', 'nature', 'tiers'])
-                                                ->get();
+                                                    ->orderBy('id', 'desc')->get();
 
         return response()->json($depensesRecettes);    
     }

@@ -22,7 +22,7 @@ class StockEntreeController extends Controller
      */
     public function index()
     {
-        $entrees = StockEntree::with(['article', 'fournisseur'])->get();
+        $entrees = StockEntree::with(['article', 'fournisseur'])->orderBy('id', 'desc')->get();
 
         return response()->json($entrees);
     }

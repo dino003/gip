@@ -24,7 +24,7 @@ class VehiculeReservationController extends Controller
         'personne_reservant', 'objet_reservation'])
        // ->with('utilisateur.entite_affectation')
        //->where('transforme_en_utilisation', 0)
-       ->get();
+       ->orderBy('id', 'desc')->get();
 
         return response()->json($reservation_par_vehicules);
     }

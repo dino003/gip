@@ -107,8 +107,6 @@ class InterventionVehiculeEtat extends Component {
        
         window.open(doc.output('bloburl'), '_blank')
 
-
-
     }
 
 

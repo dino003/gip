@@ -21,7 +21,7 @@ class VehiculeInterventionController extends Controller
     public function index()
     {
         $interventions_par_vehicules = VehiculeIntervention::with(['vehicule', 'tiers', 'nature_intervention'])
-                                                            ->get();
+                                                            ->orderBy('id', 'desc')->get();
 
         return response()->json($interventions_par_vehicules);
     }

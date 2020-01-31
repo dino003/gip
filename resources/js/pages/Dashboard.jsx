@@ -70,7 +70,8 @@ export default class Dashboard extends Component {
                                 </div>
                             </div>
                         </div>    </div>
-                </div>            <div className="">
+                </div>           
+                 <div className="">
                     <div className="row">
                         <div className="col-lg-6 col-xl-4">
                             <div className="card mb-3 widget-content">

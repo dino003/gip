@@ -21,8 +21,7 @@ class VehiculeBudgetDepenseRecetteController extends Controller
     public function index()
     {
         $budgetVehicules = VehiculeBudgetDepenseRecette::with(['vehicule', 'nature_ligne_budget'])
-        ->get();
-
+        ->orderBy('id', 'desc')->get();
         return response()->json($budgetVehicules);    
     }
 

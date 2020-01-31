@@ -17,6 +17,7 @@ import { Container, Button, Link } from 'react-floating-action-button'
 import moment from 'moment'
 import '../../components/table.css'
 import Select from 'react-select'
+import { colourStyles } from '../../utils/Repository';
 
 
 
@@ -34,7 +35,8 @@ import Select from 'react-select'
             editIndex: undefined,
             utilisations: [],
             isFormSubmitted: false,
-            utilisations_visible_actuelement: this.props.utilisations
+            utilisations_visible_actuelement: this.props.utilisations,
+            vehicule: null
 
         }   
     }
@@ -118,8 +120,7 @@ import Select from 'react-select'
     }
 
     onEdit = ( id) => {
-       const vehic = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(vehicule => vehicule.id == this.props.match.params.vehicule_id)
-       this.props.history.push('/gestion_du_parc_automobile/parc/modification-utilisation-vehicule/' + vehic.id + '/' + vehic.immatriculation + '/utilisation/' + id)
+       this.props.history.push('/gestion_du_parc_automobile/parc/modification-utilisation-vehicule-all/utilisation/' + id)
 
     }
 
@@ -153,7 +154,9 @@ import Select from 'react-select'
             return "Le nombre de kilomètre parcourus ne peut être négatif !"
         }else if(this.nature_utilisation.value == undefined || !this.nature_utilisation.value.length){
           return "La nature d'utilisation est obligatoire !"
-        } else if(this.utilisatation_normal_ou_pret.value == undefined || !this.utilisatation_normal_ou_pret.value.length){
+        }else if(this.state.vehicule == null){
+            return "Vous n'avez pas sélectionné de véhicule !"
+          } else if(this.utilisatation_normal_ou_pret.value == undefined || !this.utilisatation_normal_ou_pret.value.length){
             return "Le type d'utilisation est obligatoire !"
           }else if(this.utilisateur.value == undefined || !this.utilisateur.value.length){
             return "L'utilisateur est obligatoire !"
@@ -186,9 +189,10 @@ import Select from 'react-select'
               this.setState({
                 [name]: value
               }, () => {
-                  //alert('ok')
-                  const vehiculeSelect = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
-                  
+                //  const vehiculeSelect = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
+                  const vehiculeSelect = this.state.vehicule
+                  if(vehiculeSelect == null) return;
+
                   if(vehiculeSelect.kilometrage_acquisition == null){
 
                     this.kilometres_parcourus.value = parseInt(this.kilometrage_compteur_retour.value) 
@@ -197,9 +201,7 @@ import Select from 'react-select'
                     this.kilometres_parcourus.value = parseInt(this.kilometrage_compteur_retour.value) - parseInt(vehiculeSelect.kilometrage_acquisition)
 
                   }
-               // console.log(this.kilometrage_compteur_debut.value)
-              //  this.kilometrage_compteur_retour.value = parseFloat(this.kilometres_parcourus.value) + parseFloat(this.kilometrage_compteur_debut.value)
-
+      
               });
 
             }
@@ -227,10 +229,9 @@ import Select from 'react-select'
       }
 
       checkUtilisationisPossible = (date_debut_utilisation, date_fin_utilisation) => {
-        var vehicule = this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
+        var vehicule = this.props.vehicules.find(veh => veh.id == this.state.vehicule.id)
         var lesUtilisationsDuVehicule = this.props.utilisations.filter(util => util.vehicule.id == vehicule.id )
        
-        var tab = []
         var debut = Date.parse(date_debut_utilisation)
         var fin = Date.parse(date_fin_utilisation)
 
@@ -249,8 +250,10 @@ import Select from 'react-select'
                     (fin >= dateDebutDejaUtilise && fin <= dateFinDejaUtilise) ||
                     (debut <= dateDebutDejaUtilise && fin >= dateFinDejaUtilise)
         })
-        return (deja ) ? `Ce véhicule est en cours d'utilisation pour cette période  !
-        par : ${deja.utilisateur ? deja.utilisateur.nom : ''} ` : null 
+        return (deja ) ? `Ce véhicule est en cours d'utilisation.
+        sorti le : ${moment(deja.date_debut_utilisation).format('DD/MM/YYYY')} à ${deja.heure_debut.slice(0, 5)} *** Retour prévue le : ${moment(deja.date_fin_utilisation).format('DD/MM/YYYY')} à ${deja.heure_de_fin.slice(0, 5)} 
+        Utilisateur : ${deja.utilisateur ? !deja.utilisateur.default ? deja.utilisateur.prenom + ' ' + deja.utilisateur.prenom : 'PERSONNE PAR DEFAUT' : ''} ` : null 
+l 
 
  
        // return (tab.includes(true)) ? 'Ce véhicule est déja en cours d\'utilisation !' : null 
@@ -260,65 +263,72 @@ import Select from 'react-select'
 
       enregistrerUtilisation = async (e) => {
           e.preventDefault()
-          var vehicule = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
           const utili = this.props.personnels.find(per => per.id == this.utilisateur.value)
-            if(this.checkUtilisationisPossible(this.date_debut_utilisation.value, this.date_fin_utilisation.value) == null){
+       
+            
                 if(this.verificationFormulaire() == null){
-                    this.setState({isFormSubmitted: true})
-                 await axios.post('/api/ajouter_vehicule_utilisation', 
-                     {
-                         vehicule: vehicule.id,
-                         vehicule_id: vehicule.id,
-                         utilisateur_id: this.utilisateur.value,
-                         chauffeur_id: this.chauffeur.value,
-                         utilisatation_normal_ou_pret: this.utilisatation_normal_ou_pret.value,
-                         utilisateur: this.utilisateur.value,
-                         entite_utilisateur: utili.entite_affectation ? utili.entite_affectation.id : null,
-                         entite_utilisateur_id: utili.entite_affectation ? utili.entite_affectation.id : null,
-                         nature_utilisation: this.nature_utilisation.value,
-                         chauffeur: this.chauffeur.value,
-                         date_debut_utilisation: this.date_debut_utilisation.value,
-                         date_fin_utilisation: this.date_fin_utilisation.value,
-                         heure_debut: this.heure_debut.value,
-                         heure_de_fin: this.heure_de_fin.value,
-                         kilometrage_compteur_debut: this.kilometrage_compteur_debut.value,
-                         kilometrage_compteur_retour: this.kilometrage_compteur_retour.value,
-                         kilometres_parcourus: this.kilometres_parcourus.value,
-                         lieu_depart: this.lieu_depart.value,
-                         destination: this.destination.value,   
-      
-                  }
-                  ).then(response => {
-                      const action = {type: "ADD_UTILISATION", value: response.data.utilisation}
-                      this.props.dispatch(action)
-                     
-                      const action2 = {type: "EDIT_VEHICULE", value: response.data.vehicule}
-                      this.props.dispatch(action2)
-                     
-                      const action3 = {type: "EDIT_SELECTED", value: response.data.vehicule}
-                      this.props.dispatch(action3)
-      
-                      this.setState({isFormSubmitted: false})
-      
-                      this.toggleVisible();
-                  })
-                   .catch(error => {
-                      this.setState({isFormSubmitted: false})
-                      window.alert('Ajout à échoué ');
-      
-                      console.log(error)
-                   } );
-              
-      
+                    if(this.checkUtilisationisPossible(this.date_debut_utilisation.value, this.date_fin_utilisation.value) == null){
+                        this.setState({isFormSubmitted: true})
+                        await axios.post('/api/ajouter_vehicule_utilisation', 
+                            {
+                                vehicule: this.state.vehicule.id,
+                                vehicule_id: this.state.vehicule.id,
+                                utilisateur_id: this.utilisateur.value,
+                                chauffeur_id: this.chauffeur.value,
+                                utilisatation_normal_ou_pret: this.utilisatation_normal_ou_pret.value,
+                                utilisateur: this.utilisateur.value,
+                                entite_utilisateur: utili.entite_affectation ? utili.entite_affectation.id : null,
+                                entite_utilisateur_id: utili.entite_affectation ? utili.entite_affectation.id : null,
+                                nature_utilisation: this.nature_utilisation.value,
+                                chauffeur: this.chauffeur.value,
+                                date_debut_utilisation: this.date_debut_utilisation.value,
+                                date_fin_utilisation: this.date_fin_utilisation.value,
+                                heure_debut: this.heure_debut.value,
+                                heure_de_fin: this.heure_de_fin.value,
+                                kilometrage_compteur_debut: this.kilometrage_compteur_debut.value,
+                                kilometrage_compteur_retour: this.kilometrage_compteur_retour.value,
+                                kilometres_parcourus: this.kilometres_parcourus.value,
+                                lieu_depart: this.lieu_depart.value,
+                                destination: this.destination.value,   
+             
+                         }
+                         ).then(response => {
+                             const action = {type: "ADD_UTILISATION", value: response.data.utilisation}
+                             this.props.dispatch(action)
+                            
+                             const action2 = {type: "EDIT_VEHICULE", value: response.data.vehicule}
+                             this.props.dispatch(action2)
+                            
+                             const action3 = {type: "EDIT_SELECTED", value: response.data.vehicule}
+                             this.props.dispatch(action3)
+             
+                             this.setState({
+                                 isFormSubmitted: false,
+                                 utilisations_visible_actuelement: this.props.utilisations
+                                 
+                                })
+
+             
+                             this.toggleVisible();
+                         })
+                          .catch(error => {
+                             this.setState({isFormSubmitted: false})
+                             window.alert('Ajout à échoué ');
+             
+                             console.log(error)
+                          } );
+                    }else{
+                         window.alert(  this.checkUtilisationisPossible(this.date_debut_utilisation.value, this.date_fin_utilisation.value) )
+          
+                    }
+                  
                 }else{
                     //console.log(this.verificationFormulaire())
                     toast.error(this.verificationFormulaire(), {
                       position: toast.POSITION.BOTTOM_CENTER
                     });
                 }
-            }else{
-                window.alert(  this.checkUtilisationisPossible(this.date_debut_utilisation.value, this.date_fin_utilisation.value) )
-            }
+          
         
       }
 
@@ -331,6 +341,28 @@ import Select from 'react-select'
             this.setState({
                 utilisations_visible_actuelement: utilisations
             })
+        });
+    }
+
+    setFieldVehicule(name, value) {
+        let obj = {};
+        obj[name] = value;
+        this.setState(obj, () => {
+            if(this.state.vehicule){
+                this.kilometrage_compteur_debut.value = this.state.vehicule.kilometrage_acquisition
+                if(this.state.vehicule.detenteur){
+                    this.utilisateur.value = this.state.vehicule.detenteur.id
+                    this.chauffeur.value = this.state.vehicule.detenteur.id
+
+                }else{
+                    this.utilisateur.value = null
+                    this.chauffeur.value = null 
+                }
+            }else{
+                this.kilometrage_compteur_debut.value = 0
+                this.utilisateur.value = null
+                this.chauffeur.value = null
+            }
         });
     }
 
@@ -348,7 +380,7 @@ import Select from 'react-select'
 
     renderEmpty(){
        return <span style={{textAlign: 'center', color: 'red'}}>
-            Aucune donnée enregistrée !            
+            Aucune donnée trouvée !            
         </span>
     }
 
@@ -407,19 +439,15 @@ import Select from 'react-select'
     
 
     render() {
-        if(this.props.vehiculeSeleted == undefined && this.props.vehicules.length){
-            const action = {type: "EDIT_SELECTED", value:  this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}
-              this.props.dispatch(action)
-            }
-        const vehiculeSelect = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
-        const utilisations = this.props.utilisations.filter(util => util.vehicule.id == this.props.match.params.vehicule_id)
+      
+        const utilisations = this.props.utilisations
         
        // console.log(vehiculeSelect.kilometrage_acquisition)
         return (
             <div className="app-main__inner">
             <div className="main-card card" >
                        <div className="card-body ">
-                           <h5 className="card-title">Gestion des utilisations du véhicule
+                           <h5 className="card-title">Gestion des utilisations des véhicules {this.state.utilisations_visible_actuelement.length}
                           
                         
                           
@@ -440,7 +468,7 @@ import Select from 'react-select'
                                                 id="test-table-xls-button"
                                                 className="mb-2 mr-2 btn-transition btn btn-outline-success"
                                                 table="export"
-                                                filename={`Liste des Utilisations de ${vehiculeSelect ? vehiculeSelect.immatriculation : null}`}
+                                                filename={`Liste des Utilisations`}
                                                 sheet="tablexls"
                                                 buttonText="Ecran -> Liste"/> : null}
                                 </span>
@@ -455,6 +483,7 @@ import Select from 'react-select'
                                     options={this.props.vehicules}
                                     getOptionLabel={option => option.immatriculation}
                                     getOptionValue={option => option.id}
+                                    styles={colourStyles}
                                     onChange={this.setFieldSelect.bind(this, "vehicule_selectionne")}
                                 />
                             </span>
@@ -465,7 +494,7 @@ import Select from 'react-select'
                             <br />
                          
                            <div className="view">
-                                    <div className="wrapper">
+                           <div className="wrapper" style={{height: '500px', overflowY: 'scroll'}}>
                                     {!this.props.vehicules.length ? this.renderLoading() : 
                             !utilisations.length ? this.renderEmpty() : this.renderList()}
                                     </div>
@@ -486,6 +515,27 @@ import Select from 'react-select'
                         </h3>
                         <form ref={(ref) => this.formRef = ref} className="p-3" onChange={this.setField} onSubmit={this.enregistrerUtilisation}>
                             <br />
+                            <div className="row">
+                          <div className="col-md-9">
+                              <label htmlFor="">Véhicule</label>
+                              <Select
+                                    name="vehicule"
+                                    isClearable
+                                    placeholder="Selectionnez ou saisissez "
+                                    noOptionsMessage={() => "Aucun Véhicule  trouvé"}
+                                    options={this.props.vehicules}
+                                    getOptionLabel={option => option.immatriculation}
+                                    getOptionValue={option => option.id}
+                                    onChange={this.setFieldVehicule.bind(this, "vehicule")}
+                                />
+                          </div>
+
+                          <div className="col-md-3">
+                          <button disabled={this.state.isFormSubmitted || this.state.vehicule == null} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
+
+                          </div>
+                            </div>
+
                             <div className="form-row">
                                 <div className="col-md-6">
                                 <div className="position-relative form-group">
@@ -536,8 +586,6 @@ import Select from 'react-select'
                                     <select className="form-control"
                                      style={inputStyle}
 
-                                    defaultValue={vehiculeSelect == undefined ?
-                                        null : vehiculeSelect.detenteur ? vehiculeSelect.detenteur.id : null}
                                      ref={utilisateur => this.utilisateur = utilisateur}
                                         onChange={this.setField}
                                      name="utilisateur">
@@ -582,9 +630,7 @@ import Select from 'react-select'
                                     <select className="form-control"
                                      ref={chauffeur => this.chauffeur = chauffeur}
                                         onChange={this.setField}
-                                        defaultValue={vehiculeSelect == undefined ?
-                                            null : vehiculeSelect.detenteur ? vehiculeSelect.detenteur.id : null}
-                                         name="chauffeur">
+                                        name="chauffeur">
                                              <option value={null}></option>
                                              {this.props.personnels.map(per => 
                                                  <option key={per.id} value={per.id}>{per.prenom} {per.nom}</option>
@@ -674,17 +720,11 @@ import Select from 'react-select'
                                     <div className="col-md-5">
                                         <div className="position-relative form-group">
                                             <label >Kilomètrage début</label>
-                                                {vehiculeSelect ?  <input name="kilometrage_compteur_debut"
+                                          <input name="kilometrage_compteur_debut"
                                             readOnly
-                                            defaultValue={vehiculeSelect == undefined ?
-                                                null : vehiculeSelect.kilometrage_acquisition == null ? 0 : vehiculeSelect.kilometrage_acquisition }
-                                ref={kilometrage_compteur_debut => this.kilometrage_compteur_debut = kilometrage_compteur_debut}
-                                              type="number" className="form-control" /> :  <input name="kilometrage_compteur_debut"
-                                              readOnly
-                                              defaultValue={vehiculeSelect == undefined ?
-                                                  null : vehiculeSelect.kilometrage_acquisition == null ? 0 : vehiculeSelect.kilometrage_acquisition }
-                                  ref={kilometrage_compteur_debut => this.kilometrage_compteur_debut = kilometrage_compteur_debut}
-                                                type="number" className="form-control" />}
+                                            defaultValue="0"
+                                            ref={kilometrage_compteur_debut => this.kilometrage_compteur_debut = kilometrage_compteur_debut}
+                                              type="number" className="form-control" /> 
                                               </div>
                                     </div>
 
@@ -693,7 +733,7 @@ import Select from 'react-select'
                                             <label > au retour </label>
                                             <input name="kilometrage_compteur_retour"
                                             onChange={this.setFieldKilometrageRetour}
-
+                                            readOnly={this.state.vehicule == null}
                                             ref={kilometrage_compteur_retour => this.kilometrage_compteur_retour = kilometrage_compteur_retour}
                                               type="number" className="form-control" /></div>
                                     </div>
@@ -733,7 +773,6 @@ import Select from 'react-select'
                                 </div>
 
                             
-                                <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
                         </form>
                       
                     </div>

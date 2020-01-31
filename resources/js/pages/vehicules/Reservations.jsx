@@ -378,7 +378,7 @@ class Reservations extends Component {
                                 <div className="tab-pane tabs-animation fade show " id="tab_reservations_en_cours" role="tabpanel">
                          
                          <div className="view">
-                                  <div className="wrapper">
+                         <div className="wrapper" style={{height: '500px', overflowY: 'scroll'}}>
                                   {this.props.loading ? this.renderLoading() :
                                         !reservations.length ? this.renderEmpty() : this.renderList()}
                                   </div>
@@ -389,7 +389,7 @@ class Reservations extends Component {
 
                                    
                                     <div className="view">
-                                  <div className="wrapper">
+                                    <div className="wrapper" style={{height: '500px', overflowY: 'scroll'}}>
                                   {this.props.loading ? this.renderLoading() :
                                             !reservations.length ? this.renderEmpty() : this.renderListHistoriques()}
 

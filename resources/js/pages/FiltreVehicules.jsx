@@ -9,10 +9,28 @@ import Select from 'react-select';
 
 import '../components/table.css'
 import VehiculeFiltreItem from '../components/vehicules/VehiculeFiltreItem'
+import { formatageNombre, formatageSomme } from '../utils/Repository';
+import moment from 'moment';
+
+const calculSommeColonneKilometrageVehicule = (tableau) => {
+    return tableau.reduce( (prec, curr) =>  parseFloat(prec) + parseFloat(curr.kilometrage_acquisition || 0), 0)
+  } 
+
+   const calculSommeColonneCoutAchat = (tableau) => {
+    return tableau.filter(elm => elm.mode_acquisition == 0).reduce( (prec, curr) =>  parseFloat(prec) + parseFloat(curr.acquisition_achat_prix_ttc || 0), 0)
+  }
+
+  const calculSommeColonneCoutLeasing = (tableau) => {
+    return tableau.filter(elm => elm.mode_acquisition == 1).reduce( (prec, curr) =>  parseFloat(prec) + (parseFloat(curr.acquisition_leasing_apport_initial || 0) + parseFloat(curr.acquisition_leasing_deja_paye || 0) + parseFloat(curr.acquisition_leasing_loyer_mensuel || 0) ), 0)
+  }
 
 
+  const calculSommeColonneCoutTotalFranchise = (tableau) => {
+    return tableau.reduce( (prec, curr) =>  parseFloat(prec) + parseFloat(curr.contrat_assurance ? curr.contrat_assurance.montant_franchise || 0 : 0), 0)
+  }
 
 class FiltreVehicules extends Component {
+    
 
     constructor(props) {
         super(props);
@@ -34,6 +52,8 @@ class FiltreVehicules extends Component {
 
         }
 
+    
+
         this.searchChange = this.searchChange.bind(this)
         this.changeState = this.changeState.bind(this)
         this.filtrerVehicule = this.filtrerVehicule.bind(this)
@@ -48,6 +68,15 @@ class FiltreVehicules extends Component {
         let obj = {};
         obj[name] = value;
         this.setState(obj, () => this.filtrerVehicule());
+    }
+
+    getIdsUtilisations = () => {
+        const events = [];
+        this.props.vehicules.map(event => {
+            return events.push(event.modele)
+        })
+        
+        return events
     }
 
     setField = (event) => {
@@ -179,6 +208,7 @@ class FiltreVehicules extends Component {
 
 
     render() {
+       // console.log(this.getIdsUtilisations())
   
         return (
             <div className="app-main__inner">
@@ -283,7 +313,13 @@ class FiltreVehicules extends Component {
 
                                     <div className="col-md-4">
                                         <label htmlFor="">Modèle</label>
-                                        <input type="text" name="modele" onChange={this.setField} className="form-control"/>
+{/*                                         <input type="text" name="modele" onChange={this.setField} className="form-control"/>
+ */}                                   
+                                        <select name="modele" id="" onChange={this.setField} className="form-control">
+                                        <option value=""></option>
+                                        {this.getIdsUtilisations().map((item, index) => <option key={index} value={item}>{item}</option>)}
+
+                                    </select>
                                     </div>
 
                                     <div className="col-md-4">
@@ -375,11 +411,281 @@ class FiltreVehicules extends Component {
                                 {/* {this.props.loading ? this.renderLoading() : 
                             !this.props.vehicules.length ? this.renderEmpty() : this.renderList()} */}
                                 <div className="view">
-                                    <div className="wrapper">
+                                <div className="wrapper" style={{height: '500px', overflowY: 'scroll'}}>
                                     {this.props.loading ? this.renderLoading() : 
                             !this.state.vehicules_visibles_actuelement.length ? this.renderEmpty() : this.renderList()}  
                                     </div>
                                 </div>
+                                <hr />
+                                <div className="main-card mb-3 card">
+                                    <div className="card-heading">
+                                        Filtres appliqués : 
+                                    </div>
+                        <div className="no-gutters row">
+                            <div className="col-md-4">
+                                <div className="pt-0 pb-0 card-body">
+                                    <ul className="list-group list-group-flush">
+                                    
+                                      {this.state.marque ?   <li className="list-group-item">
+                                            <div className="widget-content p-0">
+                                                <div className="widget-content-outer">
+                                                    <div className="widget-content-wrapper">
+                                                        <div className="widget-content-left">
+                                                            <div className="widget-heading">Marque</div>
+                                    <div className="widget-subheading">{this.state.marque.nom_marque}</div>
+                                                        </div>
+                                                       
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li> : null}
+                                      {this.state.entite_physique ?   <li className="list-group-item">
+                                            <div className="widget-content p-0">
+                                                <div className="widget-content-outer">
+                                                    <div className="widget-content-wrapper">
+                                                        <div className="widget-content-left">
+                                                            <div className="widget-heading">Etité Physique</div>
+                                    <div className="widget-subheading">{this.state.entite_physique.entite}</div>
+                                                        </div>
+                                                       
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li> : null}
+                                        {this.state.entite_comptable ? 
+                                        <li className="list-group-item">
+                                            <div className="widget-content p-0">
+                                                <div className="widget-content-outer">
+                                                    <div className="widget-content-wrapper">
+                                                        <div className="widget-content-left">
+                                                            <div className="widget-heading">Entité Comptable</div>
+                                                            <div className="widget-subheading">{this.state.entite_comptable.entite}</div>
+                                                        </div>
+                                                       
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li> : null}
+                                    </ul>
+                                </div>
+                            </div>
+                            <div className="col-md-4">
+                                <div className="pt-0 pb-0 card-body">
+                                    <ul className="list-group list-group-flush">
+                                    
+                                        {this.state.mode_acquisition && this.state.mode_acquisition != "Tous" ? <li className="list-group-item">
+                                            <div className="widget-content p-0">
+                                                <div className="widget-content-outer">
+                                                    <div className="widget-content-wrapper">
+                                                        <div className="widget-content-left">
+                                                            <div className="widget-heading">Type d'acquisition</div>
+                                                            <div className="widget-subheading">{this.state.mode_acquisition == 0 ? 'Achat' : this.state.mode_acquisition == 1 ? 'Leasing' : this.state.mode_acquisition == 2 ?  'Prêt' : 'Tous'}</div>
+                                                        </div>
+                                                       
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li> : null}
+                                      {this.state.tiers ?   <li className="list-group-item">
+                                            <div className="widget-content p-0">
+                                                <div className="widget-content-outer">
+                                                    <div className="widget-content-wrapper">
+                                                        <div className="widget-content-left">
+                                                            <div className="widget-heading">Tiers d'acquisition</div>
+                                                            <div className="widget-subheading">{this.state.tiers.code}</div>
+                                                        </div>
+                                                       
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li> : null}
+                                        
+                                        {this.state.modele ? 
+                                        <li className="list-group-item">
+                                            <div className="widget-content p-0">
+                                                <div className="widget-content-outer">
+                                                    <div className="widget-content-wrapper">
+                                                        <div className="widget-content-left">
+                                                            <div className="widget-heading">Modèle</div>
+                                                            <div className="widget-subheading">{this.state.modele}</div>
+                                                        </div>
+                                                       
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li> : null}
+                                    </ul>
+                                </div>
+                            </div>
+                            <div className="col-md-4">
+                                <div className="pt-0 pb-0 card-body">
+                                    <ul className="list-group list-group-flush">
+                                     
+                                 {this.state.date_entree_au_parc1 && this.state.date_entree_au_parc2 ? <li className="list-group-item">
+                                            <div className="widget-content p-0">
+                                                <div className="widget-content-outer">
+                                                    <div className="widget-content-wrapper">
+                                                        <div className="widget-content-left">
+                                                            <div className="widget-heading">Date d'entré au parc</div>
+                                        <div className="widget-subheading">du {moment(this.state.date_entree_au_parc1).format('DD/MM/YYYY')} au {moment(this.state.date_entree_au_parc2).format('DD/MM/YYYY')}</div>
+                                                        </div>
+                                                      
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li> : null}
+
+                                      {this.state.type_vehicule_statut && this.state.type_vehicule_statut != "Tous" ?   <li className="list-group-item">
+                                            <div className="widget-content p-0">
+                                                <div className="widget-content-outer">
+                                                    <div className="widget-content-wrapper">
+                                                        <div className="widget-content-left">
+                                                            <div className="widget-heading">Type de véhicule</div>
+                                                            <div className="widget-subheading">{this.state.type_vehicule_statut}</div>
+                                                        </div>
+                                                       
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li> : null}
+
+                                       {this.state.assureur ?  <li className="list-group-item">
+                                            <div className="widget-content p-0">
+                                                <div className="widget-content-outer">
+                                                    <div className="widget-content-wrapper">
+                                                        <div className="widget-content-left">
+                                                            <div className="widget-heading">Assureur</div>
+                                                            <div className="widget-subheading">{this.state.assureur.code}</div>
+                                                        </div>
+                                                       
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li> : null}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                {this.state.vehicules_visibles_actuelement.length ?
+                 <div className="row">
+                        <div className="divider mt-0" style={{marginBottom: '30px'}}></div>
+
+                    <div className="main-card mb-3 card">
+                        <div className="no-gutters row">
+                            <div className="col-md-4">
+                                <div className="pt-0 pb-0 card-body">
+                                    <ul className="list-group list-group-flush">
+                                        <li className="list-group-item">
+                                            <div className="widget-content p-0">
+                                                <div className="widget-content-outer">
+                                                    <div className="widget-content-wrapper">
+                                                        <div className="widget-content-left">
+                                                            <div className="widget-heading">Nbre de véhicule</div>
+                                                            <span className="text-success" style={{fontSize: '1.4em'}}>
+                                                            {this.state.vehicules_visibles_actuelement.length} 
+                                                            </span>
+                                                        </div>
+                                                       
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li className="list-group-item">
+                                            <div className="widget-content p-0">
+                                                <div className="widget-content-outer">
+                                                    <div className="widget-content-wrapper">
+                                                        <div className="widget-content-left">
+                                                            <div className="widget-heading">Coût total franchise</div>
+                                                            <span className="text-success" style={{fontSize: '1.2em'}}>
+                                                                {formatageSomme( calculSommeColonneCoutTotalFranchise(this.state.vehicules_visibles_actuelement) )}
+                                                                </span>
+                                                        </div>
+                                                      
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div className="col-md-4">
+                                <div className="pt-0 pb-0 card-body">
+                                    <ul className="list-group list-group-flush">
+                                        <li className="list-group-item">
+                                            <div className="widget-content p-0">
+                                                <div className="widget-content-outer">
+                                                    <div className="widget-content-wrapper">
+                                                        <div className="widget-content-left">
+                                                            <div className="widget-heading">Kilometrage</div>
+                                                            <span className="text-success" style={{fontSize: '1.4em'}}>
+                                                            {formatageNombre( calculSommeColonneKilometrageVehicule(this.state.vehicules_visibles_actuelement)  )}
+                                                            </span>                                                       
+                                                             </div>
+                                                      
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li className="list-group-item">
+                                            <div className="widget-content p-0">
+                                                <div className="widget-content-outer">
+                                                    <div className="widget-content-wrapper">
+                                                        <div className="widget-content-left">
+                                                            <div className="widget-heading">Coût total Leasing</div>
+                                                            <span className="text-success" style={{fontSize: '1.2em'}}>
+                                                                {formatageSomme( calculSommeColonneCoutLeasing(this.state.vehicules_visibles_actuelement) )}
+                                                                </span>
+                                                        </div>
+                                                     
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div className="col-md-4">
+                                <div className="pt-0 pb-0 card-body">
+                                    <ul className="list-group list-group-flush">
+                                        <li className="list-group-item">
+                                            <div className="widget-content p-0">
+                                                <div className="widget-content-outer">
+                                                    <div className="widget-content-wrapper">
+                                                        <div className="widget-content-left">
+                                                            <div className="widget-heading">Coût total d'achat</div>
+                                                            <span className="text-success" style={{fontSize: '1.2em'}}>
+                                                                {formatageSomme( calculSommeColonneCoutAchat(this.state.vehicules_visibles_actuelement) )}
+                                                                </span>
+                                                        </div>
+                                                     
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                      {/*   <li className="list-group-item">
+                                            <div className="widget-content p-0">
+                                                <div className="widget-content-outer">
+                                                    <div className="widget-content-wrapper">
+                                                        <div className="widget-content-left">
+                                                            <div className="widget-heading">Coût total franchise</div>
+                                                            <span className="text-success" style={{fontSize: '1.2em'}}>
+                                                                250.9856.158.025 F CFA
+                                                                </span>
+                                                        </div>
+                                                      
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li> */}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> : null}
 
                                 {/* </div> */}
                             </div>

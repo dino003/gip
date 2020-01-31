@@ -68,8 +68,10 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                     (fin >= dateDebutDejaUtilise && fin <= dateFinDejaUtilise) ||
                     (debut <= dateDebutDejaUtilise && fin >= dateFinDejaUtilise)
         })
-        return (deja ) ? `Ce véhicule est en cours d'utilisation pour cette période  !
-        par : ${deja.utilisateur ? deja.utilisateur.nom : ''} ` : null 
+        return (deja ) ? `Ce véhicule est en cours d'utilisation.
+        sorti le : ${moment(deja.date_debut_utilisation).format('DD/MM/YYYY')} à ${deja.heure_debut.slice(0, 5)} *** Retour prévue le : ${moment(deja.date_fin_utilisation).format('DD/MM/YYYY')} à ${deja.heure_de_fin.slice(0, 5)} 
+        Utilisateur : ${deja.utilisateur ? !deja.utilisateur.default ? deja.utilisateur.prenom + ' ' + deja.utilisateur.prenom : 'PERSONNE PAR DEFAUT' : ''} ` : null 
+
 
  
        // return (tab.includes(true)) ? 'Ce véhicule est déja en cours d\'utilisation !' : null 
@@ -80,76 +82,77 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
         
       onEditSubmit = (e) => {
           e.preventDefault()
-          if(this.checkUtilisationisPossible(this.date_debut_utilisation.value, this.date_fin_utilisation.value) == null){
 
             if(this.verificationFormulaire() == null){
+              if(this.checkUtilisationisPossible(this.date_debut_utilisation.value, this.date_fin_utilisation.value) == null){
+                const item = this.props.utilisations.find(utilisat => utilisat.id == this.props.match.params.utilisation_id)
+      
+                this.setState({isFormSubmitted: true})
+                var id_derniere_utilisation = Math.max(...this.getIdsUtilisations(), 0);
+       
+                var isDerniere = item.id == id_derniere_utilisation
+             //   var url = isDerniere ? '/api/modifier_vehicule_utilisation_derniere/' : '/api/modifier_vehicule_utilisation/' ;
+                const utili = this.props.personnels.find(per => per.id == this.utilisateur.value)
+       
+                  axios.post('/api/modifier_vehicule_utilisation/' +  item.id, {
+                          // vehicule: this.props.vehiculeSeleted.id,
+                         // vehicule_id: vehicule.id,
+                           utilisateur_id: this.utilisateur.value,
+                           chauffeur_id: this.chauffeur.value,
+                           utilisatation_normal_ou_pret: this.utilisatation_normal_ou_pret.value,
+                           utilisateur: this.utilisateur.value,
+                           entite_utilisateur: utili.entite_affectation ? utili.entite_affectation.id : null,
+                           entite_utilisateur_id: utili.entite_affectation? utili.entite_affectation.id : null,
+                           nature_utilisation: this.nature_utilisation.value,
+                           chauffeur: this.chauffeur.value,
+                           date_debut_utilisation: this.date_debut_utilisation.value,
+                           date_fin_utilisation: this.date_fin_utilisation.value,
+                           heure_debut: this.heure_debut.value,
+                           heure_de_fin: this.heure_de_fin.value,
+                           kilometrage_compteur_debut: this.kilometrage_compteur_debut.value,
+                           kilometrage_compteur_retour: this.kilometrage_compteur_retour.value,
+                           kilometres_parcourus: this.kilometres_parcourus.value,
+                           lieu_depart: this.lieu_depart.value,
+                           destination: this.destination.value,  
+                  }).then(response => {
+                      if(response.data.utilisation && response.data.vehicule){
+                        const action = {type: "EDIT_UTILISATION", value: response.data.utilisation}
+                        this.props.dispatch(action)
+        
+                        const action2 = {type: "EDIT_VEHICULE", value: response.data.vehicule}
+                        this.props.dispatch(action2)
+                       
+                        const action3 = {type: "EDIT_SELECTED", value: response.data.vehicule}
+                        this.props.dispatch(action3)
+        
+                        this.setState({isFormSubmitted: false})
+                        this.props.history.goBack();
+       
+                      }else{
+                        const action = {type: "EDIT_UTILISATION", value: response.data}
+                        this.props.dispatch(action)
+                        this.setState({isFormSubmitted: false})
+                        this.props.history.goBack();
+       
+                      }
+                   
+        
+                  }).catch(error => {
+                    this.setState({isFormSubmitted: false})
+                    console.log(error)
+                } )
+              }else{
+                window.alert( this.checkUtilisationisPossible(this.date_debut_utilisation.value, this.date_fin_utilisation.value)  )
+ 
+              }
 
-              const item = this.props.utilisations.find(utilisat => utilisat.id == this.props.match.params.utilisation_id)
-      
-               this.setState({isFormSubmitted: true})
-               var id_derniere_utilisation = Math.max(...this.getIdsUtilisations(), 0);
-      
-               var isDerniere = item.id == id_derniere_utilisation
-            //   var url = isDerniere ? '/api/modifier_vehicule_utilisation_derniere/' : '/api/modifier_vehicule_utilisation/' ;
-               const utili = this.props.personnels.find(per => per.id == this.utilisateur.value)
-      
-                 axios.post('/api/modifier_vehicule_utilisation/' +  item.id, {
-                         // vehicule: this.props.vehiculeSeleted.id,
-                        // vehicule_id: vehicule.id,
-                          utilisateur_id: this.utilisateur.value,
-                          chauffeur_id: this.chauffeur.value,
-                          utilisatation_normal_ou_pret: this.utilisatation_normal_ou_pret.value,
-                          utilisateur: this.utilisateur.value,
-                          entite_utilisateur: utili.entite_affectation ? utili.entite_affectation.id : null,
-                          entite_utilisateur_id: utili.entite_affectation? utili.entite_affectation.id : null,
-                          nature_utilisation: this.nature_utilisation.value,
-                          chauffeur: this.chauffeur.value,
-                          date_debut_utilisation: this.date_debut_utilisation.value,
-                          date_fin_utilisation: this.date_fin_utilisation.value,
-                          heure_debut: this.heure_debut.value,
-                          heure_de_fin: this.heure_de_fin.value,
-                          kilometrage_compteur_debut: this.kilometrage_compteur_debut.value,
-                          kilometrage_compteur_retour: this.kilometrage_compteur_retour.value,
-                          kilometres_parcourus: this.kilometres_parcourus.value,
-                          lieu_depart: this.lieu_depart.value,
-                          destination: this.destination.value,  
-                 }).then(response => {
-                     if(response.data.utilisation && response.data.vehicule){
-                       const action = {type: "EDIT_UTILISATION", value: response.data.utilisation}
-                       this.props.dispatch(action)
-       
-                       const action2 = {type: "EDIT_VEHICULE", value: response.data.vehicule}
-                       this.props.dispatch(action2)
-                      
-                       const action3 = {type: "EDIT_SELECTED", value: response.data.vehicule}
-                       this.props.dispatch(action3)
-       
-                       this.setState({isFormSubmitted: false})
-                       this.props.history.goBack();
-      
-                     }else{
-                       const action = {type: "EDIT_UTILISATION", value: response.data}
-                       this.props.dispatch(action)
-                       this.setState({isFormSubmitted: false})
-                       this.props.history.goBack();
-      
-                     }
-                  
-       
-                 }).catch(error => {
-                   this.setState({isFormSubmitted: false})
-                   console.log(error)
-               } )
-      
               }else{
                 //console.log(this.verificationFormulaire())
                 toast.error(this.verificationFormulaire(), {
                   position: toast.POSITION.BOTTOM_CENTER
                 });
             }
-          }else{
-            window.alert( this.checkUtilisationisPossible(this.date_debut_utilisation.value, this.date_fin_utilisation.value)  )
-          }
+       
       
      
        }

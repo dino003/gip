@@ -10,7 +10,7 @@ import {connect} from 'react-redux'
 
     render() {
         const {item, index} = this.props
-        const personneDefaut = this.props.personnels.find(el => el.nom == "PERSONNE PAR DEFAUT")
+        const personneDefaut = this.props.personnels.find(el => el.default)
 
         return (
             <tr>

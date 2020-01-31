@@ -595,7 +595,7 @@ class AjouterVehicule extends Component {
 
                                         <div className="col-md-3">
                                             <div className="position-relative form-group">
-                                                <label > Genre *</label>
+                                                <label > Modèle du véhicule *</label>
                                                 <input name="modele"
                                                     style={inputStyle}
 

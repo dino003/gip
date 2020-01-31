@@ -64,6 +64,19 @@ const active = {
                                 </li>
                                 }
 
+                                {param_generaux_modules && param_generaux_modules.utilisation_vehicules == 1 &&
+                                
+                                <li>
+                                    <NavLink activeStyle={active} exact to="/gestion_du_parc_automobile/gestion-des-utilisations-all">
+                                        <i className="metismenu-icon pe-7s-home"></i>
+                                        Les Sorties de véhicules
+                                        
+                                        <i className="metismenu-state-icon "></i>
+                                    </NavLink>
+
+                                </li>
+                                }
+
                                 {param_generaux_modules && 
 
                                     <React.Fragment>

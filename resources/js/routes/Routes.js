@@ -109,6 +109,9 @@ import Tracabilites from '../pages/vehicules/Tracabilites';
 import ModifierUtilisationVehicule from '../pages/forms/Vehicules/ModifierUtilisationVehicule';
 import Dashboard from '../pages/Dashboard.jsx';
 import FiltreVehicules from '../pages/FiltreVehicules';
+import UtilisationGenerals from '../pages/gestion/UtilisationGenerals';
+import ModifierUtilisationGeneral from '../pages/forms/Vehicules/ModifierUtilisationGeneral';
+import FicheVehicule from '../pages/vehicules/FicheVehicule';
 
 
 
@@ -224,6 +227,7 @@ const NavBack = () => (
   <Master path="/gestion_du_parc_automobile/parc/modification-depense-recettes-vehicules/:vehicule_id/:imma/dr/:depense_recette_id" component={ModifierDepenseRecette} />
   
   <Master path="/gestion_du_parc_automobile/parc/filtre_vehicules" component={FiltreVehicules} />
+  <Master path="/gestion_du_parc_automobile/parc/fiche_vehicules" component={FicheVehicule} />
 
   
   <MasterGestion path="/gestion_du_parc_automobile/parc/budgets-entites" component={BudgetEntites} />
@@ -254,6 +258,9 @@ const NavBack = () => (
   <MasterGestion exact path="/gestion_du_parc_automobile/creation-reservation-vehicules-general" component={AjouterReservationGeneral} />
   <MasterGestion exact path="/gestion_du_parc_automobile/modification-reservation-vehicules-general/:reservation_id" component={ModifierReservationGeneral} />
 
+  <MasterGestion exact path="/gestion_du_parc_automobile/gestion-des-utilisations-all" component={UtilisationGenerals} />
+
+  <MasterGestion exact path="/gestion_du_parc_automobile/parc/modification-utilisation-vehicule-all/utilisation/:utilisation_id" component={ModifierUtilisationGeneral} />
 
   <MasterGestion exact path="/gestion_du_parc_automobile/sorties-stock/:article_id/article/:numero_article" component={SortieStock} />
   <MasterGestion exact path="/gestion_du_parc_automobile/sorties-stock/:article_id/article/:numero_article/ajout" component={AjouterSortieStock} />

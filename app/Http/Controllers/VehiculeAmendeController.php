@@ -22,8 +22,7 @@ class VehiculeAmendeController extends Controller
     {
         $vehicules_amendes = VehiculeAmende::with(['vehicule', 'organisme',
         'nature_amende', 'conducteur'])
-            ->get();
-
+        ->orderBy('id', 'desc')->get();
             return response()->json($vehicules_amendes);    
     }
 

@@ -21,7 +21,7 @@ class VehiculeConsomationController extends Controller
     public function index()
     {
         $consommations = VehiculeConsomation::with(['vehicule',
-        'type_consomation', 'tiers', 'conducteur', 'consomable'])->get();
+        'type_consomation', 'tiers', 'conducteur', 'consomable'])->orderBy('id', 'desc')->get();
 
         return response()->json($consommations);
     }

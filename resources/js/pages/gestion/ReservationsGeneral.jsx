@@ -407,7 +407,7 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                     <div className="tab-pane tabs-animation fade show active" id="tab_reservations_en_cours" role="tabpanel">
 
                            <div className="view">
-                                  <div className="wrapper">
+                           <div className="wrapper" style={{height: '500px', overflowY: 'scroll'}}>
                                   {this.props.loading ? this.renderLoading() : 
                             !reservations.length ? this.renderEmpty() : this.renderList()}
                                   </div>
@@ -418,7 +418,7 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
 
                         <div className="view">
-                                  <div className="wrapper">
+                        <div className="wrapper" style={{height: '500px', overflowY: 'scroll'}}>
                                   {this.props.loading ? this.renderLoading() : 
                         !reservations.length ? this.renderEmpty() : this.renderListHistoriques()}
                                   </div>

@@ -188,7 +188,7 @@ import '../../components/table.css'
                             <br />
                          
                          <div className="view">
-                                  <div className="wrapper">
+                         <div className="wrapper" style={{height: '500px', overflowY: 'scroll'}}>
                                   {!this.props.vehicules.length ? this.renderLoading() : 
                             !interventions.length ? this.renderEmpty() : this.renderList()}
                                   </div>

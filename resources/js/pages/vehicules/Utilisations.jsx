@@ -249,8 +249,9 @@ import '../../components/table.css'
                     (fin >= dateDebutDejaUtilise && fin <= dateFinDejaUtilise) ||
                     (debut <= dateDebutDejaUtilise && fin >= dateFinDejaUtilise)
         })
-        return (deja ) ? `Ce véhicule est en cours d'utilisation pour cette période  !
-        par : ${deja.utilisateur ? deja.utilisateur.nom : ''} ` : null 
+        return (deja ) ? `Ce véhicule est en cours d'utilisation.
+        sorti le : ${moment(deja.date_debut_utilisation).format('DD/MM/YYYY')} à ${deja.heure_debut.slice(0, 5)} *** Retour prévue le : ${moment(deja.date_fin_utilisation).format('DD/MM/YYYY')} à ${deja.heure_de_fin.slice(0, 5)} 
+        Utilisateur : ${deja.utilisateur ? !deja.utilisateur.default ? deja.utilisateur.prenom + ' ' + deja.utilisateur.prenom : 'PERSONNE PAR DEFAUT' : ''} ` : null 
 
  
        // return (tab.includes(true)) ? 'Ce véhicule est déja en cours d\'utilisation !' : null 
@@ -440,7 +441,7 @@ import '../../components/table.css'
                             <br />
                          
                            <div className="view">
-                                    <div className="wrapper">
+                           <div className="wrapper" style={{height: '500px', overflowY: 'scroll'}}>
                                     {!this.props.vehicules.length ? this.renderLoading() : 
                             !utilisations.length ? this.renderEmpty() : this.renderList()}
                                     </div>

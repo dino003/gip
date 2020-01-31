@@ -22,7 +22,7 @@ class StockSortieController extends Controller
      */
     public function index()
     {
-        $sorties = StockSortie::with(['article', 'vehicule'])->get();
+        $sorties = StockSortie::with(['article', 'vehicule'])->orderBy('id', 'desc')->get();
 
         return response()->json($sorties);
     }

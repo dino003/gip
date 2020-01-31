@@ -70,7 +70,7 @@ class Sidebar extends Component {
                                 Gestion du parc
                             </li>
 
-                            {/* <li>
+                            {/*  <li>
                                 <NavLink
                                     exact
                                     activeStyle={active}
@@ -82,7 +82,7 @@ class Sidebar extends Component {
                                     Tableau de bord
                                     <i className="metismenu-state-icon "></i>
                                 </NavLink>
-                            </li> */}
+                            </li> */} 
 
                             <li>
                                 <NavLink
@@ -403,6 +403,31 @@ class Sidebar extends Component {
                                                 >
                                                     <i className="metismenu-icon pe-7s-rocket"></i>
                                                     Filtrer les Véhicules
+                                                    <i className="metismenu-state-icon "></i>
+                                                </a>
+                                            )}
+                                        </li> 
+
+                                        <li>
+                                            {this.props.vehicules.length > 1 ? (
+                                                <NavLink
+                                                    exact
+                                                    activeStyle={active}
+                                                    to={{
+                                                        pathname: `/gestion_du_parc_automobile/parc/fiche_vehicules`
+                                                    }}
+                                                >
+                                                    <i className="metismenu-icon pe-7s-rocket"></i>
+                                                   Fiche Véhicule
+                                                    <i className="metismenu-state-icon "></i>
+                                                </NavLink>
+                                            ) : (
+                                                <a
+                                                    disabled
+                                                    title="Le lien est désactivé car il n'ya pas suffisamment de véhicules"
+                                                >
+                                                    <i className="metismenu-icon pe-7s-rocket"></i>
+                                                   Fiche Véhicule
                                                     <i className="metismenu-state-icon "></i>
                                                 </a>
                                             )}
