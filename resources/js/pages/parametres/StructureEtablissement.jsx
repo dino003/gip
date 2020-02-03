@@ -495,12 +495,21 @@ const OptionsList = ({ options, selectedOptions, onChange, ajouterEnfant }) => {
               label={`${option.code_regroupement} __ ${option.nom_regroupement}`} 
               onChange={() => {handleCheckboxClicked(option.id)}}
              /> */}
-             <div className="label"> <span style={{cursor: 'pointer'}} onClick={() => {
+             <div className="label">
+                  {option.children.length ? <span style={{cursor: 'pointer'}} onClick={() => {
             handleCheckboxClicked(option.id)
+           // console.log(option)
+                }}>
+             <i className="fa fa-folder"></i> 
+             </span> : null}
+
+              {`${option.code_regroupement} __ ${option.nom_regroupement}`} {' '}
+          {/*     <span style={{cursor: 'pointer'}} onClick={() => {
+            //handleCheckboxClicked(option.id)
             console.log(option)
         }}>
-             <i className={option.children.length ? 'fa fa-folder' : ''}></i> </span>
-              {`${option.code_regroupement} __ ${option.nom_regroupement}`}
+             <i className="fa fa-plus-circle"></i> 
+             </span> */}
             {/* <span title={`Ajouter une Structure Ayant pour Regroupement D'appartenance ${option.code_regroupement}`} style={{cursor: 'pointer'}} onClick={ajouterEnfant(option)}>  <i className="fa fa-plus-circle"></i> </span> */}
               </div>
             {/* Base Case */}

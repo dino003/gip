@@ -12,6 +12,7 @@ class StructureRegroupement extends Model
     protected $guarded = ['id'];
 
     public $timestamps = false;
+    
 
     public function entites()
     {

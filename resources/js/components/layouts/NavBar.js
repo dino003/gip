@@ -46,6 +46,23 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
         }));
     } 
 
+
+    fetchStructureGeographiques(){
+        queue.push(() => axios.get('/api/structure_geographiques').then((response) => {
+            
+            const action = {type: "GET_STRUCTURE_GEOGRAPHIQUE", value: response.data}
+            this.props.dispatch(action)
+        }));
+    } 
+
+    fetchStructureorganisationnelles(){
+        queue.push(() => axios.get('/api/structure_organisationelles').then((response) => {
+            
+            const action = {type: "GET_STRUCTURE_ORGANISATIONNELLE", value: response.data}
+            this.props.dispatch(action)
+        }));
+    } 
+
     fetchInfoAlerte(){
         queue.push(() => axios.get('/api/alertes').then((response) => {
             
@@ -537,7 +554,8 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
         // this.fetchNatureReservations();
         // this.fetchFamillePiecesdetachees();
         // this.fetchCoutConsommables();
-      
+       // this.fetchStructureGeographiques();
+       // this.fetchStructureorganisationnelles();
 
 
         // this.fetchVehicules();

@@ -59,8 +59,37 @@ const active = {
 
                                 </li>
 
-                             
+
                                         <li>
+                                            <NavLink activeStyle={active}  to="/gestion_du_parc_automobile/gestion-de-la-structure-geographique">
+                                            <i className="metismenu-icon pe-7s-safe"></i>
+                                             Structure Géographique
+                                            </NavLink>
+                                        </li>
+
+                                        <li>
+                                            <NavLink activeStyle={active}  to="/gestion_du_parc_automobile/gestion-de-la-structure-organisationelle">
+                                            <i className="metismenu-icon pe-7s-safe"></i>
+                                             Structure Organisationnelle
+                                            </NavLink>
+                                        </li>
+                                    {this.props.structure_geographiques.length ?
+                                        <li>
+                                            <NavLink activeStyle={active}  to="/gestion_du_parc_automobile/gestion-du-plan-geographique">
+                                            <i className="metismenu-icon pe-7s-safe"></i>
+                                             Plan Géographique
+                                            </NavLink>
+                                        </li> : null }
+                                     {this.props.structure_organisationnelles.length ?
+                                        <li>
+                                            <NavLink activeStyle={active}  to="/gestion_du_parc_automobile/gestion-du-plan-organisationnel">
+                                            <i className="metismenu-icon pe-7s-safe"></i>
+                                             Plan Organisationnel
+                                            </NavLink>
+                                        </li> : null}
+
+                             
+                                      {/*   <li>
                                             <NavLink activeStyle={active}  to="/gestion_du_parc_automobile/gestion-de-la-structure-etablissement">
                                             <i className="metismenu-icon pe-7s-safe"></i>
                                                 La Structure Etablissement
@@ -71,7 +100,7 @@ const active = {
                                             <i className="metismenu-icon pe-7s-wallet"></i>
                                                 Les Entités
                                             </NavLink>
-                                        </li>
+                                        </li> */}
 
                                         {/* <li>
                                             <NavLink activeStyle={active} to="/gestion_du_parc_automobile/gestion-des-messages">
@@ -120,8 +149,9 @@ const active = {
 const mapStateToProps = state => {
     return {
      
-        theme: state.theme.items
-
+        theme: state.theme.items,
+        structure_organisationnelles: state.structure_organisationnelles.items,
+        structure_geographiques: state.structure_geographiques.items,
 
     }
   }

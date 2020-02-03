@@ -270,17 +270,51 @@ class AjouterVehicule extends Component {
         }
     }
 
+    getNiveauxPlanGeographiques = () => {
+        const events = [];
+        this.props.structure_geographiques.map(event => {
+            if(!event.niveau) return;
+            return events.push(event.niveau)
+        })
+        
+        return events
+    }
+
+    getMaximumNiveauPlanGeographique = () => {
+        var niveau = Math.max(...this.getNiveauxPlanGeographiques(), 0) 
+        if (niveau == 0) return 1;
+        return Number(niveau );
+
+    }
+
+    getPlanGeographiquesDerniersNiveau = () => {
+        return this.props.plan_geographiques.filter(elm => elm.structure_geographique_id == this.getMaximumNiveauPlanGeographique())
+    }
+
+    getNiveauxPlanOrga = () => {
+        const events = [];
+        this.props.structure_organisationnelles.map(event => {
+            if(!event.niveau) return;
+            return events.push(event.niveau)
+        })
+        
+        return events
+    }
+
+    getMaximumNiveauPlanOrga = () => {
+        var niveau = Math.max(...this.getNiveauxPlanOrga(), 0) 
+        if (niveau == 0) return 1;
+        return Number(niveau );
+
+    }
+
+    getPlanOrgaDernierNiveau = () => {
+        return this.props.plan_organisationnels.filter(elm => elm.structure_organisationnel_id == this.getMaximumNiveauPlanOrga())
+    }
+
 
     render() {
-        //console.log(this.checkUser())
-        //  console.log(new Date())
-       // console.log(this.state.demandeur)
-        // if(this.props.contrat_assurances.length){
-        //     this.setState({
-        //         contrat_assurance_id: this.props.contrat_assurances.find(contrat => contrat.defaut) ? this.props.contrat_assurances.find(contrat => contrat.defaut) : null
-
-        //     })
-        // }
+   //console.log(this.getPlanOrgaDernierNiveau(), this.getPlanGeographiquesDerniersNiveau())
         return (
             <div className="app-main__inner">
                 <ul className="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
@@ -1625,7 +1659,13 @@ const mapStateToProps = state => {
         natures_energies: state.natures_energies.items,
         personnels: state.personnels.items,
         tva: state.tva.items,
-        contrat_assurances: state.contrat_assurances.items
+        contrat_assurances: state.contrat_assurances.items,
+        plan_organisationnels: state.plan_organisationnels.items,
+        plan_geographiques: state.plan_geographiques.items,
+        structure_geographiques: state.structure_geographiques.items,
+        structure_organisationnelles: state.structure_organisationnelles.items
+
+
 
     }
 }

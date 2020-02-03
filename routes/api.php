@@ -63,6 +63,74 @@ Route::delete('supprimer_tracabilite/{id}', 'TracabiliteController@destroy');
 
 //*********fin tracabilite************----------------------------------------------------------- */
 
+
+//----------------------Structure Géographiques --------------------------------------------------------**********
+Route::get('structure_geographiques', 'StructureGeographiqueController@index');
+// voir
+Route::get('voir_structure_geographique/{id}', 'StructureGeographiqueController@show');
+
+// ajouter 
+Route::post('ajouter_structure_geographique', 'StructureGeographiqueController@store');
+// modifier
+Route::post('modifier_structure_geographique/{id}', 'StructureGeographiqueController@update');
+
+// supprimer
+Route::delete('supprimer_structure_geographique/{id}', 'StructureGeographiqueController@destroy');
+
+
+//*********fin Structure Géographiques************----------------------------------------------------------- */
+
+//----------------------Structure organisationelles --------------------------------------------------------**********
+Route::get('structure_organisationelles', 'StructureOrganisationelleController@index');
+// voir
+Route::get('voir_structure_organisationelle/{id}', 'StructureOrganisationelleController@show');
+
+// ajouter 
+Route::post('ajouter_structure_organisationelle', 'StructureOrganisationelleController@store');
+// modifier
+Route::post('modifier_structure_organisationelle/{id}', 'StructureOrganisationelleController@update');
+
+// supprimer
+Route::delete('supprimer_structure_organisationelle/{id}', 'StructureOrganisationelleController@destroy');
+
+
+//*********fin Structure organisationelles************----------------------------------------------------------- */
+
+
+
+//----------------------plans Géographiques --------------------------------------------------------**********
+Route::get('plan_geographiques', 'PlanGeographiqueController@index');
+// voir
+Route::get('voir_plan_geographique/{id}', 'PlanGeographiqueController@show');
+
+// ajouter 
+Route::post('ajouter_plan_geographique', 'PlanGeographiqueController@store');
+// modifier
+Route::post('modifier_plan_geographique/{id}', 'PlanGeographiqueController@update');
+
+// supprimer
+Route::delete('supprimer_plan_geographique/{id}', 'PlanGeographiqueController@destroy');
+
+
+//*********fin plans Géographiques************----------------------------------------------------------- */
+
+//----------------------plans organisationelles --------------------------------------------------------**********
+Route::get('plan_organisationelles', 'PlanOrganisationnelController@index');
+// voir
+Route::get('voir_plan_organisationelle/{id}', 'PlanOrganisationnelController@show');
+
+// ajouter 
+Route::post('ajouter_plan_organisationelle', 'PlanOrganisationnelController@store');
+// modifier
+Route::post('modifier_plan_organisationelle/{id}', 'PlanOrganisationnelController@update');
+
+// supprimer
+Route::delete('supprimer_plan_organisationelle/{id}', 'PlanOrganisationnelController@destroy');
+
+
+//*********fin plans organisationelles************----------------------------------------------------------- */
+
+
 //----------------------Cout consomables --------------------------------------------------------**********
 Route::get('couts_consomables', 'CoutConsomableController@index');
 // voir

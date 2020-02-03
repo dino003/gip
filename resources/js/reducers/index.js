@@ -50,6 +50,10 @@ import AuthReducer from './auth/AuthReducer'
 import ThemeReducer from './parametres_generaux/ThemeReducer'
 import AbonnementReducer from './auth/AbonnementReducer'
 import TracabiliteReducer from './vehicules/TracabiliteReducer'
+import StructureOrganisationnelleReducer from './StructureOrganisationnelleReducer'
+import StructureGeographiqueReducer from './StructureGeographiqueReducer'
+import PlanGeographiqueReducer from './PlanGeographiqueReducer'
+import PlanOrganisationnelReducer from './PlanOrganisationnelReducer'
 
 const allReducers = combineReducers({
     auth: AuthReducer,
@@ -102,7 +106,11 @@ const allReducers = combineReducers({
     param_stock: ParamStockReducer,
     param_personnels: ParamPersonnelReducer,
     param_journal: ParamJournalReducer,
-    param_alerte: AlertReducer
+    param_alerte: AlertReducer,
+    structure_organisationnelles: StructureOrganisationnelleReducer,
+    structure_geographiques: StructureGeographiqueReducer,
+    plan_geographiques: PlanGeographiqueReducer,
+    plan_organisationnels: PlanOrganisationnelReducer
     
 })
 

@@ -63,6 +63,39 @@ function withSplashScreen(WrappedComponent) {
         }));
     } 
 
+    fetchStructureGeographiques(){
+        queue.push(() => axios.get('/api/structure_geographiques').then((response) => {
+            
+            const action = {type: "GET_STRUCTURE_GEOGRAPHIQUE", value: response.data}
+            this.props.dispatch(action)
+        }));
+    } 
+
+    fetchStructureorganisationnelles(){
+        queue.push(() => axios.get('/api/structure_organisationelles').then((response) => {
+            
+            const action = {type: "GET_STRUCTURE_ORGANISATIONNELLE", value: response.data}
+            this.props.dispatch(action)
+        }));
+    } 
+
+
+    fetchPlanGeographiques(){
+        queue.push(() => axios.get('/api/plan_geographiques').then((response) => {
+            
+            const action = {type: "GET_PLAN_GEOGRAPHIQUE", value: response.data}
+            this.props.dispatch(action)
+        }));
+    } 
+
+    fetchPlanOrganisationnelles(){
+        queue.push(() => axios.get('/api/plan_organisationelles').then((response) => {
+            
+            const action = {type: "GET_PLAN_ORGANISATIONNEL", value: response.data}
+            this.props.dispatch(action)
+        }));
+    } 
+
     fetchInfoAlerte(){
         queue.push(() => axios.get('/api/alertes').then((response) => {
             
@@ -562,6 +595,10 @@ function withSplashScreen(WrappedComponent) {
          this.fetchArticlesStock();
          this.fetchEntreesStock();
          this.fetchSortiesStock();
+         this.fetchStructureGeographiques();
+         this.fetchStructureorganisationnelles();
+         this.fetchPlanGeographiques();
+         this.fetchPlanOrganisationnelles();
 
          this.fetchVehicules();
 

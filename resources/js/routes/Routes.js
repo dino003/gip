@@ -112,6 +112,10 @@ import FiltreVehicules from '../pages/FiltreVehicules';
 import UtilisationGenerals from '../pages/gestion/UtilisationGenerals';
 import ModifierUtilisationGeneral from '../pages/forms/Vehicules/ModifierUtilisationGeneral';
 import FicheVehicule from '../pages/vehicules/FicheVehicule';
+import StructureOrganisationnelles from '../pages/parametres/StructureOrganisationnelles';
+import StructureGeographique from '../pages/parametres/StructureGeographique';
+import PlanGeographiques from '../pages/parametres/PlanGeographiques';
+import PlanOrganisationnel from '../pages/parametres/PlanOrganisationnel';
 
 
 
@@ -153,6 +157,14 @@ const NavBack = () => (
 
 
     <MasterParametre exact path="/gestion_du_parc_automobile/gestion-de-la-structure-etablissement" component={StructureEtablissement} />
+    <MasterParametre exact path="/gestion_du_parc_automobile/gestion-de-la-structure-organisationelle" component={StructureOrganisationnelles} />
+    <MasterParametre exact path="/gestion_du_parc_automobile/gestion-de-la-structure-geographique" component={StructureGeographique} />
+    
+    <MasterParametre exact path="/gestion_du_parc_automobile/gestion-du-plan-geographique" component={PlanGeographiques} />
+    <MasterParametre exact path="/gestion_du_parc_automobile/gestion-du-plan-organisationnel" component={PlanOrganisationnel} />
+
+    
+    
     <MasterCodification2  path="/gestion_du_parc_automobile/les-couts-des-consommables" component={CoutConsommables} />
     <MasterCodification2  path="/gestion_du_parc_automobile/les-annees-budgetaires" component={AnneeBudgetaires} />
 
