@@ -91,8 +91,7 @@ class CreateVehiculesTable extends Migration {
 			$table->integer('acquisition_pret_kilometrage_fin')->nullable();
 			$table->text('acquisition_pret_motif', 65535)->nullable();
 			$table->float('acquisition_achat_prix_ht', 10, 0)->nullable();
-			$table->float('acquisition_achat_prix_ttc', 10, 0)->nullable();
-			$table->float('acquisition_achat_taux_tva', 10, 0)->nullable();
+		$table->float('acquisition_achat_taux_tva', 10, 0)->nullable();
 			$table->string('acquisition_achat_numero_facture', 50)->nullable();
 			$table->date('acquisition_achat_date_facture')->nullable();
 			$table->date('acquisition_achat_reglee_le')->nullable();
