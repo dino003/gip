@@ -59,3 +59,5 @@ export default class SearchInputSelect extends Component {
         )
     }
 }
+
+

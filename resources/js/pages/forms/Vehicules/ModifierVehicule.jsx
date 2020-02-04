@@ -39,6 +39,7 @@ class ModifierVehicule extends Component {
         super(props);
         this.state = {
             isFormSubmitted: false,
+            file: null
         }
     }
 
@@ -96,6 +97,12 @@ class ModifierVehicule extends Component {
         });
     }
 
+    handleFile = () => {
+        this.setState({
+            file: URL.createObjectURL(event.target.files[0])
+          })
+    }
+
 
 
     verificationFormulaire() {
@@ -104,16 +111,18 @@ class ModifierVehicule extends Component {
 
         if (this.immatriculation.value == '' ) {
             return "L'immatriculation est obligatoire !"
-        } else if (this.state.entite_comptable == undefined && !objetEdit.entite_comptable ) {
-            return "L'entité d'affectation comptable est obligatoire"
-        } else if (this.state.entite_physique == undefined && !objetEdit.entite_physique) {
-            return "L'entité d'affectation physique est obligatoire"
+        }else if ( vehculeExiste ) {
+            return "Un Véhicule Portant la même immatriculation exites déja !"
+        } else if (this.state.affectation_organisationnel_id == undefined && !objetEdit.affectation_organisationnel_id ) {
+            return "L'affectation organisationnelle est obligatoire"
+        } else if (this.state.affectation_geographique_id == undefined && !objetEdit.affectation_geographique_id) {
+            return "L'affectation géographique est obligatoire"
         } else if (this.state.categorie == undefined && !objetEdit.categorie) {
             return "La catégorie est obligatoire"
         } else if (this.state.marque == undefined && !objetEdit.marque) {
             return "La marque est obligatoire"
         }  else if (this.state.tiers == undefined && !objetEdit.tiers) {
-            return "Le Tiers d'acquisition est obligatoire"
+            return "Le Tiers d'acquisition n'a pas été défini dans l'onglet Acquisition !"
         }else if (this.state.contrat_assurance_id == undefined && this.props.contrat_assurances.length) {
             if(!this.props.contrat_assurances.find(contrat => contrat.defaut)) return "Le Véhicule doit être lié à contrat d'assurance"
             
@@ -126,14 +135,30 @@ class ModifierVehicule extends Component {
 
     }
 
+    photoUpload(vehicule_id){
+        const formData = new FormData();
+        formData.append('photo',this.state.file)
+        var url = '/api/modifier_photo_vehicule/' + vehicule_id
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        }
+
+        axios.post(url, formData, config).then(response => {
+            const action5 = { type: "EDIT_VEHICULE", value: response.data }
+            this.props.dispatch(action5)
+        })
+    }
+
     sendData(){
         this.setState({ isFormSubmitted: true })
         const objetEdit = this.props.vehicules.find(vehicule => vehicule.id == this.props.match.params.vehicule_id)
 
         axios.post('/api/modifier_vehicule/' + objetEdit.id, {
             immatriculation: this.immatriculation.value,
-            entite_comptable: this.state.entite_comptable ? this.state.entite_comptable.id : objetEdit.entite_comptable ? objetEdit.entite_comptable.id : null,
-            entite_physique: this.state.entite_physique ? this.state.entite_physique.id : objetEdit.entite_physique ? objetEdit.entite_physique.id : null,
+            affectation_organisationnel_id: this.state.affectation_organisationnel_id ? this.state.affectation_organisationnel_id.id : objetEdit.affectation_organisationnel_id ? objetEdit.affectation_organisationnel_id.id : null,
+            affectation_geographique_id: this.state.affectation_geographique_id ? this.state.affectation_geographique_id.id : objetEdit.affectation_geographique_id ? objetEdit.affectation_geographique_id.id : null,
             type_vehicule_statut: this.type_vehicule_statut.value,
             etat_vehicule_status: this.etat_vehicule_status.value,
             date_commande: this.date_commande.value,
@@ -249,6 +274,9 @@ class ModifierVehicule extends Component {
             contrat_assurance_id: this.state.contrat_assurance_id ? this.state.contrat_assurance_id.id : objetEdit.contrat_assurance ? objetEdit.contrat_assurance.id : this.props.contrat_assurances.length ? this.props.contrat_assurances.find(contrat => contrat.defaut).id : null,
 
         }).then(response => {
+            if(this.state.file != null){
+                this.photoUpload(response.data.id)
+            }
 
             const action = { type: "EDIT_VEHICULE", value: response.data }
             this.props.dispatch(action)
@@ -264,34 +292,97 @@ class ModifierVehicule extends Component {
 
     confirmAlertBefore(){
         let message 
-        if (this.state.mode_acquisition == '0' && this.acquisition_achat_prix_ttc.value == '' ) {
-            message = "Vous N'avez pas renseigné le montant T T C de l'achat, Souhaitez-vous continuer ?"
-            if(confirm(message)) return this.sendData()
-            return;
-        }else if(this.state.mode_acquisition == '1' && this.acquisition_leasing_loyer_mensuel.value == ''){
-            message = "Vous N'avez pas renseigné le loyer mensuel du leasing, Souhaitez-vous continuer ?"
-            if(confirm(message)) return this.sendData()
-            return;
-        }else if(  this.kilometrage_nouvelle_acquisition.value == ''){
-            message = "Vous N'avez pas renseigné le Kilometrage lors de l'entrée au parc Souhaitez-vous continuer ?"
-            if(confirm(message)) return this.sendData()
-        }
+        if (this.mode_acquisition.value == '0' && this.acquisition_achat_prix_ttc.value == '' ) {
+            message = "Vous N'avez pas renseigné le montant T T C de l'achat"
+           // if(confirm(message)) return this.sendData()
+           // return;
+           window.alert(message)
+        }else if(this.mode_acquisition.value == '1' && this.acquisition_leasing_loyer_mensuel.value == ''){
+            message = "Vous N'avez pas renseigné le loyer mensuel du leasing"
+           // if(confirm(message)) return this.sendData()
+           // return;
+           window.alert(message)
 
-        return this.sendData() 
+        }else{
+            this.sendData()
+        }
+        /* else if(  this.kilometrage_nouvelle_acquisition.value == ''){
+            message = "Vous N'avez pas renseigné le Kilometrage lors de l'entrée au parc "
+           // if(confirm(message)) return this.sendData()
+           window.alert(message)
+
+        } */
+
     }
 
     enregistrerVehicule = (e) => {
         e.preventDefault()
         if (this.verificationFormulaire() == null) {
          
-         //this.confirmAlertBefore();
-         this.sendData()
+         this.confirmAlertBefore();
+         //this.sendData()
         } else {
             //console.log(this.verificationFormulaire())
             toast.error(this.verificationFormulaire(), {
                 position: toast.POSITION.BOTTOM_CENTER
             });
         }
+    }
+
+    getNiveauxPlanGeographiques = () => {
+        const events = [];
+        this.props.structure_geographiques.map(event => {
+            if(!event.niveau) return;
+            return events.push(event.niveau)
+        })
+        
+        return events
+    }
+
+    getMaximumNiveauPlanGeographique = () => {
+        var niveau = Math.max(...this.getNiveauxPlanGeographiques()) 
+        if (niveau == 0) return 1;
+        return Number(niveau );
+
+    }
+
+    getStructureGeographiqueDernierNiveau = () => {
+        if(!this.getPlanGeographiquesDerniersNiveau().length) return undefined;
+        else{
+            return this.props.structure_geographiques.find(st => st.niveau == this.getPlanGeographiquesDerniersNiveau()[0].structure_geographique.niveau)
+        }
+    }
+
+    getPlanGeographiquesDerniersNiveau = () => {
+        return this.props.plan_geographiques.filter(elm => elm.structure_geographique ? elm.structure_geographique.niveau == this.getMaximumNiveauPlanGeographique() : false) 
+    }
+
+    getNiveauxPlanOrga = () => {
+        const events = [];
+        this.props.structure_organisationnelles.map(event => {
+            if(!event.niveau) return;
+            return events.push(event.niveau)
+        })
+        
+        return events
+    }
+
+    getMaximumNiveauPlanOrga = () => {
+        var niveau = Math.max(...this.getNiveauxPlanOrga(), 0) 
+        if (niveau == 0) return 1;
+        return Number(niveau );
+
+    }
+
+    getStructureOrganisationnelDernierNiveau = () => {
+        if(!this.getPlanOrgaDernierNiveau().length) return undefined;
+        else{
+            return this.props.structure_organisationnelles.find(st => st.niveau == this.getPlanOrgaDernierNiveau()[0].structure_organisationnel.niveau)
+        }
+    }
+
+    getPlanOrgaDernierNiveau = () => {
+        return this.props.plan_organisationnels.filter(elm => elm.structure_organisationnel ? elm.structure_organisationnel.niveau == this.getMaximumNiveauPlanOrga() : false)
     }
 
 
@@ -335,6 +426,13 @@ class ModifierVehicule extends Component {
                             <span>Assurance</span>
                         </a>
                     </li>
+
+                    <li className="nav-item">
+                        <a role="tab" className="nav-link" id="tab-4"
+                            data-toggle="tab" href="#tab_photo_vehicule">
+                            <span>Photo du véhicule</span>
+                        </a>
+                    </li>
                     {/*
                     <li className="nav-item">
                         <button type="submit" className="mt-2 btn btn-info">Enregistrer</button>
@@ -353,63 +451,83 @@ class ModifierVehicule extends Component {
 
                         </h5>
 
-                                    <div className="form-row">
+                        <div className="form-row">
 
-                                        <div className="col-md-3">
-                                            <div className="position-relative form-group">
+                            <div className="col-md-2">
+                            <div className="position-relative form-group">
                                                 <label >Immatriculation *</label>
                                                 <input name="immatriculation"
                                                     defaultValue={objetEdit.immatriculation}
                                                     ref={immatriculation => this.immatriculation = immatriculation}
                                                     type="text"
                                                     style={inputStyle}
-                                                    className="form-control" /></div>
-                                        </div>
-
-                                        <div className="col-md-3">
-                                            <label className="">Entité d'affectation comptable *</label>
-              
-
-                                            <Select
-                                                name="entite_comptable"
-                                                placeholder="Selectionnez une Entité"
-                                                noOptionsMessage={() => "Aucune Entité pour l'instant"}
-                                                options={this.props.entites}
-                                                getOptionLabel={option => option.entite}
-                                                getOptionValue={option => option.id}
-                                                defaultValue={objetEdit.entite_comptable ? objetEdit.entite_comptable : null}
-
-                                                // formatOptionLabel={formatOptionVehicule}
-                                                onChange={this.setFieldSelect.bind(this, "entite_comptable")}
-                                                styles={colourStyles}
-                                            />
-
-                                        </div>
-
-                                        <div className="col-md-3">
-                                            <label className="">Entité d'affectation physique *</label>
+                                                    className="form-control" />
+                                                    </div>
+                            </div>
+                            {this.getStructureGeographiqueDernierNiveau() ?
+                            <div className="col-md-5">
+                                <label className="">{this.getStructureGeographiqueDernierNiveau().libelle} d'affectation *</label>
 
 
-                                            <Select
-                                                name="entite_physique"
-                                                placeholder="Selectionnez une Entité"
-                                                noOptionsMessage={() => "Aucune Entité pour l'instant"}
-                                                options={this.props.entites}
-                                                getOptionLabel={option => option.entite}
-                                                getOptionValue={option => option.id}
-                                                defaultValue={objetEdit.entite_physique ? objetEdit.entite_physique : null}
+                                <Select
+                                    name="affectation_geographique_id"
+                                    isDisabled={!this.getStructureGeographiqueDernierNiveau()}
+                                    placeholder={`Sélection de ${this.getStructureGeographiqueDernierNiveau().libelle}`}
+                                    noOptionsMessage={() => `Pas de ${this.getStructureGeographiqueDernierNiveau().libelle} pour l'instant`}
+                                    options={this.getPlanGeographiquesDerniersNiveau()}
+                                    getOptionLabel={option => option.libelle}
+                                    getOptionValue={option => option.id}
+                                    defaultValue={objetEdit.affectation_geographique ? objetEdit.affectation_geographique : null}
 
-                                                // formatOptionLabel={formatOptionVehicule}
-                                                onChange={this.setFieldSelect.bind(this, "entite_physique")}
-                                                styles={colourStyles}
-                                            />
+                                    // formatOptionLabel={formatOptionVehicule}
+                                    onChange={this.setFieldSelect.bind(this, "affectation_geographique_id")}
+                                    styles={colourStyles}
+                                />
 
-                                        </div>
-
-
+                            </div> :
 
 
-                                    </div>
+                            <div className="col-md-5">
+                                <label className=""> Affectation Géographique</label>
+
+                                <input readOnly className="form-control" value="Veuillez creer la structure Géographique" />
+
+                            </div>}
+
+                            {this.getStructureOrganisationnelDernierNiveau() ?
+                            <div className="col-md-5">
+                                <label className="">{this.getStructureOrganisationnelDernierNiveau().libelle} d'affectation *</label>
+
+
+                                <Select
+                                    name="affectation_organisationnel_id"
+                                    isDisabled={!this.getStructureOrganisationnelDernierNiveau()}
+                                    placeholder={`Sélection de ${this.getStructureOrganisationnelDernierNiveau().libelle}`}
+                                    noOptionsMessage={() => `Pas de ${this.getStructureOrganisationnelDernierNiveau().libelle} pour l'instant`}
+                                    options={this.getPlanOrgaDernierNiveau()}
+                                    getOptionLabel={option => option.libelle}
+                                    getOptionValue={option => option.id}
+                                    defaultValue={objetEdit.affectation_organisationnel ? objetEdit.affectation_organisationnel : null}
+
+                                    // formatOptionLabel={formatOptionVehicule}
+                                    onChange={this.setFieldSelect.bind(this, "affectation_organisationnel_id")}
+                                    styles={colourStyles}
+                                />
+
+                            </div> :
+
+
+                            <div className="col-md-5">
+                                <label className=""> Affectation Organisationnelle</label>
+
+                                <input readOnly className="form-control" value="Veuillez creer la structure Organisationnelle" />
+
+                            </div>}
+
+
+                        </div>
+
+                                   
 
                                     <div className="form-row">
 
@@ -448,23 +566,6 @@ class ModifierVehicule extends Component {
 
                                         </div>
 
-                                        <div className="col-md-3">
-                                            <label className=""> Mode d'acquisition *</label>
-                                            <select name="mode_acquisition"
-                                                    defaultValue={objetEdit.mode_acquisition}
-                                                    style={inputStyle}
-                                                ref={mode_acquisition => this.mode_acquisition = mode_acquisition}
-                                                className="form-control">
-                                                <option value="0">Achat</option>
-                                                <option value="1">Leasing</option>
-                                                <option value="2">Prêt</option>
-                                                {/* <option value="Location courte">Location courte</option>
-                                                <option value="Location Longue Durée">Location Longue Durée</option> */}
-
-
-                                            </select>
-
-                                        </div>
 
                                         <div className="col-md-2">
                                             <label className="">Etat </label>
@@ -708,25 +809,7 @@ class ModifierVehicule extends Component {
                                             />
                                         </div>
 
-                                        <div className="col-md-3">
-                                            <label className="">Tiers d'acquisition *</label>
-
-
-                                            <Select
-                                                name="tiers"
-                                                placeholder="Selectionnez un tiers"
-                                                noOptionsMessage={() => "Aucun Tiers pour l'instant"}
-                                                options={this.props.tiers}
-                                                getOptionLabel={option => `${option.code} ${option.nom.slice(0, 15)}`}
-                                                getOptionValue={option => option.id}
-                                                // formatOptionLabel={formatOptionVehicule}
-                                                defaultValue={objetEdit.tiers ? objetEdit.tiers : null}
-
-                                                onChange={this.setFieldSelect.bind(this, "tiers")}
-                                                styles={colourStyles}
-                                            />
-
-                                        </div>
+                                     
 
                                         <div className="col-md-3">
                                             <label className="">Chauffeur attitré</label>
@@ -1381,6 +1464,49 @@ class ModifierVehicule extends Component {
                         {/*  acquisition */}
 
                         <div className="tab-pane tabs-animation fade" id="tab_acquisition" role="tabpanel">
+                            
+                        <div className="main-card mb-3 card">
+                                <div className="card-body">
+                                    <div className="form-row">
+                                    <div className="col-md-3">
+                                            <label className=""> Mode d'acquisition *</label>
+                                            <select name="mode_acquisition"
+                                                    defaultValue={objetEdit.mode_acquisition}
+                                                    style={inputStyle}
+                                                ref={mode_acquisition => this.mode_acquisition = mode_acquisition}
+                                                className="form-control">
+                                                <option value="0">Achat</option>
+                                                <option value="1">Leasing</option>
+                                                <option value="2">Prêt</option>
+                                                {/* <option value="Location courte">Location courte</option>
+                                                <option value="Location Longue Durée">Location Longue Durée</option> */}
+
+
+                                            </select>
+
+                                        </div>
+
+                                        <div className="col-md-5">
+                                            <label className="">Tiers d'acquisition *</label>
+
+                                            <Select
+                                                name="tiers"
+                                                placeholder="Selectionnez un tiers"
+                                                noOptionsMessage={() => "Aucun Tiers pour l'instant"}
+                                                options={this.props.tiers}
+                                                getOptionLabel={option => `${option.code} ${option.nom.slice(0, 15)}`}
+                                                getOptionValue={option => option.id}
+                                                // formatOptionLabel={formatOptionVehicule}
+                                                defaultValue={objetEdit.tiers ? objetEdit.tiers : null}
+
+                                                onChange={this.setFieldSelect.bind(this, "tiers")}
+                                                styles={colourStyles}
+                                            />
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div className="main-card mb-3 card">
                                 <div className="card-body"><h5 className="card-title">Acquisition : {this.state.mode_acquisition == '0' ? 'Achat' : this.state.mode_acquisition == '1' ? 'Leasing' : this.state.mode_acquisition == '2' ? 'Prêt' : objetEdit.mode_acquisition == '0' ? 'Achat' : objetEdit.mode_acquisition == '1' ? 'Leasing' : objetEdit.mode_acquisition == '2' ? 'Prêt' : null}  </h5>
@@ -1405,7 +1531,7 @@ class ModifierVehicule extends Component {
 
                                             <div className="col-md-1">
                                                 <div className="position-relative form-group">
-                                                    <label >Taux de TVA</label>
+                                                    <label > TVA</label>
 
 
                                                     {this.props.tva.length ? <input name="acquisition_achat_taux_tva" type="number"
@@ -1550,7 +1676,7 @@ class ModifierVehicule extends Component {
 
 
 
-                                            <div className="col-md-2">
+                                            <div className="col-md-3">
                                                 <div className="position-relative form-group">
                                                     <label >Date de début</label>
                                                     <input name="acquisition_pret_date_debut"
@@ -1560,7 +1686,7 @@ class ModifierVehicule extends Component {
                                                         type="date" className="form-control" /></div>
                                             </div>
 
-                                            <div className="col-md-1">
+                                            <div className="col-md-3">
                                                 <div className="position-relative form-group">
                                                     <label >Date de fin</label>
                                                     <input name="acquisition_pret_date_fin"
@@ -1590,7 +1716,7 @@ class ModifierVehicule extends Component {
                                                         type="number" className="form-control" /></div>
                                             </div>
 
-                                            <div className="col-md-3">
+                                            <div className="col-md-2">
                                                 <div className="position-relative form-group">
                                                     <label >Motif du prêt</label>
                                                     <textarea name="acquisition_pret_motif"
@@ -1958,6 +2084,45 @@ class ModifierVehicule extends Component {
 
                         {/** fin assurance */}
 
+                            {/*  photo vehicule */}
+
+                            <div className="tab-pane tabs-animation fade" id="tab_photo_vehicule" role="tabpanel">
+
+
+                                <div className="main-card mb-3 card">
+                                    <div className="card-body">
+                                    
+
+                                        <div className="form-row">
+
+                                            <div className="col-md-5">
+                                            <input type="file" className="form-control" onChange={this.handleFile} />
+                                            </div>
+
+                                            {this.state.file != null ?   <div className="col-md-2">
+                                            <span className="mt-2 btn btn-danger" onClick={() => this.setState({
+                                                file: null
+                                            })}> 
+                                                Annuler
+                                            </span> 
+                                        </div> : null}
+
+                                    
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <div className="main-card mb-3 card">
+                                <img src={this.state.file == null ? `/uploads/vehicules_photos/${objetEdit.photo}` : this.state.file}/>
+                                </div>
+
+
+
+                                </div>
+
+                                {/** fin photo vehicule */}
+
 
 
 
@@ -2000,7 +2165,11 @@ const mapStateToProps = state => {
         personnels: state.personnels.items,
         tva: state.tva.items,
         contrat_assurances: state.contrat_assurances.items,
-        vehicules: state.vehicules.items
+        vehicules: state.vehicules.items,
+        plan_organisationnels: state.plan_organisationnels.items,
+        plan_geographiques: state.plan_geographiques.items,
+        structure_geographiques: state.structure_geographiques.items,
+        structure_organisationnelles: state.structure_organisationnelles.items
 
     }
 }

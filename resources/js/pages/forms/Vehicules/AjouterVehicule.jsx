@@ -18,7 +18,14 @@ class AjouterVehicule extends Component {
         this.state = {
             isFormSubmitted: false,
             mode_acquisition: '0',
+            file: '/uploads/vehicules_photos/default.jpg'
         }
+    }
+
+    handleFile = () => {
+        this.setState({
+            file: URL.createObjectURL(event.target.files[0])
+          })
     }
 
     setFieldSelect(name, value) {
@@ -83,16 +90,16 @@ class AjouterVehicule extends Component {
             return "L'immatriculation est obligatoire !"
         } else if ( vehculeExiste ) {
             return "Un Véhicule Portant la même immatriculation exites déja !"
-        } else if (this.state.entite_comptable == undefined ) {
-            return "L'entité d'affectation comptable est obligatoire"
-        } else if (this.state.entite_physique == undefined) {
-            return "L'entité d'affectation physique est obligatoire"
+        } else if (this.state.affectation_organisationnel_id == undefined ) {
+            return "L'affectation Organisationnelle est obligatoire"
+        } else if (this.state.affectation_geographique_id == undefined) {
+            return "L'affectation géographique est obligatoire"
         } else if (this.state.categorie == undefined ) {
             return "La catégorie est obligatoire"
         } else if (this.state.marque == undefined ) {
             return "La marque est obligatoire"
         } else if (this.state.tiers == undefined ) {
-            return "Le Tiers d'acquisition est obligatoire"
+            return "Le Tiers d'acquisition n'a pas été défini dans l'onglet Acquisition !"
         }else if (this.state.contrat_assurance_id == undefined && this.props.contrat_assurances.length) {
             if(!this.props.contrat_assurances.find(contrat => contrat.defaut)) return "Le Véhicule doit être lié à contrat d'assurance"
             
@@ -105,12 +112,29 @@ class AjouterVehicule extends Component {
 
     }
 
+    photoUpload(vehicule_id){
+        const formData = new FormData();
+        formData.append('photo',this.state.file)
+        var url = '/api/modifier_photo_vehicule/' + vehicule_id
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        }
+
+        axios.post(url, formData, config).then(response => {
+            const action5 = { type: "EDIT_VEHICULE", value: response.data }
+            this.props.dispatch(action5)
+        })
+    }
+
     sendData(){
+
         this.setState({ isFormSubmitted: true })
         axios.post('/api/ajouter_vehicule', {
             immatriculation: this.immatriculation.value,
-            entite_comptable: this.state.entite_comptable ? this.state.entite_comptable.id : null,
-            entite_physique: this.state.entite_physique ? this.state.entite_physique.id : null,
+            affectation_organisationnel_id: this.state.affectation_organisationnel_id ? this.state.affectation_organisationnel_id.id : null,
+            affectation_geographique_id: this.state.affectation_geographique_id ? this.state.affectation_geographique_id.id : null,
             type_vehicule_statut: this.type_vehicule_statut.value,
             etat_vehicule_status: this.etat_vehicule_status.value,
             date_commande: this.date_commande.value,
@@ -229,6 +253,9 @@ class AjouterVehicule extends Component {
 
             const action = { type: "ADD_VEHICULE", value: response.data }
             this.props.dispatch(action)
+            if(this.state.file != '/uploads/vehicules_photos/default.jpg'){
+                this.photoUpload(response.data.id)
+            }
             this.setState({ isFormSubmitted: false })
             this.props.history.goBack();
         }).catch(error => {
@@ -240,20 +267,27 @@ class AjouterVehicule extends Component {
     confirmAlertBefore(){
         let message 
         if (this.state.mode_acquisition == '0' && this.acquisition_achat_prix_ttc.value == '' ) {
-            message = "Vous N'avez pas renseigné le montant T T C de l'achat, Souhaitez-vous continuer ?"
-            if(confirm(message)) return this.sendData()
-            return;
+            message = "Vous N'avez pas renseigné le montant T T C de l'achat, "
+           // if(confirm(message)) return this.sendData()
+           // return;
+           window.alert(message)
         }else if(this.state.mode_acquisition == '1' && this.acquisition_leasing_loyer_mensuel.value == ''){
-            message = "Vous N'avez pas renseigné le loyer mensuel du leasing, Souhaitez-vous continuer ?"
-            if(confirm(message)) return this.sendData()
-            return;
-        }else if(  this.kilometrage_nouvelle_acquisition.value == ''){
-            message = "Vous N'avez pas renseigné le Kilometrage lors de l'entrée au parc Souhaitez-vous continuer ?"
-            if(confirm(message)) return this.sendData()
-            return;
-        }
+            message = "Vous N'avez pas renseigné le loyer mensuel du leasing, "
+           // if(confirm(message)) return this.sendData()
+          //  return;
+          window.alert(message)
 
-        return this.sendData() 
+        }else{
+            this.sendData()
+        }
+        /* else if(  this.kilometrage_nouvelle_acquisition.value == ''){
+            message = "Vous N'avez pas renseigné le Kilometrage lors de l'entrée au parc Souhaitez-vous continuer ?"
+           // if(confirm(message)) return this.sendData()
+           // return;
+           window.alert(message)
+
+        } */
+
     }
 
     enregistrerVehicule = (e) => {
@@ -281,14 +315,21 @@ class AjouterVehicule extends Component {
     }
 
     getMaximumNiveauPlanGeographique = () => {
-        var niveau = Math.max(...this.getNiveauxPlanGeographiques(), 0) 
+        var niveau = Math.max(...this.getNiveauxPlanGeographiques()) 
         if (niveau == 0) return 1;
         return Number(niveau );
 
     }
 
+    getStructureGeographiqueDernierNiveau = () => {
+        if(!this.getPlanGeographiquesDerniersNiveau().length) return undefined;
+        else{
+            return this.props.structure_geographiques.find(st => st.niveau == this.getPlanGeographiquesDerniersNiveau()[0].structure_geographique.niveau)
+        }
+    }
+
     getPlanGeographiquesDerniersNiveau = () => {
-        return this.props.plan_geographiques.filter(elm => elm.structure_geographique_id == this.getMaximumNiveauPlanGeographique())
+        return this.props.plan_geographiques.filter(elm => elm.structure_geographique ? elm.structure_geographique.niveau == this.getMaximumNiveauPlanGeographique() : false) 
     }
 
     getNiveauxPlanOrga = () => {
@@ -308,13 +349,22 @@ class AjouterVehicule extends Component {
 
     }
 
+    getStructureOrganisationnelDernierNiveau = () => {
+        if(!this.getPlanOrgaDernierNiveau().length) return undefined;
+        else{
+            return this.props.structure_organisationnelles.find(st => st.niveau == this.getPlanOrgaDernierNiveau()[0].structure_organisationnel.niveau)
+        }
+    }
+
     getPlanOrgaDernierNiveau = () => {
-        return this.props.plan_organisationnels.filter(elm => elm.structure_organisationnel_id == this.getMaximumNiveauPlanOrga())
+        return this.props.plan_organisationnels.filter(elm => elm.structure_organisationnel ? elm.structure_organisationnel.niveau == this.getMaximumNiveauPlanOrga() : false)
     }
 
 
     render() {
-   //console.log(this.getPlanOrgaDernierNiveau(), this.getPlanGeographiquesDerniersNiveau())
+  // console.log(this.getPlanOrgaDernierNiveau(), this.getPlanGeographiquesDerniersNiveau())
+ // console.log(this.getStructureGeographiqueDernierNiveau())
+
         return (
             <div className="app-main__inner">
                 <ul className="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
@@ -351,6 +401,13 @@ class AjouterVehicule extends Component {
                             <span>Assurance</span>
                         </a>
                     </li>
+
+                    <li className="nav-item">
+                        <a role="tab" className="nav-link" id="tab-4"
+                            data-toggle="tab" href="#tab_photo_vehicule">
+                            <span>Photo du véhicule</span>
+                        </a>
+                    </li>
                     {/*
                     <li className="nav-item">
                         <button type="submit" className="mt-2 btn btn-info">Enregistrer</button>
@@ -371,7 +428,7 @@ class AjouterVehicule extends Component {
 
                                     <div className="form-row">
 
-                                        <div className="col-md-3">
+                                        <div className="col-md-2">
                                             <div className="position-relative form-group">
                                                 <label >Immatriculation *</label>
                                                 <input name="immatriculation"
@@ -380,54 +437,61 @@ class AjouterVehicule extends Component {
                                                     style={inputStyle}
                                                     className="form-control" /></div>
                                         </div>
-
-                                        <div className="col-md-3">
-                                            <label className="">Entité d'affectation comptable *</label>
-                                            {/* <select name="entite_comptable"
-                                                style={inputStyle}
-
-                                                ref={entite_comptable => this.entite_comptable = entite_comptable}
-                                                className="form-control">
-                                                <option value={null}></option>
-                                                {this.props.entites.map(ent =>
-                                                    <option key={ent.id} value={ent.id}>{ent.entite} _ {ent.nom_entite}</option>
-                                                )}
-
-                                            </select> */}
+                                    {this.getStructureGeographiqueDernierNiveau() ?
+                                        <div className="col-md-5">
+                                            <label className="">{this.getStructureGeographiqueDernierNiveau().libelle} d'affectation *</label>
+                                       
 
                                             <Select
-                                                name="entite_comptable"
-                                                placeholder="Selectionnez une Entité"
-                                                noOptionsMessage={() => "Aucune Entité pour l'instant"}
-                                                options={this.props.entites}
-                                                getOptionLabel={option => option.entite}
+                                                name="affectation_geographique_id"
+                                                isDisabled={!this.getStructureGeographiqueDernierNiveau()}
+                                                placeholder={`Sélection de ${this.getStructureGeographiqueDernierNiveau().libelle}`}
+                                                noOptionsMessage={() => `Pas de ${this.getStructureGeographiqueDernierNiveau().libelle} pour l'instant`}
+                                                options={this.getPlanGeographiquesDerniersNiveau()}
+                                                getOptionLabel={option => option.libelle}
                                                 getOptionValue={option => option.id}
                                                 // formatOptionLabel={formatOptionVehicule}
-                                                onChange={this.setFieldSelect.bind(this, "entite_comptable")}
+                                                onChange={this.setFieldSelect.bind(this, "affectation_geographique_id")}
                                                 styles={colourStyles}
                                             />
 
-                                        </div>
+                                        </div> :
 
-                                        <div className="col-md-3">
-                                            <label className="">Entité d'affectation physique *</label>
 
+                                        <div className="col-md-5">
+                                            <label className=""> Affectation Géographique</label>
+                                       
+                                            <input readOnly className="form-control" value="Veuillez creer la structure Géographique" />
+
+                                        </div>}
+
+                                        {this.getStructureOrganisationnelDernierNiveau() ?
+                                        <div className="col-md-5">
+                                            <label className="">{this.getStructureOrganisationnelDernierNiveau().libelle} d'affectation *</label>
+                                       
 
                                             <Select
-                                                name="entite_physique"
-                                                placeholder="Selectionnez une Entité"
-                                                noOptionsMessage={() => "Aucune Entité pour l'instant"}
-                                                options={this.props.entites}
-                                                getOptionLabel={option => option.entite}
+                                                name="affectation_organisationnel_id"
+                                                isDisabled={!this.getStructureOrganisationnelDernierNiveau()}
+                                                placeholder={`Sélection de ${this.getStructureOrganisationnelDernierNiveau().libelle}`}
+                                                noOptionsMessage={() => `Pas de ${this.getStructureOrganisationnelDernierNiveau().libelle} pour l'instant`}
+                                                options={this.getPlanOrgaDernierNiveau()}
+                                                getOptionLabel={option => option.libelle}
                                                 getOptionValue={option => option.id}
                                                 // formatOptionLabel={formatOptionVehicule}
-                                                onChange={this.setFieldSelect.bind(this, "entite_physique")}
+                                                onChange={this.setFieldSelect.bind(this, "affectation_organisationnel_id")}
                                                 styles={colourStyles}
                                             />
 
-                                        </div>
+                                        </div> :
 
 
+                                        <div className="col-md-5">
+                                            <label className=""> Affectation Organisationnelle</label>
+                                       
+                                            <input readOnly className="form-control" value="Veuillez creer la structure Organisationnelle" />
+
+                                        </div>}
 
 
                                     </div>
@@ -465,23 +529,7 @@ class AjouterVehicule extends Component {
 
                                         </div>
 
-                                        <div className="col-md-3">
-                                            <label className=""> Mode d'acquisition *</label>
-                                            <select name="mode_acquisition"
-                                                defaultValue="0"
-                                                style={inputStyle}
-                                                ref={mode_acquisition => this.mode_acquisition = mode_acquisition}
-                                                className="form-control">
-                                                <option value="0">Achat</option>
-                                                <option value="1">Leasing</option>
-                                                <option value="2">Prêt</option>
-                                                {/* <option value="Location courte">Location courte</option>
-                                                <option value="Location Longue Durée">Location Longue Durée</option> */}
-
-
-                                            </select>
-
-                                        </div>
+                                   
 
                                         <div className="col-md-2">
                                             <label className="">Etat </label>
@@ -702,28 +750,7 @@ class AjouterVehicule extends Component {
                                             />
                                         </div>
 
-                                        <div className="col-md-3">
-                                            <label className="">Tiers d'acquisition *</label>
-
-
-                                            <Select
-                                                name="tiers"
-                                                placeholder="Selectionnez un tiers"
-                                                noOptionsMessage={() => "Aucun Tiers pour l'instant"}
-                                                options={this.props.tiers}
-                                                getOptionLabel={option => {
-                                                    if(option.nom){
-                                                        return `${option.code} ${option.nom.slice(0, 15)}`
-                                                    }
-                                                    return `${option.code}`
-                                                }}
-                                                getOptionValue={option => option.id}
-                                                // formatOptionLabel={formatOptionVehicule}
-                                                onChange={this.setFieldSelect.bind(this, "tiers")}
-                                                styles={colourStyles}
-                                            />
-
-                                        </div>
+                                   
 
                                         <div className="col-md-3">
                                             <label className="">Chauffeur attitré</label>
@@ -1310,6 +1337,54 @@ class AjouterVehicule extends Component {
                         {/*  acquisition */}
 
                         <div className="tab-pane tabs-animation fade" id="tab_acquisition" role="tabpanel">
+                            <div className="main-card mb-3 card">
+                                <div className="card-body">
+                                    <div className="form-row">
+                                    <div className="col-md-3">
+                                            <label className=""> Mode d'acquisition *</label>
+                                            <select name="mode_acquisition"
+                                                value={this.state.mode_acquisition}
+                                                style={inputStyle}
+                                                onChange={this.setField}
+                                                ref={mode_acquisition => this.mode_acquisition = mode_acquisition}
+                                                className="form-control">
+                                                <option value="0">Achat</option>
+                                                <option value="1">Leasing</option>
+                                                <option value="2">Prêt</option>
+                                                {/* <option value="Location courte">Location courte</option>
+                                                <option value="Location Longue Durée">Location Longue Durée</option> */}
+
+
+                                            </select>
+
+                                        </div>
+
+                                        <div className="col-md-5">
+                                            <label className="">Tiers d'acquisition *</label>
+
+
+                                            <Select
+                                                name="tiers"
+                                                placeholder="Selectionnez un tiers"
+                                                noOptionsMessage={() => "Aucun Tiers pour l'instant"}
+                                                options={this.props.tiers}
+                                                getOptionLabel={option => {
+                                                    if(option.nom){
+                                                        return `${option.code} ${option.nom.slice(0, 15)}`
+                                                    }
+                                                    return `${option.code}`
+                                                }}
+                                                getOptionValue={option => option.id}
+                                                // formatOptionLabel={formatOptionVehicule}
+                                                onChange={this.setFieldSelect.bind(this, "tiers")}
+                                                styles={colourStyles}
+                                            />
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
 
                             <div className="main-card mb-3 card">
                                 <div className="card-body"><h5 className="card-title">Acquisition : {this.state.mode_acquisition == '0' ? 'Achat' : this.state.mode_acquisition == '1' ? 'Leasing' : this.state.mode_acquisition == '2' ? 'Prêt' : 'Achat'} </h5>
@@ -1330,7 +1405,7 @@ class AjouterVehicule extends Component {
 
                                             <div className="col-md-1">
                                                 <div className="position-relative form-group">
-                                                    <label >Taux de TVA</label>
+                                                    <label >TVA</label>
 
 
                                                     {this.props.tva.length ? <input name="acquisition_achat_taux_tva" type="number"
@@ -1456,20 +1531,20 @@ class AjouterVehicule extends Component {
 
 
 
-                                            <div className="col-md-2">
+                                            <div className="col-md-3">
                                                 <div className="position-relative form-group">
                                                     <label >Date de début</label>
                                                     <input name="acquisition_pret_date_debut"
                                                         ref={acquisition_pret_date_debut => this.acquisition_pret_date_debut = acquisition_pret_date_debut}
-                                                        type="text" className="form-control" /></div>
+                                                        type="date" className="form-control" /></div>
                                             </div>
 
-                                            <div className="col-md-1">
+                                            <div className="col-md-3">
                                                 <div className="position-relative form-group">
                                                     <label >Date de fin</label>
                                                     <input name="acquisition_pret_date_fin"
                                                         ref={acquisition_pret_date_fin => this.acquisition_pret_date_fin = acquisition_pret_date_fin}
-                                                        type="text" className="form-control" /></div>
+                                                        type="date" className="form-control" /></div>
                                             </div>
 
                                             <div className="col-md-2">
@@ -1477,7 +1552,7 @@ class AjouterVehicule extends Component {
                                                     <label >Kilometrage début</label>
                                                     <input name="acquisition_pret_kilometrage_debut"
                                                         ref={acquisition_pret_kilometrage_debut => this.acquisition_pret_kilometrage_debut = acquisition_pret_kilometrage_debut}
-                                                        type="text" className="form-control" /></div>
+                                                        type="number" className="form-control" /></div>
                                             </div>
 
                                             <div className="col-md-2">
@@ -1485,10 +1560,10 @@ class AjouterVehicule extends Component {
                                                     <label >Kilometrage fin</label>
                                                     <input name="acquisition_pret_kilometrage_fin"
                                                         ref={acquisition_pret_kilometrage_fin => this.acquisition_pret_kilometrage_fin = acquisition_pret_kilometrage_fin}
-                                                        type="text" className="form-control" /></div>
+                                                        type="number" className="form-control" /></div>
                                             </div>
 
-                                            <div className="col-md-3">
+                                            <div className="col-md-2">
                                                 <div className="position-relative form-group">
                                                     <label >Motif du prêt</label>
                                                     <textarea name="acquisition_pret_motif"
@@ -1626,6 +1701,45 @@ class AjouterVehicule extends Component {
                         </div>
 
                         {/** fin assurance */}
+
+
+                        {/*  photo vehicule */}
+
+                        <div className="tab-pane tabs-animation fade" id="tab_photo_vehicule" role="tabpanel">
+
+
+                            <div className="main-card mb-3 card">
+                                <div className="card-body">
+                                 
+
+                                    <div className="form-row">
+
+                                        <div className="col-md-5">
+                                          <input type="file" className="form-control" onChange={this.handleFile} />
+                                        </div>
+                                      {this.state.file != '/uploads/vehicules_photos/default.jpg' ?   <div className="col-md-2">
+                                            <span className="mt-2 btn btn-danger" onClick={() => this.setState({
+                                                file: '/uploads/vehicules_photos/default.jpg'
+                                            })}> 
+                                                Annuler
+                                            </span> 
+                                        </div> : null}
+
+                                
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div className="main-card mb-3 card">
+                            <img width="auto" src={this.state.file}/>
+                            </div>
+
+
+
+                        </div>
+
+                        {/** fin photo vehicule */}
 
 
 

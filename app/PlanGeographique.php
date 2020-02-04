@@ -11,6 +11,7 @@ class PlanGeographique extends Model
     protected $guarded = ['id'];
 
     public $timestamps = false;
+    protected $with = ['vehicules'];
 
     public function structure_geographique()
     {
@@ -20,6 +21,12 @@ class PlanGeographique extends Model
         public function children()
         {
             return $this->hasMany(PlanGeographique::class, 'parent', 'id');
+        }
+
+        // vehicules 
+        public function vehicules()
+        {
+            return $this->hasMany(Vehicule::class, 'affectation_geographique_id', 'id');
         }
 
     

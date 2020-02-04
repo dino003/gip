@@ -17,6 +17,18 @@ class Vehicule extends Model
     //  'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
     //   'chauffeur_atitre', 'contrat_assurance', 'energie'];
 
+    //plan Organisationnel
+    public function affectation_organisationnel()
+    {
+        return $this->belongsTo(PlanOrganisationnel::class, 'affectation_organisationnel_id');
+    }
+
+        //plan Geographique
+        public function affectation_geographique()
+        {
+            return $this->belongsTo(PlanGeographique::class, 'affectation_geographique_id');
+        }
+
     // entite comptable
     public function entite_comptable()
     {

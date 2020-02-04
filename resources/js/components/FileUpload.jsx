@@ -47,10 +47,7 @@ import {connect} from 'react-redux'
 
 
     fileUpload(file){
-        // toggle
-        // this.setState((prevState) => {
-        //     return { element: !prevState.element}
-        // })
+  
 
         const url = '/api/import_personnel';
        

@@ -11,6 +11,9 @@ Route::post('ajouter_vehicule', 'VehiculeController@store');
 // modifier
 Route::post('modifier_vehicule/{id}', 'VehiculeController@update');
 
+// modifier
+Route::post('modifier_photo_vehicule/{id}', 'VehiculeController@uploadPhoto');
+
 // supprimer
 Route::delete('supprimer_vehicule/{id}', 'VehiculeController@destroy');
 //*********** fin vehicule vehicules********************************************************* 

@@ -11,6 +11,8 @@ class PlanOrganisationnel extends Model
     protected $guarded = ['id'];
 
     public $timestamps = false;
+    protected $with = ['vehicules'];
+
 
     public function structure_organisationnel()
     {
@@ -21,4 +23,11 @@ class PlanOrganisationnel extends Model
     {
         return $this->hasMany(PlanOrganisationnel::class, 'parent', 'id');
     }
+
+
+        // vehicules 
+        public function vehicules()
+        {
+            return $this->hasMany(Vehicule::class, 'affectation_organisationnel_id', 'id');
+        }
 }

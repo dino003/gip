@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Vehicule;
 use Illuminate\Http\Request;
 use App\Repositories\Repository;
+use Image;
 
 class VehiculeController extends Controller
 {
@@ -23,7 +24,7 @@ class VehiculeController extends Controller
        // return $this->model->get();
         $vehicules = Vehicule::with(['entite_comptable', 'entite_physique',
         'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
-         'chauffeur_atitre', 'contrat_assurance.compagnie_assurance', 'energie'])->orderBy('id', 'desc')->get();
+         'chauffeur_atitre', 'contrat_assurance.compagnie_assurance', 'energie', 'affectation_organisationnel', 'affectation_geographique'])->orderBy('id', 'desc')->get();
 
          return response()->json($vehicules);
     }
@@ -54,7 +55,7 @@ class VehiculeController extends Controller
   
          return response()->json(Vehicule::with(['entite_comptable', 'entite_physique',
          'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
-          'chauffeur_atitre', 'contrat_assurance', 'energie'])->find($creation->id));
+          'chauffeur_atitre', 'contrat_assurance', 'energie', 'affectation_organisationnel', 'affectation_geographique'])->find($creation->id));
 
     }
 
@@ -96,7 +97,28 @@ class VehiculeController extends Controller
 
        return response()->json(Vehicule::with(['entite_comptable', 'entite_physique',
        'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
-        'chauffeur_atitre', 'contrat_assurance', 'energie'])->find($id));
+        'chauffeur_atitre', 'contrat_assurance', 'energie', 'affectation_organisationnel', 'affectation_geographique'])->find($id));
+    }
+
+    // ajouter ou modifier photo du vehicule 
+    public function uploadPhoto(Request $request, $id){
+        if($request->hasFile('photo')){
+            $vehicule = Vehicule::find($id);
+            $avatar = $request->file('photo');
+            $filename = time() . '.' . $avatar->getClientOriginalExtension();
+
+            Image::make($avatar)->resize(300, 300)->save(public_path('/uploads/vehicules_photos/' . $filename ));
+
+            $vehicule->photo  =  $filename;
+
+            $vehicule->save();
+
+            return response()->json(Vehicule::with(['entite_comptable', 'entite_physique',
+            'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
+             'chauffeur_atitre', 'contrat_assurance', 'energie', 'affectation_organisationnel', 'affectation_geographique'])->find($id));
+
+
+        }
     }
 
     /**
