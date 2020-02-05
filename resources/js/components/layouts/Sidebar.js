@@ -353,7 +353,7 @@ class Sidebar extends Component {
                                     </a> }
                                 </li>
                                     } */}
-
+{/* 
                                     {param_generaux_modules.journal_evenement == 1 ?
                                         <li>
                                             {vehiculeSeleted != undefined ? (
@@ -379,7 +379,7 @@ class Sidebar extends Component {
                                                 </a>
                                             )}
                                         </li> : null
-                                    }
+                                    } */}
                                 </React.Fragment> : null
                             }
 
