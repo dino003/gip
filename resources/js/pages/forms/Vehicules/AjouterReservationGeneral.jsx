@@ -22,6 +22,42 @@ import { colourStyles } from '../../../utils/Repository';
       
     }
 
+    setFieldSelectDepartEtDestination(name, value) {
+     
+        let obj = {};
+        obj[name] = value;
+        this.setState(obj);
+    }
+
+          
+    getNiveauxPlanGeographiques = () => {
+        const events = [];
+        this.props.structure_geographiques.map(event => {
+            if(!event.niveau) return;
+            return events.push(event.niveau)
+        })
+        
+        return events
+    }
+
+    getMaximumNiveauPlanGeographique = () => {
+        var niveau = Math.max(...this.getNiveauxPlanGeographiques()) 
+        if (niveau == 0) return 1;
+        return Number(niveau );
+
+    }
+
+    getStructureGeographiqueDernierNiveau = () => {
+        if(!this.getPlanGeographiquesDerniersNiveau().length) return undefined;
+        else{
+            return this.props.structure_geographiques.find(st => st.niveau == this.getPlanGeographiquesDerniersNiveau()[0].structure_geographique.niveau)
+        }
+    }
+
+    getPlanGeographiquesDerniersNiveau = () => {
+        return this.props.plan_geographiques.filter(elm => elm.structure_geographique ? elm.structure_geographique.niveau == this.getMaximumNiveauPlanGeographique() : false) 
+    }
+
  
 
         setVehiculeSelectedAuRechargement = () => {
@@ -58,6 +94,8 @@ import { colourStyles } from '../../../utils/Repository';
 
 
       verificationFormulaire () {
+        let dateDebut = Date.parse(this.date_debut_reservation.value)
+        let dateFin = Date.parse(this.date_fin_reservation.value)
           if(this.state.objet_reservation == undefined){
               return "L'objet de la reservation obligatoire !"
           }if(this.state.vehicule == undefined){
@@ -70,6 +108,8 @@ import { colourStyles } from '../../../utils/Repository';
             return "La date de debut est obligatoire !"
           }else if(this.heure_fin_reservation.value == ''){
             return "L'heure de fin est obligatoire !"
+          }else if(dateDebut > dateFin){
+            return "La date de début ne peut être supérieure à la date de fin !"
           } else{
               return null
           }
@@ -126,12 +166,14 @@ import { colourStyles } from '../../../utils/Repository';
                     objet_reservation: this.state.objet_reservation.id,
                     date_debut_reservation: this.date_debut_reservation.value,
                     heure_debut_reservation: this.heure_debut_reservation.value,
-                    lieu_depart: this.lieu_depart.value,
+                    lieu_depart_id: this.state.lieu_depart ? this.state.lieu_depart.id : null,
+                    destination_id: this.state.destination ? this.state.destination.id : null,
+                   // lieu_depart: this.lieu_depart.value,
                     nombre_personne_dans_vehicule: this.nombre_personne_dans_vehicule.value,
                     kilometrage_prevu: this.kilometrage_prevu.value,
-                    destination_ville: this.destination_ville.value,
-                    destination_departement: this.destination_departement.value,
-                    destination_pays: this.destination_pays.value,
+                  //  destination_ville: this.destination_ville.value,
+                  //  destination_departement: this.destination_departement.value,
+                  //  destination_pays: this.destination_pays.value,
                     vehicule_avec_chauffeur: this.vehicule_avec_chauffeur.value,
                     carte_carburant: this.carte_carburant.value,
                     carte_autoroute: this.carte_autoroute.value,
@@ -301,7 +343,7 @@ import { colourStyles } from '../../../utils/Repository';
                                 </div>
 
                                 <div className="form-row">
-                                <div className="col-md-3">
+                                <div className="col-md-4">
                                         <div className="position-relative form-group">
                                             <label >Date de debut de la réservation *</label>
                                             <input name="date_debut_reservation"  type="date"
@@ -380,55 +422,71 @@ import { colourStyles } from '../../../utils/Repository';
                     
 
                                 <div className="form-row">
+
+
+                                {this.getStructureGeographiqueDernierNiveau() ?
+                                          <div className="col-md-6">
+                                              <label >Lieu de Départ</label>
+                                      
+
+                                              <Select
+                                                  name="lieu_depart"
+                                                  isDisabled={!this.getStructureGeographiqueDernierNiveau()}
+                                                  placeholder={`Sélection de ${this.getStructureGeographiqueDernierNiveau().libelle}`}
+                                                  noOptionsMessage={() => `Pas de ${this.getStructureGeographiqueDernierNiveau().libelle} pour l'instant`}
+                                                  options={this.getPlanGeographiquesDerniersNiveau()}
+                                                  getOptionLabel={option => option.libelle}
+                                                  getOptionValue={option => option.id}
+                                                  onChange={this.setFieldSelectDepartEtDestination.bind(this, "lieu_depart")}
+                                              />
+
+                                          </div> :
+
+
+                                          <div className="col-md-6">
+                                              <label >Lieu Départ</label>
+                                      
+                                              <input readOnly className="form-control" value="Veuillez creer la structure Géographique" />
+
+                                          </div>}
+
+
+                                  {this.getStructureGeographiqueDernierNiveau() ?
+                                          <div className="col-md-6">
+                                              <label >Destination</label>
+                                      
+
+                                              <Select
+                                                  name="destination"
+                                                  isDisabled={!this.getStructureGeographiqueDernierNiveau()}
+                                                  placeholder={`Sélection de ${this.getStructureGeographiqueDernierNiveau().libelle}`}
+                                                  noOptionsMessage={() => `Pas de ${this.getStructureGeographiqueDernierNiveau().libelle} pour l'instant`}
+                                                  options={this.getPlanGeographiquesDerniersNiveau()}
+                                                  getOptionLabel={option => option.libelle}
+                                                  getOptionValue={option => option.id}
+
+                                                  defaultValue={mission != undefined ? mission.destination_mission ? mission.destination_mission : null : null}
+                                                  onChange={this.setFieldSelectDepartEtDestination.bind(this, "destination")}
+                                              />
+
+                                          </div> :
+
+
+                                          <div className="col-md-6">
+                                              <label >Destination</label>
+                                      
+                                              <input readOnly className="form-control" value="Veuillez creer la structure Géographique" />
+
+                                          </div>}
                                      
-                                   
-                                        <div className="col-md-3">
-                                            <label >Lieu de Départ</label>
-
-                                            <input name="lieu_depart"
-                                            ref={lieu_depart => this.lieu_depart = lieu_depart}
-
-                                              type="text" className="form-control" />
-                                        </div>
-
-                                        <div className="col-md-3">
-                                            <label >Destination: Ville</label>
-
-                                            <input name="destination_ville"
-                                            ref={destination_ville => this.destination_ville = destination_ville}
-                                            defaultValue={mission != undefined ? mission.destination_ville : null}
-
-                                              type="text" className="form-control" />
-                                        </div>
-
-                                        <div className="col-md-3">
-                                            <label >Destination: Département</label>
-
-                                            <input name="destination_departement"
-                                            defaultValue={mission != undefined ? mission.destination_departement : null}
-
-                                                onChange={this.setField}
-                                            ref={destination_departement => this.destination_departement = destination_departement}
-                                              type="text" className="form-control" />
-                                        </div>
-                                        <div className="col-md-3">
-                                            <label >Destination: Pays</label>
-
-                                            <input name="destination_pays"
-                                                onChange={this.setField}
-                                                defaultValue={mission != undefined ? mission.destination_pays : null}
-
-                                            ref={destination_pays => this.destination_pays = destination_pays}
-                                              type="text" className="form-control" />
-                                        </div>
-
+                            
                                      
                                     </div>
 
                                     <div className="form-row">
                                     <div className="col-md-2">
                                         <div className="position-relative form-group">
-                                            <label >nbr pers dans vehicule</label>
+                                            <label >nbr pers veh.</label>
                                             <input name="nombre_personne_dans_vehicule"  type="number"
                                                 defaultValue={mission != undefined ? mission.nombre_personne : null}
 
@@ -547,7 +605,9 @@ const mapStateToProps = state => {
         missions: state.missions.items,
         param_generaux_reservation_ordre: state.param_generaux_reservation_ordre.items,
         vehiculeSeleted: state.vehiculeSeleted.vehicule,
-        vehicules: state.vehicules.items
+        vehicules: state.vehicules.items,
+        plan_geographiques: state.plan_geographiques.items,
+        structure_geographiques: state.structure_geographiques.items
 
     }
   }

@@ -213,6 +213,9 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
    async handleSubmitFormPlanEnfant(){
         if(this.verificationFormulairePlanEnfant() == null){
+            var parent_direct = this.props.plan_organisationnels.find(pl => pl.id == this.state.parent_id)
+            var niveau_actuel = parent_direct.structure_organisationnel.niveau
+            var objet_a_envoyer = {}
             this.setState({isFormSubmitted: true})
 
              // const struc = this.props.structures_etablissements.find(st =>)
@@ -223,12 +226,79 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                    parent: this.state.parent_id
             }
             ).then(response => {
+                if(niveau_actuel == 1){
+                    objet_a_envoyer = {
+                   
+                      niveau_1: this.state.parent_id,
+                      niveau_2: response.data.id
+        
+                    }
+                  }else if(niveau_actuel == 2){
+                    var pre_niveau1 = this.props.plan_geographiques.find(pl => pl.id == this.state.parent_id)
+                   var premier_niveau = this.props.plan_geographiques.find(pl => pl.id == pre_niveau1.parent)
+                    objet_a_envoyer = {
+                      niveau_1: premier_niveau.id,
+                      niveau_2: this.state.parent_id,
+                      niveau_3: response.data.id
+        
+                    }
+                  }else if(niveau_actuel == 3){
+                    var pre_niveau2 = this.props.plan_geographiques.find(pl => pl.id == this.state.parent_id)
+                    var deuxieme_niveau = this.props.plan_geographiques.find(pl => pl.id == pre_niveau2.parent)
+                    var troisieme_niveau = this.props.plan_geographiques.find(pl => pl.id == deuxieme_niveau.parent)
+    
+                    objet_a_envoyer = {
+                       niveau_1: troisieme_niveau.id,
+                       niveau_2: deuxieme_niveau.id,
+                       niveau_3: this.state.parent_id,
+                       niveau_4: response.data.id
+         
+                     }
+        
+                  }else if(niveau_actuel == 4){
+                    var pre_niveau2 = this.props.plan_geographiques.find(pl => pl.id == this.state.parent_id)
+                    var deuxieme_niveau = this.props.plan_geographiques.find(pl => pl.id == pre_niveau2.parent)
+                    var troisieme_niveau = this.props.plan_geographiques.find(pl => pl.id == deuxieme_niveau.parent)
+                    var quatrieme_niveau = this.props.plan_geographiques.find(pl => pl.id == troisieme_niveau.parent)
+    
+                    objet_a_envoyer = {
+                      niveau_1: quatrieme_niveau.id,
+                       niveau_2: troisieme_niveau.id,
+                       niveau_3: deuxieme_niveau.id,
+                       niveau_4: this.state.parent_id,
+                       niveau_5: response.data.id
+         
+                     }
+        
+                  }else if(niveau_actuel == 5){
+                    var pre_niveau2 = this.props.plan_geographiques.find(pl => pl.id == this.state.parent_id)
+                    var deuxieme_niveau = this.props.plan_geographiques.find(pl => pl.id == pre_niveau2.parent)
+                    var troisieme_niveau = this.props.plan_geographiques.find(pl => pl.id == deuxieme_niveau.parent)
+                    var quatrieme_niveau = this.props.plan_geographiques.find(pl => pl.id == troisieme_niveau.parent)
+                    var cinquieme_niveau = this.props.plan_geographiques.find(pl => pl.id == quatrieme_niveau.parent)
+    
+                    objet_a_envoyer = {
+                      niveau_1: cinquieme_niveau.id,
+    
+                      niveau_2: quatrieme_niveau.id,
+                       niveau_3: troisieme_niveau.id,
+                       niveau_4: deuxieme_niveau.id,
+                       niveau_5: this.state.parent_id,
+                       niveau_6: response.data.id
+         
+                     }
+                    
+                  }
+
+                  axios.post('/api/modifier_plan_organisationelle/' + response.data.id, objet_a_envoyer).then(_ => {
+                    axios.get('/api/plan_organisationelles').then((response) => {
+                
+                      const action2 = {type: "GET_PLAN_ORGANISATIONNEL", value: response.data}
+                      this.props.dispatch(action2)
+                  } )
+                  })
               
-                axios.get('/api/plan_organisationelles').then((response) => {
-            
-                    const action2 = {type: "GET_PLAN_ORGANISATIONNEL", value: response.data}
-                    this.props.dispatch(action2)
-                } )
+          
                // this.toggleVisible()
                this.setState({isFormSubmitted: false})
 
@@ -322,7 +392,7 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
         return this.props.structure_organisationnelles[0]
     }
 
-      enregistrerPlanGeographique = async (e) => {
+      enregistrerPlanOrganisationnel = async (e) => {
           e.preventDefault()
 
           if(this.verificationFormulaire() == null){
@@ -335,13 +405,17 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                    structure_organisationnel_id: this.state.premier_niveau_structure_organisationnel.id
             }
             ).then(response => {
-                // const action = {type: "ADD_STRUCTURE_ETABLISSEMENT", value: response.data}
-                // this.props.dispatch(action)
-                axios.get('/api/plan_organisationelles').then((response) => {
+                axios.post('/api/modifier_plan_organisationelle/' + response.data.id, {
+                    niveau_1: response.data.id
+                  }).then(_ => {
+                    axios.get('/api/plan_organisationelles').then((response) => {
+                
+                      const action2 = {type: "GET_PLAN_ORGANISATIONNEL", value: response.data}
+                      this.props.dispatch(action2)
+                  } )
+                  })
+             
             
-                    const action2 = {type: "GET_PLAN_ORGANISATIONNEL", value: response.data}
-                    this.props.dispatch(action2)
-                } )
                // this.toggleVisible()
                this.setState({isFormSubmitted: false})
 
@@ -587,7 +661,7 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                     <div className="theme-settings__options-wrapper">
                         <h3 className="themeoptions-heading">Ajouter 
                         </h3>
-                        <form ref={(ref) => this.formRef = ref} className="p-3" onChange={this.setField} onSubmit={this.enregistrerPlanGeographique}>
+                        <form ref={(ref) => this.formRef = ref} className="p-3" onChange={this.setField} onSubmit={this.enregistrerPlanOrganisationnel}>
                             <br />
                               
                                 <div className="position-relative form-group">

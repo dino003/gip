@@ -26,6 +26,18 @@ class VehiculeUtilisation extends Model
         return $this->belongsTo(Vehicule::class, 'vehicule');
     }
 
+    // lieu de depart
+    public function depart_utilisation()
+    {
+        return $this->belongsTo(PlanGeographique::class, 'lieu_depart_id');
+    }
+
+      // lieu de destination
+      public function destination_utilisation()
+      {
+          return $this->belongsTo(PlanGeographique::class, 'destination_id');
+      }
+
     // utilisateur
     public function utilisateur()
     {

@@ -11,7 +11,7 @@ class PlanGeographique extends Model
     protected $guarded = ['id'];
 
     public $timestamps = false;
-    protected $with = ['vehicules'];
+    protected $with = ['vehicules', 'structure_geographique'];
 
     public function structure_geographique()
     {

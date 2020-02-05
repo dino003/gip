@@ -11,6 +11,7 @@ import PlanGeographiqueItem from '../../components/codifications/PlanGeographiqu
 import { Container, Button, Link } from 'react-floating-action-button'
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import { element } from 'prop-types';
+import { unmountComponentAtNode } from 'react-dom';
 
 // import '../../components/Tree.scss'
 
@@ -225,7 +226,11 @@ import { element } from 'prop-types';
 
    async handleSubmitFormPlanEnfant(){
         if(this.verificationFormulairePlanEnfant() == null){
-            this.setState({isFormSubmitted: true})
+          var parent_direct = this.props.plan_geographiques.find(pl => pl.id == this.state.parent_id)
+          var niveau_actuel = parent_direct.structure_geographique.niveau
+          var objet_a_envoyer = {}
+       
+          this.setState({isFormSubmitted: true})
 
              // const struc = this.props.structures_etablissements.find(st =>)
            await axios.post('/api/ajouter_plan_geographique', 
@@ -235,13 +240,78 @@ import { element } from 'prop-types';
                    parent: this.state.parent_id
             }
             ).then(response => {
-              
+              if(niveau_actuel == 1){
+                objet_a_envoyer = {
+               
+                  niveau_1: this.state.parent_id,
+                  niveau_2: response.data.id
+    
+                }
+              }else if(niveau_actuel == 2){
+                var pre_niveau1 = this.props.plan_geographiques.find(pl => pl.id == this.state.parent_id)
+               var premier_niveau = this.props.plan_geographiques.find(pl => pl.id == pre_niveau1.parent)
+                objet_a_envoyer = {
+                  niveau_1: premier_niveau.id,
+                  niveau_2: this.state.parent_id,
+                  niveau_3: response.data.id
+    
+                }
+              }else if(niveau_actuel == 3){
+                var pre_niveau2 = this.props.plan_geographiques.find(pl => pl.id == this.state.parent_id)
+                var deuxieme_niveau = this.props.plan_geographiques.find(pl => pl.id == pre_niveau2.parent)
+                var troisieme_niveau = this.props.plan_geographiques.find(pl => pl.id == deuxieme_niveau.parent)
+
+                objet_a_envoyer = {
+                   niveau_1: troisieme_niveau.id,
+                   niveau_2: deuxieme_niveau.id,
+                   niveau_3: this.state.parent_id,
+                   niveau_4: response.data.id
+     
+                 }
+    
+              }else if(niveau_actuel == 4){
+                var pre_niveau2 = this.props.plan_geographiques.find(pl => pl.id == this.state.parent_id)
+                var deuxieme_niveau = this.props.plan_geographiques.find(pl => pl.id == pre_niveau2.parent)
+                var troisieme_niveau = this.props.plan_geographiques.find(pl => pl.id == deuxieme_niveau.parent)
+                var quatrieme_niveau = this.props.plan_geographiques.find(pl => pl.id == troisieme_niveau.parent)
+
+                objet_a_envoyer = {
+                  niveau_1: quatrieme_niveau.id,
+                   niveau_2: troisieme_niveau.id,
+                   niveau_3: deuxieme_niveau.id,
+                   niveau_4: this.state.parent_id,
+                   niveau_5: response.data.id
+     
+                 }
+    
+              }else if(niveau_actuel == 5){
+                var pre_niveau2 = this.props.plan_geographiques.find(pl => pl.id == this.state.parent_id)
+                var deuxieme_niveau = this.props.plan_geographiques.find(pl => pl.id == pre_niveau2.parent)
+                var troisieme_niveau = this.props.plan_geographiques.find(pl => pl.id == deuxieme_niveau.parent)
+                var quatrieme_niveau = this.props.plan_geographiques.find(pl => pl.id == troisieme_niveau.parent)
+                var cinquieme_niveau = this.props.plan_geographiques.find(pl => pl.id == quatrieme_niveau.parent)
+
+                objet_a_envoyer = {
+                  niveau_1: cinquieme_niveau.id,
+
+                  niveau_2: quatrieme_niveau.id,
+                   niveau_3: troisieme_niveau.id,
+                   niveau_4: deuxieme_niveau.id,
+                   niveau_5: this.state.parent_id,
+                   niveau_6: response.data.id
+     
+                 }
+                
+              }
+
+              axios.post('/api/modifier_plan_geographique/' + response.data.id, objet_a_envoyer).then(_ => {
                 axios.get('/api/plan_geographiques').then((response) => {
             
-                    const action2 = {type: "GET_PLAN_GEOGRAPHIQUE", value: response.data}
-                    this.props.dispatch(action2)
-                } )
-               // this.toggleVisible()
+                  const action2 = {type: "GET_PLAN_GEOGRAPHIQUE", value: response.data}
+                  this.props.dispatch(action2)
+              } )
+              })
+
                this.setState({isFormSubmitted: false})
 
                 this.resetForm();
@@ -344,18 +414,22 @@ import { element } from 'prop-types';
            await axios.post('/api/ajouter_plan_geographique', 
                {
                    libelle: this.libelle.value,
-                   structure_geographique_id: this.state.premier_niveau_structure_geographique.id
+                   structure_geographique_id: this.state.premier_niveau_structure_geographique.id,
+                   
+
             }
             ).then(response => {
-                // const action = {type: "ADD_STRUCTURE_ETABLISSEMENT", value: response.data}
-                // this.props.dispatch(action)
+              axios.post('/api/modifier_plan_geographique/' + response.data.id, {
+                niveau_1: response.data.id
+              }).then(_ => {
                 axios.get('/api/plan_geographiques').then((response) => {
             
-                    const action2 = {type: "GET_PLAN_GEOGRAPHIQUE", value: response.data}
-                    this.props.dispatch(action2)
-                } )
-               // this.toggleVisible()
-               this.setState({isFormSubmitted: false})
+                  const action2 = {type: "GET_PLAN_GEOGRAPHIQUE", value: response.data}
+                  this.props.dispatch(action2)
+              } )
+              })
+              
+                this.setState({isFormSubmitted: false})
 
                 this.resetForm();
 

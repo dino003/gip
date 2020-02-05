@@ -114,23 +114,23 @@ import StructureGeographiqueItem from '../../components/codifications/StructureG
 
 
 
-  async handleSubmit(e){
+   handleSubmit(e){
         e.preventDefault();
 
         if(this.verificationFormulaire() == null){
             this.setState({isFormSubmitted : true})
-            const response =  await axios.post('/api/ajouter_structure_geographique', {
+               axios.post('/api/ajouter_structure_geographique', {
                 libelle: this.libelle.value,
                 niveau: this.niveau.value
+            }).then(response => {
+                const action = {type: "ADD_STRUCTURE_GEOGRAPHIQUE", value: response.data}
+                this.props.dispatch(action)
+                this.setState({libelle: '', niveau: ''})
+                this.niveau.value = '';
+                this.libelle.value = '';
+                this.setState({isFormSubmitted : false})
             })
     
-           const action = {type: "ADD_STRUCTURE_GEOGRAPHIQUE", value: response.data}
-           this.props.dispatch(action)
-           this.setState({libelle: '', niveau: ''})
-           this.niveau.value = '';
-           this.libelle.value = '';
-           this.setState({isFormSubmitted : false})
-
         }else{
               //console.log(this.verificationFormulaire())
               toast.error(this.verificationFormulaire(), {
@@ -233,6 +233,13 @@ import StructureGeographiqueItem from '../../components/codifications/StructureG
         return Number(niveau + 1);
 
     }
+
+    lastLevel = () => {
+        var niveau = Math.max(...this.getNiveaus(), 0) 
+        if (niveau == 0) return 1;
+        return Number(niveau ) ;
+
+    }
     
     
 
@@ -244,7 +251,7 @@ import StructureGeographiqueItem from '../../components/codifications/StructureG
                        <div className="card-body ">
                            <h5 className="card-title">Gestion de la Structure Géographique
                         
-                          
+                          {this.lastLevel() < 6 ?
                             <span className="pull-right">
                         
                             {!this.state.inputOpen ? ( <button title=" Ajouter une nouvelle structure"
@@ -255,13 +262,15 @@ import StructureGeographiqueItem from '../../components/codifications/StructureG
      
                                           Ajouter
                                              </button>) : null}
-                                </span>
+                                </span> : null }
                              
                                
                             </h5>
                             <br />
-                            {this.state.inputOpen ? (
+                            {this.state.inputOpen ? 
+                            <React.Fragment>
 
+                            {this.lastLevel() < 6 ?
                             <div className="row">
 
                                 <div className="col-md-2">
@@ -303,7 +312,8 @@ import StructureGeographiqueItem from '../../components/codifications/StructureG
 
                                     
                                
-                            </div>  ) : null}
+                            </div> : null }
+                             </React.Fragment>  : null}
 
                            <div className="table-responsive">
                            {this.state.loading ? this.renderLoading() : 

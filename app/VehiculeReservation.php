@@ -45,4 +45,17 @@ class VehiculeReservation extends Model
           {
               return $this->belongsTo(NatureReservationUtilisation::class, 'objet_reservation');
           }
+
+
+    // lieu de depart
+    public function depart_reservation()
+    {
+        return $this->belongsTo(PlanGeographique::class, 'lieu_depart_id');
+    }
+
+      // lieu de destination
+      public function destination_reservation()
+      {
+          return $this->belongsTo(PlanGeographique::class, 'destination_id');
+      }
 }

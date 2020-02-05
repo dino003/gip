@@ -21,7 +21,7 @@ class VehiculeReservationController extends Controller
     public function index()
     {
         $reservation_par_vehicules = VehiculeReservation::with(['vehicule',
-        'personne_reservant', 'objet_reservation'])
+        'personne_reservant', 'objet_reservation', 'depart_reservation', 'destination_reservation'])
        // ->with('utilisateur.entite_affectation')
        //->where('transforme_en_utilisation', 0)
        ->orderBy('id', 'desc')->get();
@@ -52,7 +52,7 @@ class VehiculeReservationController extends Controller
          $creation = $reservation->create($request->only($reservation->fillable));
   
          return response()->json(VehiculeReservation::with(['vehicule',
-         'personne_reservant', 'objet_reservation'])
+         'personne_reservant', 'objet_reservation', 'depart_reservation', 'destination_reservation'])
          //->with('utilisateur.entite_affectation')
          ->find($creation->id));
 
@@ -96,7 +96,7 @@ class VehiculeReservationController extends Controller
        $this->model->update($request->only($this->model->getModel()->fillable), $id);
 
        return response()->json(VehiculeReservation::with(['vehicule',
-       'personne_reservant', 'objet_reservation'])->find($id));
+       'personne_reservant', 'objet_reservation', 'depart_reservation', 'destination_reservation'])->find($id));
     }
 
     /**
@@ -123,7 +123,7 @@ class VehiculeReservationController extends Controller
         $reservation->save();
 
         return response()->json(VehiculeReservation::with(['vehicule',
-        'personne_reservant', 'objet_reservation'])->find($id));
+        'personne_reservant', 'objet_reservation', 'depart_reservation', 'destination_reservation'])->find($id));
 
     }
 }

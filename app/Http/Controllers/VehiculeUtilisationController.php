@@ -23,7 +23,7 @@ class VehiculeUtilisationController extends Controller
     {
        // return $this->model->all();
        $utilisations_par_vehicules = VehiculeUtilisation::with(['vehicule.entite_physique',
-                                                         'nature_utilisation', 'chauffeur'])
+                                                         'nature_utilisation', 'depart_utilisation', 'destination_utilisation', 'chauffeur'])
                                                          ->with('utilisateur.entite_affectation')
                                                          ->orderBy('date_debut_utilisation', 'desc')
                                                         ->orderBy('id', 'desc')->get();
@@ -65,7 +65,7 @@ class VehiculeUtilisationController extends Controller
             }
 
             $utilisation = VehiculeUtilisation::with(['vehicule.entite_physique',
-            'nature_utilisation', 'chauffeur'])
+            'nature_utilisation', 'depart_utilisation', 'destination_utilisation', 'chauffeur'])
             ->with('utilisateur.entite_affectation')->find($creation->id);
 
             $vehicule = Vehicule::with(['entite_comptable', 'entite_physique',
@@ -131,7 +131,7 @@ class VehiculeUtilisationController extends Controller
 
                 
        $utilisation = VehiculeUtilisation::with(['vehicule.entite_physique',
-       'nature_utilisation', 'chauffeur'])
+       'nature_utilisation', 'depart_utilisation', 'destination_utilisation', 'chauffeur'])
        ->with('utilisateur.entite_affectation')->find($id);
 
        $vehicule = Vehicule::with(['entite_comptable', 'entite_physique',
@@ -186,7 +186,7 @@ class VehiculeUtilisationController extends Controller
 
                 
             $utilisation = VehiculeUtilisation::with(['vehicule.entite_physique',
-            'nature_utilisation', 'chauffeur'])
+            'nature_utilisation', 'depart_utilisation', 'destination_utilisation', 'chauffeur'])
             ->with('utilisateur.entite_affectation')->find($id);
 
             $vehicule = Vehicule::with(['entite_comptable', 'entite_physique',
@@ -205,7 +205,7 @@ class VehiculeUtilisationController extends Controller
 
 
             $utilisation = VehiculeUtilisation::with(['vehicule.entite_physique',
-            'nature_utilisation', 'chauffeur'])
+            'nature_utilisation', 'depart_utilisation', 'destination_utilisation', 'chauffeur'])
             ->with('utilisateur.entite_affectation')->find($id);
 
             $vehicule = Vehicule::with(['entite_comptable', 'entite_physique',

@@ -48,11 +48,25 @@ class FiltreVehicules extends Component {
             date_entree_au_parc2: null,
             entite_comptable: null,
             assureur: null,
-            contrat_assurance: null
+            contrat_assurance: null,
+            affectation_geographique_id: [],
+            affectation_organisationnel_id: [],
+            premier_niveau_geographique: null,
+            deuxieme_niveau_geographique: null,
+            troisieme_niveau_geographique: null,
+            quatrieme_niveau_geographique: null,
+            cinquieme_niveau_geographique: null,
+            sixieme_niveau_geographique: null,
+            premier_niveau_organisa: null,
+            deuxieme_niveau_organisa: null,
+            troisieme_niveau_organisa: null,
+            quatrieme_niveau_organisa: null,
+            cinquieme_niveau_organisa: null,
+            sixieme_niveau_organisa: null
+
 
         }
 
-    
 
         this.searchChange = this.searchChange.bind(this)
         this.changeState = this.changeState.bind(this)
@@ -70,6 +84,106 @@ class FiltreVehicules extends Component {
         this.setState(obj, () => this.filtrerVehicule());
     }
 
+    setFieldLesPlanGeographiques(name, value) {
+        let obj = {};
+        obj[name] = value;
+        this.setState(obj, () => this.checkOtherStateGeographique());
+    }
+
+    checkOtherStateGeographique(){
+        if(this.state.premier_niveau_geographique == null){
+            this.setState({
+                deuxieme_niveau_geographique: null,
+                troisieme_niveau_geographique: null,
+                quatrieme_niveau_geographique: null,
+                cinquieme_niveau_geographique: null,
+                sixieme_niveau_geographique: null
+            }, () => this.filtrerVehicule() )
+        }else if(this.state.deuxieme_niveau_geographique == null){
+            this.setState({
+               // deuxieme_niveau_geographique: null,
+                troisieme_niveau_geographique: null,
+                quatrieme_niveau_geographique: null,
+                cinquieme_niveau_geographique: null,
+                sixieme_niveau_geographique: null
+            }, () => this.filtrerVehicule() )
+        }else if(this.state.troisieme_niveau_geographique == null){
+            this.setState({
+               // deuxieme_niveau_geographique: null,
+               // troisieme_niveau_geographique: null,
+                quatrieme_niveau_geographique: null,
+                cinquieme_niveau_geographique: null,
+                sixieme_niveau_geographique: null
+            }, () => this.filtrerVehicule() )
+        }else if(this.quatrieme_niveau_geographique == null){
+            this.setState({
+               // deuxieme_niveau_geographique: null,
+               // troisieme_niveau_geographique: null,
+               // quatrieme_niveau_geographique: null,
+                cinquieme_niveau_geographique: null,
+                sixieme_niveau_geographique: null
+            }, () => this.filtrerVehicule() )
+        }else if(this.state.cinquieme_niveau_geographique == null){
+            this.setState({
+               // deuxieme_niveau_geographique: null,
+              //  troisieme_niveau_geographique: null,
+              //  quatrieme_niveau_geographique: null,
+               // cinquieme_niveau_geographique: null,
+                sixieme_niveau_geographique: null
+            }, () => this.filtrerVehicule() )
+        }
+    }
+
+    setFieldLesPlansOrga(name, value) {
+        let obj = {};
+        obj[name] = value;
+        this.setState(obj, () => this.checkOtherStateOrga());
+    }
+
+    checkOtherStateOrga(){
+        if(this.state.premier_niveau_organisa == null){
+            this.setState({
+                deuxieme_niveau_organisa: null,
+                troisieme_niveau_organisa: null,
+                quatrieme_niveau_organisa: null,
+                cinquieme_niveau_organisa: null,
+                sixieme_niveau_organisa: null
+            }, () => this.filtrerVehicule() )
+        }else if(this.state.deuxieme_niveau_organisa == null){
+            this.setState({
+               // deuxieme_niveau_organisa: null,
+                troisieme_niveau_organisa: null,
+                quatrieme_niveau_organisa: null,
+                cinquieme_niveau_organisa: null,
+                sixieme_niveau_organisa: null
+            }, () => this.filtrerVehicule() )
+        }else if(this.state.troisieme_niveau_organisa == null){
+            this.setState({
+               // deuxieme_niveau_organisa: null,
+               // troisieme_niveau_organisa: null,
+                quatrieme_niveau_organisa: null,
+                cinquieme_niveau_organisa: null,
+                sixieme_niveau_organisa: null
+            }, () => this.filtrerVehicule() )
+        }else if(this.quatrieme_niveau_organisa == null){
+            this.setState({
+               // deuxieme_niveau_organisa: null,
+               // troisieme_niveau_organisa: null,
+               // quatrieme_niveau_organisa: null,
+                cinquieme_niveau_organisa: null,
+                sixieme_niveau_organisa: null
+            }, () => this.filtrerVehicule() )
+        }else if(this.state.cinquieme_niveau_organisa == null){
+            this.setState({
+               // deuxieme_niveau_organisa: null,
+              //  troisieme_niveau_organisa: null,
+              //  quatrieme_niveau_organisa: null,
+               // cinquieme_niveau_organisa: null,
+                sixieme_niveau_organisa: null
+            }, () => this.filtrerVehicule() )
+        }
+    }
+
     getIdsUtilisations = () => {
         const events = [];
         this.props.vehicules.map(event => {
@@ -78,6 +192,7 @@ class FiltreVehicules extends Component {
         
         return events
     }
+
 
     setField = (event) => {
         const target = event.target;
@@ -97,6 +212,23 @@ class FiltreVehicules extends Component {
         })
     }
 
+   /*  fplan(){
+        let i = 0;
+        let tableau_derniers_niveaux = [];
+        let element_courant = null;
+        let end_boucle = 6;
+
+        const events = [];
+        element_courant.children.map(event => {
+            if(event.vehicules){
+
+            }
+        })
+        
+        return events
+        
+    } */
+
     changeState() {
         this.setState({
             vehicules_visibles_actuelement: this.props.vehicules
@@ -104,6 +236,23 @@ class FiltreVehicules extends Component {
         })
     }
 
+    getIdOfPlanGeo(){
+        const events = [];
+        this.state.affectation_geographique_id.map(event => {
+            return events.push(event.id)
+        })
+        
+        return events
+    }
+
+    getIdOfPlanOrga(){
+        const events = [];
+        this.state.affectation_organisationnel_id.map(event => {
+            return events.push(event.id)
+        })
+        
+        return events
+    }
    
 
   
@@ -126,6 +275,7 @@ class FiltreVehicules extends Component {
     }
 
     filtrerVehicule(){
+        //console.log(this.state.affectation_geographique_id)
         
         var debut = this.state.date_entree_au_parc1 ? Date.parse(this.state.date_entree_au_parc1) : null
         var fin = this.state.date_entree_au_parc2 ? Date.parse(this.state.date_entree_au_parc2) : null
@@ -137,6 +287,11 @@ class FiltreVehicules extends Component {
                 (this.state.mode_acquisition != "Tous" ? ut.mode_acquisition == this.state.mode_acquisition : ut.mode_acquisition == "0" || ut.mode_acquisition == "1" || ut.mode_acquisition == "2" || ut.mode_acquisition == "4" || ut.mode_acquisition == "5")
                 &&
                 (debut && fin ? debut <= date_entreeParc && date_entreeParc <= fin : true)
+                &&
+                ( this.state.premier_niveau_geographique ? this.state.deuxieme_niveau_geographique ? this.state.troisieme_niveau_geographique ? this.state.quatrieme_niveau_geographique ? this.state.cinquieme_niveau_geographique ? this.state.sixieme_niveau_geographique ? this.props.plan_geographiques.filter(pl => pl.niveau_1 == this.state.premier_niveau_geographique.id && pl.niveau_2 == this.state.deuxieme_niveau_geographique.id && pl.niveau_3 == this.state.troisieme_niveau_geographique.id && pl.niveau_4 == this.state.quatrieme_niveau_geographique.id && pl.niveau_5 == this.state.cinquieme_niveau_geographique.id && pl.niveau_6 == this.state.sixieme_niveau_geographique.id).map(elm => elm.id).includes(ut.affectation_geographique_id) : this.props.plan_geographiques.filter(pl => pl.niveau_1 == this.state.premier_niveau_geographique.id && pl.niveau_2 == this.state.deuxieme_niveau_geographique.id && pl.niveau_3 == this.state.troisieme_niveau_geographique.id && pl.niveau_4 == this.state.quatrieme_niveau_geographique.id && pl.niveau_5 == this.state.cinquieme_niveau_geographique.id).map(elm => elm.id).includes(ut.affectation_geographique_id) : this.props.plan_geographiques.filter(pl => pl.niveau_1 == this.state.premier_niveau_geographique.id && pl.niveau_2 == this.state.deuxieme_niveau_geographique.id && pl.niveau_3 == this.state.troisieme_niveau_geographique.id && pl.niveau_4 == this.state.quatrieme_niveau_geographique.id).map(elm => elm.id).includes(ut.affectation_geographique_id) : this.props.plan_geographiques.filter(pl => pl.niveau_1 == this.state.premier_niveau_geographique.id && pl.niveau_2 == this.state.deuxieme_niveau_geographique.id && pl.niveau_3 == this.state.troisieme_niveau_geographique.id).map(elm => elm.id).includes(ut.affectation_geographique_id) : this.props.plan_geographiques.filter(pl => pl.niveau_1 == this.state.premier_niveau_geographique.id && pl.niveau_2 == this.state.deuxieme_niveau_geographique.id).map(elm => elm.id).includes(ut.affectation_geographique_id)  : this.props.plan_geographiques.filter(pl => pl.niveau_1 == this.state.premier_niveau_geographique.id).map(elm => elm.id).includes(ut.affectation_geographique_id) : true )
+                &&
+                ( this.state.premier_niveau_organisa ? this.state.deuxieme_niveau_organisa ? this.state.troisieme_niveau_organisa ? this.state.quatrieme_niveau_organisa ? this.state.cinquieme_niveau_organisa ? this.state.sixieme_niveau_organisa ? this.props.plan_organisationnels.filter(pl => pl.niveau_1 == this.state.premier_niveau_organisa.id && pl.niveau_2 == this.state.deuxieme_niveau_organisa.id && pl.niveau_3 == this.state.troisieme_niveau_organisa.id && pl.niveau_4 == this.state.quatrieme_niveau_organisa.id && pl.niveau_5 == this.state.cinquieme_niveau_organisa.id && pl.niveau_6 == this.state.sixieme_niveau_organisa.id).map(elm => elm.id).includes(ut.affectation_organisationnel_id) : this.props.plan_organisationnels.filter(pl => pl.niveau_1 == this.state.premier_niveau_organisa.id && pl.niveau_2 == this.state.deuxieme_niveau_organisa.id && pl.niveau_3 == this.state.troisieme_niveau_organisa.id && pl.niveau_4 == this.state.quatrieme_niveau_organisa.id && pl.niveau_5 == this.state.cinquieme_niveau_organisa.id).map(elm => elm.id).includes(ut.affectation_organisationnel_id) : this.props.plan_organisationnels.filter(pl => pl.niveau_1 == this.state.premier_niveau_organisa.id && pl.niveau_2 == this.state.deuxieme_niveau_organisa.id && pl.niveau_3 == this.state.troisieme_niveau_organisa.id && pl.niveau_4 == this.state.quatrieme_niveau_organisa.id).map(elm => elm.id).includes(ut.affectation_organisationnel_id) : this.props.plan_organisationnels.filter(pl => pl.niveau_1 == this.state.premier_niveau_organisa.id && pl.niveau_2 == this.state.deuxieme_niveau_organisa.id && pl.niveau_3 == this.state.troisieme_niveau_organisa.id).map(elm => elm.id).includes(ut.affectation_organisationnel_id) : this.props.plan_organisationnels.filter(pl => pl.niveau_1 == this.state.premier_niveau_organisa.id && pl.niveau_2 == this.state.deuxieme_niveau_organisa.id).map(elm => elm.id).includes(ut.affectation_organisationnel_id)  : this.props.plan_organisationnels.filter(pl => pl.niveau_1 == this.state.premier_niveau_organisa.id).map(elm => elm.id).includes(ut.affectation_organisationnel_id) : true )
+               
                 &&
                 (this.state.marque ? ut.marque.id == this.state.marque.id : true)
                 &&
@@ -205,6 +360,136 @@ class FiltreVehicules extends Component {
         </table>)
     }
 
+             
+    getNiveauxPlanGeographiques = () => {
+        const events = [];
+        this.props.structure_geographiques.map(event => {
+            if(!event.niveau) return;
+            return events.push(event.niveau)
+        })
+        
+        return events
+    }
+
+    getMaximumNiveauPlanGeographique = () => {
+        var niveau = Math.max(...this.getNiveauxPlanGeographiques()) 
+        if (niveau == 0) return 1;
+        return Number(niveau );
+
+    }
+
+    getStructureGeographiqueDernierNiveau = () => {
+        if(!this.getPlanGeographiquesDerniersNiveau().length) return undefined;
+        else{
+            return this.props.structure_geographiques.find(st => st.niveau == this.getPlanGeographiquesDerniersNiveau()[0].structure_geographique.niveau)
+        }
+    }
+
+    getPlanGeographiquesDerniersNiveau = () => {
+        return this.props.plan_geographiques.filter(elm => elm.structure_geographique ? elm.structure_geographique.niveau == this.getMaximumNiveauPlanGeographique() : false) 
+    }
+
+    getNiveauxPlanOrga = () => {
+        const events = [];
+        this.props.structure_organisationnelles.map(event => {
+            if(!event.niveau) return;
+            return events.push(event.niveau)
+        })
+        
+        return events
+    }
+
+
+    getStructureGeographiquePremierNiveau = () => {
+        return this.props.structure_geographiques.find(st => st.niveau == 1) || null
+       
+   }
+
+
+   getStructureGeographiqueDeuxiemeNiveau = () => {
+     
+           return this.props.structure_geographiques.find(st => st.niveau == 2) || null
+       
+   }
+
+   getStructureGeographiqueTroisiemeNiveau = () => {
+     
+       return this.props.structure_geographiques.find(st => st.niveau == 3) || null
+   
+   }
+
+   getStructureGeographiqueQuatriemeNiveau = () => {
+     
+       return this.props.structure_geographiques.find(st => st.niveau == 4) || null
+   
+   }
+
+   getStructureGeographiqueCinquiemeNiveau = () => {
+     
+       return this.props.structure_geographiques.find(st => st.niveau == 5) || null
+   
+   }
+
+   getStructureGeographiqueSixiemeNiveau = () => {
+     
+       return this.props.structure_geographiques.find(st => st.niveau == 6) || null
+   
+   }
+
+    getMaximumNiveauPlanOrga = () => {
+        var niveau = Math.max(...this.getNiveauxPlanOrga(), 0) 
+        if (niveau == 0) return 1;
+        return Number(niveau );
+
+    }
+
+    getStructureOrganisationnellePremierNiveau = () => {
+         return this.props.structure_organisationnelles.find(st => st.niveau == 1) || null
+        
+    }
+
+
+    getStructureOrganisationnelleDeuxiemeNiveau = () => {
+      
+            return this.props.structure_organisationnelles.find(st => st.niveau == 2) || null
+        
+    }
+
+    getStructureOrganisationnelleTroisiemeNiveau = () => {
+      
+        return this.props.structure_organisationnelles.find(st => st.niveau == 3) || null
+    
+    }
+
+    getStructureOrganisationnelleQuatriemeNiveau = () => {
+      
+        return this.props.structure_organisationnelles.find(st => st.niveau == 4) || null
+    
+    }
+
+    getStructureOrganisationnelleCinquiemeNiveau = () => {
+      
+        return this.props.structure_organisationnelles.find(st => st.niveau == 5) || null
+    
+    }
+
+    getStructureOrganisationnelleSixiemeNiveau = () => {
+      
+        return this.props.structure_organisationnelles.find(st => st.niveau == 6) || null
+    
+    }
+
+    getStructureOrganisationnelDernierNiveau = () => {
+        if(!this.getPlanOrgaDernierNiveau().length) return undefined;
+        else{
+            return this.props.structure_organisationnelles.find(st => st.niveau == this.getPlanOrgaDernierNiveau()[0].structure_organisationnel.niveau)
+        }
+    }
+
+    getPlanOrgaDernierNiveau = () => {
+        return this.props.plan_organisationnels.filter(elm => elm.structure_organisationnel ? elm.structure_organisationnel.niveau == this.getMaximumNiveauPlanOrga() : false)
+    }
+
 
 
     render() {
@@ -246,6 +531,281 @@ class FiltreVehicules extends Component {
 
                                 </h5>
                                 <br />
+                                <div className="row">
+
+                                {this.getStructureGeographiquePremierNiveau() ?
+                                        <div className="col-md-4">
+                                            <label className="">{this.getStructureGeographiquePremierNiveau().libelle} </label>
+                                       
+
+                                            <Select
+                                                name="premier_niveau_geographique"
+                                                
+                                                isClearable
+                                                isDisabled={!this.getStructureGeographiquePremierNiveau()}
+                                                placeholder={`Sélection de ${this.getStructureGeographiquePremierNiveau().libelle}`}
+                                                noOptionsMessage={() => `Pas de ${this.getStructureGeographiquePremierNiveau().libelle} pour l'instant`}
+                                                options={  this.props.plan_geographiques.filter(pl => pl.parent == null)}
+                                                getOptionLabel={option => option.libelle}
+                                                getOptionValue={option => option.id}
+                                                // formatOptionLabel={formatOptionVehicule}
+                                                onChange={this.setFieldLesPlanGeographiques.bind(this, "premier_niveau_geographique")}
+                                                
+                                            />
+
+                                        </div> : null}
+
+                                        {this.getStructureGeographiqueDeuxiemeNiveau() && this.state.premier_niveau_geographique ?
+                                        <div className="col-md-4">
+                                            <label className="">{this.getStructureGeographiqueDeuxiemeNiveau().libelle} </label>
+                                       
+
+                                            <Select
+                                                name="deuxieme_niveau_geographique"
+                                                
+                                                isClearable
+                                                isDisabled={!this.getStructureGeographiqueDeuxiemeNiveau()}
+                                                placeholder={`Sélection de ${this.getStructureGeographiqueDeuxiemeNiveau().libelle}`}
+                                                noOptionsMessage={() => `Pas de ${this.getStructureGeographiqueDeuxiemeNiveau().libelle} pour l'instant`}
+                                                options={ this.state.premier_niveau_geographique ? this.props.plan_geographiques.filter(pl => pl.parent == this.state.premier_niveau_geographique.id) : this.props.plan_geographiques.filter(pl => pl.structure_geographique.niveau == 2)}
+                                                getOptionLabel={option => option.libelle}
+                                                getOptionValue={option => option.id}
+                                                // formatOptionLabel={formatOptionVehicule}
+                                                onChange={this.setFieldLesPlanGeographiques.bind(this, "deuxieme_niveau_geographique")}
+                                                
+                                            />
+
+                                        </div> : null}
+
+                                        {this.getStructureGeographiqueTroisiemeNiveau() && this.state.premier_niveau_geographique && this.state.deuxieme_niveau_geographique ?
+                                        <div className="col-md-4">
+                                            <label className="">{this.getStructureGeographiqueTroisiemeNiveau().libelle} </label>
+                                    
+
+                                            <Select
+                                                name="troisieme_niveau_geographique"
+                                                
+                                                isClearable
+                                                isDisabled={!this.getStructureGeographiqueTroisiemeNiveau()}
+                                                placeholder={`Sélection de ${this.getStructureGeographiqueTroisiemeNiveau().libelle}`}
+                                                noOptionsMessage={() => `Pas de ${this.getStructureGeographiqueTroisiemeNiveau().libelle} pour l'instant`}
+                                                options={ this.state.deuxieme_niveau_geographique ? this.props.plan_geographiques.filter(pl => pl.parent == this.state.deuxieme_niveau_geographique.id) : this.props.plan_geographiques.filter(pl => pl.structure_geographique.niveau == 3)}
+                                                getOptionLabel={option => option.libelle}
+                                                getOptionValue={option => option.id}
+                                                // formatOptionLabel={formatOptionVehicule}
+                                                onChange={this.setFieldLesPlanGeographiques.bind(this, "troisieme_niveau_geographique")}
+                                                
+                                            />
+
+                                        </div> : null}
+                               
+                                </div>
+
+                          
+
+
+                                <div className="row">
+
+                                {this.getStructureGeographiqueQuatriemeNiveau() && this.state.premier_niveau_geographique && this.state.deuxieme_niveau_geographique && this.state.troisieme_niveau_geographique ?
+                                        <div className="col-md-4">
+                                            <label className="">{this.getStructureGeographiqueQuatriemeNiveau().libelle} </label>
+                                    
+
+                                            <Select
+                                                name="quatrieme_niveau_geographique"
+                                                
+                                                isClearable
+                                                isDisabled={!this.getStructureGeographiqueQuatriemeNiveau()}
+                                                placeholder={`Sélection de ${this.getStructureGeographiqueQuatriemeNiveau().libelle}`}
+                                                noOptionsMessage={() => `Pas de ${this.getStructureGeographiqueQuatriemeNiveau().libelle} pour l'instant`}
+                                                options={ this.state.troisieme_niveau_geographique ? this.props.plan_geographiques.filter(pl => pl.parent == this.state.troisieme_niveau_geographique.id) : this.props.plan_geographiques.filter(pl => pl.structure_geographique.niveau == 4)}
+                                                getOptionLabel={option => option.libelle}
+                                                getOptionValue={option => option.id}
+                                                // formatOptionLabel={formatOptionVehicule}
+                                                onChange={this.setFieldLesPlanGeographiques.bind(this, "quatrieme_niveau_geographique")}
+                                                
+                                            />
+
+                                        </div> : null}
+
+                                {this.getStructureGeographiqueCinquiemeNiveau() && this.state.premier_niveau_geographique && this.state.deuxieme_niveau_geographique && this.state.troisieme_niveau_geographique && this.state.quatrieme_niveau_geographique ?
+                                        <div className="col-md-4">
+                                            <label className="">{this.getStructureGeographiqueCinquiemeNiveau().libelle} </label>
+                                    
+
+                                            <Select
+                                                name="cinquieme_niveau_geographique"
+                                                
+                                                isClearable
+                                                isDisabled={!this.getStructureGeographiqueCinquiemeNiveau()}
+                                                placeholder={`Sélection de ${this.getStructureGeographiqueCinquiemeNiveau().libelle}`}
+                                                noOptionsMessage={() => `Pas de ${this.getStructureGeographiqueCinquiemeNiveau().libelle} pour l'instant`}
+                                                options={ this.state.quatrieme_niveau_geographique ? this.props.plan_geographiques.filter(pl => pl.parent == this.state.quatrieme_niveau_geographique.id) : this.props.plan_geographiques.filter(pl => pl.structure_geographique.niveau == 5)}
+                                                getOptionLabel={option => option.libelle}
+                                                getOptionValue={option => option.id}
+                                                // formatOptionLabel={formatOptionVehicule}
+                                                onChange={this.setFieldLesPlanGeographiques.bind(this, "cinquieme_niveau_geographique")}
+                                                
+                                            />
+
+                                        </div> : null}
+
+                                        {this.getStructureGeographiqueSixiemeNiveau() && this.state.premier_niveau_geographique && this.state.deuxieme_niveau_geographique && this.state.troisieme_niveau_geographique && this.state.quatrieme_niveau_geographique && this.state.cinquieme_niveau_geographique ?
+                                        <div className="col-md-4">
+                                            <label className="">{this.getStructureGeographiqueSixiemeNiveau().libelle} </label>
+                                    
+
+                                            <Select
+                                                name="sixieme_niveau_geographique"
+                                                
+                                                isClearable
+                                                isDisabled={!this.getStructureGeographiqueSixiemeNiveau()}
+                                                placeholder={`Sélection de ${this.getStructureGeographiqueSixiemeNiveau().libelle}`}
+                                                noOptionsMessage={() => `Pas de ${this.getStructureGeographiqueSixiemeNiveau().libelle} pour l'instant`}
+                                                options={ this.state.cinquieme_niveau_geographique ? this.props.plan_geographiques.filter(pl => pl.parent == this.state.cinquieme_niveau_geographique.id) : this.props.plan_geographiques.filter(pl => pl.structure_geographique.niveau == 6)}
+                                                getOptionLabel={option => option.libelle}
+                                                getOptionValue={option => option.id}
+                                                // formatOptionLabel={formatOptionVehicule}
+                                                onChange={this.setFieldLesPlanGeographiques.bind(this, "sixieme_niveau_geographique")}
+                                                
+                                            />
+
+                                        </div> : null}
+
+                                </div>
+
+                                <div className="row">
+                                {this.getStructureOrganisationnellePremierNiveau()  ?
+                                        <div className="col-md-4">
+                                            <label className="">{this.getStructureOrganisationnellePremierNiveau().libelle} </label>
+                                       
+                                            <Select
+                                                name="premier_niveau_organisa"
+                                                isClearable
+                                                isDisabled={!this.getStructureOrganisationnellePremierNiveau()}
+                                                placeholder={`Sélection de ${this.getStructureOrganisationnellePremierNiveau().libelle}`}
+                                                noOptionsMessage={() => `Pas de ${this.getStructureOrganisationnellePremierNiveau().libelle} pour l'instant`}
+                                                options={  this.props.plan_organisationnels.filter(pl => pl.parent == null )}
+                                                getOptionLabel={option => option.libelle}
+                                                getOptionValue={option => option.id}
+                                                // formatOptionLabel={formatOptionVehicule}
+                                                onChange={this.setFieldSelect.bind(this, "premier_niveau_organisa")}
+                                                
+                                            />
+
+                                        </div> : null}
+
+                                        {this.getStructureOrganisationnelleDeuxiemeNiveau() && this.state.premier_niveau_organisa ?
+                                        <div className="col-md-4">
+                                            <label className="">{this.getStructureOrganisationnelleDeuxiemeNiveau().libelle} </label>
+                                       
+
+                                            <Select
+                                                name="deuxieme_niveau_organisa"
+                                                
+                                                isClearable
+                                                isDisabled={!this.getStructureOrganisationnelleDeuxiemeNiveau()}
+                                                placeholder={`Sélection de ${this.getStructureOrganisationnelleDeuxiemeNiveau().libelle}`}
+                                                noOptionsMessage={() => `Pas de ${this.getStructureOrganisationnelleDeuxiemeNiveau().libelle} pour l'instant`}
+                                                options={ this.state.premier_niveau_organisa ? this.props.plan_organisationnels.filter(pl => pl.parent == this.state.premier_niveau_organisa.id) : this.props.plan_organisationnels.filter(pl => pl.structure_organisationnel.niveau == 2)}
+                                                getOptionLabel={option => option.libelle}
+                                                getOptionValue={option => option.id}
+                                                // formatOptionLabel={formatOptionVehicule}
+                                                onChange={this.setFieldSelect.bind(this, "deuxieme_niveau_organisa")}
+                                                
+                                            />
+
+                                        </div> : null}
+
+                                        {this.getStructureOrganisationnelleTroisiemeNiveau() && this.state.premier_niveau_organisa && this.state.deuxieme_niveau_organisa ?
+                                        <div className="col-md-4">
+                                            <label className="">{this.getStructureOrganisationnelleTroisiemeNiveau().libelle} </label>
+                                       
+                                            <Select
+                                                name="troisieme_niveau_organisa"
+                                                isClearable
+                                                isDisabled={!this.getStructureOrganisationnelleTroisiemeNiveau()}
+                                                placeholder={`Sélection de ${this.getStructureOrganisationnelleTroisiemeNiveau().libelle}`}
+                                                noOptionsMessage={() => `Pas de ${this.getStructureOrganisationnelleTroisiemeNiveau().libelle} pour l'instant`}
+                                                options={ this.state.deuxieme_niveau_organisa ? this.props.plan_organisationnels.filter(pl => pl.parent == this.state.deuxieme_niveau_organisa.id) : this.props.plan_organisationnels.filter(pl => pl.structure_organisationnel.niveau == 3)}
+                                                getOptionLabel={option => option.libelle}
+                                                getOptionValue={option => option.id}
+                                                // formatOptionLabel={formatOptionVehicule}
+                                                onChange={this.setFieldSelect.bind(this, "troisieme_niveau_organisa")}
+                                                
+                                            />
+
+                                        </div> : null}
+                                </div>
+
+
+                                <div className="row">
+                                {this.getStructureOrganisationnelleQuatriemeNiveau() && this.state.premier_niveau_organisa && this.state.deuxieme_niveau_organisa && this.state.troisieme_niveau_organisa ?
+                                        <div className="col-md-4">
+                                            <label className="">{this.getStructureOrganisationnelleQuatriemeNiveau().libelle} d'affectation *</label>
+                                       
+
+                                            <Select
+                                                name="quatrieme_niveau_organisa"
+                                                
+                                                isClearable
+                                                isDisabled={!this.getStructureOrganisationnelleQuatriemeNiveau()}
+                                                placeholder={`Sélection de ${this.getStructureOrganisationnelleQuatriemeNiveau().libelle}`}
+                                                noOptionsMessage={() => `Pas de ${this.getStructureOrganisationnelleQuatriemeNiveau().libelle} pour l'instant`}
+                                                options={ this.state.troisieme_niveau_organisa ? this.props.plan_organisationnels.filter(pl => pl.parent == this.state.troisieme_niveau_organisa.id) : this.props.plan_organisationnels.filter(pl => pl.structure_organisationnel.niveau == 4)}
+                                                getOptionLabel={option => option.libelle}
+                                                getOptionValue={option => option.id}
+                                                // formatOptionLabel={formatOptionVehicule}
+                                                onChange={this.setFieldSelect.bind(this, "quatrieme_niveau_organisa")}
+                                                
+                                            />
+
+                                        </div> : null}
+
+                                {this.getStructureOrganisationnelleCinquiemeNiveau() && this.state.premier_niveau_organisa && this.state.deuxieme_niveau_organisa && this.state.troisieme_niveau_organisa && this.state.quatrieme_niveau_organisa ?
+                                        <div className="col-md-4">
+                                            <label className="">{this.getStructureOrganisationnelleCinquiemeNiveau().libelle} </label>
+                                       
+                                            <Select
+                                                name="cinquieme_niveau_organisa"
+                                                isClearable
+                                                isDisabled={!this.getStructureOrganisationnelleCinquiemeNiveau()}
+                                                placeholder={`Sélection de ${this.getStructureOrganisationnelleCinquiemeNiveau().libelle}`}
+                                                noOptionsMessage={() => `Pas de ${this.getStructureOrganisationnelleCinquiemeNiveau().libelle} pour l'instant`}
+                                                options={ this.state.quatrieme_niveau_organisa ? this.props.plan_organisationnels.filter(pl => pl.parent == this.state.quatrieme_niveau_organisa.id) : this.props.plan_organisationnels.filter(pl => pl.structure_organisationnel.niveau == 5)}
+                                                getOptionLabel={option => option.libelle}
+                                                getOptionValue={option => option.id}
+                                                // formatOptionLabel={formatOptionVehicule}
+                                                onChange={this.setFieldSelect.bind(this, "cinquieme_niveau_organisa")}
+                                                
+                                            />
+
+                                        </div> : null}
+
+                                        {this.getStructureOrganisationnelleSixiemeNiveau() && this.state.premier_niveau_organisa && this.state.deuxieme_niveau_organisa && this.state.troisieme_niveau_organisa && this.state.quatrieme_niveau_organisa && this.state.cinquieme_niveau_organisa ?
+                                        <div className="col-md-4">
+                                            <label className="">{this.getStructureOrganisationnelleSixiemeNiveau().libelle} d'affectation *</label>
+                                       
+
+                                            <Select
+                                                name="sixieme_niveau_organisa"
+                                                
+                                                isClearable
+                                                isDisabled={!this.getStructureOrganisationnelleSixiemeNiveau()}
+                                                placeholder={`Sélection de ${this.getStructureOrganisationnelleSixiemeNiveau().libelle}`}
+                                                noOptionsMessage={() => `Pas de ${this.getStructureOrganisationnelleSixiemeNiveau().libelle} pour l'instant`}
+                                                options={ this.state.cinquieme_niveau_organisa ? this.props.plan_organisationnels.filter(pl => pl.parent == this.state.cinquieme_niveau_organisa.id) : this.props.plan_organisationnels.filter(pl => pl.structure_organisationnel.niveau == 6)}
+                                                getOptionLabel={option => option.libelle}
+                                                getOptionValue={option => option.id}
+                                                // formatOptionLabel={formatOptionVehicule}
+                                                onChange={this.setFieldSelect.bind(this, "sixieme_niveau_organisa")}
+                                                
+                                            />
+
+                                        </div> : null}
+                                </div>
+
+
                                 <div className="row">
                                     <div className="col-md-3">
                                     <label htmlFor="">Marque</label>
@@ -707,7 +1267,11 @@ const mapStateToProps = state => {
         tiers: state.tiers.items,
         entites: state.entites.items,
         loading: state.vehicules.loading,
-        vehiculeSeleted: state.vehiculeSeleted.vehicule
+        vehiculeSeleted: state.vehiculeSeleted.vehicule,
+        plan_organisationnels: state.plan_organisationnels.items,
+        plan_geographiques: state.plan_geographiques.items,
+        structure_geographiques: state.structure_geographiques.items,
+        structure_organisationnelles: state.structure_organisationnelles.items
 
     }
 }

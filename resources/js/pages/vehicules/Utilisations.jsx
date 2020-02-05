@@ -17,6 +17,8 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import { Container, Button, Link } from 'react-floating-action-button'
 import moment from 'moment'
 import '../../components/table.css'
+import Select from 'react-select'
+import {colourStyles} from '../../utils/Repository'
 
 
 
@@ -177,6 +179,13 @@ import '../../components/table.css'
           });
         }
 
+        setFieldSelect(name, value) {
+     
+            let obj = {};
+            obj[name] = value;
+            this.setState(obj);
+        }
+
         setFieldKilometrageRetour = (event) => {
             //  this.setState({[e.target.name]: e.target.value})
               const target = event.target;
@@ -256,6 +265,46 @@ import '../../components/table.css'
  
        // return (tab.includes(true)) ? 'Ce véhicule est déja en cours d\'utilisation !' : null 
       }
+
+
+    setFieldSelectDepartEtDestination(name, value) {
+     
+        let obj = {};
+        obj[name] = value;
+        this.setState(obj);
+    }
+
+
+      getNiveauxPlanGeographiques = () => {
+        const events = [];
+        this.props.structure_geographiques.map(event => {
+            if(!event.niveau) return;
+            return events.push(event.niveau)
+        })
+        
+        return events
+    }
+
+    getMaximumNiveauPlanGeographique = () => {
+        var niveau = Math.max(...this.getNiveauxPlanGeographiques()) 
+        if (niveau == 0) return 1;
+        return Number(niveau );
+
+    }
+
+    getStructureGeographiqueDernierNiveau = () => {
+        if(!this.getPlanGeographiquesDerniersNiveau().length) return undefined;
+        else{
+            return this.props.structure_geographiques.find(st => st.niveau == this.getPlanGeographiquesDerniersNiveau()[0].structure_geographique.niveau)
+        }
+    }
+
+    getPlanGeographiquesDerniersNiveau = () => {
+        return this.props.plan_geographiques.filter(elm => elm.structure_geographique ? elm.structure_geographique.niveau == this.getMaximumNiveauPlanGeographique() : false) 
+    }
+
+  
+
       
 
 
@@ -285,9 +334,8 @@ import '../../components/table.css'
                          kilometrage_compteur_debut: this.kilometrage_compteur_debut.value,
                          kilometrage_compteur_retour: this.kilometrage_compteur_retour.value,
                          kilometres_parcourus: this.kilometres_parcourus.value,
-                         lieu_depart: this.lieu_depart.value,
-                         destination: this.destination.value,   
-      
+                         lieu_depart_id: this.state.lieu_depart ? this.state.lieu_depart.id : null,
+                         destination_id: this.state.destination ? this.state.destination.id : null, 
                   }
                   ).then(response => {
                       const action = {type: "ADD_UTILISATION", value: response.data.utilisation}
@@ -462,6 +510,68 @@ import '../../components/table.css'
                         </h3>
                         <form ref={(ref) => this.formRef = ref} className="p-3" onChange={this.setField} onSubmit={this.enregistrerUtilisation}>
                             <br />
+                             <div className="form-row">
+
+                                    {this.getStructureGeographiqueDernierNiveau() ?
+                                            <div className="col-md-6">
+                                                <label >Lieu Départ</label>
+                                        
+
+                                                <Select
+                                                    name="lieu_depart"
+                                                    isDisabled={!this.getStructureGeographiqueDernierNiveau()}
+                                                    placeholder={`Sélection de ${this.getStructureGeographiqueDernierNiveau().libelle}`}
+                                                    noOptionsMessage={() => `Pas de ${this.getStructureGeographiqueDernierNiveau().libelle} pour l'instant`}
+                                                    options={this.getPlanGeographiquesDerniersNiveau()}
+                                                    getOptionLabel={option => option.libelle}
+                                                    getOptionValue={option => option.id}
+                                                    // formatOptionLabel={formatOptionVehicule}
+                                                    onChange={this.setFieldSelectDepartEtDestination.bind(this, "lieu_depart")}
+                                                />
+
+                                            </div> :
+
+
+                                            <div className="col-md-6">
+                                                <label >Lieu Départ</label>
+                                        
+                                                <input readOnly className="form-control" value="Veuillez creer la structure Géographique" />
+
+                                            </div>}
+
+
+                                    {this.getStructureGeographiqueDernierNiveau() ?
+                                            <div className="col-md-6">
+                                                <label >Destination</label>
+                                        
+
+                                                <Select
+                                                    name="destination"
+                                                    isDisabled={!this.getStructureGeographiqueDernierNiveau()}
+                                                    placeholder={`Sélection de ${this.getStructureGeographiqueDernierNiveau().libelle}`}
+                                                    noOptionsMessage={() => `Pas de ${this.getStructureGeographiqueDernierNiveau().libelle} pour l'instant`}
+                                                    options={this.getPlanGeographiquesDerniersNiveau()}
+                                                    getOptionLabel={option => option.libelle}
+                                                    getOptionValue={option => option.id}
+                                                    // formatOptionLabel={formatOptionVehicule}
+                                                    onChange={this.setFieldSelectDepartEtDestination.bind(this, "destination")}
+                                                />
+
+                                            </div> :
+
+
+                                            <div className="col-md-6">
+                                                <label >Destination</label>
+                                        
+                                                <input readOnly className="form-control" value="Veuillez creer la structure Géographique" />
+
+                                            </div>}
+                                    
+
+
+
+                                    
+                                    </div>
                             <div className="form-row">
                                 <div className="col-md-6">
                                 <div className="position-relative form-group">
@@ -512,7 +622,7 @@ import '../../components/table.css'
                                     <select className="form-control"
                                      style={inputStyle}
 
-                                    defaultValue={vehiculeSelect == undefined ?
+                                    value={vehiculeSelect == undefined ?
                                         null : vehiculeSelect.detenteur ? vehiculeSelect.detenteur.id : null}
                                      ref={utilisateur => this.utilisateur = utilisateur}
                                         onChange={this.setField}
@@ -558,7 +668,7 @@ import '../../components/table.css'
                                     <select className="form-control"
                                      ref={chauffeur => this.chauffeur = chauffeur}
                                         onChange={this.setField}
-                                        defaultValue={vehiculeSelect == undefined ?
+                                        value={vehiculeSelect == undefined ?
                                             null : vehiculeSelect.detenteur ? vehiculeSelect.detenteur.id : null}
                                          name="chauffeur">
                                              <option value={null}></option>
@@ -688,25 +798,7 @@ import '../../components/table.css'
                                    
                                 </div>
 
-                                <div className="form-row">
-                                    <div className="col-md-6">
-                                        <div className="position-relative form-group">
-                                            <label >Lieu Départ</label>
-                                            <input name="lieu_depart"
-                                            ref={lieu_depart => this.lieu_depart = lieu_depart}
-                                              type="text"  className="form-control" /></div>
-                                    </div>
-
-                                    <div className="col-md-6">
-                                        <div className="position-relative form-group">
-                                            <label >Destination </label>
-                                            <input name="destination"
-                                            ref={destination => this.destination = destination}
-                                            type="text"  className="form-control" /></div>
-                                    </div>
-
-                                   
-                                </div>
+                             
 
                             
                                 <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
@@ -744,7 +836,9 @@ const mapStateToProps = state => {
         personnels: state.personnels.items,
         entites: state.entites.items,
         vehiculeSeleted: state.vehiculeSeleted.vehicule,
-        utilisations: state.utilisations.items
+        utilisations: state.utilisations.items,
+        plan_geographiques: state.plan_geographiques.items,
+        structure_geographiques: state.structure_geographiques.items,
 
 
     }

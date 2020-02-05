@@ -21,7 +21,7 @@ class PlanGeographiqueController extends Controller
     public function index()
     {
        // return $this->model->all();
-        $plan_geographiques = PlanGeographique::orderBy('id', 'asc')->with(['children.children.children.children.children.children.children.children.children.children', 'structure_geographique'])->get();
+        $plan_geographiques = PlanGeographique::orderBy('id', 'asc')->with(['children.children.children.children.children.children.children.children.children.children'])->get();
         
         return response()->json($plan_geographiques);
     }
@@ -48,7 +48,7 @@ class PlanGeographiqueController extends Controller
 
          $creation = $str->create($request->only($this->model->getModel()->fillable));
          
-        return response()->json( PlanGeographique::with(['children.children.children.children.children.children.children.children.children.children', 'structure_geographique'])->find($creation->id));
+        return response()->json( PlanGeographique::with(['children.children.children.children.children.children.children.children.children.children'])->find($creation->id));
 
     }
 
@@ -87,7 +87,7 @@ class PlanGeographiqueController extends Controller
         $user =  $this->model->update($request->only($this->model->getModel()->fillable), $id);
 
         // return response()->json(User::with(['autorisation'])->find($user->id) );
-         return response()->json(PlanGeographique::with(['children.children.children.children.children.children.children.children.children.children', 'structure_geographique'])->find($id) );
+         return response()->json(PlanGeographique::with(['children.children.children.children.children.children.children.children.children.children'])->find($id) );
     }
 
     /**

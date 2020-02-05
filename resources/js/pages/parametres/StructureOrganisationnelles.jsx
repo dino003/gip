@@ -217,6 +217,13 @@ import StructureOrganisationnelleItem from '../../components/codifications/Struc
         return Number(niveau + 1);
 
     }
+
+    lastLevel = () => {
+        var niveau = Math.max(...this.getNiveaus(), 0) 
+        if (niveau == 0) return 1;
+        return Number(niveau ) ;
+
+    }
     
     
 
@@ -228,7 +235,7 @@ import StructureOrganisationnelleItem from '../../components/codifications/Struc
                        <div className="card-body ">
                        <h5 className="card-title">Gestion de la Structure Organisationelle
                         
-                          
+                         {this.lastLevel() < 6 ? 
                         <span className="pull-right">
                     
                         {!this.state.inputOpen ? ( <button title=" Ajouter une nouvelle structure"
@@ -239,13 +246,15 @@ import StructureOrganisationnelleItem from '../../components/codifications/Struc
  
                                       Ajouter
                                          </button>) : null}
-                            </span>
+                            </span> : null }
                          
                            
                         </h5>
                         <br />
-                        {this.state.inputOpen ? (
+                        {this.state.inputOpen ? 
+                        <React.Fragment>
 
+                        {this.lastLevel() < 6 ?
                         <div className="row">
 
                             <div className="col-md-2">
@@ -287,7 +296,9 @@ import StructureOrganisationnelleItem from '../../components/codifications/Struc
 
                                 
                            
-                        </div>  ) : null}
+                        </div> : null }
+                          </React.Fragment>  : null}
+
                            <div className="table-responsive">
                            {this.state.loading ? this.renderLoading() : 
                             !this.props.structure_organisationnelles.length ? this.renderEmpty() : this.renderList()}

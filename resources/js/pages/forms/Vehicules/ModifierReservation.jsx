@@ -10,6 +10,7 @@ import inputStyle from '../../../utils/inputStyle'
 
 import Loader from 'react-loader-spinner'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
+import Select from 'react-select'
 
 
 
@@ -22,6 +23,44 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
         }
       
     }
+
+
+    setFieldSelectDepartEtDestination(name, value) {
+     
+        let obj = {};
+        obj[name] = value;
+        this.setState(obj);
+    }
+
+          
+    getNiveauxPlanGeographiques = () => {
+        const events = [];
+        this.props.structure_geographiques.map(event => {
+            if(!event.niveau) return;
+            return events.push(event.niveau)
+        })
+        
+        return events
+    }
+
+    getMaximumNiveauPlanGeographique = () => {
+        var niveau = Math.max(...this.getNiveauxPlanGeographiques()) 
+        if (niveau == 0) return 1;
+        return Number(niveau );
+
+    }
+
+    getStructureGeographiqueDernierNiveau = () => {
+        if(!this.getPlanGeographiquesDerniersNiveau().length) return undefined;
+        else{
+            return this.props.structure_geographiques.find(st => st.niveau == this.getPlanGeographiquesDerniersNiveau()[0].structure_geographique.niveau)
+        }
+    }
+
+    getPlanGeographiquesDerniersNiveau = () => {
+        return this.props.plan_geographiques.filter(elm => elm.structure_geographique ? elm.structure_geographique.niveau == this.getMaximumNiveauPlanGeographique() : false) 
+    }
+
 
     // componentDidMount(){
     //     this.setState({
@@ -121,18 +160,21 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                     personne_reservant: this.personne_reservant.value,
                     date_fin_reservation: this.date_fin_reservation.value,
                     heure_fin_reservation: this.heure_fin_reservation.value,
-                    vehicule_parti: this.vehicule_parti.value,
-                    vehicule_retourne: this.vehicule_retourne.value,
+                   // vehicule_parti: this.vehicule_parti.value,
+                   // vehicule_retourne: this.vehicule_retourne.value,
                     entite_personne_reservant: this.entite_personne_reservant.value,
                     objet_reservation: this.objet_reservation.value,
                     date_debut_reservation: this.date_debut_reservation.value,
                     heure_debut_reservation: this.heure_debut_reservation.value,
-                    lieu_depart: this.lieu_depart.value,
+                    lieu_depart_id: this.state.lieu_depart ? this.state.lieu_depart.id : objetEdit.lieu_depart_id ? objetEdit.lieu_depart_id : null,
+                    destination_id: this.state.destination ? this.state.destination.id : objetEdit.destination_id ? objetEdit.destination_id : null,
+          
+                  //  lieu_depart: this.lieu_depart.value,
                     nombre_personne_dans_vehicule: this.nombre_personne_dans_vehicule.value,
                     kilometrage_prevu: this.kilometrage_prevu.value,
-                    destination_ville: this.destination_ville.value,
-                    destination_departement: this.destination_departement.value,
-                    destination_pays: this.destination_pays.value,
+                   // destination_ville: this.destination_ville.value,
+                   // destination_departement: this.destination_departement.value,
+                   // destination_pays: this.destination_pays.value,
                     vehicule_avec_chauffeur: this.vehicule_avec_chauffeur.value,
                     carte_carburant: this.carte_carburant.value,
                     carte_autoroute: this.carte_autoroute.value,
@@ -257,7 +299,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                 </div>
 
                                 <div className="form-row">
-                                <div className="col-md-3">
+                                <div className="col-md-4">
                                         <div className="position-relative form-group">
                                             <label >Date de debut de la réservation *</label>
                                             <input name="date_debut_reservation"  type="date"
@@ -307,7 +349,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         </div>
                                     </div>
 
-                                    <div className="col-md-1">
+                                {/*     <div className="col-md-1">
                                     <label  className="">Véhicule parti</label>
                                         <select name="vehicule_parti" onChange={this.setField}
                                             ref={vehicule_parti => this.vehicule_parti = vehicule_parti}
@@ -329,7 +371,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                         <option value="1">Oui</option>
                                         </select>
                                 
-                                        </div>
+                                        </div> */}
 
                                     
                                 </div>
@@ -337,57 +379,70 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                     
 
                                 <div className="form-row">
-                                     
-                                   
-                                        <div className="col-md-3">
-                                            <label >Lieu de Départ</label>
 
-                                            <input name="lieu_depart"
-                                            defaultValue={objetEdit.lieu_depart}
-                                            ref={lieu_depart => this.lieu_depart = lieu_depart}
-                                             
-                                              type="text" className="form-control" />
-                                        </div>
 
-                                        <div className="col-md-3">
-                                            <label >Destination: Ville</label>
+                                {this.getStructureGeographiqueDernierNiveau() ?
+                                          <div className="col-md-6">
+                                              <label >Lieu de Départ</label>
+                                      
 
-                                            <input name="destination_ville"
-                                            defaultValue={objetEdit.destination_ville}
+                                              <Select
+                                                  name="lieu_depart"
+                                                  isDisabled={!this.getStructureGeographiqueDernierNiveau()}
+                                                  placeholder={`Sélection de ${this.getStructureGeographiqueDernierNiveau().libelle}`}
+                                                  noOptionsMessage={() => `Pas de ${this.getStructureGeographiqueDernierNiveau().libelle} pour l'instant`}
+                                                  options={this.getPlanGeographiquesDerniersNiveau()}
+                                                  getOptionLabel={option => option.libelle}
+                                                  getOptionValue={option => option.id}
+                                                  defaultValue={objetEdit.depart_reservation ? objetEdit.depart_reservation : null}
+                                                  onChange={this.setFieldSelectDepartEtDestination.bind(this, "lieu_depart")}
+                                              />
 
-                                            ref={destination_ville => this.destination_ville = destination_ville}
-                                             
-                                              type="text" className="form-control" />
-                                        </div>
+                                          </div> :
 
-                                        <div className="col-md-3">
-                                            <label >Destination: Département</label>
 
-                                            <input name="destination_departement"
-                                            defaultValue={objetEdit.destination_departement}
+                                          <div className="col-md-6">
+                                              <label >Lieu Départ</label>
+                                      
+                                              <input readOnly className="form-control" value="Veuillez creer la structure Géographique" />
 
-                                                onChange={this.setField}
-                                            ref={destination_departement => this.destination_departement = destination_departement}
-                                              type="text" className="form-control" />
-                                        </div>
-                                        <div className="col-md-3">
-                                            <label >Destination: Pays</label>
+                                          </div>}
 
-                                            <input name="destination_pays"
-                                            defaultValue={objetEdit.destination_pays}
 
-                                                onChange={this.setField}
-                                            ref={destination_pays => this.destination_pays = destination_pays}
-                                              type="text" className="form-control" />
-                                        </div>
+                                  {this.getStructureGeographiqueDernierNiveau() ?
+                                          <div className="col-md-6">
+                                              <label >Destination</label>
+                                      
 
+                                              <Select
+                                                  name="destination"
+                                                  isDisabled={!this.getStructureGeographiqueDernierNiveau()}
+                                                  placeholder={`Sélection de ${this.getStructureGeographiqueDernierNiveau().libelle}`}
+                                                  noOptionsMessage={() => `Pas de ${this.getStructureGeographiqueDernierNiveau().libelle} pour l'instant`}
+                                                  options={this.getPlanGeographiquesDerniersNiveau()}
+                                                  getOptionLabel={option => option.libelle}
+                                                  getOptionValue={option => option.id}
+                                                  defaultValue={objetEdit.destination_reservation ? objetEdit.destination_reservation : null}
+
+                                                  onChange={this.setFieldSelectDepartEtDestination.bind(this, "destination")}
+                                              />
+
+                                          </div> :
+
+
+                                          <div className="col-md-6">
+                                              <label >Destination</label>
+                                      
+                                              <input readOnly className="form-control" value="Veuillez creer la structure Géographique" />
+
+                                          </div>}
                                      
                                     </div>
 
                                     <div className="form-row">
                                     <div className="col-md-2">
                                         <div className="position-relative form-group">
-                                            <label >nbr pers dans vehicule</label>
+                                            <label title="Nombre de personne dans le véhicule" >nbr pers veh.</label>
                                             <input name="nombre_personne_dans_vehicule"  type="number"
                                             defaultValue={objetEdit.nombre_personne_dans_vehicule}
 
@@ -526,7 +581,9 @@ const mapStateToProps = state => {
         personnels: state.personnels.items,
         reservations: state.reservations.items,
         vehiculeSeleted: state.vehiculeSeleted.vehicule,
-        vehicules: state.vehicules.items
+        vehicules: state.vehicules.items,
+        plan_geographiques: state.plan_geographiques.items,
+        structure_geographiques: state.structure_geographiques.items
 
     }
   }
