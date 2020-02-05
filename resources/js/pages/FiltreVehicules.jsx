@@ -824,7 +824,7 @@ class FiltreVehicules extends Component {
                                             />
                                     </div>
 
-                                    <div className="col-md-4">
+                        {/*             <div className="col-md-4">
                                     <label htmlFor="">Entité physique</label>
 
                                         <Select
@@ -839,7 +839,7 @@ class FiltreVehicules extends Component {
                                                 // formatOptionLabel={formatOptionVehicule}
                                                 onChange={this.setFieldSelect.bind(this, "entite_physique")}
                                             />
-                                    </div>
+                                    </div> */}
 
                                     <div className="col-md-5">
                                         <label htmlFor="">Tiers d'acquisition</label>
@@ -931,7 +931,7 @@ class FiltreVehicules extends Component {
                                             />
                                     </div>
 
-                                    <div className="col-md-4">
+                         {/*            <div className="col-md-4">
                                     <label htmlFor="">Entité D'affectation Comptable</label>
 
                                         <Select
@@ -946,7 +946,7 @@ class FiltreVehicules extends Component {
                                                 // formatOptionLabel={formatOptionVehicule}
                                                 onChange={this.setFieldSelect.bind(this, "entite_comptable")}
                                             />
-                                    </div>
+                                    </div> */}
                                    
                                 </div>
                                 <br />
