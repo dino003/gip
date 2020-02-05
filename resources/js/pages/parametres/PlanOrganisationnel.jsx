@@ -234,8 +234,8 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
         
                     }
                   }else if(niveau_actuel == 2){
-                    var pre_niveau1 = this.props.plan_geographiques.find(pl => pl.id == this.state.parent_id)
-                   var premier_niveau = this.props.plan_geographiques.find(pl => pl.id == pre_niveau1.parent)
+                    var pre_niveau1 = this.props.plan_organisationnels.find(pl => pl.id == this.state.parent_id)
+                   var premier_niveau = this.props.plan_organisationnels.find(pl => pl.id == pre_niveau1.parent)
                     objet_a_envoyer = {
                       niveau_1: premier_niveau.id,
                       niveau_2: this.state.parent_id,
@@ -243,9 +243,9 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
         
                     }
                   }else if(niveau_actuel == 3){
-                    var pre_niveau2 = this.props.plan_geographiques.find(pl => pl.id == this.state.parent_id)
-                    var deuxieme_niveau = this.props.plan_geographiques.find(pl => pl.id == pre_niveau2.parent)
-                    var troisieme_niveau = this.props.plan_geographiques.find(pl => pl.id == deuxieme_niveau.parent)
+                    var pre_niveau2 = this.props.plan_organisationnels.find(pl => pl.id == this.state.parent_id)
+                    var deuxieme_niveau = this.props.plan_organisationnels.find(pl => pl.id == pre_niveau2.parent)
+                    var troisieme_niveau = this.props.plan_organisationnels.find(pl => pl.id == deuxieme_niveau.parent)
     
                     objet_a_envoyer = {
                        niveau_1: troisieme_niveau.id,
@@ -256,10 +256,10 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                      }
         
                   }else if(niveau_actuel == 4){
-                    var pre_niveau2 = this.props.plan_geographiques.find(pl => pl.id == this.state.parent_id)
-                    var deuxieme_niveau = this.props.plan_geographiques.find(pl => pl.id == pre_niveau2.parent)
-                    var troisieme_niveau = this.props.plan_geographiques.find(pl => pl.id == deuxieme_niveau.parent)
-                    var quatrieme_niveau = this.props.plan_geographiques.find(pl => pl.id == troisieme_niveau.parent)
+                    var pre_niveau2 = this.props.plan_organisationnels.find(pl => pl.id == this.state.parent_id)
+                    var deuxieme_niveau = this.props.plan_organisationnels.find(pl => pl.id == pre_niveau2.parent)
+                    var troisieme_niveau = this.props.plan_organisationnels.find(pl => pl.id == deuxieme_niveau.parent)
+                    var quatrieme_niveau = this.props.plan_organisationnels.find(pl => pl.id == troisieme_niveau.parent)
     
                     objet_a_envoyer = {
                       niveau_1: quatrieme_niveau.id,
@@ -271,11 +271,11 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
                      }
         
                   }else if(niveau_actuel == 5){
-                    var pre_niveau2 = this.props.plan_geographiques.find(pl => pl.id == this.state.parent_id)
-                    var deuxieme_niveau = this.props.plan_geographiques.find(pl => pl.id == pre_niveau2.parent)
-                    var troisieme_niveau = this.props.plan_geographiques.find(pl => pl.id == deuxieme_niveau.parent)
-                    var quatrieme_niveau = this.props.plan_geographiques.find(pl => pl.id == troisieme_niveau.parent)
-                    var cinquieme_niveau = this.props.plan_geographiques.find(pl => pl.id == quatrieme_niveau.parent)
+                    var pre_niveau2 = this.props.plan_organisationnels.find(pl => pl.id == this.state.parent_id)
+                    var deuxieme_niveau = this.props.plan_organisationnels.find(pl => pl.id == pre_niveau2.parent)
+                    var troisieme_niveau = this.props.plan_organisationnels.find(pl => pl.id == deuxieme_niveau.parent)
+                    var quatrieme_niveau = this.props.plan_organisationnels.find(pl => pl.id == troisieme_niveau.parent)
+                    var cinquieme_niveau = this.props.plan_organisationnels.find(pl => pl.id == quatrieme_niveau.parent)
     
                     objet_a_envoyer = {
                       niveau_1: cinquieme_niveau.id,
