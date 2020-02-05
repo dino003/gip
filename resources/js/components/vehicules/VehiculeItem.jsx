@@ -34,7 +34,7 @@ import { formatageSomme, formatageNombre } from '../../utils/Repository';
              <tr style={{backgroundColor: textColor}} onClick={this.props.onSelect.bind(this, item.id)}> 
             <td className="sticky-col first-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.immatriculation || ''}</td>
    
-            <td className="sticky-col second-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.entite_comptable ? item.entite_comptable.nom_entite : ''}</td>
+            <td className="sticky-col second-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.affectation_geographique ? item.affectation_geographique.libelle : ''}</td>
             <td className="sticky-col third-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.type_vehicule_statut || ''}</td>
             <td className="sticky-col thour-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.mode_acquisition == "0" ? 'Achat' : item.mode_acquisition == "1" ? 'Leasing' : 'Prêt'}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.marque ? item.marque.nom_marque : ''}</td>
