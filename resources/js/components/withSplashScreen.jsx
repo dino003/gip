@@ -630,7 +630,7 @@ function withSplashScreen(WrappedComponent) {
 
        this.timerID = setTimeout(
         () => this.tick(),
-        5000
+        10000
       );
 
       axios.all([this.fetchTheme(), this.fetchInfoSociete(), 

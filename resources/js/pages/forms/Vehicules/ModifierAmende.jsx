@@ -11,7 +11,8 @@ import inputStyle from '../../../utils/inputStyle'
 import Loader from 'react-loader-spinner'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
-
+import Select from 'react-select'
+import { colourStyles } from '../../../utils/Repository'
 
  class ModifierAmende extends Component {
     constructor(props) {
@@ -53,14 +54,20 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
 
       verificationFormulaire () {
+        const objetEdit = this.props.amendes.find(amende => amende.id == this.props.match.params.amende_id)
+
           if(this.date.value == ''){
               return "La date est obligatoire obligatoire !"
           }else if(this.nature_amende.value == ''){
               return "La nature de l\'amende est obligatoire !"
           }else if(this.conducteur.value == ''){
             return "Le conducteur  est obligatoire !"
+          }else if(!this.state.lieu && !objetEdit.lieu_id){
+            return "Vous n'avez pas saisi le lieu !"
           }else if(this.organisme.value == ''){
             return "L\'organisme de réglement est obligatoire !"
+          }else if(this.montant_amende.value == ''){
+            return "Vous n'avez pas saisi le montant de l'amende !"
           } else{
               return null
           }
@@ -77,12 +84,12 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                 date_reception: this.date_reception.value ,
                 heure: this.heure.value,
                 nature_amende: this.nature_amende.value,
-                lieu: this.lieu.value,
+                lieu: this.state.lieu ? this.state.lieu.id : objetEdit.lieu_id,
                 conducteur: this.conducteur.value,
                 regle_par_conducteur_ou_etablissement: this.regle_par_conducteur_ou_etablissement.value,
                 date_reglement: this.date_reglement.value,
                 montant_amende: this.montant_amende.value,
-                vehicule_en_fouriere: this.state.vehicule_en_fouriere == undefined ? this.state.objetEdit.vehicule_en_fouriere : this.state.vehicule_en_fouriere,
+                vehicule_en_fouriere: this.vehicule_en_fouriere.checked,
                 montant_mise_en_fouriere: this.montant_mise_en_fouriere.value,
                 organisme: this.organisme.value,
                 
@@ -109,6 +116,42 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
         // console.log(this.state.vehicule_en_fouriere)
 
       }
+
+      setFieldSelectDepartEtDestination(name, value) {
+     
+        let obj = {};
+        obj[name] = value;
+        this.setState(obj);
+    }
+
+          
+    getNiveauxPlanGeographiques = () => {
+        const events = [];
+        this.props.structure_geographiques.map(event => {
+            if(!event.niveau) return;
+            return events.push(event.niveau)
+        })
+        
+        return events
+    }
+
+    getMaximumNiveauPlanGeographique = () => {
+        var niveau = Math.max(...this.getNiveauxPlanGeographiques()) 
+        if (niveau == 0) return 1;
+        return Number(niveau );
+
+    }
+
+    getStructureGeographiqueDernierNiveau = () => {
+        if(!this.getPlanGeographiquesDerniersNiveau().length) return undefined;
+        else{
+            return this.props.structure_geographiques.find(st => st.niveau == this.getPlanGeographiquesDerniersNiveau()[0].structure_geographique.niveau)
+        }
+    }
+
+    getPlanGeographiquesDerniersNiveau = () => {
+        return this.props.plan_geographiques.filter(elm => elm.structure_geographique ? elm.structure_geographique.niveau == this.getMaximumNiveauPlanGeographique() : false) 
+    }
     
 
     render() {
@@ -190,15 +233,26 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                     
                                 <div className="form-row">
                                     
-                                   
-                                        <div className="col-md-3">
-                                            <label >Lieu</label>
+                
 
-                                            <input name="lieu"
-                                            ref={lieu => this.lieu = lieu}
-                                            defaultValue={objetEdit.lieu}
-                                              type="text" className="form-control" />
-                                        </div>
+                                        <div className="col-md-4">
+                                              <label >Lieu </label>
+                                      
+
+                                              <Select
+                                                  name="lieu"
+                                                  isDisabled={!this.getStructureGeographiqueDernierNiveau()}
+                                                  placeholder={`Sélection de ${this.getStructureGeographiqueDernierNiveau().libelle}`}
+                                                  noOptionsMessage={() => `Pas de ${this.getStructureGeographiqueDernierNiveau().libelle} pour l'instant`}
+                                                  options={this.getPlanGeographiquesDerniersNiveau()}
+                                                  getOptionLabel={option => option.libelle}
+                                                  getOptionValue={option => option.id}
+                                                  defaultValue={objetEdit.lieu_amende ? objetEdit.lieu_amende : null}
+                                                  styles={colourStyles}
+                                                  onChange={this.setFieldSelectDepartEtDestination.bind(this, "lieu")}
+                                              />
+
+                                          </div> 
 
                                         <div className="col-md-3">
                                     <label  className="">Conducteur</label>
@@ -217,15 +271,15 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                 
                                         </div>
 
-                                        <div className="col-md-3">
-                                    <label  className="">Réglement</label>
+                                        <div className="col-md-2">
+                                    <label  className="">Réglée par</label>
                                         <select name="regle_par_conducteur_ou_etablissement"
                                         defaultValue={objetEdit.regle_par_conducteur_ou_etablissement}
                                             ref={regle_par_conducteur_ou_etablissement => this.regle_par_conducteur_ou_etablissement = regle_par_conducteur_ou_etablissement}
 
                                           className="form-control">
-                                    <option value="Conducteur">Réglée par le Conducteur</option>
-                                    <option value="Etablissement">Réglée par l'établissement</option>
+                                    <option value="Conducteur"> le Conducteur</option>
+                                    <option value="Etablissement">l'établissement</option>
 
                                             
                                         </select>
@@ -248,19 +302,20 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                  
 
                                     <div className="form-row">
-                                    <div className="col-md-2">
+                                    <div className="col-md-4">
                                         <div className="position-relative form-group">
-                                            <label >Montant amende</label>
+                                            <label >Montant de l'amende</label>
                                             <input name="montant_amende"  type="number"
                                             defaultValue={objetEdit.montant_amende}
                                             onChange={this.setField}
+                                            style={inputStyle}
                                             ref={montant_amende => this.montant_amende = montant_amende}
                                              className="form-control" /></div>
                                     </div>
-                                    <div className="col-md-4">
+                                    <div className="col-md-2">
                                         <div className="position-relative form-group">
                                             <label className="form-check-label"></label>
-                                            Véhicule mis en fourière 
+                                             fourière ?
                                              <input type="checkbox"
                                              ref={vehicule_en_fouriere => this.vehicule_en_fouriere = vehicule_en_fouriere}
                                                onChange={this.setField}
@@ -334,7 +389,9 @@ const mapStateToProps = state => {
 
         vehiculeSeleted: state.vehiculeSeleted.vehicule,
         personnels: state.personnels.items,
-        amendes: state.amendes.items
+        amendes: state.amendes.items,
+        plan_geographiques: state.plan_geographiques.items,
+        structure_geographiques: state.structure_geographiques.items
     }
   }
 

@@ -21,7 +21,7 @@ class VehiculeAmendeController extends Controller
     public function index()
     {
         $vehicules_amendes = VehiculeAmende::with(['vehicule', 'organisme',
-        'nature_amende', 'conducteur'])
+        'nature_amende', 'conducteur', 'lieu_amende'])
         ->orderBy('id', 'desc')->get();
             return response()->json($vehicules_amendes);    
     }
@@ -49,7 +49,7 @@ class VehiculeAmendeController extends Controller
         $creation = $amende->create($request->only($amende->fillable));
  
         return response()->json(VehiculeAmende::with(['vehicule', 'organisme',
-         'nature_amende', 'conducteur'])
+         'nature_amende', 'conducteur', 'lieu_amende'])
         ->find($creation->id));
     }
 
@@ -88,7 +88,7 @@ class VehiculeAmendeController extends Controller
           // update model and only pass in the fillable fields
       $this->model->update($request->only($this->model->getModel()->fillable), $id);
 
-      return response()->json(VehiculeAmende::with(['vehicule', 'organisme', 'nature_amende', 'conducteur'])->find($id));
+      return response()->json(VehiculeAmende::with(['vehicule', 'organisme', 'nature_amende', 'conducteur', 'lieu_amende'])->find($id));
     }
 
     /**

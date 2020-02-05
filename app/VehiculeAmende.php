@@ -27,6 +27,12 @@ class VehiculeAmende extends Model
            return $this->belongsTo(Vehicule::class, 'vehicule');
        }
 
+       //lieu amendes 
+       public function lieu_amende()
+       {
+           return $this->belongsTo(PlanGeographique::class, 'lieu_id');
+       }
+
           //  organisme
           public function organisme()
           {

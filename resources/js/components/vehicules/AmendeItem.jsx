@@ -36,7 +36,7 @@ import {formatageSomme} from '../../utils/Repository'
 
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.conducteur ? item.conducteur.nom : ''}</td>
 
-            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.lieu || ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.lieu_amende ? item.lieu_amende.libelle : ''}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.regle_par_conducteur_ou_etablissement || ''}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.montant_amende ? formatageSomme(item.montant_amende) : ''}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.vehicule_en_fouriere ? 'Oui' : 'Non'}</td>

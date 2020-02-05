@@ -7,6 +7,8 @@ import InputMask from 'react-input-mask';
 
 import today from '../../../utils/today'
 import inputStyle from '../../../utils/inputStyle'
+import Select from 'react-select'
+import { colourStyles } from '../../../utils/Repository';
 
 
 
@@ -51,6 +53,12 @@ import inputStyle from '../../../utils/inputStyle'
             return "Le conducteur  est obligatoire !"
           }else if(this.organisme.value == ''){
             return "L\'organisme de réglement est obligatoire !"
+          }else if(this.conducteur.value == ''){
+            return "Le Conducteur est obligatoire !"
+          }else if(this.organisme.value == ''){
+            return "Vous n'avez pas saisi le montant de l'amende !"
+          }else if(!this.state.lieu){
+            return "Vous n'avez pas sélectionné le lieu !"
           } else{
               return null
           }
@@ -67,7 +75,7 @@ import inputStyle from '../../../utils/inputStyle'
                 date_reception: this.date_reception.value ,
                 heure: this.heure.value,
                 nature_amende: this.nature_amende.value,
-                lieu: this.lieu.value,
+                lieu_id: this.state.lieu ? this.state.lieu.id : null,
                 conducteur: this.conducteur.value,
                 regle_par_conducteur_ou_etablissement: this.regle_par_conducteur_ou_etablissement.value,
                 date_reglement: this.date_reglement.value,
@@ -76,7 +84,6 @@ import inputStyle from '../../../utils/inputStyle'
                 montant_mise_en_fouriere: this.montant_mise_en_fouriere.value,
                 organisme: this.organisme.value,
                 
-
             })
             .then(response => { 
                const action = {type: "ADD_AMENDE", value: response.data}
@@ -110,6 +117,42 @@ import inputStyle from '../../../utils/inputStyle'
             }
         }
     }
+
+    setFieldSelectDepartEtDestination(name, value) {
+     
+        let obj = {};
+        obj[name] = value;
+        this.setState(obj);
+    }
+
+          
+    getNiveauxPlanGeographiques = () => {
+        const events = [];
+        this.props.structure_geographiques.map(event => {
+            if(!event.niveau) return;
+            return events.push(event.niveau)
+        })
+        
+        return events
+    }
+
+    getMaximumNiveauPlanGeographique = () => {
+        var niveau = Math.max(...this.getNiveauxPlanGeographiques()) 
+        if (niveau == 0) return 1;
+        return Number(niveau );
+
+    }
+
+    getStructureGeographiqueDernierNiveau = () => {
+        if(!this.getPlanGeographiquesDerniersNiveau().length) return undefined;
+        else{
+            return this.props.structure_geographiques.find(st => st.niveau == this.getPlanGeographiquesDerniersNiveau()[0].structure_geographique.niveau)
+        }
+    }
+
+    getPlanGeographiquesDerniersNiveau = () => {
+        return this.props.plan_geographiques.filter(elm => elm.structure_geographique ? elm.structure_geographique.niveau == this.getMaximumNiveauPlanGeographique() : false) 
+    }
     
 
     render() {
@@ -142,6 +185,7 @@ import inputStyle from '../../../utils/inputStyle'
                                         <div className="position-relative form-group">
                                             <label >Date *</label>
                                             <input name="date"  type="date"
+                                            max={today}
                                             style={inputStyle}
                                             defaultValue={today}
                                             onChange={this.setField}
@@ -176,6 +220,7 @@ import inputStyle from '../../../utils/inputStyle'
                                         <select name="nature_amende" onChange={this.setField}
                                             ref={nature_amende => this.nature_amende = nature_amende}
                                             style={inputStyle}
+                                            defaultValue={this.props.natures_amendes.length == 1 ? this.props.natures_amendes[0].id : null}
 
                                           className="form-control">
                                         <option defaultValue={null}></option>
@@ -196,19 +241,32 @@ import inputStyle from '../../../utils/inputStyle'
                                 <div className="form-row">
                                     
                                    
-                                        <div className="col-md-3">
-                                            <label >Lieu</label>
+                  
 
-                                            <input name="lieu"
-                                            ref={lieu => this.lieu = lieu}
-                                              type="text" className="form-control" />
-                                        </div>
+                                          <div className="col-md-4">
+                                              <label >Lieu </label>
+                                      
+
+                                              <Select
+                                                  name="lieu"
+                                                  isDisabled={!this.getStructureGeographiqueDernierNiveau()}
+                                                  placeholder={`Sélection de ${this.getStructureGeographiqueDernierNiveau().libelle}`}
+                                                  noOptionsMessage={() => `Pas de ${this.getStructureGeographiqueDernierNiveau().libelle} pour l'instant`}
+                                                  options={this.getPlanGeographiquesDerniersNiveau()}
+                                                  getOptionLabel={option => option.libelle}
+                                                  getOptionValue={option => option.id}
+                                                  styles={colourStyles}
+                                                  onChange={this.setFieldSelectDepartEtDestination.bind(this, "lieu")}
+                                              />
+
+                                          </div> 
 
                                         <div className="col-md-3">
                                     <label  className="">Conducteur</label>
                                         <select name="conducteur"
                                             ref={conducteur => this.conducteur = conducteur}
-
+                                            defaultValue={this.props.vehiculeSeleted ? this.props.vehiculeSeleted.detenteur ?  this.props.vehiculeSeleted.detenteur.id : this.props.vehiculeSeleted.chauffeur_atitre ? this.props.vehiculeSeleted.chauffeur_atitre.id  : null : null}
+                                            style={inputStyle}
                                           className="form-control">
                                         <option defaultValue={null}></option>
 
@@ -220,14 +278,15 @@ import inputStyle from '../../../utils/inputStyle'
                                 
                                         </div>
 
-                                        <div className="col-md-3">
-                                    <label  className="">Réglement</label>
+                                        <div className="col-md-2">
+                                    <label  className="">Réglée par</label>
                                         <select name="regle_par_conducteur_ou_etablissement"
                                             ref={regle_par_conducteur_ou_etablissement => this.regle_par_conducteur_ou_etablissement = regle_par_conducteur_ou_etablissement}
 
                                           className="form-control">
-                                    <option value="Conducteur">Réglée par le Conducteur</option>
-                                    <option value="Etablissement">Réglée par l'établissement</option>
+                                    <option value="Etablissement"> L'établissement</option>
+
+                                    <option value="Conducteur">le Conducteur</option>
 
                                             
                                         </select>
@@ -249,18 +308,19 @@ import inputStyle from '../../../utils/inputStyle'
                                  
 
                                     <div className="form-row">
-                                    <div className="col-md-2">
+                                    <div className="col-md-4">
                                         <div className="position-relative form-group">
-                                            <label >Montant amende</label>
+                                            <label >Montant de l'amende</label>
                                             <input name="montant_amende"  type="number"
                                             onChange={this.setField}
+                                            style={inputStyle}
                                             ref={montant_amende => this.montant_amende = montant_amende}
                                              className="form-control" /></div>
                                     </div>
-                                    <div className="col-md-4">
+                                    <div className="col-md-2">
                                         <div className="position-relative form-group">
                                             <label className="form-check-label"></label>
-                                            Véhicule mis en fourière 
+                                             fourière ? 
                                              <input type="checkbox"
                                                onChange={this.setField}
                                                 checked={this.state.vehicule_en_fouriere} 
@@ -271,7 +331,7 @@ import inputStyle from '../../../utils/inputStyle'
 
                                     <div className="col-md-3">
                                         <div className="position-relative form-group">
-                                            <label >Montant mis en fourière </label>
+                                            <label >Montant mis en fourière ? </label>
                                             <input name="montant_mise_en_fouriere"
                                             onChange={this.setField}
                                             ref={montant_mise_en_fouriere => this.montant_mise_en_fouriere = montant_mise_en_fouriere}
@@ -321,7 +381,9 @@ const mapStateToProps = state => {
         vehicules: state.vehicules.items,
 
         vehiculeSeleted: state.vehiculeSeleted.vehicule,
-        personnels: state.personnels.items
+        personnels: state.personnels.items,
+        plan_geographiques: state.plan_geographiques.items,
+        structure_geographiques: state.structure_geographiques.items
     }
   }
 

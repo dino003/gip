@@ -37,6 +37,10 @@ export const groupBy = (objectArray, ...properties) => {
  export const calculSommeColonneSommeIntervention = (tableau) => {
   return tableau.reduce( (prec, curr) =>  parseFloat(prec) + parseFloat(curr.cout_ttc_intervention || 0), 0)
 } 
+
+export const calculSommeColonneSommeAmende = (tableau) => {
+  return tableau.reduce( (prec, curr) =>  parseFloat(prec) + parseFloat(curr.montant_amende || 0), 0)
+}
   var dateWithouthSecond = new Date();
 
   export const heure = dateWithouthSecond.toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
