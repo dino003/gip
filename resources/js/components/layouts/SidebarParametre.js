@@ -41,15 +41,15 @@ const active = {
                                 </span>
                             </button>
                         </span>
-                    </div>   
+                    </div>
                      <div className="scrollbar-sidebar">
                         <div className="app-sidebar__inner">
                             <ul className="vertical-nav-menu">
                                 <li className="app-sidebar__heading">Paramètres</li>
-                            
 
-                                  
-                                 
+
+
+
                                 <li>
                                     <NavLink activeStyle={active} to="/gestion_du_parc_automobile/parametres_generaux">
                                         <i className="metismenu-icon pe-7s-settings"></i>
@@ -73,6 +73,23 @@ const active = {
                                              Structure Organisationnelle
                                             </NavLink>
                                         </li>
+
+                                        <li>
+                                            <NavLink activeStyle={active}  to="/gestion_du_parc_automobile/gestion-de-la-structure-vehicule">
+                                            <i className="metismenu-icon pe-7s-safe"></i>
+                                             Structure Véhicule
+                                            </NavLink>
+                                        </li>
+
+
+                                    {this.props.structure_vehicules.length ?
+                                        <li>
+                                            <NavLink activeStyle={active}  to="/gestion_du_parc_automobile/gestion-du-plan-vehicule">
+                                            <i className="metismenu-icon pe-7s-safe"></i>
+                                             Plan des Véhicules
+                                            </NavLink>
+                                        </li> : null }
+
                                     {this.props.structure_geographiques.length ?
                                         <li>
                                             <NavLink activeStyle={active}  to="/gestion_du_parc_automobile/gestion-du-plan-geographique">
@@ -88,7 +105,7 @@ const active = {
                                             </NavLink>
                                         </li> : null}
 
-                             
+
                                       {/*   <li>
                                             <NavLink activeStyle={active}  to="/gestion_du_parc_automobile/gestion-de-la-structure-etablissement">
                                             <i className="metismenu-icon pe-7s-safe"></i>
@@ -115,7 +132,7 @@ const active = {
                                             </NavLink>
                                         </li> */}
 
-                                     
+
 
                                         <li className="app-sidebar__heading">Les Acteurs</li>
                                         <li>
@@ -137,7 +154,7 @@ const active = {
                                             </NavLink>
                                         </li>
 
-                                   
+
                             </ul>
                         </div>
                     </div>
@@ -148,10 +165,12 @@ const active = {
 
 const mapStateToProps = state => {
     return {
-     
+
         theme: state.theme.items,
         structure_organisationnelles: state.structure_organisationnelles.items,
         structure_geographiques: state.structure_geographiques.items,
+        structure_vehicules: state.structure_vehicules.items,
+
 
     }
   }

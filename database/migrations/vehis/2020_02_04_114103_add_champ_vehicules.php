@@ -18,10 +18,11 @@ class AddChampVehicules extends Migration
 
             $table->bigInteger('affectation_geographique_id')->unsigned()->nullable()->index('vehicules_affectation_geographique_id_foreign');
 			$table->bigInteger('affectation_organisationnel_id')->unsigned()->nullable()->index('vehicules_affectation_organisationnel_id_foreign');
-    
+
             $table->foreign('affectation_geographique_id')->references('id')->on('plan_geographiques')->onUpdate('CASCADE')->onDelete('SET NULL');
-			$table->foreign('affectation_organisationnel_id')->references('id')->on('plan_organisationnels')->onUpdate('CASCADE')->onDelete('SET NULL');
-		
+
+            $table->foreign('affectation_organisationnel_id')->references('id')->on('plan_organisationnels')->onUpdate('CASCADE')->onDelete('SET NULL');
+
 
         });
     }

@@ -36,7 +36,7 @@ Route::post('ajouter_structure_etablissement_si_vide', 'SetupController@ajouterP
 // premier personnel
 Route::post('ajouter_personnel_si_vide', 'SetupController@ajouterPremierPersonnel');
 
-// premier Tier 
+// premier Tier
 Route::post('ajouter_tier_si_vide', 'SetupController@ajouterPremierTier');
 // premiere type entité
 Route::post('ajouter_type_entite_si_vide', 'SetupController@ajouterPremiereTypeEntite');
@@ -52,7 +52,7 @@ Route::get('tracabilites', 'TracabiliteController@index');
 // voir
 //Route::get('voir_cout_consomable/{id}', 'TracabiliteController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_tracabilite', 'TracabiliteController@store');
 // modifier
 //Route::post('modifier_cout_consomable/{id}', 'TracabiliteController@update');
@@ -69,7 +69,7 @@ Route::get('structure_geographiques', 'StructureGeographiqueController@index');
 // voir
 Route::get('voir_structure_geographique/{id}', 'StructureGeographiqueController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_structure_geographique', 'StructureGeographiqueController@store');
 // modifier
 Route::post('modifier_structure_geographique/{id}', 'StructureGeographiqueController@update');
@@ -85,7 +85,7 @@ Route::get('structure_organisationelles', 'StructureOrganisationelleController@i
 // voir
 Route::get('voir_structure_organisationelle/{id}', 'StructureOrganisationelleController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_structure_organisationelle', 'StructureOrganisationelleController@store');
 // modifier
 Route::post('modifier_structure_organisationelle/{id}', 'StructureOrganisationelleController@update');
@@ -103,7 +103,7 @@ Route::get('plan_geographiques', 'PlanGeographiqueController@index');
 // voir
 Route::get('voir_plan_geographique/{id}', 'PlanGeographiqueController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_plan_geographique', 'PlanGeographiqueController@store');
 // modifier
 Route::post('modifier_plan_geographique/{id}', 'PlanGeographiqueController@update');
@@ -114,12 +114,46 @@ Route::delete('supprimer_plan_geographique/{id}', 'PlanGeographiqueController@de
 
 //*********fin plans Géographiques************----------------------------------------------------------- */
 
+//----------------------plans Véhicules --------------------------------------------------------**********
+Route::get('plan_vehicules', 'PlanVehiculeController@index');
+// voir
+Route::get('voir_plan_vehicule/{id}', 'PlanVehiculeController@show');
+
+// ajouter
+Route::post('ajouter_plan_vehicule', 'PlanVehiculeController@store');
+// modifier
+Route::post('modifier_plan_vehicule/{id}', 'PlanVehiculeController@update');
+
+// supprimer
+Route::delete('supprimer_plan_vehicule/{id}', 'PlanVehiculeController@destroy');
+
+
+//*********fin plans Véhicules************----------------------------------------------------------- */
+
+
+//----------------------Structure vehicules --------------------------------------------------------**********
+Route::get('structure_vehicules', 'StructureVehiculeController@index');
+// voir
+Route::get('voir_structure_vehicule/{id}', 'StructureVehiculeController@show');
+
+// ajouter
+Route::post('ajouter_structure_vehicule', 'StructureVehiculeController@store');
+// modifier
+Route::post('modifier_structure_vehicule/{id}', 'StructureVehiculeController@update');
+
+// supprimer
+Route::delete('supprimer_structure_vehicule/{id}', 'StructureVehiculeController@destroy');
+
+
+//*********fin Structure vehicules************----------------------------------------------------------- */
+
+
 //----------------------plans organisationelles --------------------------------------------------------**********
 Route::get('plan_organisationelles', 'PlanOrganisationnelController@index');
 // voir
 Route::get('voir_plan_organisationelle/{id}', 'PlanOrganisationnelController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_plan_organisationelle', 'PlanOrganisationnelController@store');
 // modifier
 Route::post('modifier_plan_organisationelle/{id}', 'PlanOrganisationnelController@update');
@@ -136,7 +170,7 @@ Route::get('couts_consomables', 'CoutConsomableController@index');
 // voir
 Route::get('voir_cout_consomable/{id}', 'CoutConsomableController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_cout_consomable', 'CoutConsomableController@store');
 // modifier
 Route::post('modifier_cout_consomable/{id}', 'CoutConsomableController@update');
@@ -152,7 +186,7 @@ Route::get('types_entites', 'TypeEntiteController@index');
 // voir
 Route::get('voir_type_entite/{id}', 'TypeEntiteController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_type_entite', 'TypeEntiteController@store');
 // modifier
 Route::post('modifier_type_entite/{id}', 'TypeEntiteController@update');
@@ -166,7 +200,7 @@ Route::get('structures_etablissements', 'StructureRegroupementController@index')
 // voir
 Route::get('voir_structure_etablissement/{id}', 'StructureRegroupementController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_structure_etablissement', 'StructureRegroupementController@store');
 // modifier
 Route::post('modifier_structure_etablissement/{id}', 'StructureRegroupementController@update');
@@ -180,7 +214,7 @@ Route::get('entites', 'EntiteController@index');
 // voir
 Route::get('voir_entite/{id}', 'EntiteController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_entite', 'EntiteController@store');
 // modifier
 Route::post('modifier_entite/{id}', 'EntiteController@update');
@@ -194,7 +228,7 @@ Route::get('tiers', 'TierController@index');
 // voir
 Route::get('voir_tier/{id}', 'TierController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_tier', 'TierController@store');
 
 //importter les tiers
@@ -211,7 +245,7 @@ Route::get('personnels', 'PersonnelController@index');
 // voir
 Route::get('voir_personnel/{id}', 'PersonnelController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_personnel', 'PersonnelController@store');
 
 //importter le personnel
@@ -229,7 +263,7 @@ Route::get('users', 'UserController@index');
 // voir
 Route::get('voir_user/{id}', 'UserController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_user', 'UserController@store');
 // modifier
 Route::post('modifier_user/{id}', 'UserController@update');
@@ -252,7 +286,7 @@ Route::get('categories_vehicules', 'CategorieVehiculeController@index');
 // voir
 Route::get('voir_categorie_vehicule/{id}', 'CategorieVehiculeController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_categorie_vehicule', 'CategorieVehiculeController@store');
 // modifier
 Route::post('modifier_categorie_vehicule/{id}', 'CategorieVehiculeController@update');
@@ -266,7 +300,7 @@ Route::get('modeles_vehicules', 'ModeleVehiculeController@index');
 // voir
 Route::get('voir_modele_vehicule/{id}', 'ModeleVehiculeController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_modele_vehicule', 'ModeleVehiculeController@store');
 // modifier
 Route::post('modifier_modele_vehicule/{id}', 'ModeleVehiculeController@update');
@@ -280,7 +314,7 @@ Route::get('marques', 'MarqueController@index');
 // voir
 Route::get('voir_marque/{id}', 'MarqueController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_marque', 'MarqueController@store');
 // modifier
 Route::post('modifier_marque/{id}', 'MarqueController@update');
@@ -294,7 +328,7 @@ Route::get('code_incidents', 'IncidentVehiculeController@index');
 // voir
 Route::get('voir_code_incident/{id}', 'IncidentVehiculeController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_code_incident', 'IncidentVehiculeController@store');
 // modifier
 Route::post('modifier_code_incident/{id}', 'IncidentVehiculeController@update');
@@ -309,7 +343,7 @@ Route::get('nature_energies', 'NatureEnergieController@index');
 // voir
 Route::get('voir_nature_energie/{id}', 'NatureEnergieController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_nature_energie', 'NatureEnergieController@store');
 // modifier
 Route::post('modifier_nature_energie/{id}', 'NatureEnergieController@update');
@@ -324,7 +358,7 @@ Route::get('nature_interventions', 'NatureInterventionController@index');
 // voir
 Route::get('voir_nature_intervention/{id}', 'NatureInterventionController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_nature_intervention', 'NatureInterventionController@store');
 // modifier
 Route::post('modifier_nature_intervention/{id}', 'NatureInterventionController@update');
@@ -339,14 +373,14 @@ Route::get('operation_intervention', 'OperationInterventionController@index');
 // voir
 Route::get('voir_operation_intervention/{id}', 'OperationInterventionController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_operation_intervention', 'OperationInterventionController@store');
 // modifier
 Route::post('modifier_operation_intervention/{id}', 'OperationInterventionController@update');
 
 // supprimer
 Route::delete('supprimer_operation_intervention/{id}', 'OperationInterventionController@destroy');
-//*********** fin operation_intervention vehicules********************************************************* 
+//*********** fin operation_intervention vehicules*********************************************************
 
 
 //****************** nature_consommation de vehicules ********************************************************/
@@ -354,84 +388,84 @@ Route::get('nature_consommations', 'NatureConsomationController@index');
 // voir
 Route::get('voir_nature_consommation/{id}', 'NatureConsomationController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_nature_consommation', 'NatureConsomationController@store');
 // modifier
 Route::post('modifier_nature_consommation/{id}', 'NatureConsomationController@update');
 
 // supprimer
 Route::delete('supprimer_nature_consommation/{id}', 'NatureConsomationController@destroy');
-//*********** fin nature_consommation vehicules********************************************************* 
+//*********** fin nature_consommation vehicules*********************************************************
 
 //****************** nature_amende de vehicules ********************************************************/
 Route::get('nature_amendes', 'NatureAmendeController@index');
 // voir
 Route::get('voir_nature_amende/{id}', 'NatureAmendeController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_nature_amende', 'NatureAmendeController@store');
 // modifier
 Route::post('modifier_nature_amende/{id}', 'NatureAmendeController@update');
 
 // supprimer
 Route::delete('supprimer_nature_amende/{id}', 'NatureAmendeController@destroy');
-//*********** fin nature_amende vehicules********************************************************* 
+//*********** fin nature_amende vehicules*********************************************************
 
 //****************** nature_sinistre de vehicules ********************************************************/
 Route::get('nature_sinistres', 'NatureSinistreController@index');
 // voir
 Route::get('voir_nature_sinistre/{id}', 'NatureSinistreController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_nature_sinistre', 'NatureSinistreController@store');
 // modifier
 Route::post('modifier_nature_sinistre/{id}', 'NatureSinistreController@update');
 
 // supprimer
 Route::delete('supprimer_nature_sinistre/{id}', 'NatureSinistreController@destroy');
-//*********** fin nature_sinistre vehicules********************************************************* 
+//*********** fin nature_sinistre vehicules*********************************************************
 
 //****************** nature_depense_recette de vehicules ********************************************************/
 Route::get('nature_depense_recettes', 'DepenseRecetteController@index');
 // voir
 Route::get('voir_nature_depense_recette/{id}', 'DepenseRecetteController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_nature_depense_recette', 'DepenseRecetteController@store');
 // modifier
 Route::post('modifier_nature_depense_recette/{id}', 'DepenseRecetteController@update');
 
 // supprimer
 Route::delete('supprimer_nature_depense_recette/{id}', 'DepenseRecetteController@destroy');
-//*********** fin nature_depense_recette vehicules********************************************************* 
+//*********** fin nature_depense_recette vehicules*********************************************************
 
 //****************** nature_reservation de vehicules ********************************************************/
 Route::get('nature_reservations', 'NatureReservationUtilisationController@index');
 // voir
 Route::get('voir_nature_reservation/{id}', 'NatureReservationUtilisationController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_nature_reservation', 'NatureReservationUtilisationController@store');
 // modifier
 Route::post('modifier_nature_reservation/{id}', 'NatureReservationUtilisationController@update');
 
 // supprimer
 Route::delete('supprimer_nature_reservation/{id}', 'NatureReservationUtilisationController@destroy');
-//*********** fin nature_reservation vehicules********************************************************* 
+//*********** fin nature_reservation vehicules*********************************************************
 
 //****************** famille_pieces_detachee de vehicules ********************************************************/
 Route::get('famille_pieces_detachees', 'FamillePieceDetacheController@index');
 // voir
 Route::get('voir_famille_pieces_detachee/{id}', 'FamillePieceDetacheController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_famille_pieces_detachee', 'FamillePieceDetacheController@store');
 // modifier
 Route::post('modifier_famille_pieces_detachee/{id}', 'FamillePieceDetacheController@update');
 
 // supprimer
 Route::delete('supprimer_famille_pieces_detachee/{id}', 'FamillePieceDetacheController@destroy');
-//*********** fin famille_pieces_detachee vehicules********************************************************* 
+//*********** fin famille_pieces_detachee vehicules*********************************************************
 
 
 //****************** nature_taxe de vehicules ********************************************************/
@@ -439,21 +473,21 @@ Route::get('nature_taxes', 'TaxeController@index');
 // voir
 Route::get('voir_nature_taxe/{id}', 'TaxeController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_nature_taxe', 'TaxeController@store');
 // modifier
 Route::post('modifier_nature_taxe/{id}', 'TaxeController@update');
 
 // supprimer
 Route::delete('supprimer_nature_taxe/{id}', 'TaxeController@destroy');
-//*********** fin nature_taxe vehicules********************************************************* 
+//*********** fin nature_taxe vehicules*********************************************************
 
 //****************** annee_budgetaire de vehicules ********************************************************/
 Route::get('annee_budgetaires', 'AnneeBudgetaireController@index');
 // voir
 Route::get('voir_annee_budgetaire/{id}', 'AnneeBudgetaireController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_annee_budgetaire', 'AnneeBudgetaireController@store');
 // modifier
 Route::post('modifier_annee_budgetaire/{id}', 'AnneeBudgetaireController@update');
@@ -463,14 +497,14 @@ Route::delete('supprimer_annee_budgetaire/{id}', 'AnneeBudgetaireController@dest
 
 // tva par defaut
 Route::get('modifier_annee_en_cours/{annee_id}', 'AnneeBudgetaireController@marquerAnneeEnCours');
-//*********** fin annee_budgetaire vehicules********************************************************* 
+//*********** fin annee_budgetaire vehicules*********************************************************
 
 //****************** taux_tva de vehicules ********************************************************/
 Route::get('taux_tvas', 'TauxTvaController@index');
 // voir
 Route::get('voir_taux_tva/{id}', 'TauxTvaController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_taux_tva', 'TauxTvaController@store');
 // modifier
 Route::post('modifier_taux_tva/{id}', 'TauxTvaController@update');
@@ -481,28 +515,28 @@ Route::get('modifier_taux_tva_defaut/{tva_id}', 'TauxTvaController@marquerTvaDef
 
 // supprimer
 Route::delete('supprimer_taux_tva/{id}', 'TauxTvaController@destroy');
-//*********** fin taux_tva vehicules********************************************************* 
+//*********** fin taux_tva vehicules*********************************************************
 
 //****************** budget_entite de vehicules ********************************************************/
 Route::get('budget_entites', 'BudgetEntiteController@index');
 // voir
 Route::get('voir_budget_entite/{id}', 'BudgetEntiteController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_budget_entite', 'BudgetEntiteController@store');
 // modifier
 Route::post('modifier_budget_entite/{id}', 'BudgetEntiteController@update');
 
 // supprimer
 Route::delete('supprimer_budget_entite/{id}', 'BudgetEntiteController@destroy');
-//*********** fin budget_entite vehicules********************************************************* 
+//*********** fin budget_entite vehicules*********************************************************
 
 //****************** contrat_assurance  ********************************************************/
 Route::get('contrat_assurances', 'ContratAssuranceController@index');
 // voir
 Route::get('voir_contrat_assurance/{id}', 'ContratAssuranceController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_contrat_assurance', 'ContratAssuranceController@store');
 // modifier
 Route::post('modifier_contrat_assurance/{id}', 'ContratAssuranceController@update');
@@ -512,70 +546,70 @@ Route::get('modifier_contrat_assurance_defaut/{contrat_id}', 'ContratAssuranceCo
 
 // supprimer
 Route::delete('supprimer_contrat_assurance/{id}', 'ContratAssuranceController@destroy');
-//*********** fin contrat_assurance ********************************************************* 
+//*********** fin contrat_assurance *********************************************************
 
 //****************** commande  ********************************************************/
 Route::get('commandes', 'CommandeController@index');
 // voir
 Route::get('voir_commande/{id}', 'CommandeController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_commande', 'CommandeController@store');
 // modifier
 Route::post('modifier_commande/{id}', 'CommandeController@update');
 
 // supprimer
 Route::delete('supprimer_commande/{id}', 'CommandeController@destroy');
-//*********** fin commande ********************************************************* 
+//*********** fin commande *********************************************************
 
 //****************** articles_stock  ********************************************************/
 Route::get('articles_stock', 'StockArticleController@index');
 // voir
 Route::get('article_stock/{id}', 'StockArticleController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_article_stock', 'StockArticleController@store');
 // modifier
 Route::post('modifier_article_stock/{id}', 'StockArticleController@update');
 
 // supprimer
 Route::delete('supprimer_article_stock/{id}', 'StockArticleController@destroy');
-//*********** fin articles_stock ********************************************************* 
+//*********** fin articles_stock *********************************************************
 
 //****************** entrees_stock  ********************************************************/
 Route::get('entrees_stock', 'StockEntreeController@index');
 // voir
 Route::get('entree_stock/{id}', 'StockEntreeController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_entree_stock', 'StockEntreeController@store');
 // modifier
 Route::post('modifier_entree_stock/{id}', 'StockEntreeController@update');
 
 // supprimer
 Route::delete('supprimer_entree_stock/{id}', 'StockEntreeController@destroy');
-//*********** fin entrees_stock ********************************************************* 
+//*********** fin entrees_stock *********************************************************
 
 //****************** sorties_stock  ********************************************************/
 Route::get('sorties_stock', 'StockSortieController@index');
 // voir
 Route::get('sortie_stock/{id}', 'StockSortieController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_sortie_stock', 'StockSortieController@store');
 // modifier
 Route::post('modifier_sortie_stock/{id}', 'StockSortieController@update');
 
 // supprimer
 Route::delete('supprimer_sortie_stock/{id}', 'StockSortieController@destroy');
-//*********** fin sorties_stock ********************************************************* 
+//*********** fin sorties_stock *********************************************************
 
 //****************** ordre de missions  ********************************************************/
 Route::get('ordre_missions', 'MissionController@index');
 // voir
 Route::get('voir_ordre_mission/{id}', 'MissionController@show');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_ordre_mission', 'MissionController@store');
 // modifier
 Route::post('modifier_ordre_mission/{mission_id}/{mission_cout_id}', 'MissionController@update');
@@ -585,86 +619,86 @@ Route::get('marquer_ordre_mission_termine/{mission_id}', 'MissionController@marq
 
 // supprimer
 Route::delete('supprimer_ordre_mission/{id}', 'MissionController@destroy');
-//*********** fin ordre de missions  ********************************************************* 
+//*********** fin ordre de missions  *********************************************************
 
 
 
 //****************** infos sur la societé  ********************************************************/
 Route::get('infos_societe', 'EtablissementController@index');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_ou_modifier_info_etablissement', 'EtablissementController@storeOuUpdate');
 // modifier
 //Route::post('modifier_info_etablissement/{id}', 'EtablissementController@update');
 
 
-//*********** fin infos sur la societé ********************************************************* 
+//*********** fin infos sur la societé *********************************************************
 
 //****************** parametre generaux reservation ordre  ********************************************************/
 Route::get('parametre_generaux_reservation_ordre', 'ParamReservationOrdreMissionController@index');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_ou_modifier_parametre_generaux_reservation_ordre', 'ParamReservationOrdreMissionController@storeOuUpdate');
 // modifier
 //Route::post('modifier_info_etablissement/{id}', 'ParamReservationOrdreMissionController@update');
 
 
-//*********** fin parametre generaux modules ********************************************************* 
+//*********** fin parametre generaux modules *********************************************************
 
 //****************** parametre generaux modules  ********************************************************/
 Route::get('parametre_modules', 'ParamModuleController@index');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_ou_modifier_parametre_modules', 'ParamModuleController@storeOuUpdate');
 // modifier
 
 
-//*********** fin parametre generaux modules ********************************************************* 
+//*********** fin parametre generaux modules *********************************************************
 
 //****************** parametre generaux stock  ********************************************************/
 Route::get('parametre_stocks', 'ParamStockController@index');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_ou_modifier_parametre_stocks', 'ParamStockController@storeOuUpdate');
 // modifier
 
-//*********** fin parametre generaux stock ********************************************************* 
+//*********** fin parametre generaux stock *********************************************************
 
 
 //****************** parametre generaux journal  ********************************************************/
 Route::get('parametre_journal', 'ParamJournalController@index');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_ou_modifier_parametre_journal', 'ParamJournalController@storeOuUpdate');
 // modifier
 
 
-//*********** fin parametre generaux journal ********************************************************* 
+//*********** fin parametre generaux journal *********************************************************
 
 //****************** parametre generaux personnels  ********************************************************/
 Route::get('parametre_personnels', 'ParamPersonnelController@index');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_ou_modifier_parametre_personnels', 'ParamPersonnelController@storeOuUpdate');
 // modifier
 
 
-//*********** fin parametre generaux personnels ********************************************************* 
+//*********** fin parametre generaux personnels *********************************************************
 
 //****************** parametre generaux personnels  ********************************************************/
 Route::get('alertes', 'AlerteController@index');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_ou_modifier_alertes', 'AlerteController@storeOuUpdate');
 // modifier
 
 
-//*********** fin parametre generaux personnels ********************************************************* 
+//*********** fin parametre generaux personnels *********************************************************
 
 //****************** parametre themes  ********************************************************/
 Route::get('theme_defaut', 'ThemeController@index');
 
-// ajouter 
+// ajouter
 Route::post('ajouter_ou_modifier_theme_defaut', 'ThemeController@storeOuUpdate');
 // modifier
 
@@ -675,7 +709,7 @@ Route::post('ajouter_ou_modifier_theme_defaut', 'ThemeController@storeOuUpdate')
 Route::get('tt', 'UserController@index');
 
 //var dt = new Date( "12-18-1995" );
-//document.write("getMonth() : " + parseFloat(dt.getMonth() + 1) ); 
+//document.write("getMonth() : " + parseFloat(dt.getMonth() + 1) );
 
 Route::post('import', 'PersonnelController@import')->name('import');
 

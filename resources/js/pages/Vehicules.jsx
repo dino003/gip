@@ -22,7 +22,7 @@ class Vehicules extends Component {
         this.state = {
             vehicules_visibles_actuelement: this.props.vehicules,
             obj: undefined,
-            //  selected: (new Map(): Map<string, boolean>)      
+            //  selected: (new Map(): Map<string, boolean>)
         }
 
         this.searchChange = this.searchChange.bind(this)
@@ -121,13 +121,13 @@ class Vehicules extends Component {
 
                     <th className="sticky-col third-col">Type</th>
                     <th className="sticky-col thour-col">Acquisition</th>
-                    <th>Marque</th>
-                    <th>Modèle</th>
-                    <th>Couleur</th>
+                    <th>Modéle</th>
+{/*                     <th>Modèle</th>
+ */}                    <th>Couleur</th>
                     <th>Détenteur</th>
                     <th>Chauffeur</th>
-                    <th>Catégorie</th>
-                    <th>Acquis le</th>
+{/*                     <th>Catégorie</th>
+ */}                    <th>Acquis le</th>
                     <th>N° de carte grise</th>
                     <th>Kms compteur</th>
                     <th>Nb CV</th>
@@ -202,7 +202,7 @@ class Vehicules extends Component {
 
 
                                     </span> {'  '}
-                             
+
 
                                     {this.props.vehiculeSeleted ? <MatriculeInput vehicule={this.props.vehiculeSeleted} text_attente="Aucune sélection" /> : null}
 
@@ -213,22 +213,22 @@ class Vehicules extends Component {
                                 <div className="row">
                                     <div className="col-md-3"></div>
                                     <div className="col-md-6">
-                                    
+
                                   <input
                                      ref={search => this.search = search}
                                   onChange={this.searchChange}
                                  type="text"  className="form-control pull-right" placeholder="Rechercher par Immatriculation" />
-               
+
                                     </div>
                                     <div className="col-md-3"></div>
                                 </div>
                                 : null}
                                 <br />
-                              
+
                                 <div className="view">
                                     <div className="wrapper" style={{height: '500px', overflowY: 'scroll'}}>
-                                    {this.props.loading ? this.renderLoading() : 
-                            !this.state.vehicules_visibles_actuelement.length ? this.renderEmpty() : this.renderList()}  
+                                    {this.props.loading ? this.renderLoading() :
+                            !this.state.vehicules_visibles_actuelement.length ? this.renderEmpty() : this.renderList()}
                                     </div>
                                 </div>
 

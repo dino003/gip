@@ -116,6 +116,8 @@ import StructureOrganisationnelles from '../pages/parametres/StructureOrganisati
 import StructureGeographique from '../pages/parametres/StructureGeographique';
 import PlanGeographiques from '../pages/parametres/PlanGeographiques';
 import PlanOrganisationnel from '../pages/parametres/PlanOrganisationnel';
+import StructureVehicules from '../pages/parametres/StructureVehicules';
+import PlanVehicules from '../pages/parametres/PlanVehicules';
 
 
 
@@ -159,16 +161,18 @@ const NavBack = () => (
     <MasterParametre exact path="/gestion_du_parc_automobile/gestion-de-la-structure-etablissement" component={StructureEtablissement} />
     <MasterParametre exact path="/gestion_du_parc_automobile/gestion-de-la-structure-organisationelle" component={StructureOrganisationnelles} />
     <MasterParametre exact path="/gestion_du_parc_automobile/gestion-de-la-structure-geographique" component={StructureGeographique} />
-    
+
     <MasterParametre exact path="/gestion_du_parc_automobile/gestion-du-plan-geographique" component={PlanGeographiques} />
     <MasterParametre exact path="/gestion_du_parc_automobile/gestion-du-plan-organisationnel" component={PlanOrganisationnel} />
 
-    
-    
+
+
     <MasterCodification2  path="/gestion_du_parc_automobile/les-couts-des-consommables" component={CoutConsommables} />
     <MasterCodification2  path="/gestion_du_parc_automobile/les-annees-budgetaires" component={AnneeBudgetaires} />
 
+    <MasterParametre exact path="/gestion_du_parc_automobile/gestion-de-la-structure-vehicule" component={StructureVehicules} />
 
+    <MasterParametre exact path="/gestion_du_parc_automobile/gestion-du-plan-vehicule" component={PlanVehicules} />
 
 
 
@@ -207,7 +211,7 @@ const NavBack = () => (
   <Master path="/gestion_du_parc_automobile/parc/utilisations-vehicules/:vehicule_id/:imma" component={Utilisations} />
   <Master path="/gestion_du_parc_automobile/parc/modification-utilisation-vehicule/:vehicule_id/:imma/utilisation/:utilisation_id" component={ModifierUtilisationVehicule} />
 
- 
+
   <Master path="/gestion_du_parc_automobile/parc/interventions-vehicules/:vehicule_id/:imma" component={Interventions} />
   <Master path="/gestion_du_parc_automobile/parc/creation-interventions-vehicules/:vehicule_id/:imma" component={AjouterIntervention} />
   <Master path="/gestion_du_parc_automobile/parc/modification-interventions-vehicules/:vehicule_id/:imma/intervention/:intervention_id" component={ModifierIntervention} />
@@ -227,8 +231,8 @@ const NavBack = () => (
 
   <Master path="/gestion_du_parc_automobile/parc/contrat_assurance_de_vehicule/:vehicule_id/:imma" component={ContratAssuranceVehicule} />
   <Master path="/gestion_du_parc_automobile/parc/modification-reservation-vehicule/:vehicule_id/:imma/reservation/:reservation_id" component={ModifierReservation} />
-  
-  
+
+
   <Master path="/gestion_du_parc_automobile/parc/journal_evenement/:vehicule_id/:imma" component={Tracabilites} />
 
 
@@ -237,15 +241,15 @@ const NavBack = () => (
   <Master path="/gestion_du_parc_automobile/parc/creation-depense-recettes-vehicules/:vehicule_id/:imma" component={AjouterDepenseRecette} />
 
   <Master path="/gestion_du_parc_automobile/parc/modification-depense-recettes-vehicules/:vehicule_id/:imma/dr/:depense_recette_id" component={ModifierDepenseRecette} />
-  
+
   <Master path="/gestion_du_parc_automobile/parc/filtre_vehicules" component={FiltreVehicules} />
   <Master path="/gestion_du_parc_automobile/parc/fiche_vehicules" component={FicheVehicule} />
 
-  
+
   <MasterGestion path="/gestion_du_parc_automobile/parc/budgets-entites" component={BudgetEntites} />
 
   <MasterGestion path="/gestion_du_parc_automobile/parc/creation-budget-entites" component={AjouterBudgetEntite} />
-  
+
   <MasterGestion path="/gestion_du_parc_automobile/parc/modification-budget-entites/:budget_entite_id" component={ModifierBudgetEntite} />
   <MasterGestion path="/gestion_du_parc_automobile/gestion-des-contrats-assurances" component={ContratAssurances} />
   <MasterGestion path="/gestion_du_parc_automobile/creation-contrat-assurance" component={AjouterContratAssurance} />
@@ -258,7 +262,7 @@ const NavBack = () => (
   <MasterGestion path="/gestion_du_parc_automobile/gestion-des-ordres-de-missions" component={Missions} />
   <MasterGestion path="/gestion_du_parc_automobile/ajouter-des-ordres-de-missions" component={AjouterMission} />
   <MasterGestion path="/gestion_du_parc_automobile/modification-ordre-de-mission/:mission_id" component={ModifierMission} />
-  
+
   <MasterGestion exact path="/gestion_du_parc_automobile/gestion-des-articles" component={Articles} />
   <MasterGestion exact path="/gestion_du_parc_automobile/ajouter-article" component={AjouterArticle} />
   <MasterGestion exact path="/gestion_du_parc_automobile/modification-article/:article_id" component={ModifierArticle} />
@@ -282,8 +286,8 @@ const NavBack = () => (
 {/*  cette partie concerne les etats  */}
   <MasterEdition path="/gestion_du_parc_automobile/liste-etats" component={EditionListTable} />
   <MasterEdition path="/gestion_du_parc_automobile/conception-etat-vehicule" component={VehiculeEtatForm} />
- 
- 
+
+
   <MasterEdition path="/gestion_du_parc_automobile/edition-vehicules" component={VehiculesEtat} />
   <MasterEdition path="/gestion_du_parc_automobile/edition-utilisations-vehicules" component={UtilisationVehiculeEtat} />
   <MasterEdition path="/gestion_du_parc_automobile/edition-interventions-vehicules" component={InterventionVehiculeEtat} />
@@ -292,7 +296,7 @@ const NavBack = () => (
 
 {/*  fin de la partie qui concerne les etats  */}
 
-    
+
 
   </Switch>
 )

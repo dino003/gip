@@ -54,6 +54,8 @@ import StructureOrganisationnelleReducer from './StructureOrganisationnelleReduc
 import StructureGeographiqueReducer from './StructureGeographiqueReducer'
 import PlanGeographiqueReducer from './PlanGeographiqueReducer'
 import PlanOrganisationnelReducer from './PlanOrganisationnelReducer'
+import PlanVehiculeReducer from './PlanVehiculeReducer'
+import StructureVehiculeReducer from './StructureVehiculeReducer'
 
 const allReducers = combineReducers({
     auth: AuthReducer,
@@ -110,8 +112,10 @@ const allReducers = combineReducers({
     structure_organisationnelles: StructureOrganisationnelleReducer,
     structure_geographiques: StructureGeographiqueReducer,
     plan_geographiques: PlanGeographiqueReducer,
-    plan_organisationnels: PlanOrganisationnelReducer
-    
+    plan_organisationnels: PlanOrganisationnelReducer,
+    plan_vehicules: PlanVehiculeReducer,
+    structure_vehicules: StructureVehiculeReducer
+
 })
 
 

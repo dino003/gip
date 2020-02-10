@@ -17,6 +17,11 @@ class Vehicule extends Model
     //  'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
     //   'chauffeur_atitre', 'contrat_assurance', 'energie'];
 
+    // plan vehicule
+    public function plan_vehicule() {
+        return $this->belongsTo(PlanVehicule::class, 'plan_vehicule_id');
+    }
+
     //plan Organisationnel
     public function affectation_organisationnel()
     {
@@ -82,13 +87,13 @@ class Vehicule extends Model
     {
         return $this->hasMany(VehiculeUtilisation::class, 'vehicule_id', 'id');
     }
-    
+
     // interventions
     public function interventions()
     {
         return $this->hasMany(VehiculeIntervention::class, 'vehicule', 'id');
     }
-    
+
        // interventions
        public function consommations()
        {
@@ -107,7 +112,7 @@ class Vehicule extends Model
             return $this->belongsTo('App\ContratAssurance', 'contrat_assurance_id');
         }
 
-         
+
          // reservations
          public function reservations()
          {
@@ -120,6 +125,6 @@ class Vehicule extends Model
              return $this->belongsTo('App\NatureEnergie', 'energie');
          }
 
-  
+
 
 }

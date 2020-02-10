@@ -29,7 +29,7 @@ class VehiculeUtilisationController extends Controller
                                                         ->orderBy('id', 'desc')->get();
 
        return response()->json($utilisations_par_vehicules);
-       
+
     }
 
     /**
@@ -50,7 +50,7 @@ class VehiculeUtilisationController extends Controller
      */
     public function store(Request $request)
     {
-       
+
         // return $this->model->create($request->only($this->model->getModel()->fillable));
 
          $utilisation = new VehiculeUtilisation;
@@ -60,7 +60,7 @@ class VehiculeUtilisationController extends Controller
                 $vehicule = Vehicule::find($creation->vehicule);
 
                 $vehicule->kilometrage_acquisition += (int)$creation->kilometres_parcourus;
-        
+
                 $vehicule->save();
             }
 
@@ -70,8 +70,8 @@ class VehiculeUtilisationController extends Controller
 
             $vehicule = Vehicule::with(['entite_comptable', 'entite_physique',
             'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
-             'chauffeur_atitre', 'contrat_assurance.compagnie_assurance', 'energie', 'affectation_geographique', 'affectation_organisationnel'])->find($creation->vehicule);
-  
+             'chauffeur_atitre', 'contrat_assurance.compagnie_assurance', 'energie', 'affectation_geographique', 'affectation_organisationnel', 'plan_vehicule'])->find($creation->vehicule);
+
          return response()->json([
              'utilisation' => $utilisation,
              'vehicule' => $vehicule
@@ -118,7 +118,7 @@ class VehiculeUtilisationController extends Controller
           $vehicule = Vehicule::find($utilisation_edite->vehicule);
 
           $vehicule->kilometrage_acquisition -= (int)$utilisation_edite->kilometres_parcourus;
-  
+
           $vehicule->save();
 
        $this->model->update($request->only($this->model->getModel()->fillable), $id);
@@ -129,14 +129,14 @@ class VehiculeUtilisationController extends Controller
 
        $vehicule->save();
 
-                
+
        $utilisation = VehiculeUtilisation::with(['vehicule.entite_physique',
        'nature_utilisation', 'depart_utilisation', 'destination_utilisation', 'chauffeur'])
        ->with('utilisateur.entite_affectation')->find($id);
 
        $vehicule = Vehicule::with(['entite_comptable', 'entite_physique',
        'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
-       'chauffeur_atitre', 'contrat_assurance.compagnie_assurance', 'energie', 'affectation_geographique', 'affectation_organisationnel'])->find($vehicule->id);
+       'chauffeur_atitre', 'contrat_assurance.compagnie_assurance', 'energie', 'affectation_geographique', 'affectation_organisationnel', 'plan_vehicule'])->find($vehicule->id);
 
         return response()->json([
             'utilisation' => $utilisation,
@@ -144,7 +144,7 @@ class VehiculeUtilisationController extends Controller
         ]);
 
 
-        
+
     }
 
      /**
@@ -184,14 +184,14 @@ class VehiculeUtilisationController extends Controller
         $vehicule->save();
 
 
-                
+
             $utilisation = VehiculeUtilisation::with(['vehicule.entite_physique',
             'nature_utilisation', 'depart_utilisation', 'destination_utilisation', 'chauffeur'])
             ->with('utilisateur.entite_affectation')->find($id);
 
             $vehicule = Vehicule::with(['entite_comptable', 'entite_physique',
             'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
-            'chauffeur_atitre', 'contrat_assurance.compagnie_assurance', 'energie', 'affectation_geographique', 'affectation_organisationnel'])->find($utilisation_edite2->vehicule);
+            'chauffeur_atitre', 'contrat_assurance.compagnie_assurance', 'energie', 'affectation_geographique', 'affectation_organisationnel', 'plan_vehicule'])->find($utilisation_edite2->vehicule);
 
         return response()->json([
             'utilisation' => $utilisation,
@@ -210,14 +210,14 @@ class VehiculeUtilisationController extends Controller
 
             $vehicule = Vehicule::with(['entite_comptable', 'entite_physique',
             'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
-            'chauffeur_atitre', 'contrat_assurance.compagnie_assurance', 'energie', 'affectation_geographique', 'affectation_organisationnel'])->find($utilisation_edite->vehicule);
+            'chauffeur_atitre', 'contrat_assurance.compagnie_assurance', 'energie', 'affectation_geographique', 'affectation_organisationnel', 'plan_vehicule'])->find($utilisation_edite->vehicule);
 
         return response()->json([
             'utilisation' => $utilisation,
             'vehicule' => $vehicule
         ]);
 
-      
+
     }
 
     /**

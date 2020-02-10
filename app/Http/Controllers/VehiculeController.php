@@ -24,7 +24,7 @@ class VehiculeController extends Controller
        // return $this->model->get();
         $vehicules = Vehicule::with(['entite_comptable', 'entite_physique',
         'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
-         'chauffeur_atitre', 'contrat_assurance.compagnie_assurance', 'energie', 'affectation_organisationnel', 'affectation_geographique'])->orderBy('id', 'desc')->get();
+         'chauffeur_atitre', 'contrat_assurance.compagnie_assurance', 'energie', 'affectation_organisationnel', 'affectation_geographique', 'plan_vehicule'])->orderBy('id', 'desc')->get();
 
          return response()->json($vehicules);
     }
@@ -47,15 +47,15 @@ class VehiculeController extends Controller
      */
     public function store(Request $request)
     {
-       
+
         // return $this->model->create($request->only($this->model->getModel()->fillable));
 
          $vehicule = new Vehicule;
          $creation = $vehicule->create($request->only($vehicule->fillable));
-  
+
          return response()->json(Vehicule::with(['entite_comptable', 'entite_physique',
          'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
-          'chauffeur_atitre', 'contrat_assurance', 'energie', 'affectation_organisationnel', 'affectation_geographique'])->find($creation->id));
+          'chauffeur_atitre', 'contrat_assurance', 'energie', 'affectation_organisationnel', 'affectation_geographique', 'plan_vehicule'])->find($creation->id));
 
     }
 
@@ -97,10 +97,10 @@ class VehiculeController extends Controller
 
        return response()->json(Vehicule::with(['entite_comptable', 'entite_physique',
        'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
-        'chauffeur_atitre', 'contrat_assurance', 'energie', 'affectation_organisationnel', 'affectation_geographique'])->find($id));
+        'chauffeur_atitre', 'contrat_assurance', 'energie', 'affectation_organisationnel', 'affectation_geographique', 'plan_vehicule'])->find($id));
     }
 
-    // ajouter ou modifier photo du vehicule 
+    // ajouter ou modifier photo du vehicule
     public function uploadPhoto(Request $request, $id){
         if($request->hasFile('photo')){
             $vehicule = Vehicule::find($id);
@@ -115,7 +115,7 @@ class VehiculeController extends Controller
 
             return response()->json(Vehicule::with(['entite_comptable', 'entite_physique',
             'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
-             'chauffeur_atitre', 'contrat_assurance', 'energie', 'affectation_organisationnel', 'affectation_geographique'])->find($id));
+             'chauffeur_atitre', 'contrat_assurance', 'energie', 'affectation_organisationnel', 'affectation_geographique', 'plan_vehicule'])->find($id));
 
 
         }

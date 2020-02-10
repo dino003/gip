@@ -14,7 +14,7 @@ import moment from 'moment';
 
 const calculSommeColonneKilometrageVehicule = (tableau) => {
     return tableau.reduce( (prec, curr) =>  parseFloat(prec) + parseFloat(curr.kilometrage_acquisition || 0), 0)
-  } 
+  }
 
    const calculSommeColonneCoutAchat = (tableau) => {
     return tableau.filter(elm => elm.mode_acquisition == 0).reduce( (prec, curr) =>  parseFloat(prec) + parseFloat(curr.acquisition_achat_prix_ttc || 0), 0)
@@ -30,7 +30,7 @@ const calculSommeColonneKilometrageVehicule = (tableau) => {
   }
 
 class FiltreVehicules extends Component {
-    
+
 
     constructor(props) {
         super(props);
@@ -57,6 +57,12 @@ class FiltreVehicules extends Component {
             quatrieme_niveau_geographique: null,
             cinquieme_niveau_geographique: null,
             sixieme_niveau_geographique: null,
+            premier_niveau_vehicule: null,
+            deuxieme_niveau_vehicule: null,
+            troisieme_niveau_vehicule: null,
+            quatrieme_niveau_vehicule: null,
+            cinquieme_niveau_vehicule: null,
+            sixieme_niveau_vehicule: null,
             premier_niveau_organisa: null,
             deuxieme_niveau_organisa: null,
             troisieme_niveau_organisa: null,
@@ -78,7 +84,7 @@ class FiltreVehicules extends Component {
     //     this.props.dispatch(action)    }
 
     setFieldSelect(name, value) {
-     
+
         let obj = {};
         obj[name] = value;
         this.setState(obj, () => this.filtrerVehicule());
@@ -88,6 +94,56 @@ class FiltreVehicules extends Component {
         let obj = {};
         obj[name] = value;
         this.setState(obj, () => this.checkOtherStateGeographique());
+    }
+
+    setFieldLesPlanVehicules(name, value) {
+        let obj = {};
+        obj[name] = value;
+        this.setState(obj, () => this.checkOtherStateVehicules());
+    }
+
+    checkOtherStateVehicules(){
+        if(this.state.premier_niveau_vehicule == null){
+            this.setState({
+                deuxieme_niveau_vehicule: null,
+                troisieme_niveau_vehicule: null,
+                quatrieme_niveau_vehicule: null,
+                cinquieme_niveau_vehicule: null,
+                sixieme_niveau_vehicule: null
+            }, () => this.filtrerVehicule() )
+        }else if(this.state.deuxieme_niveau_vehicule == null){
+            this.setState({
+               // deuxieme_niveau_vehicule: null,
+                troisieme_niveau_vehicule: null,
+                quatrieme_niveau_vehicule: null,
+                cinquieme_niveau_vehicule: null,
+                sixieme_niveau_vehicule: null
+            }, () => this.filtrerVehicule() )
+        }else if(this.state.troisieme_niveau_vehicule == null){
+            this.setState({
+               // deuxieme_niveau_vehicule: null,
+               // troisieme_niveau_vehicule: null,
+                quatrieme_niveau_vehicule: null,
+                cinquieme_niveau_vehicule: null,
+                sixieme_niveau_vehicule: null
+            }, () => this.filtrerVehicule() )
+        }else if(this.quatrieme_niveau_vehicule == null){
+            this.setState({
+               // deuxieme_niveau_vehicule: null,
+               // troisieme_niveau_vehicule: null,
+               // quatrieme_niveau_vehicule: null,
+                cinquieme_niveau_vehicule: null,
+                sixieme_niveau_vehicule: null
+            }, () => this.filtrerVehicule() )
+        }else if(this.state.cinquieme_niveau_vehicule == null){
+            this.setState({
+               // deuxieme_niveau_vehicule: null,
+              //  troisieme_niveau_vehicule: null,
+              //  quatrieme_niveau_vehicule: null,
+               // cinquieme_niveau_vehicule: null,
+                sixieme_niveau_vehicule: null
+            }, () => this.filtrerVehicule() )
+        }
     }
 
     checkOtherStateGeographique(){
@@ -189,7 +245,7 @@ class FiltreVehicules extends Component {
         this.props.vehicules.map(event => {
             return events.push(event.modele)
         })
-        
+
         return events
     }
 
@@ -224,9 +280,9 @@ class FiltreVehicules extends Component {
 
             }
         })
-        
+
         return events
-        
+
     } */
 
     changeState() {
@@ -241,7 +297,7 @@ class FiltreVehicules extends Component {
         this.state.affectation_geographique_id.map(event => {
             return events.push(event.id)
         })
-        
+
         return events
     }
 
@@ -250,12 +306,12 @@ class FiltreVehicules extends Component {
         this.state.affectation_organisationnel_id.map(event => {
             return events.push(event.id)
         })
-        
+
         return events
     }
-   
 
-  
+
+
 
     renderLoading() {
         return <span style={{ textAlign: 'center' }}>
@@ -276,7 +332,7 @@ class FiltreVehicules extends Component {
 
     filtrerVehicule(){
         //console.log(this.state.affectation_geographique_id)
-        
+
         var debut = this.state.date_entree_au_parc1 ? Date.parse(this.state.date_entree_au_parc1) : null
         var fin = this.state.date_entree_au_parc2 ? Date.parse(this.state.date_entree_au_parc2) : null
 
@@ -291,7 +347,9 @@ class FiltreVehicules extends Component {
                 ( this.state.premier_niveau_geographique ? this.state.deuxieme_niveau_geographique ? this.state.troisieme_niveau_geographique ? this.state.quatrieme_niveau_geographique ? this.state.cinquieme_niveau_geographique ? this.state.sixieme_niveau_geographique ? this.props.plan_geographiques.filter(pl => pl.niveau_1 == this.state.premier_niveau_geographique.id && pl.niveau_2 == this.state.deuxieme_niveau_geographique.id && pl.niveau_3 == this.state.troisieme_niveau_geographique.id && pl.niveau_4 == this.state.quatrieme_niveau_geographique.id && pl.niveau_5 == this.state.cinquieme_niveau_geographique.id && pl.niveau_6 == this.state.sixieme_niveau_geographique.id).map(elm => elm.id).includes(ut.affectation_geographique_id) : this.props.plan_geographiques.filter(pl => pl.niveau_1 == this.state.premier_niveau_geographique.id && pl.niveau_2 == this.state.deuxieme_niveau_geographique.id && pl.niveau_3 == this.state.troisieme_niveau_geographique.id && pl.niveau_4 == this.state.quatrieme_niveau_geographique.id && pl.niveau_5 == this.state.cinquieme_niveau_geographique.id).map(elm => elm.id).includes(ut.affectation_geographique_id) : this.props.plan_geographiques.filter(pl => pl.niveau_1 == this.state.premier_niveau_geographique.id && pl.niveau_2 == this.state.deuxieme_niveau_geographique.id && pl.niveau_3 == this.state.troisieme_niveau_geographique.id && pl.niveau_4 == this.state.quatrieme_niveau_geographique.id).map(elm => elm.id).includes(ut.affectation_geographique_id) : this.props.plan_geographiques.filter(pl => pl.niveau_1 == this.state.premier_niveau_geographique.id && pl.niveau_2 == this.state.deuxieme_niveau_geographique.id && pl.niveau_3 == this.state.troisieme_niveau_geographique.id).map(elm => elm.id).includes(ut.affectation_geographique_id) : this.props.plan_geographiques.filter(pl => pl.niveau_1 == this.state.premier_niveau_geographique.id && pl.niveau_2 == this.state.deuxieme_niveau_geographique.id).map(elm => elm.id).includes(ut.affectation_geographique_id)  : this.props.plan_geographiques.filter(pl => pl.niveau_1 == this.state.premier_niveau_geographique.id).map(elm => elm.id).includes(ut.affectation_geographique_id) : true )
                 &&
                 ( this.state.premier_niveau_organisa ? this.state.deuxieme_niveau_organisa ? this.state.troisieme_niveau_organisa ? this.state.quatrieme_niveau_organisa ? this.state.cinquieme_niveau_organisa ? this.state.sixieme_niveau_organisa ? this.props.plan_organisationnels.filter(pl => pl.niveau_1 == this.state.premier_niveau_organisa.id && pl.niveau_2 == this.state.deuxieme_niveau_organisa.id && pl.niveau_3 == this.state.troisieme_niveau_organisa.id && pl.niveau_4 == this.state.quatrieme_niveau_organisa.id && pl.niveau_5 == this.state.cinquieme_niveau_organisa.id && pl.niveau_6 == this.state.sixieme_niveau_organisa.id).map(elm => elm.id).includes(ut.affectation_organisationnel_id) : this.props.plan_organisationnels.filter(pl => pl.niveau_1 == this.state.premier_niveau_organisa.id && pl.niveau_2 == this.state.deuxieme_niveau_organisa.id && pl.niveau_3 == this.state.troisieme_niveau_organisa.id && pl.niveau_4 == this.state.quatrieme_niveau_organisa.id && pl.niveau_5 == this.state.cinquieme_niveau_organisa.id).map(elm => elm.id).includes(ut.affectation_organisationnel_id) : this.props.plan_organisationnels.filter(pl => pl.niveau_1 == this.state.premier_niveau_organisa.id && pl.niveau_2 == this.state.deuxieme_niveau_organisa.id && pl.niveau_3 == this.state.troisieme_niveau_organisa.id && pl.niveau_4 == this.state.quatrieme_niveau_organisa.id).map(elm => elm.id).includes(ut.affectation_organisationnel_id) : this.props.plan_organisationnels.filter(pl => pl.niveau_1 == this.state.premier_niveau_organisa.id && pl.niveau_2 == this.state.deuxieme_niveau_organisa.id && pl.niveau_3 == this.state.troisieme_niveau_organisa.id).map(elm => elm.id).includes(ut.affectation_organisationnel_id) : this.props.plan_organisationnels.filter(pl => pl.niveau_1 == this.state.premier_niveau_organisa.id && pl.niveau_2 == this.state.deuxieme_niveau_organisa.id).map(elm => elm.id).includes(ut.affectation_organisationnel_id)  : this.props.plan_organisationnels.filter(pl => pl.niveau_1 == this.state.premier_niveau_organisa.id).map(elm => elm.id).includes(ut.affectation_organisationnel_id) : true )
-               
+                &&
+                ( this.state.premier_niveau_vehicule ? this.state.deuxieme_niveau_vehicule ? this.state.troisieme_niveau_vehicule ? this.state.quatrieme_niveau_vehicule ? this.state.cinquieme_niveau_vehicule ? this.state.sixieme_niveau_vehicule ? this.props.plan_vehicules.filter(pl => pl.niveau_1 == this.state.premier_niveau_vehicule.id && pl.niveau_2 == this.state.deuxieme_niveau_vehicule.id && pl.niveau_3 == this.state.troisieme_niveau_vehicule.id && pl.niveau_4 == this.state.quatrieme_niveau_vehicule.id && pl.niveau_5 == this.state.cinquieme_niveau_vehicule.id && pl.niveau_6 == this.state.sixieme_niveau_vehicule.id).map(elm => elm.id).includes(ut.plan_vehicule_id) : this.props.plan_vehicules.filter(pl => pl.niveau_1 == this.state.premier_niveau_vehicule.id && pl.niveau_2 == this.state.deuxieme_niveau_vehicule.id && pl.niveau_3 == this.state.troisieme_niveau_vehicule.id && pl.niveau_4 == this.state.quatrieme_niveau_vehicule.id && pl.niveau_5 == this.state.cinquieme_niveau_vehicule.id).map(elm => elm.id).includes(ut.plan_vehicule_id) : this.props.plan_vehicules.filter(pl => pl.niveau_1 == this.state.premier_niveau_vehicule.id && pl.niveau_2 == this.state.deuxieme_niveau_vehicule.id && pl.niveau_3 == this.state.troisieme_niveau_vehicule.id && pl.niveau_4 == this.state.quatrieme_niveau_vehicule.id).map(elm => elm.id).includes(ut.plan_vehicule_id) : this.props.plan_vehicules.filter(pl => pl.niveau_1 == this.state.premier_niveau_vehicule.id && pl.niveau_2 == this.state.deuxieme_niveau_vehicule.id && pl.niveau_3 == this.state.troisieme_niveau_vehicule.id).map(elm => elm.id).includes(ut.plan_vehicule_id) : this.props.plan_vehicules.filter(pl => pl.niveau_1 == this.state.premier_niveau_vehicule.id && pl.niveau_2 == this.state.deuxieme_niveau_vehicule.id).map(elm => elm.id).includes(ut.plan_vehicule_id)  : this.props.plan_vehicules.filter(pl => pl.niveau_1 == this.state.premier_niveau_vehicule.id).map(elm => elm.id).includes(ut.plan_vehicule_id) : true )
+
                 &&
                 (this.state.marque ? ut.marque.id == this.state.marque.id : true)
                 &&
@@ -327,13 +385,13 @@ class FiltreVehicules extends Component {
 
                     <th className="sticky-col third-col">Type</th>
                     <th className="sticky-col thour-col">Acquisition</th>
-                    <th>Marque</th>
                     <th>Modèle</th>
-                    <th>Couleur</th>
+{/*                     <th>Modèle</th>
+ */}                    <th>Couleur</th>
                     <th>Détenteur</th>
                     <th>Chauffeur</th>
-                    <th>Catégorie</th>
-                    <th>Acquis le</th>
+{/*                     <th>Catégorie</th>
+ */}                    <th>Acquis le</th>
                     <th>N° de carte grise</th>
                     <th>Kms compteur</th>
                     <th>Nb CV</th>
@@ -353,26 +411,98 @@ class FiltreVehicules extends Component {
                 {vehicules_visibles_actuelement.map((item) =>
                     <VehiculeFiltreItem
                         key={item.id}
-                       
+
                         item={item} />
                 )}
             </tbody>
         </table>)
     }
 
-             
+    // debut vehicules plan et structures
+
+
+    getNiveauxPlanVehicules = () => {
+        const events = [];
+        this.props.structure_vehicules.map(event => {
+            if(!event.niveau) return;
+            return events.push(event.niveau)
+        })
+
+        return events
+    }
+
+    getMaximumNiveauPlanVehicule = () => {
+        var niveau = Math.max(...this.getNiveauxPlanVehicules())
+        if (niveau == 0) return 1;
+        return Number(niveau );
+
+    }
+
+    getStructureVehiculeDernierNiveau = () => {
+        if(!this.getPlanVehiculesDerniersNiveau().length) return undefined;
+        else{
+            return this.props.structure_vehicules.find(st => st.niveau == this.getPlanVehiculesDerniersNiveau()[0].structure_vehicule.niveau)
+        }
+    }
+
+    getPlanVehiculesDerniersNiveau = () => {
+        return this.props.plan_vehicules.filter(elm => elm.structure_vehicule ? elm.structure_vehicule.niveau == this.getMaximumNiveauPlanVehicule() : false)
+    }
+
+
+
+    getStructureVehiculePremierNiveau = () => {
+        return this.props.structure_vehicules.find(st => st.niveau == 1) || null
+
+   }
+
+
+   getStructureVehiculeDeuxiemeNiveau = () => {
+
+           return this.props.structure_vehicules.find(st => st.niveau == 2) || null
+
+   }
+
+   getStructureVehiculeTroisiemeNiveau = () => {
+
+       return this.props.structure_vehicules.find(st => st.niveau == 3) || null
+
+   }
+
+   getStructureVehiculeQuatriemeNiveau = () => {
+
+       return this.props.structure_vehicules.find(st => st.niveau == 4) || null
+
+   }
+
+   getStructureVehiculeCinquiemeNiveau = () => {
+
+       return this.props.structure_vehicules.find(st => st.niveau == 5) || null
+
+   }
+
+   getStructureVehiculeSixiemeNiveau = () => {
+
+       return this.props.structure_vehicules.find(st => st.niveau == 6) || null
+
+   }
+
+   // fin vehicules
+
+
+
     getNiveauxPlanGeographiques = () => {
         const events = [];
         this.props.structure_geographiques.map(event => {
             if(!event.niveau) return;
             return events.push(event.niveau)
         })
-        
+
         return events
     }
 
     getMaximumNiveauPlanGeographique = () => {
-        var niveau = Math.max(...this.getNiveauxPlanGeographiques()) 
+        var niveau = Math.max(...this.getNiveauxPlanGeographiques())
         if (niveau == 0) return 1;
         return Number(niveau );
 
@@ -386,58 +516,62 @@ class FiltreVehicules extends Component {
     }
 
     getPlanGeographiquesDerniersNiveau = () => {
-        return this.props.plan_geographiques.filter(elm => elm.structure_geographique ? elm.structure_geographique.niveau == this.getMaximumNiveauPlanGeographique() : false) 
+        return this.props.plan_geographiques.filter(elm => elm.structure_geographique ? elm.structure_geographique.niveau == this.getMaximumNiveauPlanGeographique() : false)
     }
 
-    getNiveauxPlanOrga = () => {
-        const events = [];
-        this.props.structure_organisationnelles.map(event => {
-            if(!event.niveau) return;
-            return events.push(event.niveau)
-        })
-        
-        return events
-    }
 
 
     getStructureGeographiquePremierNiveau = () => {
         return this.props.structure_geographiques.find(st => st.niveau == 1) || null
-       
+
    }
 
 
    getStructureGeographiqueDeuxiemeNiveau = () => {
-     
+
            return this.props.structure_geographiques.find(st => st.niveau == 2) || null
-       
+
    }
 
    getStructureGeographiqueTroisiemeNiveau = () => {
-     
+
        return this.props.structure_geographiques.find(st => st.niveau == 3) || null
-   
+
    }
 
    getStructureGeographiqueQuatriemeNiveau = () => {
-     
+
        return this.props.structure_geographiques.find(st => st.niveau == 4) || null
-   
+
    }
 
    getStructureGeographiqueCinquiemeNiveau = () => {
-     
+
        return this.props.structure_geographiques.find(st => st.niveau == 5) || null
-   
+
    }
 
    getStructureGeographiqueSixiemeNiveau = () => {
-     
+
        return this.props.structure_geographiques.find(st => st.niveau == 6) || null
-   
+
    }
 
+
+
+
+   getNiveauxPlanOrga = () => {
+    const events = [];
+    this.props.structure_organisationnelles.map(event => {
+        if(!event.niveau) return;
+        return events.push(event.niveau)
+    })
+
+    return events
+}
+
     getMaximumNiveauPlanOrga = () => {
-        var niveau = Math.max(...this.getNiveauxPlanOrga(), 0) 
+        var niveau = Math.max(...this.getNiveauxPlanOrga(), 0)
         if (niveau == 0) return 1;
         return Number(niveau );
 
@@ -445,38 +579,38 @@ class FiltreVehicules extends Component {
 
     getStructureOrganisationnellePremierNiveau = () => {
          return this.props.structure_organisationnelles.find(st => st.niveau == 1) || null
-        
+
     }
 
 
     getStructureOrganisationnelleDeuxiemeNiveau = () => {
-      
+
             return this.props.structure_organisationnelles.find(st => st.niveau == 2) || null
-        
+
     }
 
     getStructureOrganisationnelleTroisiemeNiveau = () => {
-      
+
         return this.props.structure_organisationnelles.find(st => st.niveau == 3) || null
-    
+
     }
 
     getStructureOrganisationnelleQuatriemeNiveau = () => {
-      
+
         return this.props.structure_organisationnelles.find(st => st.niveau == 4) || null
-    
+
     }
 
     getStructureOrganisationnelleCinquiemeNiveau = () => {
-      
+
         return this.props.structure_organisationnelles.find(st => st.niveau == 5) || null
-    
+
     }
 
     getStructureOrganisationnelleSixiemeNiveau = () => {
-      
+
         return this.props.structure_organisationnelles.find(st => st.niveau == 6) || null
-    
+
     }
 
     getStructureOrganisationnelDernierNiveau = () => {
@@ -494,7 +628,7 @@ class FiltreVehicules extends Component {
 
     render() {
        // console.log(this.getIdsUtilisations())
-  
+
         return (
             <div className="app-main__inner">
                 <div className="row">
@@ -518,7 +652,7 @@ class FiltreVehicules extends Component {
                                                 table="table-to-xls"
                                                 filename="Liste des véhicules"
                                                 sheet="Véhicules"
-                                                buttonText="Ecran -> Liste" /> : 
+                                                buttonText="Ecran -> Liste" /> :
                                                 <button disabled className="mb-2 mr-2 btn-transition btn btn-outline-success">
                                                     Ecran -> Liste
                                                     </button>}
@@ -526,7 +660,7 @@ class FiltreVehicules extends Component {
 
 
                                     </span> {'  '}
-                             
+
 
 
                                 </h5>
@@ -536,11 +670,11 @@ class FiltreVehicules extends Component {
                                 {this.getStructureGeographiquePremierNiveau() ?
                                         <div className="col-md-4">
                                             <label className="">{this.getStructureGeographiquePremierNiveau().libelle} </label>
-                                       
+
 
                                             <Select
                                                 name="premier_niveau_geographique"
-                                                
+
                                                 isClearable
                                                 isDisabled={!this.getStructureGeographiquePremierNiveau()}
                                                 placeholder={`Sélection de ${this.getStructureGeographiquePremierNiveau().libelle}`}
@@ -550,7 +684,7 @@ class FiltreVehicules extends Component {
                                                 getOptionValue={option => option.id}
                                                 // formatOptionLabel={formatOptionVehicule}
                                                 onChange={this.setFieldLesPlanGeographiques.bind(this, "premier_niveau_geographique")}
-                                                
+
                                             />
 
                                         </div> : null}
@@ -558,11 +692,11 @@ class FiltreVehicules extends Component {
                                         {this.getStructureGeographiqueDeuxiemeNiveau() && this.state.premier_niveau_geographique ?
                                         <div className="col-md-4">
                                             <label className="">{this.getStructureGeographiqueDeuxiemeNiveau().libelle} </label>
-                                       
+
 
                                             <Select
                                                 name="deuxieme_niveau_geographique"
-                                                
+
                                                 isClearable
                                                 isDisabled={!this.getStructureGeographiqueDeuxiemeNiveau()}
                                                 placeholder={`Sélection de ${this.getStructureGeographiqueDeuxiemeNiveau().libelle}`}
@@ -572,7 +706,7 @@ class FiltreVehicules extends Component {
                                                 getOptionValue={option => option.id}
                                                 // formatOptionLabel={formatOptionVehicule}
                                                 onChange={this.setFieldLesPlanGeographiques.bind(this, "deuxieme_niveau_geographique")}
-                                                
+
                                             />
 
                                         </div> : null}
@@ -580,11 +714,11 @@ class FiltreVehicules extends Component {
                                         {this.getStructureGeographiqueTroisiemeNiveau() && this.state.premier_niveau_geographique && this.state.deuxieme_niveau_geographique ?
                                         <div className="col-md-4">
                                             <label className="">{this.getStructureGeographiqueTroisiemeNiveau().libelle} </label>
-                                    
+
 
                                             <Select
                                                 name="troisieme_niveau_geographique"
-                                                
+
                                                 isClearable
                                                 isDisabled={!this.getStructureGeographiqueTroisiemeNiveau()}
                                                 placeholder={`Sélection de ${this.getStructureGeographiqueTroisiemeNiveau().libelle}`}
@@ -594,14 +728,14 @@ class FiltreVehicules extends Component {
                                                 getOptionValue={option => option.id}
                                                 // formatOptionLabel={formatOptionVehicule}
                                                 onChange={this.setFieldLesPlanGeographiques.bind(this, "troisieme_niveau_geographique")}
-                                                
+
                                             />
 
                                         </div> : null}
-                               
+
                                 </div>
 
-                          
+
 
 
                                 <div className="row">
@@ -609,11 +743,11 @@ class FiltreVehicules extends Component {
                                 {this.getStructureGeographiqueQuatriemeNiveau() && this.state.premier_niveau_geographique && this.state.deuxieme_niveau_geographique && this.state.troisieme_niveau_geographique ?
                                         <div className="col-md-4">
                                             <label className="">{this.getStructureGeographiqueQuatriemeNiveau().libelle} </label>
-                                    
+
 
                                             <Select
                                                 name="quatrieme_niveau_geographique"
-                                                
+
                                                 isClearable
                                                 isDisabled={!this.getStructureGeographiqueQuatriemeNiveau()}
                                                 placeholder={`Sélection de ${this.getStructureGeographiqueQuatriemeNiveau().libelle}`}
@@ -623,7 +757,7 @@ class FiltreVehicules extends Component {
                                                 getOptionValue={option => option.id}
                                                 // formatOptionLabel={formatOptionVehicule}
                                                 onChange={this.setFieldLesPlanGeographiques.bind(this, "quatrieme_niveau_geographique")}
-                                                
+
                                             />
 
                                         </div> : null}
@@ -631,11 +765,11 @@ class FiltreVehicules extends Component {
                                 {this.getStructureGeographiqueCinquiemeNiveau() && this.state.premier_niveau_geographique && this.state.deuxieme_niveau_geographique && this.state.troisieme_niveau_geographique && this.state.quatrieme_niveau_geographique ?
                                         <div className="col-md-4">
                                             <label className="">{this.getStructureGeographiqueCinquiemeNiveau().libelle} </label>
-                                    
+
 
                                             <Select
                                                 name="cinquieme_niveau_geographique"
-                                                
+
                                                 isClearable
                                                 isDisabled={!this.getStructureGeographiqueCinquiemeNiveau()}
                                                 placeholder={`Sélection de ${this.getStructureGeographiqueCinquiemeNiveau().libelle}`}
@@ -645,7 +779,7 @@ class FiltreVehicules extends Component {
                                                 getOptionValue={option => option.id}
                                                 // formatOptionLabel={formatOptionVehicule}
                                                 onChange={this.setFieldLesPlanGeographiques.bind(this, "cinquieme_niveau_geographique")}
-                                                
+
                                             />
 
                                         </div> : null}
@@ -653,11 +787,11 @@ class FiltreVehicules extends Component {
                                         {this.getStructureGeographiqueSixiemeNiveau() && this.state.premier_niveau_geographique && this.state.deuxieme_niveau_geographique && this.state.troisieme_niveau_geographique && this.state.quatrieme_niveau_geographique && this.state.cinquieme_niveau_geographique ?
                                         <div className="col-md-4">
                                             <label className="">{this.getStructureGeographiqueSixiemeNiveau().libelle} </label>
-                                    
+
 
                                             <Select
                                                 name="sixieme_niveau_geographique"
-                                                
+
                                                 isClearable
                                                 isDisabled={!this.getStructureGeographiqueSixiemeNiveau()}
                                                 placeholder={`Sélection de ${this.getStructureGeographiqueSixiemeNiveau().libelle}`}
@@ -667,7 +801,7 @@ class FiltreVehicules extends Component {
                                                 getOptionValue={option => option.id}
                                                 // formatOptionLabel={formatOptionVehicule}
                                                 onChange={this.setFieldLesPlanGeographiques.bind(this, "sixieme_niveau_geographique")}
-                                                
+
                                             />
 
                                         </div> : null}
@@ -678,7 +812,7 @@ class FiltreVehicules extends Component {
                                 {this.getStructureOrganisationnellePremierNiveau()  ?
                                         <div className="col-md-4">
                                             <label className="">{this.getStructureOrganisationnellePremierNiveau().libelle} </label>
-                                       
+
                                             <Select
                                                 name="premier_niveau_organisa"
                                                 isClearable
@@ -690,7 +824,7 @@ class FiltreVehicules extends Component {
                                                 getOptionValue={option => option.id}
                                                 // formatOptionLabel={formatOptionVehicule}
                                                 onChange={this.setFieldSelect.bind(this, "premier_niveau_organisa")}
-                                                
+
                                             />
 
                                         </div> : null}
@@ -698,11 +832,11 @@ class FiltreVehicules extends Component {
                                         {this.getStructureOrganisationnelleDeuxiemeNiveau() && this.state.premier_niveau_organisa ?
                                         <div className="col-md-4">
                                             <label className="">{this.getStructureOrganisationnelleDeuxiemeNiveau().libelle} </label>
-                                       
+
 
                                             <Select
                                                 name="deuxieme_niveau_organisa"
-                                                
+
                                                 isClearable
                                                 isDisabled={!this.getStructureOrganisationnelleDeuxiemeNiveau()}
                                                 placeholder={`Sélection de ${this.getStructureOrganisationnelleDeuxiemeNiveau().libelle}`}
@@ -712,7 +846,7 @@ class FiltreVehicules extends Component {
                                                 getOptionValue={option => option.id}
                                                 // formatOptionLabel={formatOptionVehicule}
                                                 onChange={this.setFieldSelect.bind(this, "deuxieme_niveau_organisa")}
-                                                
+
                                             />
 
                                         </div> : null}
@@ -720,7 +854,7 @@ class FiltreVehicules extends Component {
                                         {this.getStructureOrganisationnelleTroisiemeNiveau() && this.state.premier_niveau_organisa && this.state.deuxieme_niveau_organisa ?
                                         <div className="col-md-4">
                                             <label className="">{this.getStructureOrganisationnelleTroisiemeNiveau().libelle} </label>
-                                       
+
                                             <Select
                                                 name="troisieme_niveau_organisa"
                                                 isClearable
@@ -732,7 +866,7 @@ class FiltreVehicules extends Component {
                                                 getOptionValue={option => option.id}
                                                 // formatOptionLabel={formatOptionVehicule}
                                                 onChange={this.setFieldSelect.bind(this, "troisieme_niveau_organisa")}
-                                                
+
                                             />
 
                                         </div> : null}
@@ -743,11 +877,11 @@ class FiltreVehicules extends Component {
                                 {this.getStructureOrganisationnelleQuatriemeNiveau() && this.state.premier_niveau_organisa && this.state.deuxieme_niveau_organisa && this.state.troisieme_niveau_organisa ?
                                         <div className="col-md-4">
                                             <label className="">{this.getStructureOrganisationnelleQuatriemeNiveau().libelle} d'affectation *</label>
-                                       
+
 
                                             <Select
                                                 name="quatrieme_niveau_organisa"
-                                                
+
                                                 isClearable
                                                 isDisabled={!this.getStructureOrganisationnelleQuatriemeNiveau()}
                                                 placeholder={`Sélection de ${this.getStructureOrganisationnelleQuatriemeNiveau().libelle}`}
@@ -757,7 +891,7 @@ class FiltreVehicules extends Component {
                                                 getOptionValue={option => option.id}
                                                 // formatOptionLabel={formatOptionVehicule}
                                                 onChange={this.setFieldSelect.bind(this, "quatrieme_niveau_organisa")}
-                                                
+
                                             />
 
                                         </div> : null}
@@ -765,7 +899,7 @@ class FiltreVehicules extends Component {
                                 {this.getStructureOrganisationnelleCinquiemeNiveau() && this.state.premier_niveau_organisa && this.state.deuxieme_niveau_organisa && this.state.troisieme_niveau_organisa && this.state.quatrieme_niveau_organisa ?
                                         <div className="col-md-4">
                                             <label className="">{this.getStructureOrganisationnelleCinquiemeNiveau().libelle} </label>
-                                       
+
                                             <Select
                                                 name="cinquieme_niveau_organisa"
                                                 isClearable
@@ -777,7 +911,7 @@ class FiltreVehicules extends Component {
                                                 getOptionValue={option => option.id}
                                                 // formatOptionLabel={formatOptionVehicule}
                                                 onChange={this.setFieldSelect.bind(this, "cinquieme_niveau_organisa")}
-                                                
+
                                             />
 
                                         </div> : null}
@@ -785,11 +919,11 @@ class FiltreVehicules extends Component {
                                         {this.getStructureOrganisationnelleSixiemeNiveau() && this.state.premier_niveau_organisa && this.state.deuxieme_niveau_organisa && this.state.troisieme_niveau_organisa && this.state.quatrieme_niveau_organisa && this.state.cinquieme_niveau_organisa ?
                                         <div className="col-md-4">
                                             <label className="">{this.getStructureOrganisationnelleSixiemeNiveau().libelle} d'affectation *</label>
-                                       
+
 
                                             <Select
                                                 name="sixieme_niveau_organisa"
-                                                
+
                                                 isClearable
                                                 isDisabled={!this.getStructureOrganisationnelleSixiemeNiveau()}
                                                 placeholder={`Sélection de ${this.getStructureOrganisationnelleSixiemeNiveau().libelle}`}
@@ -799,11 +933,107 @@ class FiltreVehicules extends Component {
                                                 getOptionValue={option => option.id}
                                                 // formatOptionLabel={formatOptionVehicule}
                                                 onChange={this.setFieldSelect.bind(this, "sixieme_niveau_organisa")}
-                                                
+
                                             />
 
                                         </div> : null}
                                 </div>
+
+
+
+                                <div className="row">
+
+                                    {this.getStructureVehiculePremierNiveau() ?
+                                            <div className="col-md-4">
+                                                <label className="">{this.getStructureVehiculePremierNiveau().libelle} </label>
+
+
+                                                <Select
+                                                    name="premier_niveau_vehicule"
+
+                                                    isClearable
+                                                    isDisabled={!this.getStructureVehiculePremierNiveau()}
+                                                    placeholder={`Sélection de ${this.getStructureVehiculePremierNiveau().libelle}`}
+                                                    noOptionsMessage={() => `Pas de ${this.getStructureVehiculePremierNiveau().libelle} pour l'instant`}
+                                                    options={  this.props.plan_vehicules.filter(pl => pl.parent == null)}
+                                                    getOptionLabel={option => option.libelle}
+                                                    getOptionValue={option => option.id}
+                                                    // formatOptionLabel={formatOptionVehicule}
+                                                    onChange={this.setFieldLesPlanVehicules.bind(this, "premier_niveau_vehicule")}
+
+                                                />
+
+                                            </div> : null}
+
+                                            {this.getStructureVehiculeDeuxiemeNiveau() && this.state.premier_niveau_vehicule ?
+                                            <div className="col-md-4">
+                                                <label className="">{this.getStructureVehiculeDeuxiemeNiveau().libelle} </label>
+
+
+                                                <Select
+                                                    name="deuxieme_niveau_vehicule"
+
+                                                    isClearable
+                                                    isDisabled={!this.getStructureVehiculeDeuxiemeNiveau()}
+                                                    placeholder={`Sélection de ${this.getStructureVehiculeDeuxiemeNiveau().libelle}`}
+                                                    noOptionsMessage={() => `Pas de ${this.getStructureVehiculeDeuxiemeNiveau().libelle} pour l'instant`}
+                                                    options={ this.state.premier_niveau_vehicule ? this.props.plan_vehicules.filter(pl => pl.parent == this.state.premier_niveau_vehicule.id) : this.props.plan_geographiques.filter(pl => pl.structure_vehicule.niveau == 2)}
+                                                    getOptionLabel={option => option.libelle}
+                                                    getOptionValue={option => option.id}
+                                                    // formatOptionLabel={formatOptionVehicule}
+                                                    onChange={this.setFieldLesPlanVehicules.bind(this, "deuxieme_niveau_vehicule")}
+
+                                                />
+
+                                            </div> : null}
+
+                                            {this.getStructureVehiculeTroisiemeNiveau() && this.state.premier_niveau_vehicule && this.state.deuxieme_niveau_vehicule ?
+                                            <div className="col-md-4">
+                                                <label className="">{this.getStructureVehiculeTroisiemeNiveau().libelle} </label>
+
+
+                                                <Select
+                                                    name="troisieme_niveau_vehicule"
+
+                                                    isClearable
+                                                    isDisabled={!this.getStructureVehiculeTroisiemeNiveau()}
+                                                    placeholder={`Sélection de ${this.getStructureVehiculeTroisiemeNiveau().libelle}`}
+                                                    noOptionsMessage={() => `Pas de ${this.getStructureVehiculeTroisiemeNiveau().libelle} pour l'instant`}
+                                                    options={ this.state.deuxieme_niveau_vehicule ? this.props.plan_vehicules.filter(pl => pl.parent == this.state.deuxieme_niveau_vehicule.id) : this.props.plan_vehicules.filter(pl => pl.structure_vehicule.niveau == 3)}
+                                                    getOptionLabel={option => option.libelle}
+                                                    getOptionValue={option => option.id}
+                                                    // formatOptionLabel={formatOptionVehicule}
+                                                    onChange={this.setFieldLesPlanVehicules.bind(this, "troisieme_niveau_vehicule")}
+
+                                                />
+
+                                            </div> : null}
+
+                                    </div>
+
+                                    <div className="row">
+                                    {this.getStructureVehiculeQuatriemeNiveau() && this.state.premier_niveau_vehicule && this.state.deuxieme_niveau_vehicule && this.state.troisieme_niveau_vehicule ?
+                                        <div className="col-md-4">
+                                            <label className="">{this.getStructureVehiculeQuatriemeNiveau().libelle} </label>
+
+
+                                            <Select
+                                                name="quatrieme_niveau_vehicule"
+
+                                                isClearable
+                                                isDisabled={!this.getStructureVehiculeQuatriemeNiveau()}
+                                                placeholder={`Sélection de ${this.getStructureVehiculeQuatriemeNiveau().libelle}`}
+                                                noOptionsMessage={() => `Pas de ${this.getStructureVehiculeQuatriemeNiveau().libelle} pour l'instant`}
+                                                options={ this.state.troisieme_niveau_vehicule ? this.props.plan_vehicules.filter(pl => pl.parent == this.state.troisieme_niveau_vehicule.id) : this.props.plan_vehicules.filter(pl => pl.structure_vehicule.niveau == 4)}
+                                                getOptionLabel={option => option.libelle}
+                                                getOptionValue={option => option.id}
+                                                // formatOptionLabel={formatOptionVehicule}
+                                                onChange={this.setFieldLesPlanVehicules.bind(this, "quatrieme_niveau_vehicule")}
+
+                                            />
+
+                                        </div> : null}
+                                    </div>
 
 
                                 <div className="row">
@@ -855,7 +1085,7 @@ class FiltreVehicules extends Component {
                                                 onChange={this.setFieldSelect.bind(this, "tiers")}
                                             />
                                     </div>
-                                   
+
                                 </div>
                                 <br />
                                 <div className="row">
@@ -874,7 +1104,7 @@ class FiltreVehicules extends Component {
                                     <div className="col-md-4">
                                         <label htmlFor="">Modèle</label>
 {/*                                         <input type="text" name="modele" onChange={this.setField} className="form-control"/>
- */}                                   
+ */}
                                         <select name="modele" id="" onChange={this.setField} className="form-control">
                                         <option value=""></option>
                                         {this.getIdsUtilisations().map((item, index) => <option key={index} value={item}>{item}</option>)}
@@ -947,7 +1177,7 @@ class FiltreVehicules extends Component {
                                                 onChange={this.setFieldSelect.bind(this, "entite_comptable")}
                                             />
                                     </div> */}
-                                   
+
                                 </div>
                                 <br />
                                 <div className="row">
@@ -965,27 +1195,27 @@ class FiltreVehicules extends Component {
                                         <input type="date" onChange={this.setField} className="form-control" name="date_entree_au_parc2" id=""/>
                                     </div>
                                 </div>
-                             
+
                                 <br />
                                 {/* <div className="table-responsive"> */}
-                                {/* {this.props.loading ? this.renderLoading() : 
+                                {/* {this.props.loading ? this.renderLoading() :
                             !this.props.vehicules.length ? this.renderEmpty() : this.renderList()} */}
                                 <div className="view">
                                 <div className="wrapper" style={{height: '500px', overflowY: 'scroll'}}>
-                                    {this.props.loading ? this.renderLoading() : 
-                            !this.state.vehicules_visibles_actuelement.length ? this.renderEmpty() : this.renderList()}  
+                                    {this.props.loading ? this.renderLoading() :
+                            !this.state.vehicules_visibles_actuelement.length ? this.renderEmpty() : this.renderList()}
                                     </div>
                                 </div>
                                 <hr />
                                 <div className="main-card mb-3 card">
                                     <div className="card-heading">
-                                        Filtres appliqués : 
+                                        Filtres appliqués :
                                     </div>
                         <div className="no-gutters row">
                             <div className="col-md-4">
                                 <div className="pt-0 pb-0 card-body">
                                     <ul className="list-group list-group-flush">
-                                    
+
                                       {this.state.marque ?   <li className="list-group-item">
                                             <div className="widget-content p-0">
                                                 <div className="widget-content-outer">
@@ -994,7 +1224,7 @@ class FiltreVehicules extends Component {
                                                             <div className="widget-heading">Marque</div>
                                     <div className="widget-subheading">{this.state.marque.nom_marque}</div>
                                                         </div>
-                                                       
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -1007,12 +1237,12 @@ class FiltreVehicules extends Component {
                                                             <div className="widget-heading">Etité Physique</div>
                                     <div className="widget-subheading">{this.state.entite_physique.entite}</div>
                                                         </div>
-                                                       
+
                                                     </div>
                                                 </div>
                                             </div>
                                         </li> : null}
-                                        {this.state.entite_comptable ? 
+                                        {this.state.entite_comptable ?
                                         <li className="list-group-item">
                                             <div className="widget-content p-0">
                                                 <div className="widget-content-outer">
@@ -1021,7 +1251,7 @@ class FiltreVehicules extends Component {
                                                             <div className="widget-heading">Entité Comptable</div>
                                                             <div className="widget-subheading">{this.state.entite_comptable.entite}</div>
                                                         </div>
-                                                       
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -1032,7 +1262,7 @@ class FiltreVehicules extends Component {
                             <div className="col-md-4">
                                 <div className="pt-0 pb-0 card-body">
                                     <ul className="list-group list-group-flush">
-                                    
+
                                         {this.state.mode_acquisition && this.state.mode_acquisition != "Tous" ? <li className="list-group-item">
                                             <div className="widget-content p-0">
                                                 <div className="widget-content-outer">
@@ -1041,7 +1271,7 @@ class FiltreVehicules extends Component {
                                                             <div className="widget-heading">Type d'acquisition</div>
                                                             <div className="widget-subheading">{this.state.mode_acquisition == 0 ? 'Achat' : this.state.mode_acquisition == 1 ? 'Leasing' : this.state.mode_acquisition == 2 ?  'Prêt' : 'Tous'}</div>
                                                         </div>
-                                                       
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -1054,13 +1284,13 @@ class FiltreVehicules extends Component {
                                                             <div className="widget-heading">Tiers d'acquisition</div>
                                                             <div className="widget-subheading">{this.state.tiers.code}</div>
                                                         </div>
-                                                       
+
                                                     </div>
                                                 </div>
                                             </div>
                                         </li> : null}
-                                        
-                                        {this.state.modele ? 
+
+                                        {this.state.modele ?
                                         <li className="list-group-item">
                                             <div className="widget-content p-0">
                                                 <div className="widget-content-outer">
@@ -1069,7 +1299,7 @@ class FiltreVehicules extends Component {
                                                             <div className="widget-heading">Modèle</div>
                                                             <div className="widget-subheading">{this.state.modele}</div>
                                                         </div>
-                                                       
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -1080,7 +1310,7 @@ class FiltreVehicules extends Component {
                             <div className="col-md-4">
                                 <div className="pt-0 pb-0 card-body">
                                     <ul className="list-group list-group-flush">
-                                     
+
                                  {this.state.date_entree_au_parc1 && this.state.date_entree_au_parc2 ? <li className="list-group-item">
                                             <div className="widget-content p-0">
                                                 <div className="widget-content-outer">
@@ -1089,7 +1319,7 @@ class FiltreVehicules extends Component {
                                                             <div className="widget-heading">Date d'entré au parc</div>
                                         <div className="widget-subheading">du {moment(this.state.date_entree_au_parc1).format('DD/MM/YYYY')} au {moment(this.state.date_entree_au_parc2).format('DD/MM/YYYY')}</div>
                                                         </div>
-                                                      
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -1103,7 +1333,7 @@ class FiltreVehicules extends Component {
                                                             <div className="widget-heading">Type de véhicule</div>
                                                             <div className="widget-subheading">{this.state.type_vehicule_statut}</div>
                                                         </div>
-                                                       
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -1117,7 +1347,7 @@ class FiltreVehicules extends Component {
                                                             <div className="widget-heading">Assureur</div>
                                                             <div className="widget-subheading">{this.state.assureur.code}</div>
                                                         </div>
-                                                       
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -1145,10 +1375,10 @@ class FiltreVehicules extends Component {
                                                         <div className="widget-content-left">
                                                             <div className="widget-heading">Nbre de véhicule</div>
                                                             <span className="text-success" style={{fontSize: '1.4em'}}>
-                                                            {this.state.vehicules_visibles_actuelement.length} 
+                                                            {this.state.vehicules_visibles_actuelement.length}
                                                             </span>
                                                         </div>
-                                                       
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -1163,7 +1393,7 @@ class FiltreVehicules extends Component {
                                                                 {formatageSomme( calculSommeColonneCoutTotalFranchise(this.state.vehicules_visibles_actuelement) )}
                                                                 </span>
                                                         </div>
-                                                      
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -1182,9 +1412,9 @@ class FiltreVehicules extends Component {
                                                             <div className="widget-heading">Kilometrage</div>
                                                             <span className="text-success" style={{fontSize: '1.4em'}}>
                                                             {formatageNombre( calculSommeColonneKilometrageVehicule(this.state.vehicules_visibles_actuelement)  )}
-                                                            </span>                                                       
+                                                            </span>
                                                              </div>
-                                                      
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -1199,7 +1429,7 @@ class FiltreVehicules extends Component {
                                                                 {formatageSomme( calculSommeColonneCoutLeasing(this.state.vehicules_visibles_actuelement) )}
                                                                 </span>
                                                         </div>
-                                                     
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -1220,7 +1450,7 @@ class FiltreVehicules extends Component {
                                                                 {formatageSomme( calculSommeColonneCoutAchat(this.state.vehicules_visibles_actuelement) )}
                                                                 </span>
                                                         </div>
-                                                     
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -1235,7 +1465,7 @@ class FiltreVehicules extends Component {
                                                                 250.9856.158.025 F CFA
                                                                 </span>
                                                         </div>
-                                                      
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -1271,10 +1501,17 @@ const mapStateToProps = state => {
         plan_organisationnels: state.plan_organisationnels.items,
         plan_geographiques: state.plan_geographiques.items,
         structure_geographiques: state.structure_geographiques.items,
-        structure_organisationnelles: state.structure_organisationnelles.items
+        structure_organisationnelles: state.structure_organisationnelles.items,
+        structure_vehicules: state.structure_vehicules.items,
+        plan_vehicules: state.plan_vehicules.items
+
+
 
     }
 }
 
 export default connect(mapStateToProps)(FiltreVehicules)
+
+
+
 

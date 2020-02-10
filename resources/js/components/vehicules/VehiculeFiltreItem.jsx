@@ -12,7 +12,7 @@ import { formatageSomme, formatageNombre } from '../../utils/Repository';
             isSelect: false,
             selectIndex: 0
         }
-        
+
     }
 
     onSelect = () => {
@@ -23,28 +23,28 @@ import { formatageSomme, formatageNombre } from '../../utils/Repository';
 
 
 
-   
+
     render() {
 
         const {item, index} = this.props
 
         return (
-            
-             <tr > 
+
+             <tr >
             <td className="sticky-col first-col" >{item.immatriculation || ''}</td>
-   
+
             <td className="sticky-col second-col" >{item.entite_comptable ? item.entite_comptable.nom_entite : ''}</td>
             <td className="sticky-col third-col" >{item.type_vehicule_statut || ''}</td>
             <td className="sticky-col thour-col" >{item.mode_acquisition == "0" ? 'Achat' : item.mode_acquisition == "1" ? 'Leasing' : 'Prêt'}</td>
-            <td >{item.marque ? item.marque.nom_marque : ''}</td>
-            <td >{item.modele || ''}</td>
-            <td >{item.tech_couleur || ''}</td>
+            <td >{item.plan_vehicule ? item.plan_vehicule.libelle : ''}</td>
+{/*             <td >{item.modele || ''}</td>
+ */}            <td >{item.tech_couleur || ''}</td>
             <td >{item.detenteur ? item.detenteur.prenom ? `${ item.detenteur.nom} ${ item.detenteur.prenom.slice(0, 10)}` : `${ item.detenteur.nom} ` : ''}</td>
             <td >{item.chauffeur_atitre ? item.chauffeur_atitre.prenom ? `${ item.chauffeur_atitre.nom} ${ item.chauffeur_atitre.prenom.slice(0, 10)}` : `${ item.detenteur.nom} ` : ''}</td>
 
-           
-            <td >{item.categorie.nom_type || ''}</td>
-            <td >{item.date_entree_au_parc ? moment(item.date_entree_au_parc).format('DD/MM/YYYY') : ''}</td>
+
+{/*             <td >{item.categorie ? item.categorie.nom_type : ''}</td>
+ */}            <td >{item.date_entree_au_parc ? moment(item.date_entree_au_parc).format('DD/MM/YYYY') : ''}</td>
 
             <td >{item.numero_carte_grise || ''}</td>
             <td >{item.kilometrage_acquisition ? formatageNombre(item.kilometrage_acquisition) : 0}</td>
@@ -63,10 +63,10 @@ import { formatageSomme, formatageNombre } from '../../utils/Repository';
                 <span className="pull-right">
                     <button disabled  className=" pull-right">
                 </button>
-              
+
                 </span>
         </td>
-            
+
 
 
         </tr>

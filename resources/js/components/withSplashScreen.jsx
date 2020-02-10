@@ -16,11 +16,11 @@ const ProgressBar = (props) => {
         </div>
       )
   }
-  
+
   const Filler = (props) => {
     return <div className="filler"
   style={{ width: `${props.percentage}%` }} >
-       <p style={{textAlign: 'center', fontSize: '0.2em'}}>{props.percentage == 100 ? 'Chargement terminé' : `${props.percentage} %`}</p> 
+       <p style={{textAlign: 'center', fontSize: '0.2em'}}>{props.percentage == 100 ? 'Chargement terminé' : `${props.percentage} %`}</p>
        </div>
   }
 
@@ -39,113 +39,113 @@ function withSplashScreen(WrappedComponent) {
     }
 
     fetchTheme(){
-       // queue.push(() => 
+       // queue.push(() =>
         axios.get('/api/theme_defaut').then((response) => {
-            
+
             const action = {type: "GET_THEME", value: response.data}
             this.props.dispatch(action)
         })
-        
-        //);
-    } 
 
-  
+        //);
+    }
+
+
 
     fetchInfoSociete(){
-       // queue.push(() => 
+       // queue.push(() =>
         axios.get('/api/infos_societe').then((response) => {
-            
+
             const action = {type: "GET_INFO_SOCIETE", value: response.data}
             this.props.dispatch(action)
         })
         //);
-    } 
+    }
 
     fetchInfoParamGenerauxReservationOrdre(){
-       // queue.push(() => 
+       // queue.push(() =>
         axios.get('/api/parametre_generaux_reservation_ordre').then((response) => {
-            
+
             const action = {type: "GET_PARAM_GENERAUX_RESERV", value: response.data}
             this.props.dispatch(action)
         })
         //);
-    } 
+    }
 
     fetchStructureGeographiques(){
-       // queue.push(() => 
+       // queue.push(() =>
         axios.get('/api/structure_geographiques').then((response) => {
-            
+
             const action = {type: "GET_STRUCTURE_GEOGRAPHIQUE", value: response.data}
             this.props.dispatch(action)
         })
         //);
-    } 
+    }
 
     fetchStructureorganisationnelles(){
-        //queue.push(() => 
+        //queue.push(() =>
         axios.get('/api/structure_organisationelles').then((response) => {
-            
+
             const action = {type: "GET_STRUCTURE_ORGANISATIONNELLE", value: response.data}
             this.props.dispatch(action)
         })
         //);
-    } 
+    }
 
 
     fetchPlanGeographiques(){
-       // queue.push(() => 
+       // queue.push(() =>
         axios.get('/api/plan_geographiques').then((response) => {
-            
+
             const action = {type: "GET_PLAN_GEOGRAPHIQUE", value: response.data}
             this.props.dispatch(action)
         })
         //);
-    } 
+    }
 
     fetchPlanOrganisationnelles(){
-       // queue.push(() => 
+       // queue.push(() =>
         axios.get('/api/plan_organisationelles').then((response) => {
-            
+
             const action = {type: "GET_PLAN_ORGANISATIONNEL", value: response.data}
             this.props.dispatch(action)
         })
         //);
-    } 
+    }
 
     fetchInfoAlerte(){
         //queue.push(() =>
          axios.get('/api/alertes').then((response) => {
-            
+
             const action = {type: "GET_PARAM_GENERAUX_ALERTE", value: response.data}
             this.props.dispatch(action)
         })
         //);
-    } 
-    
+    }
+
     fetchInfoParamGenerauxModules(){
        // queue.push(() =>
         axios.get('/api/parametre_modules').then((response) => {
-            
+
             const action = {type: "GET_PARAM_MODULE", value: response.data}
             this.props.dispatch(action)
         })
         //);
-    } 
+    }
 
     fetchInfoParamGenerauxPersonnels(){
        // queue.push(() =>
          axios.get('/api/parametre_personnels').then((response) => {
-            
+
             const action = {type: "GET_PARAM_PERSONNEL", value: response.data}
             this.props.dispatch(action)
         })
         //);
-    } 
+    }
 
     fetchInfoParamGenerauxJournal(){
-        //queue.push(() => 
+        //queue.push(() =>
         axios.get('/api/parametre_journal').then((response) => {
-            
+
             const action = {type: "GET_PARAM_JOURNAL", value: response.data}
             this.props.dispatch(action)
         })
@@ -153,28 +153,28 @@ function withSplashScreen(WrappedComponent) {
     }
 
     fetchInfoParamGenerauxStock(){
-       // queue.push(() => 
+       // queue.push(() =>
         axios.get('/api/parametre_stocks').then((response) => {
-            
+
             const action = {type: "GET_PARAM_STOCK", value: response.data}
             this.props.dispatch(action)
         })
         //);
-    } 
+    }
 
     fetchStructures(){
-       // queue.push(() => 
+       // queue.push(() =>
         axios.get('/api/structures_etablissements').then((response) => {
-            
+
             const action = {type: "GET_STRUCTURE_ETABLISSEMENT", value: response.data}
             this.props.dispatch(action)
         })
         //);
-    } 
+    }
     fetchTypeEntites(){
-       // queue.push(() => 
+       // queue.push(() =>
         axios.get('/api/types_entites').then((response) => {
-            
+
             const action = {type: "GET_TYPE_ENTITE", value: response.data}
             this.props.dispatch(action)
         })
@@ -184,7 +184,7 @@ function withSplashScreen(WrappedComponent) {
     fetchModeleVehicules(){
        // queue.push(() =>
          axios.get('/api/modeles_vehicules').then((response) => {
-            // The eventual response of Twitter	
+            // The eventual response of Twitter
             const action = {type: "GET_MODELE_VEHICULE", value: response.data}
             this.props.dispatch(action)
         })
@@ -192,13 +192,13 @@ function withSplashScreen(WrappedComponent) {
     }
 
     fetchUtilisateurs(){
-        //queue.push(() => { 
+        //queue.push(() => {
 
             axios.get('/api/users').then((response) => {
             // .
             const action = {type: "GET_UTILISATEUR", value: response.data}
             this.props.dispatch(action)
-        }) 
+        })
    // });
     }
 
@@ -210,26 +210,26 @@ function withSplashScreen(WrappedComponent) {
             this.props.dispatch(action)
         })
         //);
-    }  
+    }
     fetchPersonnels(){
-       // queue.push(() => 
+       // queue.push(() =>
         axios.get('/api/personnels').then((response) => {
             // .
             const action = {type: "GET_PERSONNEL", value: response.data}
             this.props.dispatch(action)
         })
         //);
-    } 
+    }
     fetchEntites(){
-       // queue.push(() => 
+       // queue.push(() =>
         axios.get('/api/entites').then((response) => {
             // .
             const action = {type: "GET_ENTITE", value: response.data}
             this.props.dispatch(action)
         })
         //);
-    } 
-   
+    }
+
     fetchMarques(){
        // queue.push(() =>
          axios.get('/api/marques').then((response) => {
@@ -258,9 +258,9 @@ function withSplashScreen(WrappedComponent) {
         })
         //);
     }
-    
+
     fetchCodeIncidents(){
-        //queue.push(() => 
+        //queue.push(() =>
         axios.get('/api/code_incidents').then((response) => {
             // .
             const action = {type: "GET_CODE_INCIDENT", value: response.data}
@@ -270,7 +270,7 @@ function withSplashScreen(WrappedComponent) {
     }
 
     fetchNatureEnergies(){
-       // queue.push(() => 
+       // queue.push(() =>
         axios.get('/api/nature_energies').then((response) => {
             // .
             const action = {type: "GET_NATURE_ENERGIE", value: response.data}
@@ -289,7 +289,7 @@ function withSplashScreen(WrappedComponent) {
         //);
     }
 
-       
+
     fetchNatureConsommations(){
         //queue.push(() =>
          axios.get('/api/nature_consommations').then((response) => {
@@ -311,7 +311,7 @@ function withSplashScreen(WrappedComponent) {
     }
 
     fetchOperationInterventions(){
-       // queue.push(() => 
+       // queue.push(() =>
         axios.get('/api/operation_intervention').then((response) => {
             // .
             const action = {type: "GET_OPERATION_INTERVENTION", value: response.data}
@@ -331,7 +331,7 @@ function withSplashScreen(WrappedComponent) {
     }
 
     fetchNatureSinistres(){
-       // queue.push(() => 
+       // queue.push(() =>
         axios.get('/api/nature_sinistres').then((response) => {
             // .
             const action = {type: "GET_NATURE_SINISTRE", value: response.data}
@@ -429,7 +429,7 @@ function withSplashScreen(WrappedComponent) {
         })
         //);
     }
-    
+
 
     fetchContratAssurances(){
        // queue.push(() =>
@@ -492,7 +492,7 @@ function withSplashScreen(WrappedComponent) {
     }
 
     fetchAmendes(){
-      //  queue.push(() => 
+      //  queue.push(() =>
         axios.get('/api/amendes').then((response) => {
             // .
             const action = {type: "GET_AMENDE", value: response.data}
@@ -531,6 +531,28 @@ function withSplashScreen(WrappedComponent) {
         //);
     }
 
+    fetchStructureVehicules(){
+        // queue.push(() =>
+          axios.get('/api/structure_vehicules').then((response) => {
+             // .
+             const action = {type: "GET_STRUCTURE_VEHICULE", value: response.data}
+             this.props.dispatch(action)
+         }
+         )
+        // );
+     }
+
+     fetchPlanVehicules(){
+        // queue.push(() =>
+          axios.get('/api/plan_vehicules').then((response) => {
+             // .
+             const action = {type: "GET_PLAN_VEHICULE", value: response.data}
+             this.props.dispatch(action)
+         }
+         )
+        // );
+     }
+
     fetchVehicules(){
        // queue.push(() =>
          axios.get('/api/vehicules').then((response) => {
@@ -555,7 +577,7 @@ function withSplashScreen(WrappedComponent) {
 
       enregistrerStructureSiVide = async () => {
         if(!this.props.structures_etablissements.length){
-            await axios.post('/api/ajouter_structure_etablissement_si_vide', 
+            await axios.post('/api/ajouter_structure_etablissement_si_vide',
             {
                 code_regroupement: 'SIEGE',
                 nom_regroupement: 'SIEGE ETABLISSEMENT'
@@ -563,17 +585,17 @@ function withSplashScreen(WrappedComponent) {
          ).then(response => {
               const action = {type: "ADD_STRUCTURE_ETABLISSEMENT", value: response.data}
               this.props.dispatch(action)
-        
+
          })
           .catch(error => {
              console.log(error)
           } );
         }
-      
+
     }
 
     enregistrerPersonnelSiVide = () => {
-         
+
            if(!this.props.personnels.length){
             axios.post('/api/ajouter_personnel_si_vide', {
                 nom: 'PERSONNE PAR DEFAUT',
@@ -582,7 +604,7 @@ function withSplashScreen(WrappedComponent) {
               //  entite_affectation: this.entite_affectation.value,
                // nom_entite_affectation: this.nom_entite_affectation.value,
             }).then(response => {
-                
+
                const action = {type: "ADD_PERSONNEL", value: response.data}
                this.props.dispatch(action)
             }).catch(error => {
@@ -599,41 +621,41 @@ function withSplashScreen(WrappedComponent) {
                 const action = {type: "ADD_TYPE_ENTITE", value: response.data}
                 this.props.dispatch(action)
             }).catch(error => console.log(error))
-    
+
         }
 
-    } 
+    }
 
     async ajouterFournisseursiVide(){
 
         if(!this.props.tiers.length){
-        
+
               axios.post('/api/ajouter_tier_si_vide', {
                   code: 'FOURNISSEUR PAR DEFAUT',
-                
+
               })
               .then(response => {
                  const action = {type: "ADD_TIER", value: response.data}
                    this.props.dispatch(action)
-            
-               
+
+
               }).catch(error => {
                    console.log(error) } )
-             
+
         }
 
-    } 
+    }
 
 
     componentDidMount(){
-     
+
 
        this.timerID = setTimeout(
         () => this.tick(),
         10000
       );
 
-      axios.all([this.fetchTheme(), this.fetchInfoSociete(), 
+      axios.all([this.fetchTheme(), this.fetchInfoSociete(),
         this.fetchInfoParamGenerauxReservationOrdre(), this.fetchUtilisateurs(),
         this.fetchInfoAlerte(), this.fetchInfoParamGenerauxModules(),
         this.fetchCategories_vehicules(), this.fetchMarques(),
@@ -649,7 +671,7 @@ function withSplashScreen(WrappedComponent) {
         this.fetchBudgetEntites(),this.fetchInterventions(),this.fetchConsommations(),this.fetchModeleVehicules(),
         this.fetchAnneesBudgetaires(),this.fetchArticlesStock(),this.fetchEntreesStock(),this.fetchSortiesStock(),
         this.fetchStructureGeographiques(),this.fetchStructureorganisationnelles(),this.fetchPlanGeographiques(),
-        this.fetchPlanOrganisationnelles(),this.fetchVehicules()
+         this.fetchPlanOrganisationnelles(), this.fetchPlanVehicules(), this.fetchStructureVehicules(), this.fetchVehicules()
     ])
        /*  this.fetchTheme();
          this.fetchInfoSociete();
@@ -658,25 +680,25 @@ function withSplashScreen(WrappedComponent) {
 
          this.fetchInfoAlerte();
          this.fetchInfoParamGenerauxModules();
-       
+
          this.fetchCategories_vehicules();
          this.fetchMarques()
          this.fetchEntites();
          this.fetchPersonnels();
          this.fetchTiers();
          this.fetchContratAssurances();
-        
+
          this.fetchNatureInterventions();
          this.fetchOperationInterventions();
          this.fetchNatureConsommations();
          this.fetchReservation();
-        
+
 
          this.fetchNatureDepenseRecettes();
          this.fetchNatureReservations();
          this.fetchFamillePiecesdetachees();
          this.fetchCoutConsommables();
-       
+
 
 
 
@@ -725,10 +747,10 @@ function withSplashScreen(WrappedComponent) {
 
 
 
- 
+
      }
 
-     
+
 
      LoadingMessage() {
         return (
@@ -738,12 +760,12 @@ function withSplashScreen(WrappedComponent) {
           // </div>
               <React.Fragment>
                     <div className="splash">
-                     
+
                          <img src="/assets/images/theme.png" width="100%" />
-                    
-                    
+
+
                       </div>
-           
+
                   {this.state.isErreurShow ? <div className="splash-screen" style={{position: 'absolute', marginBottom: '-150px'}}>
                        <div className="loading-dot" ><p style={{color: 'red'}}>Erreur de programme, veuillez recharger la page.</p></div>
                   </div> : null}
@@ -783,7 +805,7 @@ const mapStateToProps = state => {
         structures_etablissements: state.structures_etablissements.items,
         tiers: state.tiers.items,
         types_entites: state.types_entites.items
- 
+
     }
   }
 

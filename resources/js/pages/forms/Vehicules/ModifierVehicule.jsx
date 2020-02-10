@@ -30,7 +30,7 @@ const formatOptionTiers = data => (
 
 // const date = new Date();
 
-//  const today = date.getFullYear().toString() + '-' + (date.getMonth() + 1).toString().padStart(2, 0) + 
+//  const today = date.getFullYear().toString() + '-' + (date.getMonth() + 1).toString().padStart(2, 0) +
 //     '-' + date.getDate().toString().padStart(2, 0);
 
 
@@ -44,7 +44,7 @@ class ModifierVehicule extends Component {
     }
 
     setFieldSelect(name, value) {
-   
+
         let obj = {};
         obj[name] = value;
         this.setState(obj);
@@ -74,7 +74,7 @@ class ModifierVehicule extends Component {
     } );
     }
 
-  
+
 
     getValueQuantite(){
       //  const {objetEdit} = this.state
@@ -117,15 +117,13 @@ class ModifierVehicule extends Component {
             return "L'affectation organisationnelle est obligatoire"
         } else if (this.state.affectation_geographique_id == undefined && !objetEdit.affectation_geographique_id) {
             return "L'affectation géographique est obligatoire"
-        } else if (this.state.categorie == undefined && !objetEdit.categorie) {
-            return "La catégorie est obligatoire"
-        } else if (this.state.marque == undefined && !objetEdit.marque) {
-            return "La marque est obligatoire"
+        }  else if (this.state.plan_vehicule_id == undefined && !objetEdit.plan_vehicule_id) {
+            return `Vous n'avez pas sélectionné de ${this.getStructureVehiculeDernierNiveau().libelle}`
         }  else if (this.state.tiers == undefined && !objetEdit.tiers) {
             return "Le Tiers d'acquisition n'a pas été défini dans l'onglet Acquisition !"
         }else if (this.state.contrat_assurance_id == undefined && this.props.contrat_assurances.length) {
             if(!this.props.contrat_assurances.find(contrat => contrat.defaut)) return "Le Véhicule doit être lié à contrat d'assurance"
-            
+
         } else if (this.date_entree_au_parc.value == '' ) {
             return "La date d'entrée au parc est obligatoire"
         }
@@ -174,14 +172,15 @@ class ModifierVehicule extends Component {
             date_entree_au_parc: this.date_entree_au_parc.value,
             annee_mise_circulation: this.annee_mise_circulation.value,
             premiere_mise_circulation: this.premiere_mise_circulation.value,
-            categorie: this.state.categorie ? this.state.categorie.id : objetEdit.categorie ? objetEdit.categorie.id : null,
-            marque: this.state.marque ? this.state.marque.id : objetEdit.marque ? objetEdit.marque.id : null,
+            //categorie: this.state.categorie ? this.state.categorie.id : objetEdit.categorie ? objetEdit.categorie.id : null,
+          //  marque: this.state.marque ? this.state.marque.id : objetEdit.marque ? objetEdit.marque.id : null,
             tiers: this.state.tiers ? this.state.tiers.id : objetEdit.tiers ? objetEdit.tiers.id : null,
             detenteur: this.state.detenteur ? this.state.detenteur.id : objetEdit.detenteur ? objetEdit.detenteur.id : null,
             chauffeur_atitre: this.state.chauffeur_atitre ? this.state.chauffeur_atitre.id : objetEdit.chauffeur_atitre ? objetEdit.chauffeur_atitre.id : null,
+            plan_vehicule_id: this.state.plan_vehicule_id ? this.state.plan_vehicule_id.id : objetEdit.plan_vehicule_id ? objetEdit.plan_vehicule_id : null,
 
             precision_energie: this.precision_energie.value,
-            modele: this.modele.value,
+          // modele: this.modele.value,
            // code_modele: this.code_modele.value,
             energie: this.state.energie ? this.state.energie.id : objetEdit.energie ? objetEdit.energie.id : null,
             type_vehicule_carte_grise: this.type_vehicule_carte_grise.value,
@@ -233,7 +232,7 @@ class ModifierVehicule extends Component {
             mode_acquisition_type_vehicule: this.mode_acquisition_type_vehicule.value,
             /**
              * partie acquisition
-             * 
+             *
              */
             // acquisition prêt
             acquisition_pret_date_debut: this.mode_acquisition && this.mode_acquisition.value == '2' ? this.acquisition_pret_date_debut.value : null,
@@ -265,7 +264,7 @@ class ModifierVehicule extends Component {
              */
 
             /**
-             *  Assurance 
+             *  Assurance
              */
             assurance_valeur_assuree_contrat: this.assurance_valeur_assuree_contrat.value,
             assurance_valeur_assuree_specifique: this.assurance_valeur_assuree_specifique.value,
@@ -291,7 +290,7 @@ class ModifierVehicule extends Component {
     }
 
     confirmAlertBefore(){
-        let message 
+        let message
         if (this.mode_acquisition.value == '0' && this.acquisition_achat_prix_ttc.value == '' ) {
             message = "Vous N'avez pas renseigné le montant T T C de l'achat"
            // if(confirm(message)) return this.sendData()
@@ -318,7 +317,7 @@ class ModifierVehicule extends Component {
     enregistrerVehicule = (e) => {
         e.preventDefault()
         if (this.verificationFormulaire() == null) {
-         
+
          this.confirmAlertBefore();
          //this.sendData()
         } else {
@@ -329,18 +328,47 @@ class ModifierVehicule extends Component {
         }
     }
 
+
+    getNiveauxPlanVehicules = () => {
+        const events = [];
+        this.props.structure_vehicules.map(event => {
+            if(!event.niveau) return;
+            return events.push(event.niveau)
+        })
+
+        return events
+    }
+
+    getMaximumNiveauPlanVehicule = () => {
+        var niveau = Math.max(...this.getNiveauxPlanVehicules())
+        if (niveau == 0) return 1;
+        return Number(niveau );
+
+    }
+
+    getStructureVehiculeDernierNiveau = () => {
+        if(!this.getPlanVehiculesDerniersNiveau().length) return undefined;
+        else{
+            return this.props.structure_vehicules.find(st => st.niveau == this.getPlanVehiculesDerniersNiveau()[0].structure_vehicule.niveau)
+        }
+    }
+
+    getPlanVehiculesDerniersNiveau = () => {
+        return this.props.plan_vehicules.filter(elm => elm.structure_vehicule ? elm.structure_vehicule.niveau == this.getMaximumNiveauPlanVehicule() : false)
+    }
+
     getNiveauxPlanGeographiques = () => {
         const events = [];
         this.props.structure_geographiques.map(event => {
             if(!event.niveau) return;
             return events.push(event.niveau)
         })
-        
+
         return events
     }
 
     getMaximumNiveauPlanGeographique = () => {
-        var niveau = Math.max(...this.getNiveauxPlanGeographiques()) 
+        var niveau = Math.max(...this.getNiveauxPlanGeographiques())
         if (niveau == 0) return 1;
         return Number(niveau );
 
@@ -354,7 +382,7 @@ class ModifierVehicule extends Component {
     }
 
     getPlanGeographiquesDerniersNiveau = () => {
-        return this.props.plan_geographiques.filter(elm => elm.structure_geographique ? elm.structure_geographique.niveau == this.getMaximumNiveauPlanGeographique() : false) 
+        return this.props.plan_geographiques.filter(elm => elm.structure_geographique ? elm.structure_geographique.niveau == this.getMaximumNiveauPlanGeographique() : false)
     }
 
     getNiveauxPlanOrga = () => {
@@ -363,12 +391,12 @@ class ModifierVehicule extends Component {
             if(!event.niveau) return;
             return events.push(event.niveau)
         })
-        
+
         return events
     }
 
     getMaximumNiveauPlanOrga = () => {
-        var niveau = Math.max(...this.getNiveauxPlanOrga(), 0) 
+        var niveau = Math.max(...this.getNiveauxPlanOrga(), 0)
         if (niveau == 0) return 1;
         return Number(niveau );
 
@@ -466,7 +494,7 @@ class ModifierVehicule extends Component {
                             </div>
                             {this.getStructureGeographiqueDernierNiveau() ?
                             <div className="col-md-5">
-                                <label className="">{this.getStructureGeographiqueDernierNiveau().libelle} d'affectation *</label>
+                                <label className="">{this.getStructureGeographiqueDernierNiveau().libelle}  </label>
 
 
                                 <Select
@@ -527,9 +555,38 @@ class ModifierVehicule extends Component {
 
                         </div>
 
-                                   
+
 
                                     <div className="form-row">
+
+                                    {this.getStructureVehiculeDernierNiveau() ?
+                                        <div className="col-md-4">
+                                            <label className="">{this.getStructureVehiculeDernierNiveau().libelle} </label>
+
+
+                                            <Select
+                                                name="plan_vehicule_id"
+                                                isDisabled={!this.getStructureVehiculeDernierNiveau()}
+                                                placeholder={`Sélection de ${this.getStructureVehiculeDernierNiveau().libelle}`}
+                                                noOptionsMessage={() => `Pas de ${this.getStructureVehiculeDernierNiveau().libelle} pour l'instant`}
+                                                options={this.getPlanVehiculesDerniersNiveau()}
+                                                getOptionLabel={option => option.libelle}
+                                                getOptionValue={option => option.id}
+                                                defaultValue={objetEdit.plan_vehicule ? objetEdit.plan_vehicule : null}
+                                                // formatOptionLabel={formatOptionVehicule}
+                                                onChange={this.setFieldSelect.bind(this, "plan_vehicule_id")}
+                                                styles={colourStyles}
+                                            />
+
+                                        </div> :
+
+
+                                        <div className="col-md-4">
+                                            <label className=""> Catégorie véhicule</label>
+
+                                            <input readOnly className="form-control" value="Veuillez creer la structure véhicule" />
+
+                                        </div>}
 
 
 
@@ -713,19 +770,8 @@ class ModifierVehicule extends Component {
 
                                     </div>
 
-                                    <div className="form-row">
-                                    {/* 
-                                        <div className="col-md-3">
-                                            <div className="position-relative form-group">
-                                                <label >Code modèle *</label>
-                                                <input name="code_modele"
-                                                    defaultValue={objetEdit.code_modele}
+                                 {/*    <div className="form-row">
 
-                                                    ref={code_modele => this.code_modele = code_modele}
-                                                    type="text"
-
-                                                    className="form-control" /></div>
-                                        </div> */}
 
                                         <div className="col-md-3">
                                             <div className="position-relative form-group">
@@ -783,7 +829,7 @@ class ModifierVehicule extends Component {
 
 
 
-                                    </div>
+                                    </div> */}
 
                                     <div className="form-row">
 
@@ -809,7 +855,7 @@ class ModifierVehicule extends Component {
                                             />
                                         </div>
 
-                                     
+
 
                                         <div className="col-md-3">
                                             <label className="">Chauffeur attitré</label>
@@ -1431,7 +1477,7 @@ class ModifierVehicule extends Component {
                                         <div className="col-md-2">
                                             <div className="position-relative form-group">
                                                 <label >Kilometrage actuel</label>
-                                                
+
                                                     </div>
                                         </div>
 
@@ -1444,9 +1490,9 @@ class ModifierVehicule extends Component {
                                                     type="number" className="form-control" /></div>
                                         </div>
 
-                                     
 
-                                      
+
+
 
                                     </div>
 
@@ -1464,7 +1510,7 @@ class ModifierVehicule extends Component {
                         {/*  acquisition */}
 
                         <div className="tab-pane tabs-animation fade" id="tab_acquisition" role="tabpanel">
-                            
+
                         <div className="main-card mb-3 card">
                                 <div className="card-body">
                                     <div className="form-row">
@@ -1513,7 +1559,7 @@ class ModifierVehicule extends Component {
 
 
 
-                                 {!this.state.mode_acquisition ? 
+                                 {!this.state.mode_acquisition ?
                                     <React.Fragment>
                                            {objetEdit.mode_acquisition == '0' ?
                                         <div className="form-row">
@@ -1591,7 +1637,7 @@ class ModifierVehicule extends Component {
                                         </div> : null
                                     }
 
-                                    {objetEdit.mode_acquisition == '1'  ? 
+                                    {objetEdit.mode_acquisition == '1'  ?
                                         <div className="form-row">
 
                                             <div className="col-md-2">
@@ -1728,7 +1774,7 @@ class ModifierVehicule extends Component {
 
                                         </div> : null
                                     }
-                                    </React.Fragment> : 
+                                    </React.Fragment> :
 
                                     <React.Fragment>
                                            {this.state.mode_acquisition == '0' ?
@@ -1807,7 +1853,7 @@ class ModifierVehicule extends Component {
                                         </div> : null
                                     }
 
-                                    {this.state.mode_acquisition == '1'  ? 
+                                    {this.state.mode_acquisition == '1'  ?
                                         <div className="form-row">
 
                                             <div className="col-md-2">
@@ -1988,7 +2034,7 @@ class ModifierVehicule extends Component {
                                                         getOptionValue={option => option.id}
                                                         defaultValue={objetEdit.contrat_assurance ? objetEdit.contrat_assurance : this.props.contrat_assurances.find(contrat => contrat.defaut) ? this.props.contrat_assurances.find(contrat => contrat.defaut) : null  }
                                                         styles={colourStyles}
-                                                        
+
                                                         // formatOptionLabel={formatOptionVehicule}
                                                         onChange={this.setFieldSelect.bind(this, "contrat_assurance_id")}
                                                     /> : <input name="contrat_ass"
@@ -2091,7 +2137,7 @@ class ModifierVehicule extends Component {
 
                                 <div className="main-card mb-3 card">
                                     <div className="card-body">
-                                    
+
 
                                         <div className="form-row">
 
@@ -2102,12 +2148,12 @@ class ModifierVehicule extends Component {
                                             {this.state.file != null ?   <div className="col-md-2">
                                             <span className="mt-2 btn btn-danger" onClick={() => this.setState({
                                                 file: null
-                                            })}> 
+                                            })}>
                                                 Annuler
-                                            </span> 
+                                            </span>
                                         </div> : null}
 
-                                    
+
                                         </div>
 
 
@@ -2139,13 +2185,13 @@ class ModifierVehicule extends Component {
                 </form>
 
                 <ToastContainer autoClose={4000} />
-               
+
 
                 </React.Fragment> :
                 <span style={{textAlign: 'center'}}>
 
                     <Loader
-                    
+
                         height={100}
                         width={100}
                     />
@@ -2169,7 +2215,9 @@ const mapStateToProps = state => {
         plan_organisationnels: state.plan_organisationnels.items,
         plan_geographiques: state.plan_geographiques.items,
         structure_geographiques: state.structure_geographiques.items,
-        structure_organisationnelles: state.structure_organisationnelles.items
+        structure_organisationnelles: state.structure_organisationnelles.items,
+        structure_vehicules: state.structure_vehicules.items,
+        plan_vehicules: state.plan_vehicules.items
 
     }
 }
