@@ -39,7 +39,8 @@ class ModifierVehicule extends Component {
         super(props);
         this.state = {
             isFormSubmitted: false,
-            file: null
+            file: null,
+            previewFile: null
         }
     }
 
@@ -99,7 +100,9 @@ class ModifierVehicule extends Component {
 
     handleFile = () => {
         this.setState({
-            file: URL.createObjectURL(event.target.files[0])
+            previewFile: URL.createObjectURL(event.target.files[0]),
+           file: event.target.files[0]
+
           })
     }
 
@@ -134,16 +137,18 @@ class ModifierVehicule extends Component {
     }
 
     photoUpload(vehicule_id){
-        const formData = new FormData();
-        formData.append('photo',this.state.file)
+        var formData = new FormData();
+        formData.append("photo", this.state.file)
+       // var options = { photo: formData };
         var url = '/api/modifier_photo_vehicule/' + vehicule_id
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
             }
         }
+        console.log(formData);
 
-        axios.post(url, formData, config).then(response => {
+         axios.post(url, formData, config).then(response => {
             const action5 = { type: "EDIT_VEHICULE", value: response.data }
             this.props.dispatch(action5)
         })
@@ -2147,7 +2152,8 @@ class ModifierVehicule extends Component {
 
                                             {this.state.file != null ?   <div className="col-md-2">
                                             <span className="mt-2 btn btn-danger" onClick={() => this.setState({
-                                                file: null
+                                                file: null,
+                                                previewFile: null
                                             })}>
                                                 Annuler
                                             </span>
@@ -2160,7 +2166,7 @@ class ModifierVehicule extends Component {
                                     </div>
                                 </div>
                                 <div className="main-card mb-3 card">
-                                <img src={this.state.file == null ? `/uploads/vehicules_photos/${objetEdit.photo}` : this.state.file}/>
+                                     <img style={{ objectFit: 'contain'}} src={this.state.file == null ? `/uploads/vehicules_photos/${objetEdit.photo}` : this.state.previewFile}/>
                                 </div>
 
 

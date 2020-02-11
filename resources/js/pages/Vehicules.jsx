@@ -122,12 +122,10 @@ class Vehicules extends Component {
                     <th className="sticky-col third-col">Type</th>
                     <th className="sticky-col thour-col">Acquisition</th>
                     <th>Modéle</th>
-{/*                     <th>Modèle</th>
- */}                    <th>Couleur</th>
+                    <th>Couleur</th>
                     <th>Détenteur</th>
                     <th>Chauffeur</th>
-{/*                     <th>Catégorie</th>
- */}                    <th>Acquis le</th>
+                   <th>Acquis le</th>
                     <th>N° de carte grise</th>
                     <th>Kms compteur</th>
                     <th>Nb CV</th>

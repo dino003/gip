@@ -105,6 +105,7 @@ class VehiculeController extends Controller
         if($request->hasFile('photo')){
             $vehicule = Vehicule::find($id);
             $avatar = $request->file('photo');
+           // dd($avatar);
             $filename = time() . '.' . $avatar->getClientOriginalExtension();
 
             Image::make($avatar)->resize(300, 300)->save(public_path('/uploads/vehicules_photos/' . $filename ));

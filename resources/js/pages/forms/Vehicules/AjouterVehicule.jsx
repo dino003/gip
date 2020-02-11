@@ -18,13 +18,15 @@ class AjouterVehicule extends Component {
         this.state = {
             isFormSubmitted: false,
             mode_acquisition: '0',
-            file: '/uploads/vehicules_photos/default.jpg'
+            previewFile: '/uploads/vehicules_photos/default.jpg',
+            file: null
         }
     }
 
     handleFile = () => {
         this.setState({
-            file: URL.createObjectURL(event.target.files[0])
+            previewFile: URL.createObjectURL(event.target.files[0]),
+            file: event.target.files[0]
           })
     }
 
@@ -119,6 +121,7 @@ class AjouterVehicule extends Component {
                 'content-type': 'multipart/form-data'
             }
         }
+      // console.log(formData)
 
         axios.post(url, formData, config).then(response => {
             const action5 = { type: "EDIT_VEHICULE", value: response.data }
@@ -252,7 +255,7 @@ class AjouterVehicule extends Component {
 
             const action = { type: "ADD_VEHICULE", value: response.data }
             this.props.dispatch(action)
-            if(this.state.file != '/uploads/vehicules_photos/default.jpg'){
+            if(this.state.file == null){
                 this.photoUpload(response.data.id)
             }
             this.setState({ isFormSubmitted: false })
@@ -1762,9 +1765,10 @@ class AjouterVehicule extends Component {
                                         <div className="col-md-5">
                                           <input type="file" className="form-control" onChange={this.handleFile} />
                                         </div>
-                                      {this.state.file != '/uploads/vehicules_photos/default.jpg' ?   <div className="col-md-2">
+                                      {this.state.file == null ?   <div className="col-md-2">
                                             <span className="mt-2 btn btn-danger" onClick={() => this.setState({
-                                                file: '/uploads/vehicules_photos/default.jpg'
+                                                previewFile: '/uploads/vehicules_photos/default.jpg',
+                                                file: null
                                             })}>
                                                 Annuler
                                             </span>
@@ -1776,8 +1780,8 @@ class AjouterVehicule extends Component {
 
                                 </div>
                             </div>
-                            <div className="main-card mb-3 card">
-                            <img width="auto" src={this.state.file}/>
+                            <div className="main-card mb-3 card" >
+                                <img style={{ objectFit: 'contain'}} src={this.state.previewFile}/>
                             </div>
 
 
