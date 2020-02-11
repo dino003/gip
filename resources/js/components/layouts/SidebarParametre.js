@@ -59,6 +59,13 @@ const active = {
 
                                 </li>
 
+                                         <li>
+                                            <NavLink activeStyle={active} to="/gestion_du_parc_automobile/les-annees-budgetaires">
+                                            <i className="metismenu-icon pe-7s-display2"></i>
+                                                Les Exercices Budgétaires
+                                            </NavLink>
+                                        </li>
+
 
                                         <li>
                                             <NavLink activeStyle={active}  to="/gestion_du_parc_automobile/gestion-de-la-structure-geographique">

@@ -15,7 +15,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
  class NavBar extends Component {
     constructor(props) {
         super(props);
-        
+
         this.state = {
             navVisible: true
         }
@@ -23,73 +23,73 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
 
     fetchTheme(){
         queue.push(() => axios.get('/api/theme_defaut').then((response) => {
-            
+
             const action = {type: "GET_THEME", value: response.data}
             this.props.dispatch(action)
         }));
-    } 
+    }
 
 
     fetchInfoSociete(){
         queue.push(() => axios.get('/api/infos_societe').then((response) => {
-            
+
             const action = {type: "GET_INFO_SOCIETE", value: response.data}
             this.props.dispatch(action)
         }));
-    } 
+    }
 
     fetchInfoParamGenerauxReservationOrdre(){
         queue.push(() => axios.get('/api/parametre_generaux_reservation_ordre').then((response) => {
-            
+
             const action = {type: "GET_PARAM_GENERAUX_RESERV", value: response.data}
             this.props.dispatch(action)
         }));
-    } 
+    }
 
 
     fetchStructureGeographiques(){
         queue.push(() => axios.get('/api/structure_geographiques').then((response) => {
-            
+
             const action = {type: "GET_STRUCTURE_GEOGRAPHIQUE", value: response.data}
             this.props.dispatch(action)
         }));
-    } 
+    }
 
     fetchStructureorganisationnelles(){
         queue.push(() => axios.get('/api/structure_organisationelles').then((response) => {
-            
+
             const action = {type: "GET_STRUCTURE_ORGANISATIONNELLE", value: response.data}
             this.props.dispatch(action)
         }));
-    } 
+    }
 
     fetchInfoAlerte(){
         queue.push(() => axios.get('/api/alertes').then((response) => {
-            
+
             const action = {type: "GET_PARAM_GENERAUX_ALERTE", value: response.data}
             this.props.dispatch(action)
         }));
-    } 
-    
+    }
+
     fetchInfoParamGenerauxModules(){
         queue.push(() => axios.get('/api/parametre_modules').then((response) => {
-            
+
             const action = {type: "GET_PARAM_MODULE", value: response.data}
             this.props.dispatch(action)
         }));
-    } 
+    }
 
     fetchInfoParamGenerauxPersonnels(){
         queue.push(() => axios.get('/api/parametre_personnels').then((response) => {
-            
+
             const action = {type: "GET_PARAM_PERSONNEL", value: response.data}
             this.props.dispatch(action)
         }));
-    } 
+    }
 
     fetchInfoParamGenerauxJournal(){
         queue.push(() => axios.get('/api/parametre_journal').then((response) => {
-            
+
             const action = {type: "GET_PARAM_JOURNAL", value: response.data}
             this.props.dispatch(action)
         }));
@@ -97,22 +97,22 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
 
     fetchInfoParamGenerauxStock(){
         queue.push(() => axios.get('/api/parametre_stocks').then((response) => {
-            
+
             const action = {type: "GET_PARAM_STOCK", value: response.data}
             this.props.dispatch(action)
         }));
-    } 
+    }
 
     fetchStructures(){
         queue.push(() => axios.get('/api/structures_etablissements').then((response) => {
-            
+
             const action = {type: "GET_STRUCTURE_ETABLISSEMENT", value: response.data}
             this.props.dispatch(action)
         }));
-    } 
+    }
     fetchTypeEntites(){
         queue.push(() => axios.get('/api/types_entites').then((response) => {
-            
+
             const action = {type: "GET_TYPE_ENTITE", value: response.data}
             this.props.dispatch(action)
         }));
@@ -120,14 +120,14 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
 
     fetchModeleVehicules(){
         queue.push(() => axios.get('/api/modeles_vehicules').then((response) => {
-            // The eventual response of Twitter	
+            // The eventual response of Twitter
             const action = {type: "GET_MODELE_VEHICULE", value: response.data}
             this.props.dispatch(action)
         }));
     }
 
     fetchUtilisateurs(){
-        queue.push(() => { 
+        queue.push(() => {
 
             axios.get('/api/users').then((response) => {
             // .
@@ -143,22 +143,22 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
             const action = {type: "GET_TIER", value: response.data}
             this.props.dispatch(action)
         }));
-    }  
+    }
     fetchPersonnels(){
         queue.push(() => axios.get('/api/personnels').then((response) => {
             // .
             const action = {type: "GET_PERSONNEL", value: response.data}
             this.props.dispatch(action)
         }));
-    } 
+    }
     fetchEntites(){
         queue.push(() => axios.get('/api/entites').then((response) => {
             // .
             const action = {type: "GET_ENTITE", value: response.data}
             this.props.dispatch(action)
         }));
-    } 
-   
+    }
+
     fetchMarques(){
         queue.push(() => axios.get('/api/marques').then((response) => {
             // .
@@ -181,7 +181,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
             this.props.dispatch(action)
         }));
     }
-    
+
     fetchCodeIncidents(){
         queue.push(() => axios.get('/api/code_incidents').then((response) => {
             // .
@@ -206,7 +206,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
         }));
     }
 
-       
+
     fetchNatureConsommations(){
         queue.push(() => axios.get('/api/nature_consommations').then((response) => {
             // .
@@ -318,7 +318,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
             this.props.dispatch(action)
         }));
     }
-    
+
 
     fetchContratAssurances(){
         queue.push(() => axios.get('/api/contrat_assurances').then((response) => {
@@ -415,7 +415,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
 
     enregistrerStructureSiVide = async () => {
         if(!this.props.structures_etablissements.length){
-            await axios.post('/api/ajouter_structure_etablissement_si_vide', 
+            await axios.post('/api/ajouter_structure_etablissement_si_vide',
             {
                 code_regroupement: 'SIEGE',
                 nom_regroupement: 'SIEGE ETABLISSEMENT'
@@ -423,17 +423,17 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
          ).then(response => {
               const action = {type: "ADD_STRUCTURE_ETABLISSEMENT", value: response.data}
               this.props.dispatch(action)
-        
+
          })
           .catch(error => {
              console.log(error)
           } );
         }
-      
+
     }
 
     enregistrerPersonnelSiVide = () => {
-         
+
            if(!this.props.personnels.length){
             axios.post('/api/ajouter_personnel_si_vide', {
                 nom: 'PERSONNE PAR DEFAUT',
@@ -442,7 +442,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
               //  entite_affectation: this.entite_affectation.value,
                // nom_entite_affectation: this.nom_entite_affectation.value,
             }).then(response => {
-                
+
                const action = {type: "ADD_PERSONNEL", value: response.data}
                this.props.dispatch(action)
             }).catch(error => {
@@ -459,39 +459,39 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
                 const action = {type: "ADD_TYPE_ENTITE", value: response.data}
                 this.props.dispatch(action)
             }).catch(error => console.log(error))
-    
+
         }
 
-    } 
+    }
 
     async ajouterFournisseursiVide(){
 
         if(!this.props.tiers.length){
-        
+
               axios.post('/api/ajouter_tier_si_vide', {
                   code: 'FOURNISSEUR PAR DEFAUT',
-                
+
               })
               .then(response => {
                  const action = {type: "ADD_TIER", value: response.data}
                    this.props.dispatch(action)
-            
-               
+
+
               }).catch(error => {
                    console.log(error) } )
-             
+
         }
 
-    } 
+    }
 
- 
 
- 
-    
-   
+
+
+
+
 
     componentDidMount(){
-      
+
 
         // debut navbar
 
@@ -536,19 +536,19 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
 
         // this.fetchInfoAlerte();
         // this.fetchInfoParamGenerauxModules();
-      
+
         // this.fetchCategories_vehicules();
         // this.fetchMarques()
         // this.fetchEntites();
         // this.fetchPersonnels();
         // this.fetchTiers();
         // this.fetchContratAssurances();
-       
+
         // this.fetchNatureInterventions();
         // this.fetchOperationInterventions();
         // this.fetchNatureConsommations();
         // this.fetchReservation();
-       
+
 
         // this.fetchNatureDepenseRecettes();
         // this.fetchNatureReservations();
@@ -571,12 +571,12 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
         })
     }
 
- 
-    
+
+
     render() {
         return (
                  <div className={this.props.theme && this.props.theme.navbar ? `${this.props.theme.navbar}` : 'app-header header-shadow bg-night-sky header-text-light'}>
- 
+
             <div className="app-header__logo">
                 <div className="logo-src"></div>
                 <div className="header__pane ml-auto">
@@ -606,7 +606,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
                         </span>
                     </button>
                 </span>
-            </div>   
+            </div>
              <div className="app-header__content">
                 <div className="app-header-left">
                     {/* <div className={this.state.navVisible ? "search-wrapper" : "search-wrapper active"}>
@@ -644,24 +644,24 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
                                 Paramètres
                             </Link>
                         </li>
-                      
 
-                     
+
+
 
                         <li className="dropdown nav-item">
                             <Link to="/gestion_du_parc_automobile/codifications_1" className="nav-link">
                                 <i className="nav-link-icon fa fa-folder"></i>
-                                Codifications (1)
+                                Codifications
                             </Link>
                         </li>
 
-                        <li className="dropdown nav-item">
+                  {/*       <li className="dropdown nav-item">
                             <Link to="/gestion_du_parc_automobile/codifications_2" className="nav-link">
                                 <i className="nav-link-icon fa fa-folder"></i>
                                 Codifications (2)
                             </Link>
-                        </li>
-                      
+                        </li> */}
+
 
 
                         <li className="nav-item">
@@ -680,7 +680,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
                             </NavLink>
                         </li>
 
-                        
+
                         <li className="nav-item">
                         <span  className="nav-link" style={{ 'fontSize': '0.9em'}}>
                             {this.props.abonnement ? `${this.props.abonnement.nombre_de_jours_restant} Jours Restant(s)` : null}
@@ -689,7 +689,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
 
                         </li>
 
-                    </ul>        
+                    </ul>
                     </div>
                 <div className="app-header-right">
                     <div className="header-btn-lg pr-0">
@@ -715,7 +715,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
                                     <div className="widget-heading">
                                         {this.props.user.username.slice(0, 12)}
                                     </div>
-                                    
+
                                     <div className="widget-subheading">
                                     {this.props.user.email.slice(0, 20)}
                                     </div>
@@ -727,7 +727,7 @@ var queue = housecall({ concurrency: 2, cooldown: 1000 });
                                 </div> */}
                             </div>
                         </div>
-                    </div>        
+                    </div>
                 </div>
             </div>
 
@@ -752,7 +752,7 @@ const mapStateToProps = state => {
         abonnement: state.abonnement.abonnement
 
 
-      
+
     }
   }
 
