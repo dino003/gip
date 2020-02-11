@@ -43,7 +43,7 @@ import StructureVehiculeItem from '../../components/codifications/StructureVehic
             const action = {type: "REMOVE_STRUCTURE_VEHICULE", value: id}
             this.props.dispatch(action)
            // this.setState({entitesState : this.state.entitesState.filter(ent => ent.id !== id)})
-            axios.delete('/api/supprimer_structure_geographique/' + id)
+            axios.delete('/api/supprimer_structure_vehicule/' + id)
         }
 
     }
