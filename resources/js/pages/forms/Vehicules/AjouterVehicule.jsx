@@ -8,6 +8,7 @@ import today from '../../../utils/today'
 import Select from 'react-select';
 import { colourStyles } from '../../../utils/Repository';
 import inputStyle from '../../../utils/inputStyle';
+import { number } from 'prop-types';
 
 
 
@@ -92,9 +93,9 @@ class AjouterVehicule extends Component {
             return "L'immatriculation est obligatoire !"
         } else if ( vehculeExiste ) {
             return "Un Véhicule Portant la même immatriculation exites déja !"
-        } else if (this.state.affectation_organisationnel_id == undefined ) {
+        } else if (this.state.affectation_organisationnel_id == undefined && this.props.param_vehicule.zone_organisationnelle_obligatoire ) {
             return "L'affectation Organisationnelle est obligatoire"
-        } else if (this.state.affectation_geographique_id == undefined) {
+        } else if (this.state.affectation_geographique_id == undefined && this.props.param_vehicule.zonne_geographique_obligatoire ) {
             return "L'affectation géographique est obligatoire"
         }else if (this.state.plan_vehicule_id == undefined ) {
             return `Vous n'avez pas sélectionné de ${this.getStructureVehiculeDernierNiveau().libelle}`
@@ -184,7 +185,8 @@ class AjouterVehicule extends Component {
             vehicule_lie_astreinte: this.vehicule_lie_astreinte.checked,
 
             lieu_prise_en_charge_vehicule: this.lieu_prise_en_charge_vehicule.value,
-            kilometrage_nouvelle_acquisition: this.kilometrage_nouvelle_acquisition.value,
+           // kilometrage_nouvelle_acquisition: this.kilometrage_nouvelle_acquisition.value,
+           kilometrage_acquisition: this.kilometrage_actuel.value != "" ? number(this.kilometrage_actuel.value) : null,
             kilometrage_actuel: this.kilometrage_actuel.value,
             lieu_restitution: this.lieu_restitution.value,
             lieu_stockage_double: this.lieu_stockage_double.value,
@@ -394,7 +396,7 @@ class AjouterVehicule extends Component {
     render() {
   // console.log(this.getPlanOrgaDernierNiveau(), this.getPlanGeographiquesDerniersNiveau())
  // console.log(this.getStructureGeographiqueDernierNiveau())
-
+        const {param_vehicule} = this.props
         return (
             <div className="app-main__inner">
                 <ul className="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
@@ -482,7 +484,7 @@ class AjouterVehicule extends Component {
                                                 getOptionValue={option => option.id}
                                                 // formatOptionLabel={formatOptionVehicule}
                                                 onChange={this.setFieldSelect.bind(this, "affectation_geographique_id")}
-                                                styles={colourStyles}
+                                                styles={param_vehicule.zonne_geographique_obligatoire && colourStyles }
                                             />
 
                                         </div> :
@@ -510,7 +512,7 @@ class AjouterVehicule extends Component {
                                                 getOptionValue={option => option.id}
                                                 // formatOptionLabel={formatOptionVehicule}
                                                 onChange={this.setFieldSelect.bind(this, "affectation_organisationnel_id")}
-                                                styles={colourStyles}
+                                                styles={param_vehicule.zone_organisationnelle_obligatoire && colourStyles }
                                             />
 
                                         </div> :
@@ -1337,7 +1339,7 @@ class AjouterVehicule extends Component {
 
                                     <div className="form-row">
 
-                                        <div className="col-md-3">
+                                    {/*     <div className="col-md-3">
                                             <div className="position-relative form-group">
                                                 <label >Kilometrage lors de l'entrée au parc</label>
                                                 </div>
@@ -1349,20 +1351,20 @@ class AjouterVehicule extends Component {
                                                 defaultValue="0"
                                                     ref={kilometrage_nouvelle_acquisition => this.kilometrage_nouvelle_acquisition = kilometrage_nouvelle_acquisition}
                                                     type="text" className="form-control" /></div>
-                                        </div>
+                                        </div> */}
 
-                                        <div className="col-md-2">
+                                        <div className="col-md-3">
                                             <div className="position-relative form-group">
                                                 <label >Kilometrage actuel</label>
 
                                                     </div>
                                         </div>
 
-                                        <div className="col-md-2">
+                                        <div className="col-md-3">
                                             <div className="position-relative form-group">
                                                 <input name="kilometrage_actuel"
                                                     ref={kilometrage_actuel => this.kilometrage_actuel = kilometrage_actuel}
-                                                    type="text" className="form-control" /></div>
+                                                    type="number" className="form-control" /></div>
                                         </div>
 
 
@@ -1828,11 +1830,8 @@ const mapStateToProps = state => {
         structure_geographiques: state.structure_geographiques.items,
         structure_organisationnelles: state.structure_organisationnelles.items,
         structure_vehicules: state.structure_vehicules.items,
-        plan_vehicules: state.plan_vehicules.items
-
-
-
-
+        plan_vehicules: state.plan_vehicules.items,
+        param_vehicule: state.param_vehicule.items,
 
     }
 }

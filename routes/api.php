@@ -147,6 +147,39 @@ Route::delete('supprimer_structure_vehicule/{id}', 'StructureVehiculeController@
 
 //*********fin Structure vehicules************----------------------------------------------------------- */
 
+//----------------------plans budgétaires --------------------------------------------------------**********
+Route::get('plan_budgetaires', 'PlanBudgetaireController@index');
+// voir
+Route::get('voir_plan_budgetaire/{id}', 'PlanBudgetaireController@show');
+
+// ajouter
+Route::post('ajouter_plan_budgetaire', 'PlanBudgetaireController@store');
+// modifier
+Route::post('modifier_plan_budgetaire/{id}', 'PlanBudgetaireController@update');
+
+// supprimer
+Route::delete('supprimer_plan_budgetaire/{id}', 'PlanBudgetaireController@destroy');
+
+
+//*********fin plans budgétaires************----------------------------------------------------------- */
+
+
+//----------------------Structure budgétaires --------------------------------------------------------**********
+Route::get('structure_budgetaires', 'StructureBudgetaireController@index');
+// voir
+Route::get('voir_structure_budgetaire/{id}', 'StructureBudgetaireController@show');
+
+// ajouter
+Route::post('ajouter_structure_budgetaire', 'StructureBudgetaireController@store');
+// modifier
+Route::post('modifier_structure_budgetaire/{id}', 'StructureBudgetaireController@update');
+
+// supprimer
+Route::delete('supprimer_structure_budgetaire/{id}', 'StructureBudgetaireController@destroy');
+
+
+//*********fin Structure budgétaires************----------------------------------------------------------- */
+
 
 //----------------------plans organisationelles --------------------------------------------------------**********
 Route::get('plan_organisationelles', 'PlanOrganisationnelController@index');
@@ -684,6 +717,17 @@ Route::post('ajouter_ou_modifier_parametre_personnels', 'ParamPersonnelControlle
 
 
 //*********** fin parametre generaux personnels *********************************************************
+
+//****************** parametre generaux vehicules  ********************************************************/
+Route::get('parametre_vehicules', 'ParamVehiculeController@index');
+
+// ajouter
+Route::post('ajouter_ou_modifier_parametre_vehicules', 'ParamVehiculeController@storeOuUpdate');
+// modifier
+
+
+//*********** fin parametre generaux vehicule *********************************************************
+
 
 //****************** parametre generaux personnels  ********************************************************/
 Route::get('alertes', 'AlerteController@index');

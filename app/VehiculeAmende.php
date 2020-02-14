@@ -13,6 +13,9 @@ class VehiculeAmende extends Model
 
     public $timestamps = false;
 
+  //  protected $with = ['plan_budgetaire'];
+
+
 
     // protected $casts = [
     //     'date' => 'date:d/m/Y',
@@ -27,7 +30,7 @@ class VehiculeAmende extends Model
            return $this->belongsTo(Vehicule::class, 'vehicule');
        }
 
-       //lieu amendes 
+       //lieu amendes
        public function lieu_amende()
        {
            return $this->belongsTo(PlanGeographique::class, 'lieu_id');
@@ -43,12 +46,18 @@ class VehiculeAmende extends Model
           public function nature_amende()
           {
               return $this->belongsTo(NatureAmende::class, 'nature_amende');
-          }  
+          }
 
            // conducteur
            public function conducteur()
            {
                return $this->belongsTo(Personnel::class, 'conducteur');
-           }  
+           }
+
+              // plan budgetaire
+          public function plan_budgetaire()
+          {
+              return $this->belongsTo('App\PlanBudgetaire', 'plan_budgetaire_id');
+          }
 
 }

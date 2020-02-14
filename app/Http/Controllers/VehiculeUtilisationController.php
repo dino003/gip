@@ -70,7 +70,7 @@ class VehiculeUtilisationController extends Controller
 
             $vehicule = Vehicule::with(['entite_comptable', 'entite_physique',
             'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
-             'chauffeur_atitre', 'contrat_assurance.compagnie_assurance', 'energie', 'affectation_geographique', 'affectation_organisationnel', 'plan_vehicule'])->find($creation->vehicule);
+             'chauffeur_atitre', 'contrat_assurance.compagnie_assurance', 'energie', 'affectation_geographique', 'affectation_organisationnel', 'plan_vehicule', 'budgets'])->find($creation->vehicule);
 
          return response()->json([
              'utilisation' => $utilisation,
@@ -136,7 +136,7 @@ class VehiculeUtilisationController extends Controller
 
        $vehicule = Vehicule::with(['entite_comptable', 'entite_physique',
        'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
-       'chauffeur_atitre', 'contrat_assurance.compagnie_assurance', 'energie', 'affectation_geographique', 'affectation_organisationnel', 'plan_vehicule'])->find($vehicule->id);
+       'chauffeur_atitre', 'contrat_assurance.compagnie_assurance', 'energie', 'affectation_geographique', 'affectation_organisationnel', 'plan_vehicule', 'budgets'])->find($vehicule->id);
 
         return response()->json([
             'utilisation' => $utilisation,
@@ -191,7 +191,7 @@ class VehiculeUtilisationController extends Controller
 
             $vehicule = Vehicule::with(['entite_comptable', 'entite_physique',
             'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
-            'chauffeur_atitre', 'contrat_assurance.compagnie_assurance', 'energie', 'affectation_geographique', 'affectation_organisationnel', 'plan_vehicule'])->find($utilisation_edite2->vehicule);
+            'chauffeur_atitre', 'contrat_assurance.compagnie_assurance', 'energie', 'affectation_geographique', 'affectation_organisationnel', 'plan_vehicule', 'budgets'])->find($utilisation_edite2->vehicule);
 
         return response()->json([
             'utilisation' => $utilisation,
@@ -210,7 +210,7 @@ class VehiculeUtilisationController extends Controller
 
             $vehicule = Vehicule::with(['entite_comptable', 'entite_physique',
             'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
-            'chauffeur_atitre', 'contrat_assurance.compagnie_assurance', 'energie', 'affectation_geographique', 'affectation_organisationnel', 'plan_vehicule'])->find($utilisation_edite->vehicule);
+            'chauffeur_atitre', 'contrat_assurance.compagnie_assurance', 'energie', 'affectation_geographique', 'affectation_organisationnel', 'plan_vehicule', 'budgets'])->find($utilisation_edite->vehicule);
 
         return response()->json([
             'utilisation' => $utilisation,

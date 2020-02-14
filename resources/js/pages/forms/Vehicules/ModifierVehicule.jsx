@@ -116,9 +116,9 @@ class ModifierVehicule extends Component {
             return "L'immatriculation est obligatoire !"
         }else if ( vehculeExiste ) {
             return "Un Véhicule Portant la même immatriculation exites déja !"
-        } else if (this.state.affectation_organisationnel_id == undefined && !objetEdit.affectation_organisationnel_id ) {
+        } else if (this.state.affectation_organisationnel_id == undefined && !objetEdit.affectation_organisationnel_id && this.props.param_vehicule.zone_organisationnelle_obligatoire) {
             return "L'affectation organisationnelle est obligatoire"
-        } else if (this.state.affectation_geographique_id == undefined && !objetEdit.affectation_geographique_id) {
+        } else if (this.state.affectation_geographique_id == undefined && !objetEdit.affectation_geographique_id && this.props.param_vehicule.zonne_geographique_obligatoire) {
             return "L'affectation géographique est obligatoire"
         }  else if (this.state.plan_vehicule_id == undefined && !objetEdit.plan_vehicule_id) {
             return `Vous n'avez pas sélectionné de ${this.getStructureVehiculeDernierNiveau().libelle}`
@@ -210,7 +210,7 @@ class ModifierVehicule extends Component {
             vehicule_lie_astreinte: this.vehicule_lie_astreinte.checked,
 
             lieu_prise_en_charge_vehicule: this.lieu_prise_en_charge_vehicule.value,
-            kilometrage_nouvelle_acquisition: this.kilometrage_nouvelle_acquisition.value,
+           // kilometrage_nouvelle_acquisition: this.kilometrage_nouvelle_acquisition.value,
             kilometrage_actuel: this.kilometrage_actuel.value,
             lieu_restitution: this.lieu_restitution.value,
             lieu_stockage_double: this.lieu_stockage_double.value,
@@ -422,6 +422,7 @@ class ModifierVehicule extends Component {
     render() {
         const objetEdit = this.props.vehicules.find(vehicule => vehicule.id == this.props.match.params.vehicule_id)
 
+        const {param_vehicule} = this.props;
         return (
             <div className="app-main__inner">
                 {objetEdit ?  <React.Fragment>
@@ -514,7 +515,7 @@ class ModifierVehicule extends Component {
 
                                     // formatOptionLabel={formatOptionVehicule}
                                     onChange={this.setFieldSelect.bind(this, "affectation_geographique_id")}
-                                    styles={colourStyles}
+                                    styles={param_vehicule.zonne_geographique_obligatoire && colourStyles}
                                 />
 
                             </div> :
@@ -544,7 +545,7 @@ class ModifierVehicule extends Component {
 
                                     // formatOptionLabel={formatOptionVehicule}
                                     onChange={this.setFieldSelect.bind(this, "affectation_organisationnel_id")}
-                                    styles={colourStyles}
+                                    styles={param_vehicule.zone_organisationnelle_obligatoire && colourStyles }
                                 />
 
                             </div> :
@@ -1465,7 +1466,7 @@ class ModifierVehicule extends Component {
 
                                     <div className="form-row">
 
-                                        <div className="col-md-3">
+                                 {/*        <div className="col-md-3">
                                             <div className="position-relative form-group">
                                                 <label >Kilometrage lors de l'entrée au parc</label>
                                                 </div>
@@ -1477,16 +1478,16 @@ class ModifierVehicule extends Component {
                                                     defaultValue={objetEdit.kilometrage_nouvelle_acquisition}
                                                     ref={kilometrage_nouvelle_acquisition => this.kilometrage_nouvelle_acquisition = kilometrage_nouvelle_acquisition}
                                                     type="number" className="form-control" /></div>
-                                        </div>
+                                        </div> */}
 
-                                        <div className="col-md-2">
+                                        <div className="col-md-3">
                                             <div className="position-relative form-group">
                                                 <label >Kilometrage actuel</label>
 
                                                     </div>
                                         </div>
 
-                                        <div className="col-md-2">
+                                        <div className="col-md-3">
                                             <div className="position-relative form-group">
                                                 <input name="kilometrage_actuel"
                                                     defaultValue={objetEdit.kilometrage_actuel}
@@ -2223,7 +2224,9 @@ const mapStateToProps = state => {
         structure_geographiques: state.structure_geographiques.items,
         structure_organisationnelles: state.structure_organisationnelles.items,
         structure_vehicules: state.structure_vehicules.items,
-        plan_vehicules: state.plan_vehicules.items
+        plan_vehicules: state.plan_vehicules.items,
+        param_vehicule: state.param_vehicule.items
+
 
     }
 }

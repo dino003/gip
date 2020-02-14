@@ -13,6 +13,7 @@ class VehiculeConsomation extends Model
 
     public $timestamps = false;
 
+    //protected $with = ['plan_budgetaire'];
 
 
     // protected $casts = [
@@ -32,7 +33,7 @@ class VehiculeConsomation extends Model
         return $this->belongsTo(NatureConsomation::class, 'type_consomation');
     }
 
-    // tiers 
+    // tiers
     public function tiers()
     {
         return $this->belongsTo(Tier::class, 'tiers');
@@ -44,10 +45,16 @@ class VehiculeConsomation extends Model
         return $this->belongsTo(Personnel::class, 'conducteur');
     }
 
-    // consomable 
+    // consomable
     public function consomable()
     {
         return $this->belongsTo(CoutConsomable::class, 'consomable');
     }
-    
+
+       // plan budgetaire
+       public function plan_budgetaire()
+       {
+           return $this->belongsTo('App\PlanBudgetaire', 'plan_budgetaire_id');
+       }
+
 }

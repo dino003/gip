@@ -20,7 +20,7 @@ class VehiculeInterventionController extends Controller
      */
     public function index()
     {
-        $interventions_par_vehicules = VehiculeIntervention::with(['vehicule', 'tiers', 'nature_intervention'])
+        $interventions_par_vehicules = VehiculeIntervention::with(['vehicule', 'tiers', 'nature_intervention', 'plan_budgetaire.budget'])
                                                             ->orderBy('id', 'desc')->get();
 
         return response()->json($interventions_par_vehicules);
@@ -44,12 +44,12 @@ class VehiculeInterventionController extends Controller
      */
     public function store(Request $request)
     {
-       
+
         $intervention = new VehiculeIntervention;
         $creation = $intervention->create($request->only($intervention->fillable));
- 
+
         return response()->json(VehiculeIntervention::with(['vehicule',
-        'tiers', 'nature_intervention'])
+        'tiers', 'nature_intervention', 'plan_budgetaire.budget'])
         ->find($creation->id));
     }
 
@@ -88,7 +88,7 @@ class VehiculeInterventionController extends Controller
           // update model and only pass in the fillable fields
           $this->model->update($request->only($this->model->getModel()->fillable), $id);
 
-          return response()->json(VehiculeIntervention::with(['vehicule', 'tiers', 'nature_intervention'])->find($id));
+          return response()->json(VehiculeIntervention::with(['vehicule', 'tiers', 'nature_intervention', 'plan_budgetaire.budget'])->find($id));
     }
 
     /**

@@ -19,10 +19,10 @@ import '../../components/table.css'
         this.state = {
             isOpen: false,
             inputOpen: false,
-           
+
             budgetVehicules: [],
             loading: false,
-        }   
+        }
     }
 
     // componentDidMount(){
@@ -30,30 +30,30 @@ import '../../components/table.css'
     //         budgetVehicules: this.props.budgetVehicules.filter(inter => inter.vehicule.id == this.props.vehiculeSeleted.id),
     //         //loading: false
     //      })
-    
+
     //      if(this.props.vehiculeSeleted == undefined){
     //       const action = {type: "EDIT_SELECTED", value: this.props.location.state.veh}
     //       this.props.dispatch(action)
-    
+
     //      }
-    
+
     //     }
-    
-    
+
+
         onDelete = (id) => {
-    
+
             let conf = confirm('Voulez-vous vraiment supprimer ?')
             if(conf === true){
 
                 const action = {type: "REMOVE_BUDGET_VEHICULE", value: id}
                 this.props.dispatch(action)
                 axios.delete('/api/supprimer_vehicule_budget_vehicule/' + id)
-                
+
             }
-           
+
         }
 
-     
+
 
     onEdit = (id) => {
         const vehic = this.props.vehiculeSeleted
@@ -64,7 +64,7 @@ import '../../components/table.css'
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-    
+
         this.setState({
           [name]: value
         });
@@ -72,7 +72,7 @@ import '../../components/table.css'
 
 
 
- 
+
 
     toggleVisibleInput = () => {
         this.setState(prevState => {
@@ -90,12 +90,12 @@ import '../../components/table.css'
         })
     }
 
-    
+
     renderLoading(){
         return  <span style={{textAlign: 'center'}}>
 
         <Loader
-   
+
             height={500}
             width={300}
          />
@@ -104,7 +104,7 @@ import '../../components/table.css'
 
     renderEmpty(){
        return <span style={{textAlign: 'center', color: 'red'}}>
-            Aucune donnée enregistrée !            
+            Aucune donnée enregistrée !
         </span>
     }
 
@@ -116,38 +116,38 @@ import '../../components/table.css'
         <tr>
             <th className="sticky-col first-col">Année</th>
             <th className="sticky-col second-col">Véhicule</th>
-            <th className="sticky-col third-col">Site</th>
-            <th className="sticky-col thour-col">Imputation</th>
-            <th>Nature dépenses/recettes</th>
-            <th>Dépenses-budget</th>
-            <th>Dépense-réalisation</th>
-            <th>Dépense-%</th>
-            <th>Dépense-reste</th>
+           {/*  <th className="sticky-col third-col">Site</th>
+            <th className="sticky-col thour-col">Imputation</th> */}
+            <th>Ligne Budgétaire</th>
+            <th>Budget Prévisionnel</th>
+            <th>réalisation</th>
+            <th>Taux d'exécution</th>
+            <th>Reste</th>
 
-            <th>Recette-budget</th>
+           {/*  <th>Recette-budget</th>
             <th>Recette-réalisation</th>
             <th>Recette-%</th>
             <th>Recette-reste</th>
-
+ */}
 
 
         </tr>
         </thead>
         <tbody>
-          
-     { budgetVehicules.map((item, index) => 
+
+     { budgetVehicules.map((item, index) =>
          <BudgetVehiculeItem
          index={index}
-          key={item.id} 
-          onEdit={this.onEdit}              
+          key={item.id}
+          onEdit={this.onEdit}
           onDelete={this.onDelete}
          item={item} />
-    )  }         
+    )  }
         </tbody>
     </table>)
     }
-    
-    
+
+
 
     render() {
         if(this.props.vehiculeSeleted == undefined && this.props.vehicules.length){
@@ -162,16 +162,16 @@ import '../../components/table.css'
             <div className="app-main__inner">
             <div className="main-card card" >
                        <div className="card-body ">
-                           <h5 className="card-title">Gestion des budgets du vehicules 
+                           <h5 className="card-title">Gestion des budgets du vehicules
                           {vehiculeselect &&
                             <span className="pull-right">
-                        
+
                             {/* <button title=" Ajouter une nouvelle ligne de budget"
                                       className="mb-2 mr-2 btn-transition btn btn-outline-primary"
                                       onClick={() => this.props.history.push(`/gestion_du_parc_automobile/parc/creation-budget-vehicules/${vehiculeselect.id}/${vehiculeselect.immatriculation}`)}
                                       >
                                       <i className="fa fa-plus"></i> {' '}
-     
+
                                           Ajouter
                                              </button> */}
 
@@ -185,24 +185,24 @@ import '../../components/table.css'
                                                 buttonText="Ecran -> Liste"/> : null }
                                 </span>
                                 }
-                             
-                                
-                                {this.props.vehicules.length && 
+
+
+                                {this.props.vehicules.length &&
                             <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}/>
-                            }                                               
-                                
+                            }
+
                             </h5>
 
                             <br />
-                         
+
                          <div className="view">
                          <div className="wrapper" style={{height: '500px', overflowY: 'scroll'}}>
-                                  {!this.props.vehicules.length ? this.renderLoading() : 
+                                  {!this.props.vehicules.length ? this.renderLoading() :
                             !budgetVehicules.length ? this.renderEmpty() : this.renderList()}
                                   </div>
                               </div>
-                        
-                           
+
+
                        </div>
                    </div>
 
@@ -216,7 +216,7 @@ import '../../components/table.css'
                         onClick={() => this.props.history.push(`/gestion_du_parc_automobile/parc/creation-budget-vehicules/${vehiculeselect.id}/${vehiculeselect.immatriculation}`)}
                         />
                 </Container>
-                
+
        </div>
         )
     }

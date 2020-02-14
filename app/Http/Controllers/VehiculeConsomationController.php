@@ -21,7 +21,7 @@ class VehiculeConsomationController extends Controller
     public function index()
     {
         $consommations = VehiculeConsomation::with(['vehicule',
-        'type_consomation', 'tiers', 'conducteur', 'consomable'])->orderBy('id', 'desc')->get();
+        'type_consomation', 'tiers', 'conducteur', 'plan_budgetaire.budget', 'consomable'])->orderBy('id', 'desc')->get();
 
         return response()->json($consommations);
     }
@@ -44,12 +44,12 @@ class VehiculeConsomationController extends Controller
      */
     public function store(Request $request)
     {
-       
+
          $consommation = new VehiculeConsomation;
          $creation = $consommation->create($request->only($consommation->fillable));
-  
+
          return response()->json(VehiculeConsomation::with(['vehicule',
-         'type_consomation', 'tiers', 'conducteur', 'consomable'])
+         'type_consomation', 'tiers', 'conducteur', 'plan_budgetaire.budget', 'consomable'])
          ->find($creation->id));
 
     }
@@ -91,7 +91,7 @@ class VehiculeConsomationController extends Controller
         $this->model->update($request->only($this->model->getModel()->fillable), $id);
 
         return response()->json(VehiculeConsomation::with(['vehicule',
-        'type_consomation', 'tiers', 'conducteur', 'consomable'])->find($id));
+        'type_consomation', 'tiers', 'conducteur', 'plan_budgetaire.budget', 'consomable'])->find($id));
     }
 
     /**

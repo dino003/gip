@@ -12,8 +12,9 @@ class VehiculeBudgetDepenseRecette extends Model
     protected $guarded = ['id'];
 
     public $timestamps = false;
+    protected $with = ['plan_budgetaire', 'vehicule'];
 
-    
+
      //  vehicule
      public function vehicule()
      {
@@ -25,6 +26,20 @@ class VehiculeBudgetDepenseRecette extends Model
      {
          return $this->belongsTo(DepenseRecette::class, 'nature_ligne_budget');
      }
+
+
+
+        // plan budgetaire
+        public function plan_budgetaire()
+        {
+            return $this->belongsTo(PlanBudgetaire::class, 'plan_budgetaire_id');
+        }
+
+            // plan budgetaire
+            public function annee()
+            {
+                return $this->belongsTo(AnneeBudgetaire::class, 'annee_budgetaire');
+            }
 
 
 }

@@ -24,7 +24,7 @@ class VehiculeController extends Controller
        // return $this->model->get();
         $vehicules = Vehicule::with(['entite_comptable', 'entite_physique',
         'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
-         'chauffeur_atitre', 'contrat_assurance.compagnie_assurance', 'energie', 'affectation_organisationnel', 'affectation_geographique', 'plan_vehicule'])->orderBy('id', 'desc')->get();
+         'chauffeur_atitre', 'contrat_assurance.compagnie_assurance', 'energie', 'affectation_organisationnel', 'affectation_geographique', 'plan_vehicule', 'budgets'])->orderBy('id', 'desc')->get();
 
          return response()->json($vehicules);
     }
@@ -55,7 +55,7 @@ class VehiculeController extends Controller
 
          return response()->json(Vehicule::with(['entite_comptable', 'entite_physique',
          'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
-          'chauffeur_atitre', 'contrat_assurance', 'energie', 'affectation_organisationnel', 'affectation_geographique', 'plan_vehicule'])->find($creation->id));
+          'chauffeur_atitre', 'contrat_assurance', 'energie', 'affectation_organisationnel', 'affectation_geographique', 'plan_vehicule', 'budgets'])->find($creation->id));
 
     }
 
@@ -97,7 +97,7 @@ class VehiculeController extends Controller
 
        return response()->json(Vehicule::with(['entite_comptable', 'entite_physique',
        'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
-        'chauffeur_atitre', 'contrat_assurance', 'energie', 'affectation_organisationnel', 'affectation_geographique', 'plan_vehicule'])->find($id));
+        'chauffeur_atitre', 'contrat_assurance', 'energie', 'affectation_organisationnel', 'affectation_geographique', 'plan_vehicule', 'budgets'])->find($id));
     }
 
     // ajouter ou modifier photo du vehicule
@@ -116,7 +116,7 @@ class VehiculeController extends Controller
 
             return response()->json(Vehicule::with(['entite_comptable', 'entite_physique',
             'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
-             'chauffeur_atitre', 'contrat_assurance', 'energie', 'affectation_organisationnel', 'affectation_geographique', 'plan_vehicule'])->find($id));
+             'chauffeur_atitre', 'contrat_assurance', 'energie', 'affectation_organisationnel', 'affectation_geographique', 'plan_vehicule', 'budgets'])->find($id));
 
 
         }

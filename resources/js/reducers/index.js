@@ -56,6 +56,9 @@ import PlanGeographiqueReducer from './PlanGeographiqueReducer'
 import PlanOrganisationnelReducer from './PlanOrganisationnelReducer'
 import PlanVehiculeReducer from './PlanVehiculeReducer'
 import StructureVehiculeReducer from './StructureVehiculeReducer'
+import StructureBudgetaireReducer from './StructureBudgetaireReducer'
+import PlanBudgetaireReducer from './PlanBudgetaireReducer'
+import ParamVehiculeInfoReducer from './parametres_generaux/ParamVehiculeInfoReducer'
 
 const allReducers = combineReducers({
     auth: AuthReducer,
@@ -109,12 +112,16 @@ const allReducers = combineReducers({
     param_personnels: ParamPersonnelReducer,
     param_journal: ParamJournalReducer,
     param_alerte: AlertReducer,
+    param_vehicule: ParamVehiculeInfoReducer,
     structure_organisationnelles: StructureOrganisationnelleReducer,
     structure_geographiques: StructureGeographiqueReducer,
     plan_geographiques: PlanGeographiqueReducer,
     plan_organisationnels: PlanOrganisationnelReducer,
     plan_vehicules: PlanVehiculeReducer,
-    structure_vehicules: StructureVehiculeReducer
+    structure_vehicules: StructureVehiculeReducer,
+    structure_budgetaires: StructureBudgetaireReducer,
+    plan_budgetaires: PlanBudgetaireReducer
+
 
 })
 

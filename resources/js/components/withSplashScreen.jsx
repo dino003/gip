@@ -142,6 +142,16 @@ function withSplashScreen(WrappedComponent) {
         //);
     }
 
+    fetchInfoParamGenerauxVehicules(){
+        // queue.push(() =>
+          axios.get('/api/parametre_vehicules').then((response) => {
+
+             const action = {type: "GET_PARAM_VEHICULE", value: response.data}
+             this.props.dispatch(action)
+         })
+         //);
+     }
+
     fetchInfoParamGenerauxJournal(){
         //queue.push(() =>
         axios.get('/api/parametre_journal').then((response) => {
@@ -553,6 +563,29 @@ function withSplashScreen(WrappedComponent) {
         // );
      }
 
+
+    fetchStructureBudgetaires(){
+        // queue.push(() =>
+          axios.get('/api/structure_budgetaires').then((response) => {
+             // .
+             const action = {type: "GET_STRUCTURE_BUDGETAIRE", value: response.data}
+             this.props.dispatch(action)
+         }
+         )
+        // );
+     }
+
+     fetchPlanBudgetaires(){
+        // queue.push(() =>
+          axios.get('/api/plan_budgetaires').then((response) => {
+             // .
+             const action = {type: "GET_PLAN_BUDGETAIRE", value: response.data}
+             this.props.dispatch(action)
+         }
+         )
+        // );
+     }
+
     fetchVehicules(){
        // queue.push(() =>
          axios.get('/api/vehicules').then((response) => {
@@ -665,12 +698,13 @@ function withSplashScreen(WrappedComponent) {
         this.fetchNatureReservations(),this.fetchFamillePiecesdetachees(),this.fetchCoutConsommables(),
         this.fetchCodeIncidents(),this.fetchNatureEnergies(),this.fetchNatureSinistres(),
         this.fetchNatureTaxes(),this.fetchNatureAmendes(),this.fetchOrdresMissions(),
-        this.fetchInfoParamGenerauxPersonnels(),this.fetchInfoParamGenerauxJournal(),
+        this.fetchInfoParamGenerauxPersonnels(), this.fetchInfoParamGenerauxVehicules(), this.fetchInfoParamGenerauxJournal(),
         this.fetchInfoParamGenerauxStock(),this.fetchTypeEntites(),this.fetchTva(),this.fetchStructures(),
         this.fetchDepenseRecettes(),this.fetchAmendes(),this.fetchBudgetVehicules(),this.fetchUtilisations(),
         this.fetchBudgetEntites(),this.fetchInterventions(),this.fetchConsommations(),this.fetchModeleVehicules(),
         this.fetchAnneesBudgetaires(),this.fetchArticlesStock(),this.fetchEntreesStock(),this.fetchSortiesStock(),
         this.fetchStructureGeographiques(),this.fetchStructureorganisationnelles(),this.fetchPlanGeographiques(),
+        this.fetchStructureBudgetaires(), this.fetchPlanBudgetaires(),
          this.fetchPlanOrganisationnelles(), this.fetchPlanVehicules(), this.fetchStructureVehicules(), this.fetchVehicules()
     ])
        /*  this.fetchTheme();
@@ -759,9 +793,9 @@ function withSplashScreen(WrappedComponent) {
           //   <div className="loading-dot">...</div>
           // </div>
               <React.Fragment>
-                    <div className="splash">
+                    <div className="splash" >
 
-                         <img src="/assets/images/theme.png" width="100%" />
+                         <img style={{objectFit: 'contain', marginLeft: '23%', with: '100%'}} src="/assets/images/theme.png"  />
 
 
                       </div>

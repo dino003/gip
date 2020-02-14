@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\VehiculeBudgetDepenseRecette;
+use App\Vehicule;
 use Illuminate\Http\Request;
 use App\Repositories\Repository;
 
@@ -19,10 +20,11 @@ class VehiculeBudgetDepenseRecetteController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
+
     {
-        $budgetVehicules = VehiculeBudgetDepenseRecette::with(['vehicule', 'nature_ligne_budget'])
+        $budgetVehicules = VehiculeBudgetDepenseRecette::with(['vehicule', 'annee'])
         ->orderBy('id', 'desc')->get();
-        return response()->json($budgetVehicules);    
+        return response()->json($budgetVehicules);
     }
 
     /**
@@ -43,12 +45,21 @@ class VehiculeBudgetDepenseRecetteController extends Controller
      */
     public function store(Request $request)
     {
-       
+
         $budgetVehicule = new VehiculeBudgetDepenseRecette;
         $creation = $budgetVehicule->create($request->only($budgetVehicule->fillable));
- 
-        return response()->json(VehiculeBudgetDepenseRecette::with(['vehicule', 'nature_ligne_budget'])
-        ->find($creation->id));
+
+        $budget = VehiculeBudgetDepenseRecette::with(['vehicule', 'annee'])->find($creation->id);
+
+        $vehicule = Vehicule::with(['entite_comptable', 'entite_physique',
+        'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
+         'chauffeur_atitre', 'contrat_assurance.compagnie_assurance', 'energie', 'affectation_geographique', 'affectation_organisationnel', 'plan_vehicule', 'budgets'])->find($creation->vehicule);
+
+     return response()->json([
+         'budget' => $budget,
+         'vehicule' => $vehicule
+     ]);
+
     }
 
     /**
@@ -83,10 +94,30 @@ class VehiculeBudgetDepenseRecetteController extends Controller
      */
     public function update(Request $request, $id)
     {
-         // update model and only pass in the fillable fields
-         $this->model->update($request->only($this->model->getModel()->fillable), $id);
 
-         return response()->json(VehiculeBudgetDepenseRecette::with(['vehicule', 'nature_ligne_budget'])->find($id));
+           // update model and only pass in the fillable fields
+           $budget_edite = VehiculeBudgetDepenseRecette::find($id);
+
+
+           $vehicule = Vehicule::find($budget_edite->vehicule);
+
+
+
+        $this->model->update($request->only($this->model->getModel()->fillable), $id);
+
+
+        $budget = VehiculeBudgetDepenseRecette::with(['vehicule', 'annee'])->find($id);
+
+        $vehicule = Vehicule::with(['entite_comptable', 'entite_physique',
+        'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
+        'chauffeur_atitre', 'contrat_assurance.compagnie_assurance', 'energie', 'affectation_geographique', 'affectation_organisationnel', 'plan_vehicule', 'budgets'])->find($vehicule->id);
+
+     return response()->json([
+         'budget' => $budget,
+         'vehicule' => $vehicule
+     ]);
+
+
     }
 
     /**

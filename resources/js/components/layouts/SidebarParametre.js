@@ -59,12 +59,7 @@ const active = {
 
                                 </li>
 
-                                         <li>
-                                            <NavLink activeStyle={active} to="/gestion_du_parc_automobile/les-annees-budgetaires">
-                                            <i className="metismenu-icon pe-7s-display2"></i>
-                                                Les Exercices Budgétaires
-                                            </NavLink>
-                                        </li>
+
 
 
                                         <li>
@@ -87,6 +82,22 @@ const active = {
                                              Structure Véhicule
                                             </NavLink>
                                         </li>
+
+
+                                        <li>
+                                            <NavLink activeStyle={active}  to="/gestion_du_parc_automobile/gestion-de-la-structure-budgetaire">
+                                            <i className="metismenu-icon pe-7s-safe"></i>
+                                             Structure Budgétaire
+                                            </NavLink>
+                                        </li>
+
+                                        {this.props.structure_budgetaires.length ?
+                                        <li>
+                                            <NavLink activeStyle={active}  to="/gestion_du_parc_automobile/gestion-du-plan-budgetaire">
+                                            <i className="metismenu-icon pe-7s-safe"></i>
+                                             Plan Budgétaire
+                                            </NavLink>
+                                        </li> : null }
 
 
                                     {this.props.structure_vehicules.length ?
@@ -177,6 +188,7 @@ const mapStateToProps = state => {
         structure_organisationnelles: state.structure_organisationnelles.items,
         structure_geographiques: state.structure_geographiques.items,
         structure_vehicules: state.structure_vehicules.items,
+        structure_budgetaires: state.structure_budgetaires.items
 
 
     }

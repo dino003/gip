@@ -13,22 +13,23 @@ import {formatageSomme} from '../../utils/Repository'
             isSelect: false,
             selectIndex: 0
         }
-        
+
     }
 
 
-   
+
     render() {
 
         const {item, index} = this.props
 
         return (
-            
-             <tr > 
-                   
+
+             <tr >
+
             <td className="sticky-col first-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.vehicule ? item.vehicule.immatriculation : ''}</td>
             <td className="sticky-col second-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.type_consomation ? item.type_consomation.nature_consomation : ''}</td>
             <td className="sticky-col third-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_conso ? moment(item.date_conso).format('DD/MM/YYYY') : ''}</td>
+            <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.plan_budgetaire ? `${item.plan_budgetaire.code}_${item.plan_budgetaire.libelle}` : ''}</td>
 
             <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.conducteur ? item.conducteur.nom : 'PERSONNE PAR DEFAUT'}</td>
 
@@ -46,10 +47,10 @@ import {formatageSomme} from '../../utils/Repository'
                     <button onClick={this.props.onDelete.bind(this, item.id)} className="mb-2 mr-2 btn-transition btn btn-outline-danger pull-right">
                     <i className="fa fa-trash"></i>
                 </button>
-              
+
                 </span>
         </td>
-            
+
 
 
         </tr>

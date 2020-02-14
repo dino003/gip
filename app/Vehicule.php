@@ -125,6 +125,12 @@ class Vehicule extends Model
              return $this->belongsTo('App\NatureEnergie', 'energie');
          }
 
+           // budgets
+           public function budgets()
+           {
+               return $this->hasMany('App\VehiculeBudgetDepenseRecette', 'vehicule');
+           }
+
 
 
 }

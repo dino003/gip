@@ -7,6 +7,9 @@ import InputMask from 'react-input-mask';
 
 import today from '../../../utils/today'
 import inputStyle from '../../../utils/inputStyle'
+import { colourStyles } from '../../../utils/Repository';
+import Select from 'react-select';
+import { number } from 'prop-types';
 
 
 
@@ -16,20 +19,20 @@ import inputStyle from '../../../utils/inputStyle'
         this.state = {
             isFormSubmitted: false
         }
-      
+
     }
 
     // componentDidMount(){
-    
+
     //      if(this.props.vehiculeSeleted == undefined){
     //       const action = {type: "EDIT_SELECTED", value: this.props.location.state.veh}
     //       this.props.dispatch(action)
-    
+
     //      }
-    
+
     //     }
 
-   
+
     setField = (event) => {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -52,7 +55,7 @@ import inputStyle from '../../../utils/inputStyle'
 
     setFieldImputationInterne(id){
         const nature_depense = this.props.natures_depense_recettes.find(nature => nature.id == id)
-        
+
         this.imputation_interne.value = nature_depense.code
     }
 
@@ -63,7 +66,7 @@ import inputStyle from '../../../utils/inputStyle'
 
         this.setState({
             [name]: value
-        }, () => this.setFieldResteEtPourcentageDepense(this.state.depense_budget, this.state.depense_realisation) );
+        }, () => this.depense_reste.value = this.depense_budget.value );
     }
 
     setFieldRecette = (event) => {
@@ -97,7 +100,7 @@ import inputStyle from '../../../utils/inputStyle'
             this.depense_pourcentage.value = pour
 
         }
-        
+
     }
 
     setFieldResteEtPourcentageRecette(total, partiel){
@@ -123,16 +126,18 @@ import inputStyle from '../../../utils/inputStyle'
             this.recette_pourcentage.value = pour
 
         }
-        
-        
+
+
     }
 
 
       verificationFormulaire () {
-          if(this.nature_ligne_budget.value == ''){
-              return "La nature de la ligne Budget est obligatoire !"
-          }else if(!this.props.annees_budgetaires.find(annee => annee.encours)){
+          if(!this.props.annees_budgetaires.find(annee => annee.encours)){
             return "Vous n'avez pas créé d'année budgétaire; enregistrement impossible"
+          }else if(!this.state.plan_budgetaire_id){
+            return "Vous n'avez pas saisi la ligne budgétaire"
+          } else if(Number(this.depense_budget.value) <= 0){
+            return "Vous n'avez pas saisi le montant"
           } else{
               return null
           }
@@ -144,33 +149,47 @@ import inputStyle from '../../../utils/inputStyle'
           if(this.verificationFormulaire() == null){
               this.setState({isFormSubmitted: true})
             axios.post('/api/ajouter_vehicule_budget_vehicule', {
-                annee_budgetaire: this.props.annees_budgetaires.find(annee => annee.encours) ? this.props.annees_budgetaires.find(annee => annee.encours).annee_budgetaire : null,
-                vehicule: this.props.vehiculeSeleted.id,
-                entite_vehicule: this.entite_vehicule.value,
-                nature_ligne_budget: this.nature_ligne_budget.value,
-                imputation_interne: this.imputation_interne.value ,
+                annee_budgetaire: this.props.annees_budgetaires.find(annee => annee.encours) ? this.props.annees_budgetaires.find(annee => annee.encours).id : null,
+                vehicule: this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id).id,
+               // entite_vehicule: this.entite_vehicule.value,
+              //  nature_ligne_budget: this.nature_ligne_budget.value,
+               // imputation_interne: this.imputation_interne.value ,
+               plan_budgetaire_id: this.state.plan_budgetaire_id ? this.state.plan_budgetaire_id.id : null,
                 depense_budget: this.depense_budget.value,
                 depense_realisation: this.depense_realisation.value,
                 depense_pourcentage: this.depense_pourcentage.value,
                 depense_reste: this.depense_reste.value,
-                recette_budget: this.recette_budget.value,
-                recette_realisation: this.recette_realisation.value,
-                recette_pourcentage: this.recette_pourcentage.value,
-                recette_reste: this.recette_reste.value,
-                
+               // recette_budget: this.recette_budget.value,
+               // recette_realisation: this.recette_realisation.value,
+               // recette_pourcentage: this.recette_pourcentage.value,
+              //  recette_reste: this.recette_reste.value,
+
 
             })
-            .then(response => { 
-               const action = {type: "ADD_BUDGET_VEHICULE", value: response.data}
+            .then(response => {
+               const action = {type: "ADD_BUDGET_VEHICULE", value: response.data.budget}
                  this.props.dispatch(action)
+
+                 axios.get('/api/plan_budgetaires').then((response) => {
+
+                    const action12 = {type: "GET_PLAN_BUDGETAIRE", value: response.data}
+                    this.props.dispatch(action12)
+                } )
+
+                 const action2 = {type: "EDIT_VEHICULE", value: response.data.vehicule}
+                 this.props.dispatch(action2)
+
+                 const action3 = {type: "EDIT_SELECTED", value: response.data.vehicule}
+                 this.props.dispatch(action3)
+
                 this.setState({isFormSubmitted: false})
                this.props.history.goBack();
 
-             
-            }).catch(error => { 
+
+            }).catch(error => {
                 this.setState({isFormSubmitted: false})
                 console.log(error) } )
-           
+
 
           }else{
               //console.log(this.verificationFormulaire())
@@ -181,36 +200,77 @@ import inputStyle from '../../../utils/inputStyle'
 
        // console.log(this.date_debut.value)
       }
-    
+
+      getNiveauxPlanBudgetaire = () => {
+        const events = [];
+        this.props.structure_budgetaires.map(event => {
+            if(!event.niveau) return;
+            return events.push(event.niveau)
+        })
+
+        return events
+    }
+
+    getMaximumNiveauPlanBudgetaire = () => {
+        var niveau = Math.max(...this.getNiveauxPlanBudgetaire(), 0)
+        if (niveau == 0) return 1;
+        return Number(niveau );
+
+    }
+
+    getStructureBudgetaireDernierNiveau = () => {
+        if(!this.getPlanBudgetaireDernierNiveau().length) return undefined;
+        else{
+            return this.props.structure_budgetaires.find(st => st.niveau == this.getPlanBudgetaireDernierNiveau()[0].structure_budgetaire.niveau)
+        }
+    }
+
+    getPlanBudgetaireDernierNiveau = () => {
+        const vehicule_courant = this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
+        var tab = vehicule_courant.budgets.map(bud => bud.plan_budgetaire_id)
+
+        return this.props.plan_budgetaires.filter(elm => {
+            return (elm.structure_budgetaire ? elm.structure_budgetaire.niveau == this.getMaximumNiveauPlanBudgetaire() : false)
+            &&
+            (vehicule_courant.budgets.length ? tab.indexOf(elm.id) == -1 : true)
+        })
+    }
+
+    setFieldSelect(name, value) {
+
+        let obj = {};
+        obj[name] = value;
+        this.setState(obj);
+    }
+
 
     render() {
         if(this.props.vehiculeSeleted == undefined){
             if(this.props.vehicules.length){
                 let vehicule = this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
-            
+
                 const action = {type: "EDIT_SELECTED", value: vehicule}
                 this.props.dispatch(action)
             }
         }
 
-        const vehiculeSelect = this.props.vehiculeSeleted ? this.props.vehiculeSeleted : this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
 
         return (
             <div className="app-main__inner">
-              
+
                     <div className="main-card mb-3 card">
                         <div className="card-body">
                             <h5 className="card-title">Gestion des budgets du véhicule
-                           
-                            {this.props.vehicules.length && 
+
+                            {this.props.vehicules.length &&
                             <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}/>
-                            }                               
+                            }
                           </h5>
                           <br />
                             <form className="" onChange={this.setField}  onSubmit={this.enregistrerIntervention}>
                                 <div className="form-row">
 
-                                <div className="col-md-3">
+                        {/*         <div className="col-md-3">
                                         <div className="position-relative form-group">
                                             <label >Entité </label>
                                             <input name="entite_vehicule"  type="text"
@@ -220,9 +280,39 @@ import inputStyle from '../../../utils/inputStyle'
                                             ref={entite_vehicule => this.entite_vehicule = entite_vehicule}
                                              className="form-control" />
                                              </div>
-                                    </div>
+                                    </div> */}
+                                        {this.getStructureBudgetaireDernierNiveau() ?
+                            <div className="col-md-5">
+                                <label className="">{this.getStructureBudgetaireDernierNiveau().libelle}  </label>
 
-                                        <div className="col-md-4">
+
+                                <Select
+                                    name="plan_budgetaire_id"
+                                    isDisabled={!this.getStructureBudgetaireDernierNiveau()}
+                                    placeholder={`Sélection de ${this.getStructureBudgetaireDernierNiveau().libelle}`}
+                                    noOptionsMessage={() => `Pas de ${this.getStructureBudgetaireDernierNiveau().libelle} pour l'instant`}
+                                    options={this.getPlanBudgetaireDernierNiveau()}
+                                    getOptionLabel={option => option.libelle}
+                                    getOptionValue={option => option.id}
+                                   // defaultValue={objetEdit.affectation_geographique ? objetEdit.affectation_geographique : null}
+
+                                    // formatOptionLabel={formatOptionVehicule}
+                                    onChange={this.setFieldSelect.bind(this, "plan_budgetaire_id")}
+                                    styles={ colourStyles}
+                                />
+
+                            </div> :
+
+
+                            <div className="col-md-5">
+                                <label className=""> Structure Budgétaire</label>
+
+                                <input readOnly className="form-control" value="Veuillez creer la structure Budgétaire" />
+
+                            </div>}
+                            <br />
+
+                                   {/*      <div className="col-md-4">
                                          <label  className="">Nature de la ligne Budget</label>
                                         <select name="nature_ligne_budget"
                                          onChange={this.setFieldNatureDepenseRecette}
@@ -232,14 +322,14 @@ import inputStyle from '../../../utils/inputStyle'
                                           className="form-control">
                                         <option defaultValue={null}></option>
 
-                                        {this.props.natures_depense_recettes.map(nat => 
+                                        {this.props.natures_depense_recettes.map(nat =>
                                                 <option key={nat.id} value={nat.id}> {nat.nature_depense_recette} </option>
 
                                                 )}
                                         </select>
-                                
-                                        </div>
 
+                                        </div> */}
+{/*
                                     <div className="col-md-4">
                                         <div className="position-relative form-group">
                                             <label >Imputation interne </label>
@@ -248,16 +338,16 @@ import inputStyle from '../../../utils/inputStyle'
                                             ref={imputation_interne => this.imputation_interne = imputation_interne}
                                              className="form-control" />
                                              </div>
-                                    </div>
-                                
+                                    </div> */}
 
-                                  
+
+
                                 </div>
 
-                    
+
                                 <div className="form-row">
-                                    
-                                   
+
+
                                         <div className="col-md-2">
                                             <label >Dépenses</label>
 
@@ -269,6 +359,7 @@ import inputStyle from '../../../utils/inputStyle'
                                             <input name="depense_budget"
                                                 onChange={this.setFieldDepense}
                                                 defaultValue={0}
+                                                style={inputStyle}
                                             ref={depense_budget => this.depense_budget = depense_budget}
                                               type="text" className="form-control" />
                                         </div>
@@ -277,9 +368,8 @@ import inputStyle from '../../../utils/inputStyle'
                                             <label >Réalisation</label>
 
                                             <input name="depense_realisation"
-                                                onChange={this.setFieldDepense}
                                                 defaultValue={0}
-
+                                                readOnly
                                             ref={depense_realisation => this.depense_realisation = depense_realisation}
                                               type="text" className="form-control" />
                                         </div>
@@ -306,12 +396,12 @@ import inputStyle from '../../../utils/inputStyle'
                                               type="text" className="form-control" />
                                         </div>
 
-                                      
+
                                     </div>
 
-                                    <div className="form-row">
-                                    
-                                   
+                               {/*      <div className="form-row">
+
+
                                     <div className="col-md-2">
                                         <label >Recettes</label>
 
@@ -359,16 +449,16 @@ import inputStyle from '../../../utils/inputStyle'
                                           type="text" className="form-control" />
                                     </div>
 
-                                  
-                                </div>
-                                 
+
+                                </div> */}
+
                                 <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
                                 <span  onClick={() => this.props.history.goBack()}
                                  className="mt-2 btn btn-warning pull-right">Retour</span>
                             </form>
                         </div>
                     </div>
-                
+
                     <ToastContainer autoClose={4000} />
        </div>
         )
@@ -380,6 +470,9 @@ const mapStateToProps = state => {
         natures_depense_recettes: state.natures_depense_recettes.items,
         vehicules: state.vehicules.items,
         annees_budgetaires: state.annees_budgetaires.items,
+        structure_budgetaires: state.structure_budgetaires.items,
+        plan_budgetaires: state.plan_budgetaires.items,
+
         vehiculeSeleted: state.vehiculeSeleted.vehicule,
     }
   }

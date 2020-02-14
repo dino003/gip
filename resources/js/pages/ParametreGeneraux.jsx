@@ -12,6 +12,7 @@ import PersonnelForm from '../components/parametre_generaux_forms/PersonnelForm'
 import JournalEvenementForm from '../components/parametre_generaux_forms/JournalEvenementForm'
 import Alerte from '../components/parametre_generaux_forms/Alerte';
 import Themes from '../components/parametre_generaux_forms/Themes';
+import Vehiculeform from '../components/parametre_generaux_forms/VehiculeForm';
 
 
 
@@ -27,8 +28,9 @@ class ParametreGeneraux extends Component {
             isFormStockSubmitted: false,
             isFormPersonnelSubmitted: false,
             isFormAlerteSubmitted: false,
-            isThemsubmit: false
- 
+            isThemsubmit: false,
+            isFormVehiculeSubmitted: false
+
         }
         this.onFormInfoEtablissemntSubmit = this.onFormInfoEtablissemntSubmit.bind(this)
         this.onSubmitModuleForm = this.onSubmitModuleForm.bind(this)
@@ -39,6 +41,7 @@ class ParametreGeneraux extends Component {
         this.onSubmitAlerte = this.onSubmitAlerte.bind(this)
         this.toggleThemeScreen = this.toggleThemeScreen.bind(this);
         this.onThemeChangeSubmit = this.onThemeChangeSubmit.bind(this);
+        this.onSubmitParamVehicule = this.onSubmitParamVehicule.bind(this);
     }
 
     toggleThemeScreen(){
@@ -49,13 +52,13 @@ class ParametreGeneraux extends Component {
     }
 
     onThemeChangeSubmit(nav, sid){
-       
+
         this.setState({isThemsubmit: true})
         axios.post('/api/ajouter_ou_modifier_theme_defaut', {
             navbar: nav,
             sidebar: sid
         })
-        .then(response => { 
+        .then(response => {
            const action = {type: "ADD_THEME", value: response.data}
              this.props.dispatch(action)
              this.setState({isThemsubmit: false})
@@ -74,10 +77,31 @@ class ParametreGeneraux extends Component {
 
     }
 
+    onSubmitParamVehicule(objet){
+        this.setState({isFormVehiculeSubmitted: true})
+        axios.post('/api/ajouter_ou_modifier_parametre_vehicules', objet)
+        .then(response => {
+           const action = {type: "ADD_PARAM_VEHICULE", value: response.data}
+             this.props.dispatch(action)
+             this.setState({isFormVehiculeSubmitted: false})
+             toast.success('Enrégistré avec succès', {
+                position: toast.POSITION.BOTTOM_CENTER
+              });
+
+        }).catch(error => {
+            console.log(error)
+            this.setState({isFormVehiculeSubmitted: false})
+            toast.error('L\'Enregistrement a échoué', {
+                position: toast.POSITION.BOTTOM_CENTER
+              });
+
+        })
+    }
+
     onFormInfoEtablissemntSubmit(objet){
         this.setState({isFormEtablissementSubmitted: true})
         axios.post('/api/ajouter_ou_modifier_info_etablissement', objet)
-        .then(response => { 
+        .then(response => {
            const action = {type: "ADD_INFO_SOCIETE", value: response.data}
              this.props.dispatch(action)
              this.setState({isFormEtablissementSubmitted: false})
@@ -98,7 +122,7 @@ class ParametreGeneraux extends Component {
     onSubmitParamReservationOrdreMission(objet){
         this.setState({isFormReservationOrdreSubmitted: true})
         axios.post('/api/ajouter_ou_modifier_parametre_generaux_reservation_ordre', objet)
-        .then(response => { 
+        .then(response => {
            const action = {type: "ADD_PARAM_GENERAUX_RESERV", value: response.data}
              this.props.dispatch(action)
              this.setState({isFormReservationOrdreSubmitted: false})
@@ -115,11 +139,11 @@ class ParametreGeneraux extends Component {
 
         })
     }
-    
+
     onSubmitModuleForm(objet){
            this.setState({isFormModuleSubmitted: true})
         axios.post('/api/ajouter_ou_modifier_parametre_modules', objet)
-        .then(response => { 
+        .then(response => {
            const action = {type: "ADD_PARAM_MODULE", value: response.data}
              this.props.dispatch(action)
              this.setState({isFormModuleSubmitted: false})
@@ -140,7 +164,7 @@ class ParametreGeneraux extends Component {
     onSubmitAlerte(objet){
         this.setState({isFormAlerteSubmitted: true})
      axios.post('/api/ajouter_ou_modifier_alertes', objet)
-     .then(response => { 
+     .then(response => {
         const action = {type: "ADD_PARAM_GENERAUX_ALERTE", value: response.data}
           this.props.dispatch(action)
           this.setState({isFormAlerteSubmitted: false})
@@ -161,7 +185,7 @@ class ParametreGeneraux extends Component {
     onFormStockSubmit(objet){
         this.setState({isFormStockSubmitted: true})
      axios.post('/api/ajouter_ou_modifier_parametre_stocks', objet)
-     .then(response => { 
+     .then(response => {
         const action = {type: "ADD_PARAM_STOCK", value: response.data}
           this.props.dispatch(action)
           this.setState({isFormStockSubmitted: false})
@@ -182,7 +206,7 @@ class ParametreGeneraux extends Component {
         onFormPersonnelSubmit(objet){
             this.setState({isFormPersonnelSubmitted: true})
         axios.post('/api/ajouter_ou_modifier_parametre_personnels', objet)
-        .then(response => { 
+        .then(response => {
             const action = {type: "ADD_PARAM_PERSONNEL", value: response.data}
             this.props.dispatch(action)
             this.setState({isFormPersonnelSubmitted: false})
@@ -203,7 +227,7 @@ class ParametreGeneraux extends Component {
         onJournalFormSubmit(objet){
             this.setState({isFormJournalSubmitted: true})
         axios.post('/api/ajouter_ou_modifier_parametre_journal', objet)
-        .then(response => { 
+        .then(response => {
             const action = {type: "ADD_PARAM_JOURNAL", value: response.data}
             this.props.dispatch(action)
             this.setState({isFormJournalSubmitted: false})
@@ -221,11 +245,11 @@ class ParametreGeneraux extends Component {
 
         })
         }
-    
+
     render() {
         return (
             <div className="app-main__inner">
-              
+
             <div className="">
               <div className="col-md-12">
 
@@ -236,6 +260,13 @@ class ParametreGeneraux extends Component {
                         <span>  Etablissement</span>
                     </a>
                 </li>
+
+                <li className="nav-item">
+                    <a role="tab" className="nav-link " id="tab-0" data-toggle="tab" href="#tab_vehicule">
+
+                        <span>  Véhicules</span>
+                    </a>
+                </li>
                 <li className="nav-item">
                     <a role="tab" className="nav-link" id="tab-1" data-toggle="tab" href="#tab_reservation_ordre_mission">
                         <span>Reservation/Ordres de missions</span>
@@ -243,7 +274,7 @@ class ParametreGeneraux extends Component {
                 </li>
                 {/* <li className="nav-item">
                     <a role="tab" className="nav-link" id="tab-1" data-toggle="tab" href="#tab-content-1">
-                    <i className="fa fa-car"></i> 
+                    <i className="fa fa-car"></i>
 
                         <span> Véhicules</span>
                     </a>
@@ -288,7 +319,7 @@ class ParametreGeneraux extends Component {
                         <span>Alertes</span>
                     </a>
                 </li>
-              
+
                 <li className="nav-item">
                     <a role="tab" className="nav-link" id="tab-1" data-toggle="tab" href="#tab_modules">
                         <span>Modules</span>
@@ -315,26 +346,43 @@ class ParametreGeneraux extends Component {
                         <span>Grid</span>
                     </a>
                 </li> */}
-             
+
             </ul>
             <div className="tab-content">
 
                 {/* etablissement */}
-                
+
                 <div className="tab-pane tabs-animation fade show active" id="tab_etablissement" role="tabpanel">
                     <div className="main-card mb-3 card">
                         <div className="card-body">
-                           
-                           <EtablissementForm 
+
+                           <EtablissementForm
                            item={this.props.info_societe}
                            onFormInfoEtablissemntSubmit={this.onFormInfoEtablissemntSubmit}
                            isFormEtablissementSubmitted={this.state.isFormEtablissementSubmitted}
                              />
                         </div>
                     </div>
-                 
+
                 </div>
                 {/* fin etablissement */}
+
+                    {/* vehicule */}
+
+                    <div className="tab-pane tabs-animation fade active" id="tab_vehicule" role="tabpanel">
+                    <div className="main-card mb-3 card">
+                        <div className="card-body">
+
+                           <Vehiculeform
+                           item={this.props.param_vehicule}
+                           onSubmitParamVehicule={this.onSubmitParamVehicule}
+                           isFormVehiculeSubmitted={this.state.isFormVehiculeSubmitted}
+                             />
+                        </div>
+                    </div>
+
+                </div>
+                {/* fin vehicule */}
 
                 {/* reservation ordres de missions */}
 
@@ -433,7 +481,7 @@ class ParametreGeneraux extends Component {
         </div>
 
         {/* themes pas dans le tab */}
-                <Themes isOpened={this.state.isOpened} 
+                <Themes isOpened={this.state.isOpened}
                 toggleThemeScreen={this.toggleThemeScreen}
                 onThemeChangeSubmit={this.onThemeChangeSubmit}
                 isThemsubmit={this.state.isThemsubmit}
@@ -452,6 +500,7 @@ class ParametreGeneraux extends Component {
 const mapStateToProps = state => {
     return {
         info_societe: state.info_societe.items,
+        param_vehicule: state.param_vehicule.items,
         param_alerte: state.param_alerte.items,
         param_stock: state.param_stock.items,
         param_personnels: state.param_personnels.items,

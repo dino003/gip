@@ -22,7 +22,7 @@ class PlanGeographiqueController extends Controller
     {
        // return $this->model->all();
         $plan_geographiques = PlanGeographique::orderBy('id', 'asc')->with(['children.children.children.children.children.children.children.children.children.children'])->get();
-        
+
         return response()->json($plan_geographiques);
     }
 
@@ -47,7 +47,7 @@ class PlanGeographiqueController extends Controller
         $str = new PlanGeographique;
 
          $creation = $str->create($request->only($this->model->getModel()->fillable));
-         
+
         return response()->json( PlanGeographique::with(['children.children.children.children.children.children.children.children.children.children'])->find($creation->id));
 
     }
