@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ContratAssurance extends Model
 {
-    
+
     protected $table = 'contrat_assurances';
 
     public $timestamps = false;
@@ -15,7 +15,7 @@ class ContratAssurance extends Model
 
     //protected $with = ['compagnie_assurance', 'courtier', 'vehicules'];
 
- 
+
 
     // protected $casts = [
     //     'date_contrat' => 'date:d-m-Y',
@@ -37,7 +37,7 @@ class ContratAssurance extends Model
    }
 
    //vehicule
- 
+
 
    public function vehicules()
    {

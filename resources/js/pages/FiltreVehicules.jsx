@@ -1037,7 +1037,7 @@ class FiltreVehicules extends Component {
 
 
                                 <div className="row">
-                                    <div className="col-md-3">
+                                   {/*  <div className="col-md-3">
                                     <label htmlFor="">Marque</label>
 
                                         <Select
@@ -1052,7 +1052,7 @@ class FiltreVehicules extends Component {
                                                 // formatOptionLabel={formatOptionVehicule}
                                                 onChange={this.setFieldSelect.bind(this, "marque")}
                                             />
-                                    </div>
+                                    </div> */}
 
                         {/*             <div className="col-md-4">
                                     <label htmlFor="">Entité physique</label>
@@ -1101,16 +1101,15 @@ class FiltreVehicules extends Component {
                                     </select>
                                     </div>
 
-                                    <div className="col-md-4">
+                           {/*          <div className="col-md-4">
                                         <label htmlFor="">Modèle</label>
-{/*                                         <input type="text" name="modele" onChange={this.setField} className="form-control"/>
- */}
+
                                         <select name="modele" id="" onChange={this.setField} className="form-control">
                                         <option value=""></option>
                                         {this.getIdsUtilisations().map((item, index) => <option key={index} value={item}>{item}</option>)}
 
                                     </select>
-                                    </div>
+                                    </div> */}
 
                                     <div className="col-md-4">
                                     <label htmlFor="">Type de Véhicule</label>
