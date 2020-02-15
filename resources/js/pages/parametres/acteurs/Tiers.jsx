@@ -30,7 +30,7 @@ import TierFileUpload from '../../../components/TierFileUpload'
         this.onErrorUpload = this.onErrorUpload.bind(this);
         this.onSuccesUpload = this.onSuccesUpload.bind(this);
         this.toggleDocumentation = this.toggleDocumentation.bind(this);
-        
+
     }
 
     toggleDocumentation(){
@@ -60,7 +60,7 @@ import TierFileUpload from '../../../components/TierFileUpload'
     }
 
     handleSearchInputChange = (event) => {
-    
+
     }
 
 
@@ -69,7 +69,7 @@ import TierFileUpload from '../../../components/TierFileUpload'
         return  <span style={{textAlign: 'center'}}>
 
         <Loader
-           
+
             height={500}
             width={300}
          />
@@ -78,7 +78,7 @@ import TierFileUpload from '../../../components/TierFileUpload'
 
     renderEmpty(){
        return <span style={{textAlign: 'center', color: 'red'}}>
-            Aucune donnée enregistrée !            
+            Aucune donnée enregistrée !
         </span>
     }
 
@@ -89,27 +89,27 @@ import TierFileUpload from '../../../components/TierFileUpload'
             <th>Code</th>
             <th>Nom</th>
             <th>Métier principal</th>
-            <th>Ville</th>
+            <th>Type </th>
             <th>Telephonne</th>
             <th>Fax</th>
             <th>Adresse</th>
-           
-          
+
+
 
 
 
         </tr>
         </thead>
         <tbody>
-         {this.props.tiers.map((entite, index) =>  
-         <TierItem 
-         key={entite.id} 
+         {this.props.tiers.map((entite, index) =>
+         <TierItem
+         key={entite.id}
          index={index}
          onDelete={this.onDelete}
          onEdit={this.onEdit}
          item={entite} />
         )}
-      
+
         </tbody>
     </table>)
     }
@@ -117,7 +117,7 @@ import TierFileUpload from '../../../components/TierFileUpload'
     onDelete = (id) => {
         let conf = confirm('Voulez-vous vraiment supprimer ?')
         if(conf === true){
-        
+
             const action = {type: "REMOVE_TIER", value: id}
             this.props.dispatch(action)
             const itemIndex = this.state.tiersState.findIndex(item => item.id === id)
@@ -125,7 +125,7 @@ import TierFileUpload from '../../../components/TierFileUpload'
             this.setState({tiersState: this.state.tiersState.filter((item, index) => index !== itemIndex)})
             axios.delete('api/supprimer_tier/' + id)
         }
-       
+
     }
 
     onEdit = (id) => {
@@ -138,24 +138,24 @@ import TierFileUpload from '../../../components/TierFileUpload'
     //         editIndex: index
     //     }, () => this.passEdit())
 
-        
+
         this.props.history.push('/gestion_du_parc_automobile/gestion-des-tiers/' + id)
 
     }
 
     searchChange = search => {
-   
+
         const ents =  this.state.tiersState.filter((user) => {
-            return user.entite.toLowerCase().includes(search) 
-           || user.nom_entite.toLowerCase().includes(search) 
+            return user.entite.toLowerCase().includes(search)
+           || user.nom_entite.toLowerCase().includes(search)
 
           }
         )
 
         this.setState({tiersState: ents})
-          
+
     }
-    
+
 
     render() {
     const {isSearchInputVisible} = this.state
@@ -164,19 +164,19 @@ import TierFileUpload from '../../../components/TierFileUpload'
             <div className="main-card card" >
                        <div className="card-body ">
                        <h5 className="card-title">Gestion des Tiers
-                          
+
                           <span className="pull-right">
-                      
+
                           {/* <button title=" Ajouter une nouvelle ligne de budget"
                                     className="mb-2 mr-2 btn-transition btn btn-outline-primary"
                                     onClick={() => this.props.history.push(`/gestion_du_parc_automobile/creation-contrat-assurance`)}
                                     >
                                     <i className="fa fa-plus"></i> {' '}
-   
+
                                         Ajouter
                                            </button> */}
 
-                                           <TierFileUpload 
+                                           <TierFileUpload
                                             onRef={ref => (this.child = ref)}
                                             onErrorUpload={this.onErrorUpload}
                                             onSuccesUpload={this.onSuccesUpload}
@@ -191,10 +191,10 @@ import TierFileUpload from '../../../components/TierFileUpload'
                                               sheet="feuille1"
                                               buttonText="Ecran -> Liste"/> : null }
                               </span>
-                           
-                              
-                                          
-                              
+
+
+
+
                           </h5>
                            {/* <TableHeader
                            isSearchInputVisible={isSearchInputVisible}
@@ -211,7 +211,7 @@ import TierFileUpload from '../../../components/TierFileUpload'
                                       to="/ajouter-entite"
                                       >
                                       <i className="fa fa-plus"></i> {' '}
-     
+
                                           Ajouter
                                              </NavLink>
                                             {isSearchInputVisible ?  <button title="Quitter le mode recherche"
@@ -219,16 +219,16 @@ import TierFileUpload from '../../../components/TierFileUpload'
                                       onClick={this.toggleSearchInput}
                                       >
                                       <i className="fa fa-times"></i> {' '}
-     
+
                                              </button> :  <button title="Rechercher"
                                       className="mb-2 mr-2 btn-transition btn btn-outline-info pull-right"
                                       onClick={this.toggleSearchInput}
                                       >
                                       <i className="fa fa-search"></i> {' '}
-     
+
                                              </button>}
                                              </span>
-                                           {isSearchInputVisible &&  
+                                           {isSearchInputVisible &&
                             <input
                             ref={search => this.search = search}
 
@@ -236,14 +236,14 @@ import TierFileUpload from '../../../components/TierFileUpload'
                             }
                            </h5> */}
                            <div className="table-responsive">
-                           {this.props.loading ? this.renderLoading() : 
+                           {this.props.loading ? this.renderLoading() :
                             !this.props.tiers.length ? this.renderEmpty() : this.renderList()}
 
                            </div>
                        </div>
                    </div>
-                
-           
+
+
 
                 <Container>
 
@@ -254,7 +254,7 @@ import TierFileUpload from '../../../components/TierFileUpload'
           styles={{ cursor: 'pointer'}}
 
            onClick={() => this.toggleDocumentation()} />
-           
+
            <Button
            tooltip="Importer un fichier de tiers"
            icon="fas fa-file-excel"
@@ -292,7 +292,7 @@ import TierFileUpload from '../../../components/TierFileUpload'
             <div className="theme-settings__inner">
                 <div className="scrollbar-container">
                     <div className="theme-settings__options-wrapper">
-                        <h3 className="themeoptions-heading">Documentation 
+                        <h3 className="themeoptions-heading">Documentation
                         </h3>
                       <br />
                       <div className="card-shadow-primary border mb-3 card card-body border-primary">
@@ -312,7 +312,7 @@ import TierFileUpload from '../../../components/TierFileUpload'
                                             <span><em style={{color: 'red'}}>J</em> ==> VILLE</span> <br />
 
                                             </div>
-                      
+
                     </div>
                 </div>
             </div>

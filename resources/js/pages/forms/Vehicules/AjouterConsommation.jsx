@@ -445,7 +445,7 @@ import { colourStyles, calculSommeColonneSommeIntervention, calculSommeColonneSo
                                           className="form-control">
                                         <option defaultValue={null}></option>
 
-                                        {this.props.tiers.map(tier =>
+                                        {this.props.tiers.filter(el => el.type_tiers == "STATION ESSENCE").map(tier =>
                                                 <option key={tier.id} value={tier.id}>{tier.code} </option>
 
                                                 )}

@@ -429,7 +429,7 @@ import Select from 'react-select'
                                             </div>
 
                                             <div className="col-md-3">
-                                             <label  className="">Tiers</label>
+                                             <label  className="">Tiers (Garagistes)</label>
                                             <select name="tiers" onChange={this.setField}
                                             defaultValue={objetEdit.tiers ? objetEdit.tiers.id : null}
                                                 ref={tiers => this.tiers = tiers}
@@ -438,10 +438,10 @@ import Select from 'react-select'
                                               className="form-control">
                                             <option defaultValue={null}></option>
 
-                                            {this.props.tiers.map(tier =>
-                                                    <option key={tier.id} value={tier.id}>{tier.code} </option>
+                                            {this.props.tiers.filter(el => el.type_tiers == "GARAGISTE").map(tier =>
+                                                <option key={tier.id} value={tier.id}>{tier.code} </option>
 
-                                                    )}
+                                                )}
                                             </select>
 
                                             </div>

@@ -439,7 +439,7 @@ import { colourStyles, formatageSomme, calculSommeColonneSommeIntervention, calc
                                         </div>
 
                                         <div className="col-md-3">
-                                         <label  className="">Tiers</label>
+                                         <label  className="">Tiers (Garagistes)</label>
                                         <select name="tiers" onChange={this.setField}
                                             ref={tiers => this.tiers = tiers}
                                             style={inputStyle}
@@ -447,7 +447,7 @@ import { colourStyles, formatageSomme, calculSommeColonneSommeIntervention, calc
                                           className="form-control">
                                         <option defaultValue={null}></option>
 
-                                        {this.props.tiers.map(tier =>
+                                        {this.props.tiers.filter(el => el.type_tiers == "GARAGISTE").map(tier =>
                                                 <option key={tier.id} value={tier.id}>{tier.code} </option>
 
                                                 )}

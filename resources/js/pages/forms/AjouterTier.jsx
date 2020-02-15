@@ -12,11 +12,11 @@ import inputStyle from '../../utils/inputStyle';
         this.state = {
          isFormSubmitted: false
         }
-      
+
     }
 
     componentDidMount(){
-   
+
     }
 
     // componentWillUnmount(){
@@ -24,15 +24,15 @@ import inputStyle from '../../utils/inputStyle';
 
     // }
 
- 
 
-   
+
+
 
     setField = (event) => {
           const target = event.target;
           const value = target.type === 'checkbox' ? target.checked : target.value;
           const name = target.name;
-      
+
           this.setState({
             [name]: value
           });
@@ -64,7 +64,7 @@ import inputStyle from '../../utils/inputStyle';
                 telephonne: this.telephonne.value,
                 fax: this.fax.value,
                 adresse_messagerie: this.adresse_messagerie.value,
-                numero_de_siret: this.numero_de_siret.value,
+                type_tiers: this.type_tiers.value,
                 fournisseur: this.fournisseur.value,
                 numero_client_etablissement: this.numero_client_etablissement.value,
                 numero_compte: this.numero_compte.value,
@@ -77,17 +77,17 @@ import inputStyle from '../../utils/inputStyle';
                 autre_metier2: this.autre_metier2.value
             })
             .then(response => {
-       
+
                const action = {type: "ADD_TIER", value: response.data}
                  this.props.dispatch(action)
                 this.setState({isFormSubmitted: false})
                this.props.history.goBack()
 
-             
+
             }).catch(error => {
                     this.setState({isFormSubmitted: false})
                  console.log(error) } )
-           
+
 
           }else{
               //console.log(this.verificationFormulaire())
@@ -97,12 +97,12 @@ import inputStyle from '../../utils/inputStyle';
           }
 
       }
-    
+
 
     render() {
         return (
             <div className="app-main__inner">
-              
+
                     <div className="main-card mb-3 card">
                         <div className="card-body"><h5 className="card-title">Gestion des Tiers</h5>
                             <form className="" onChange={this.setField} onSubmit={this.enregistrerTiers}>
@@ -110,7 +110,7 @@ import inputStyle from '../../utils/inputStyle';
                                     <div className="col-md-2">
                                         <div className="position-relative form-group">
                                             <label >Code *</label>
-                                            <input name="code" 
+                                            <input name="code"
                                             style={inputStyle}
                                             ref={code => this.code = code}
                                              type="text" className="form-control" /></div>
@@ -118,7 +118,7 @@ import inputStyle from '../../utils/inputStyle';
                                     <div className="col-md-5">
                                         <div className="position-relative form-group">
                                             <label >Nom *</label>
-                                            <input name="nom" 
+                                            <input name="nom"
                                             style={inputStyle}
                                             ref={nom => this.nom = nom}
 
@@ -135,10 +135,10 @@ import inputStyle from '../../utils/inputStyle';
                                               type="text" className="form-control" />
                                         </div>
                                     </div>
-                                  
+
                                 </div>
 
-                                 
+
 
                                     <div className="form-row">
                                     <div className="col-md-6">
@@ -158,7 +158,7 @@ import inputStyle from '../../utils/inputStyle';
                                              type="text" className="form-control" />
                                         </div>
                                     </div>
-                                  
+
                                 </div>
                                 <div className="form-row">
                                     <div className="col-md-3">
@@ -209,7 +209,7 @@ import inputStyle from '../../utils/inputStyle';
                                     <div className="col-md-3">
                                         <div className="position-relative form-group">
                                             <label >Télephonne</label>
-                                            <input name="telephonne" 
+                                            <input name="telephonne"
                                             ref={telephonne => this.telephonne = telephonne}
 
                                              type="text" className="form-control" /></div>
@@ -235,13 +235,26 @@ import inputStyle from '../../utils/inputStyle';
                                 </div>
 
                                 <div className="form-row">
-                                <div className="col-md-6">
+                                <div className="col-md-4">
                                         <div className="position-relative form-group">
-                                            <label >Numero de siret</label>
-                                            <input name="numero_de_siret" 
-                                            ref={numero_de_siret => this.numero_de_siret = numero_de_siret}
+                                            <label className="center">Type de Tiers</label>
 
-                                             type="text" className="form-control" /></div>
+                                            <select name="type_tiers"
+                                            ref={type_tiers => this.type_tiers = type_tiers}
+
+                                         onChange={this.setField}  className="form-control">
+                                            <option ></option>
+
+                                            <option >ASSUREUR</option>
+                                            <option >CONCESIONNAIRE</option>
+
+                                            <option >GARAGISTE</option>
+                                            <option >STATION ESSENCE</option>
+
+
+
+                                        </select>
+                                        </div>
                                     </div>
 
                                     <div className="col-md-3">
@@ -254,7 +267,7 @@ import inputStyle from '../../utils/inputStyle';
                                          onChange={this.setField}  className="form-control">
                                             <option >Fournisseur Interne</option>
                                             <option >Fournisseur Externe</option>
-                                          
+
 
                                         </select>
                                         </div>
@@ -278,10 +291,10 @@ import inputStyle from '../../utils/inputStyle';
                                         </select>
                                         </div>
                                     </div>
-                            
+
                                 </div>
 
-                               
+
                                     <div className="form-row">
                                         <div className="col-md-4">
                                     <label  className="">N° de client de l'établissement chez ce Tiers</label>
@@ -291,7 +304,7 @@ import inputStyle from '../../utils/inputStyle';
                                      type="text" className="form-control" />
 
                                         </div>
-                                      
+
                                         <div className="col-md-6">
                                             <label >N° compte du Tiers en comptabilité générale</label>
 
@@ -301,7 +314,7 @@ import inputStyle from '../../utils/inputStyle';
                                              type="text" className="form-control" />
                                         </div>
 
-                                    
+
                                     </div>
 
                                     <div className="form-row">
@@ -313,7 +326,7 @@ import inputStyle from '../../utils/inputStyle';
 
                                              type="text" className="form-control" />
                                         </div>
-                                      
+
                                         <div className="col-md-4">
                                             <label >Nom de la banque du Tiers</label>
 
@@ -334,13 +347,13 @@ import inputStyle from '../../utils/inputStyle';
                                     </div>
 
                                     <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
-                           
+
                                 <span onClick={() => this.props.history.goBack()}
                                  className="mt-2 btn btn-warning pull-right">Retour</span>
                             </form>
                         </div>
                     </div>
-                
+
                     <ToastContainer autoClose={4000} />
        </div>
         )

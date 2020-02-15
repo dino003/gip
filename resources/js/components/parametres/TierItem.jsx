@@ -5,10 +5,10 @@ import {connect} from 'react-redux'
 class TierItem extends Component {
     constructor(props) {
         super(props);
-        
+
     }
-    
-    
+
+
 
     render() {
         const {item, index} = this.props
@@ -16,12 +16,12 @@ class TierItem extends Component {
 
         return (
             <tr>
-                                      
+
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.code || ''}</td>
-         
+
             <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.nom || ''}</td>
             <td   onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.metier_principal || ''}</td>
-            <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.ville || ''}</td>
+            <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.type_tiers || ''}</td>
             <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.telephonne || ''}</td>
             <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.fax || ''}</td>
             <td  onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.adresse1 || ''}</td>
@@ -35,7 +35,7 @@ class TierItem extends Component {
 
                 </span>
                 </td>
-        
+
         </tr>
         )
     }

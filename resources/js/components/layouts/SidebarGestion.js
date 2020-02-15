@@ -43,21 +43,21 @@ const active = {
                                 </span>
                             </button>
                         </span>
-                    </div>   
+                    </div>
                      <div className="scrollbar-sidebar">
                         <div className="app-sidebar__inner">
                             <ul className="vertical-nav-menu">
                                 <li className="app-sidebar__heading">Gestion</li>
-                            
 
-                                  
+
+
                                 {param_generaux_modules && param_generaux_modules.reservations == 1 &&
- 
+
                                 <li>
                                     <NavLink activeStyle={active} exact to="/gestion_du_parc_automobile/gestion-des-reservations-all">
                                         <i className="metismenu-icon pe-7s-home"></i>
                                         Les Réservations de véhicules
-                                        
+
                                         <i className="metismenu-state-icon "></i>
                                     </NavLink>
 
@@ -65,23 +65,23 @@ const active = {
                                 }
 
                                 {param_generaux_modules && param_generaux_modules.utilisation_vehicules == 1 &&
-                                
+
                                 <li>
                                     <NavLink activeStyle={active} exact to="/gestion_du_parc_automobile/gestion-des-utilisations-all">
                                         <i className="metismenu-icon pe-7s-home"></i>
                                         Les Sorties de véhicules
-                                        
+
                                         <i className="metismenu-state-icon "></i>
                                     </NavLink>
 
                                 </li>
                                 }
 
-                                {param_generaux_modules && 
+                                {param_generaux_modules &&
 
                                     <React.Fragment>
-                                       
-                                        {param_generaux_modules.gestion_ordre_de_mission == 1 &&   
+
+                                        {param_generaux_modules.gestion_ordre_de_mission == 1 &&
                                         <li>
                                             <NavLink activeStyle={active}  to="/gestion_du_parc_automobile/gestion-des-ordres-de-missions">
                                             <i className="metismenu-icon pe-7s-safe"></i>
@@ -89,7 +89,7 @@ const active = {
                                             </NavLink>
                                         </li> }
 
-                                        {param_generaux_modules.contrat_assurance_sinistres == 1 &&   
+                                        {param_generaux_modules.contrat_assurance_sinistres == 1 &&
 
 
                                         <li>
@@ -107,15 +107,15 @@ const active = {
                                             </NavLink>
                                         </li> */}
 
-                                        <li>
+                                   {/*      <li>
                                             <NavLink activeStyle={active} to="/gestion_du_parc_automobile/parc/budgets-entites">
                                             <i className="metismenu-icon pe-7s-display2"></i>
                                                 Les Budgets des entités
                                             </NavLink>
-                                        </li>
+                                        </li> */}
 
-                                        
-                                        {param_generaux_modules.stock_pieces_detache_consomable == 1 &&   
+
+                                        {param_generaux_modules.stock_pieces_detache_consomable == 1 &&
 
                                         <li>
                                         <a href="#">
@@ -124,9 +124,9 @@ const active = {
                                             <i className="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                         </a>
                                         <ul>
-                                 
+
                                             <li>
-                                               
+
                                                 <NavLink activeStyle={active} to="/gestion_du_parc_automobile/gestion-des-articles">
                                                  <i className="metismenu-icon pe-7s-display2"></i>
                                                 Les Articles
@@ -144,23 +144,23 @@ const active = {
                                                     </i>Les Sorties du stock
                                                 </a>
                                             </li> */}
-                                            {/* <li>    
+                                            {/* <li>
                                                 <a href="elements-badges-labels.html">
                                                     <i className="metismenu-icon">
                                                     </i>Les Commandes d'articles
                                                 </a>
                                             </li> */}
-                                        
+
                                         </ul>
-                                    </li> 
+                                    </li>
                                             }
                                     </React.Fragment>
                                 }
 
-                                       
-                                       
 
-                                   
+
+
+
                             </ul>
                         </div>
                     </div>

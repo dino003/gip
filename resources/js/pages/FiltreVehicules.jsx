@@ -1078,7 +1078,7 @@ class FiltreVehicules extends Component {
                                                 isClearable
                                                 placeholder="Selectionnez"
                                                 noOptionsMessage={() => "Aucune Tiers pour l'instat"}
-                                                options={this.props.tiers}
+                                                options={this.props.tiers.filter(tier => tier.type_tiers == "CONCESIONNAIRE")}
                                                 getOptionLabel={option => `${option.code}--${option.nom}`}
                                                 getOptionValue={option => option.id}
                                                 // formatOptionLabel={formatOptionVehicule}
@@ -1135,7 +1135,7 @@ class FiltreVehicules extends Component {
                                                 placeholder="Selectionnez"
 
                                                 noOptionsMessage={() => "Aucune Tiers pour l'instat"}
-                                                options={this.props.tiers}
+                                                options={this.props.tiers.filter(tier => tier.type_tiers == "ASSUREUR")}
                                                 getOptionLabel={option => `${option.code}--${option.nom}`}
                                                 getOptionValue={option => option.id}
                                                 // formatOptionLabel={formatOptionVehicule}

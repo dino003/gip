@@ -29,16 +29,16 @@ const groupStyles = {
     textAlign: 'center',
   };
 
-  
+
 const formatOptionVehicule = data => (
     <div style={groupStyles}>
-      <span>{data.immatriculation}</span> 
+      <span>{data.immatriculation}</span>
     </div>
   );
 
   const formatOptionTiers = data => (
     <div style={groupStyles}>
-      <span>{data.code}</span> 
+      <span>{data.code}</span>
     </div>
   );
 
@@ -52,10 +52,10 @@ const formatOptionVehicule = data => (
             compagnie_assurance: null
 
         }
-      
+
     }
 
-   
+
     setField = (event) => {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -102,7 +102,7 @@ const formatOptionVehicule = data => (
 
     checkCompagnie = () => {
         if(this.compagnie_assurance.value !== '') return false
-       return true 
+       return true
     }
 
     setAutreDate = (date) => {
@@ -116,7 +116,7 @@ const formatOptionVehicule = data => (
         var jour = h.getDate() - 1
         var jour1 = jour.toString();
 
-         const date_fin = annee + '-' + (h.getMonth() + 1).toString().padStart(2, 0) + 
+         const date_fin = annee + '-' + (h.getMonth() + 1).toString().padStart(2, 0) +
          '-' + jour1.padStart(2, 0);
 
          this.periode_date_fin.value = date_fin
@@ -158,12 +158,12 @@ const formatOptionVehicule = data => (
                 montant_franchise: this.montant_franchise.value,
                 global: this.global.checked
               }
-           
+
             axios.post('/api/ajouter_contrat_assurance',  {
                 vehicules: this.global.checked ? null : this.state.vehicule == null  ? null : this.state.vehicule,
                 contrat_objet: contrat
                 })
-            .then(response => { 
+            .then(response => {
                const action = {type: "ADD_CONTRAT_ASSURANCE", value: response.data.contrat_assurance}
                  this.props.dispatch(action)
                  const action2 = {type: "GET_VEHICULE", value: response.data.vehicules}
@@ -171,11 +171,11 @@ const formatOptionVehicule = data => (
                 this.setState({isFormSubmitted: false})
                this.props.history.goBack();
 
-             
+
             }).catch(error => {
                 this.setState({isFormSubmitted: false})
                  console.log(error) } )
-           
+
 
           }else{
               //console.log(this.verificationFormulaire())
@@ -184,34 +184,34 @@ const formatOptionVehicule = data => (
             //   });
             alert(this.verificationFormulaire())
           }
-     
+
 
       }
-    
+
 
     render() {
        // console.log(this.numero_contrat_police)
         return (
             <div className="app-main__inner">
-              
+
                     <div className="main-card mb-3 card">
                         <div className="card-body">
                             <h5 className="card-title">Ajout de Contrat d'assurance
-                                                         
+
                           </h5>
                             <form className="" onChange={this.setField}  onSubmit={this.enregistrerContratAssurance}>
-                          
-                               
+
+
                                 <div className="form-row">
 
                                 <div className="col-md-4">
                                             {!this.state.global ?
                                              <label  className="">  Sélection de véhicule</label> :
                                              <label>Contrat global</label> }
-                                            { this.state.global ? <input readOnly 
+                                            { this.state.global ? <input readOnly
                                             defaultValue="Ce Contrat couvre tous les véhicules"
-                                            className="form-control" /> : 
-                                     
+                                            className="form-control" /> :
+
                                         <Select
                                         name="vehicule"
                                         placeholder="Selectionnez un véhicule"
@@ -224,7 +224,7 @@ const formatOptionVehicule = data => (
                                         styles={colourStyles}
                                       />
                                     }
-                                
+
                                         </div>
 
                                     <div className="col-md-2">
@@ -267,14 +267,14 @@ const formatOptionVehicule = data => (
                                              </div>
                                     </div>
 
-                                  
+
                                 </div>
 
                                 <div className="form-row">
                                 <div className="col-md-2">
                                         <div className="position-relative form-group">
                                             <label >Période ===></label>
-                                           
+
                                              </div>
                                     </div>
                                     <div className="col-md-3">
@@ -310,27 +310,27 @@ const formatOptionVehicule = data => (
                                              className="form-control" />
                                              </div>
                                     </div>
-                                   
+
                                 </div>
 
                                 <div className="form-row">
 
                                 <div className="col-md-3">
                                          <label  className="">Compagnie d'assurance</label>
-                                  
+
 
                                         <Select
                                         name="compagnie_assurance"
                                         placeholder="Selectionnez la compagnie"
                                         noOptionsMessage={() => "Aucun Tiers pour l'instant"}
-                                        options={this.props.tiers}
+                                        options={this.props.tiers.filter(tier => tier.type_tiers == "ASSUREUR")}
                                         getOptionLabel={option => option.code}
                                         getOptionValue={option => option.id}
                                         formatOptionLabel={formatOptionTiers}
                                         onChange={this.setFieldCompagnie}
                                         styles={colourStyles}
                                       />
-                                
+
                                         </div>
 
                                         <div className="col-md-3">
@@ -340,15 +340,15 @@ const formatOptionVehicule = data => (
                                           className="form-control">
                                         <option defaultValue={null}></option>
 
-                                        {this.props.tiers.map(tier => 
+                                        {this.props.tiers.map(tier =>
                                                 <option key={tier.id} value={tier.id}>{tier.code} </option>
 
                                                 )}
                                         </select>
-                                
+
                                         </div>
-                                    
-                                   
+
+
                                         <div className="col-md-3">
                                             <label >Valeur assurée</label>
 
@@ -366,9 +366,9 @@ const formatOptionVehicule = data => (
                                               type="number" className="form-control" />
                                         </div>
 
-                                      
+
                                     </div>
-                                 
+
                                 <div className="form-row">
                                     <div className="col-md-3">
                                         <div className="position-relative form-group">
@@ -397,19 +397,19 @@ const formatOptionVehicule = data => (
 
                                               type="number" className="form-control" /></div>
                                     </div>
-                                
-                                   
+
+
                                 </div>
-                          
+
 
                                 <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
-                          
+
                                 <span onClick={() => this.props.history.goBack()}
                                  className="mt-2 btn btn-warning pull-right">Retour</span>
                             </form>
                         </div>
                     </div>
-                
+
                     <ToastContainer autoClose={4000} />
        </div>
         )

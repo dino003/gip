@@ -21,7 +21,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
             objetEdit: undefined,
             isFormSubmitted: false
         }
-      
+
     }
 
 
@@ -29,8 +29,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
     //     this.setState({
     //         objetEdit: this.props.contrat_assurances.find(contrat => contrat.id == this.props.match.params.contrat_assurance_id)
     //     })
-    // } 
-   
+    // }
+
     setField = (event) => {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -78,7 +78,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
     checkCompagnie = () => {
         if(this.compagnie_assurance.value !== '') return false
-       return true 
+       return true
     }
 
     setAutreDate = (date) => {
@@ -92,7 +92,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
         var jour = h.getDate() - 1
         var jour1 = jour.toString();
 
-         const date_fin = annee + '-' + (h.getMonth() + 1).toString().padStart(2, 0) + 
+         const date_fin = annee + '-' + (h.getMonth() + 1).toString().padStart(2, 0) +
          '-' + jour1.padStart(2, 0);
 
          this.periode_date_fin.value = date_fin
@@ -140,13 +140,13 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                 montant_franchise: this.montant_franchise.value,
                 global: this.global.checked
               }
-        
+
 
             axios.post('/api/modifier_contrat_assurance/' + objetEdit.id, {
                 vehicules: this.global.checked ? null : this.state.vehicule == undefined  ? null : this.state.vehicule,
                 contrat_objet: contrat
                 })
-            .then(response => { 
+            .then(response => {
                const action = {type: "EDIT_CONTRAT_ASSURANCE", value: response.data.contrat_assurance}
                  this.props.dispatch(action)
                  const action2 = {type: "GET_VEHICULE", value: response.data.vehicules}
@@ -154,11 +154,11 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                 this.setState({isFormSubmitted: false})
                this.props.history.goBack();
 
-             
+
             }).catch(error => {
                 this.setState({isFormSubmitted: false})
                  console.log(error) } )
-           
+
 
           }else{
               //console.log(this.verificationFormulaire())
@@ -167,10 +167,10 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
             //   });
             alert(this.verificationFormulaire())
           }
-     
+
 
       }
-    
+
 
     render() {
         const objetEdit = this.props.contrat_assurances.find(contrat => contrat.id == this.props.match.params.contrat_assurance_id)
@@ -178,29 +178,29 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
        if(objetEdit !== undefined){
         return (
             <div className="app-main__inner">
-              
+
                     <div className="main-card mb-3 card">
                         <div className="card-body">
                             <h5 className="card-title">Modification de Contrat d'assurance
-                                                         
+
                           </h5>
                             <form className="" onChange={this.setField}  onSubmit={this.modifierContratAssurance}>
-                          
-                               
+
+
                                 <div className="form-row">
 
                                 <div className="col-md-4">
-                 
+
                                     {this.state.global !== undefined ?    <React.Fragment>
                                   {!this.state.global ?
                                              <label  className=""> Sélection de véhicule</label> :
                                              <label>Contrat global</label> }
-                                            { this.state.global ? <input readOnly 
+                                            { this.state.global ? <input readOnly
                                             defaultValue="Ce Contrat couvre tous les véhicules"
-                                            className="form-control" /> : 
-                                     
+                                            className="form-control" /> :
+
                                         <Select
-                                        
+
                                         name="vehicule"
                                         placeholder="Selectionnez un véhicule"
                                         noOptionsMessage={() => "Aucun Véhicule pour l'instant"}
@@ -216,10 +216,10 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                   {!objetEdit.global ?
                                              <label  className=""> Sélection de véhicule</label> :
                                              <label>Contrat global</label> }
-                                            { objetEdit.global ? <input readOnly 
+                                            { objetEdit.global ? <input readOnly
                                             defaultValue="Ce Contrat couvre tous les véhicules"
-                                            className="form-control" /> : 
-                                     
+                                            className="form-control" /> :
+
                                         <Select
                                         name="vehicule"
                                         placeholder="Selectionnez un véhicule"
@@ -233,7 +233,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                       />
                                     }
                                   </React.Fragment>}
-                                
+
                                         </div>
 
                                     <div className="col-md-2">
@@ -279,14 +279,14 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                              </div>
                                     </div>
 
-                                  
+
                                 </div>
 
                                 <div className="form-row">
                                 <div className="col-md-2">
                                         <div className="position-relative form-group">
                                             <label >Période de validité ===></label>
-                                           
+
                                              </div>
                                     </div>
                                     <div className="col-md-3">
@@ -328,27 +328,27 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                              className="form-control" />
                                              </div>
                                     </div>
-                                   
+
                                 </div>
 
                                 <div className="form-row">
 
                                 <div className="col-md-3">
                                          <label  className="">Compagnie d'assurance</label>
-                                    
+
 
                                         <Select
                                         name="compagnie_assurance"
                                         placeholder="Selectionnez la compagnie"
                                         noOptionsMessage={() => "Aucun Tiers pour l'instant"}
-                                        options={this.props.tiers}
+                                        options={this.props.tiers.filter(tier => tier.type_tiers == "ASSUREUR")}
                                         getOptionLabel={option => option.code}
                                         getOptionValue={option => option.id}
                                         onChange={this.setFieldCompagnie}
                                         defaultValue={objetEdit.compagnie_assurance ? objetEdit.compagnie_assurance : null}
                                         styles={colourStyles}
                                       />
-                                
+
                                         </div>
 
                                         <div className="col-md-3">
@@ -358,18 +358,18 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                             defaultValue={objetEdit.courtier ? objetEdit.courtier.id : null}
 
                                           className="form-control">
-                                              
+
                                         <option defaultValue={null}></option>
 
-                                        {this.props.tiers.map(tier => 
+                                        {this.props.tiers.map(tier =>
                                                 <option key={tier.id} value={tier.id}>{tier.code} </option>
 
                                                 )}
                                         </select>
-                                
+
                                         </div>
-                                    
-                                   
+
+
                                         <div className="col-md-3">
                                             <label >Valeur assurée</label>
 
@@ -391,9 +391,9 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
                                               type="number" className="form-control" />
                                         </div>
 
-                                      
+
                                     </div>
-                                 
+
                                 <div className="form-row">
                                     <div className="col-md-3">
                                         <div className="position-relative form-group">
@@ -428,19 +428,19 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
                                               type="number" className="form-control" /></div>
                                     </div>
-                                
-                                   
+
+
                                 </div>
-                          
+
 
                                 <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
-                           
+
                                 <span onClick={() => this.props.history.goBack()}
                                  className="mt-2 btn btn-warning pull-right">Retour</span>
                             </form>
                         </div>
                     </div>
-                
+
                     <ToastContainer autoClose={4000} />
        </div>
         )
@@ -450,7 +450,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
             return ( <span style={{textAlign: 'center'}}>
 
             <Loader
-               
+
                height={500}
                width={300}
              />
@@ -465,7 +465,7 @@ const mapStateToProps = state => {
         tiers: state.tiers.items,
         vehiculeSeleted: state.vehiculeSeleted.vehicule,
         contrat_assurances: state.contrat_assurances.items
-        
+
     }
   }
 
