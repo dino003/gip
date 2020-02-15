@@ -258,10 +258,12 @@ import { colourStyles, formatageSomme, calculSommeColonneSommeIntervention, calc
 
     getPlanBudgetaireDernierNiveau = () => {
         const vehicule_courant = this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
+        var tab = vehicule_courant.budgets.map(bud => bud.plan_budgetaire_id)
+
         return this.props.plan_budgetaires.filter(elm => {
             return (elm.structure_budgetaire ? elm.structure_budgetaire.niveau == this.getMaximumNiveauPlanBudgetaire() : false)
             &&
-            (elm.budget.length ? elm.budget.filter(bud => bud.vehicule ? bud.vehicule.id == vehicule_courant.id : false) : false)
+            (vehicule_courant.budgets.length ? tab.indexOf(elm.id) != -1 : false)
         })
     }
 
@@ -320,7 +322,7 @@ import { colourStyles, formatageSomme, calculSommeColonneSommeIntervention, calc
                             <div className="col-md-5">
                                 <label className=""> Structure Budgétaire</label>
 
-                                <input readOnly className="form-control" value="Veuillez creer la structure Budgétaire" />
+                                <input readOnly className="form-control" value="Ce Véhicule n'a pas de dotation Budgétaire" />
 
                             </div>}
 
