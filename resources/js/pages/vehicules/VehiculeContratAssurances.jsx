@@ -97,6 +97,8 @@ import ContratAssuranceVehiculeItem from '../../components/vehicules/ContratAssu
         <th className="sticky-col thour-col">Fin</th>
         <th>Date Contrat</th>
          <th>Effet</th>
+         <th>Montant franchise</th>
+
         <th>Status</th>
          <th>En cours</th>
 

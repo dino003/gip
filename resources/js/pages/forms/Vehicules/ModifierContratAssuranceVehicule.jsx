@@ -136,7 +136,7 @@ import MatriculeInput from '../../../components/MatriculeInput';
 
             axios.post('/api/modifier_contrat_assurance_pour_vehicule/' + objetEdit.id, contrat)
             .then(response => {
-               const action = {type: "EDIT_CONTRAT_ASSURANCE", value: response.data.contrat_assurance}
+               const action = {type: "EDIT_CONTRAT_ASSURANCE", value: response.data}
                  this.props.dispatch(action)
 
 

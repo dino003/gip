@@ -252,7 +252,7 @@ class ContratAssuranceController extends Controller
 
         $this->model->update($request->only($this->model->getModel()->fillable), $id);
 
-        return response()->json(BudgetEntite::with(['compagnie_assurance', 'courtier', 'vehicules'])->find($id));
+        return response()->json(ContratAssurance::with(['compagnie_assurance', 'courtier', 'vehicules'])->find($id));
 
 
     }

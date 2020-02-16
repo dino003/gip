@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import {connect} from 'react-redux'
 import moment from 'moment'
 import today from '../../utils/today';
+import { formatageSomme } from '../../utils/Repository';
 
  class ContratAssuranceVehiculeItem extends Component {
 
@@ -53,6 +54,8 @@ import today from '../../utils/today';
 
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_contrat ? moment(item.date_contrat).format('DD/MM/YYYY') : ''}</td>
             <td onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.date_prise_effet ? moment(item.date_prise_effet).format('DD/MM/YYYY') : ''}</td>
+            <td className="" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.montant_franchise ? formatageSomme(item.montant_franchise) : ''}</td>
+
              <td><span >{this.isContratExpired(item) ? <em style={{color: 'red'}}>Expiré</em> : <em style={{color: 'lime'}}>Valable</em>}</span></td>
 
           {!item.global ?  <td >
