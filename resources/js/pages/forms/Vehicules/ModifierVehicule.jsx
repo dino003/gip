@@ -2035,7 +2035,6 @@ class ModifierVehicule extends Component {
                                                         options={this.props.contrat_assurances.filter(cont => cont.global && (Date.parse(today) < Date.parse(cont.periode_date_fin) ))}
                                                         getOptionLabel={option => `${option.numero_contrat_police}`}
                                                         getOptionValue={option => option.id}
-                                                        defaultValue={objetEdit.contrat_assurance ? objetEdit.contrat_assurance : this.props.contrat_assurances.find(contrat => contrat.defaut) ? this.props.contrat_assurances.find(contrat => contrat.defaut) : null  }
                                                         defaultValue={this.props.contrat_assurances.find(contrat => contrat.vehicule_id == objetEdit.id && contrat.encour_vehicule) ? this.props.contrat_assurances.find(contrat => contrat.vehicule_id == objetEdit.id && contrat.encour_vehicule) : this.props.contrat_assurances.find(contrat => contrat.defaut) ? this.props.contrat_assurances.find(contrat => contrat.defaut) : null }
                                                         styles={colourStyles}
 
