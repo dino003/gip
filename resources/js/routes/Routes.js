@@ -120,6 +120,9 @@ import StructureVehicules from '../pages/parametres/StructureVehicules';
 import PlanVehicules from '../pages/parametres/PlanVehicules';
 import StructureBudgetaires from '../pages/parametres/StructureBudgetaires';
 import PlanBudgetaire from '../pages/parametres/PlanBudgetaire';
+import VehiculeContratAssurances from '../pages/vehicules/VehiculeContratAssurances';
+import AjouterContratAssuranceVehicule from '../pages/forms/Vehicules/AjouterContratAssuranceVehicule';
+import ModifierContratAssuranceVehicule from '../pages/forms/Vehicules/ModifierContratAssuranceVehicule';
 
 
 
@@ -235,7 +238,10 @@ const NavBack = () => (
   <Master path="/gestion_du_parc_automobile/parc/creation-reservation-vehicules/:vehicule_id/:imma" component={AjouterReservation} />
   <Master exact path="/gestion_du_parc_automobile/parc/creation-reservation-vehicules-via-ordre-mission/:vehicule_id/:imma/:ordre_mission_id" component={AjouterReservation} />
 
-  <Master path="/gestion_du_parc_automobile/parc/contrat_assurance_de_vehicule/:vehicule_id/:imma" component={ContratAssuranceVehicule} />
+  <Master path="/gestion_du_parc_automobile/parc/contrat_assurance_de_vehicule/:vehicule_id/:imma" component={VehiculeContratAssurances} />
+  <Master path="/gestion_du_parc_automobile/parc/creation-contrat_assurance_de_vehicule/:vehicule_id/:imma" component={AjouterContratAssuranceVehicule} />
+  <Master path="/gestion_du_parc_automobile/parc/modification-contrat_assurance_de_vehicule/:vehicule_id/:imma/contrat/:contrat_assurance_id" component={ModifierContratAssuranceVehicule} />
+
   <Master path="/gestion_du_parc_automobile/parc/modification-reservation-vehicule/:vehicule_id/:imma/reservation/:reservation_id" component={ModifierReservation} />
 
 

@@ -8,12 +8,13 @@ import today from '../../../utils/today'
 import Select from 'react-select';
 import { colourStyles } from '../../../utils/Repository';
 import inputStyle from '../../../utils/inputStyle';
-import { number } from 'prop-types';
-
 
 
 
 class AjouterVehicule extends Component {
+
+
+
     constructor(props) {
         super(props);
         this.state = {
@@ -440,6 +441,8 @@ class AjouterVehicule extends Component {
                             <span>Photo du véhicule</span>
                         </a>
                     </li>
+
+
                     {/*
                     <li className="nav-item">
                         <button type="submit" className="mt-2 btn btn-info">Enregistrer</button>
@@ -1660,7 +1663,7 @@ class AjouterVehicule extends Component {
                                                         name="contrat_assurance_id"
                                                         placeholder="Selectionnez un Contrat"
                                                         noOptionsMessage={() => "Aucun Aucun contrat pour l'instant"}
-                                                        options={this.props.contrat_assurances}
+                                                        options={this.props.contrat_assurances.filter(cont => cont.global && (Date.parse(today) < Date.parse(cont.periode_date_fin) ))}
                                                         getOptionLabel={option => `${option.numero_contrat_police}`}
                                                         getOptionValue={option => option.id}
                                                         defaultValue={this.props.contrat_assurances.find(contrat => contrat.defaut)  || null}
@@ -1812,6 +1815,7 @@ class AjouterVehicule extends Component {
         )
     }
 }
+
 
 const mapStateToProps = state => {
     return {

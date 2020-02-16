@@ -571,11 +571,21 @@ Route::get('voir_contrat_assurance/{id}', 'ContratAssuranceController@show');
 
 // ajouter
 Route::post('ajouter_contrat_assurance', 'ContratAssuranceController@store');
+
+// ajouter pour vehicule
+Route::post('ajouter_contrat_assurance_pour_vehicule', 'ContratAssuranceController@store_pour_vehicule');
 // modifier
 Route::post('modifier_contrat_assurance/{id}', 'ContratAssuranceController@update');
 
-// tva par defaut
+// modifier
+Route::post('modifier_contrat_assurance_pour_vehicule/{id}', 'ContratAssuranceController@update_pour_vehicule');
+
+// contrat global defaut
 Route::get('modifier_contrat_assurance_defaut/{contrat_id}', 'ContratAssuranceController@marquerContratDefaut');
+
+// contrat encour du vehicule
+Route::get('modifier_contrat_assurance_encour_vehicule/{contrat_id}/{vehicule_id}', 'ContratAssuranceController@marquerContratEncour');
+
 
 // supprimer
 Route::delete('supprimer_contrat_assurance/{id}', 'ContratAssuranceController@destroy');

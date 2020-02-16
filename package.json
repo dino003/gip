@@ -27,6 +27,7 @@
     },
     "dependencies": {
         "@react-pdf/renderer": "^1.6.8",
+        "google-map-react": "^1.1.6",
         "housecall": "^1.4.1",
         "jspdf": "^1.5.3",
         "jspdf-autotable": "^3.2.11",

@@ -161,14 +161,7 @@ import '../../components/table.css'
 
                           {vehiculeselect && <span className="pull-right">
 
-                        {/* <button title=" Ajouter une nouvelle intervention"
-                                  className="mb-2 mr-2 btn-transition btn btn-outline-primary"
-                                  onClick={() => this.props.history.push(`/gestion_du_parc_automobile/parc/creation-interventions-vehicules/${vehiculeselect.id}/${vehiculeselect.immatriculation}`)}
-                                  >
-                                  <i className="fa fa-plus"></i> {' '}
 
-                                      Ajouter
-                                         </button> */}
 
                                          { this.props.interventions.filter(inter => inter.vehicule.id == this.props.match.params.vehicule_id).length ?
                                              <ReactHTMLTableToExcel

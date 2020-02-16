@@ -23,7 +23,7 @@ class ContratAssuranceController extends Controller
     {
         $contrat_assurances = ContratAssurance::with(['compagnie_assurance', 'courtier', 'vehicules'])->orderBy('id', 'desc')->get();
 
-        return response()->json($contrat_assurances);  
+        return response()->json($contrat_assurances);
     }
 
     /**
@@ -44,7 +44,7 @@ class ContratAssuranceController extends Controller
      */
     public function store(Request $request)
     {
-       
+
         $contrat_assurance = new ContratAssurance;
        // $contratInputs = $request->only(['contrat_objet']);
         $contratInputs = $request->get('contrat_objet');
@@ -73,14 +73,14 @@ class ContratAssuranceController extends Controller
 
         $veh->contrat_assurance_id = $contrat_assurance->id;
         $veh->save();
-    
+
         }else{
             $vehicules = Vehicule::whereNull('contrat_assurance_id')->get();
             if(!empty($vehicules)){
                 foreach ($vehicules as $key => $value) {
                     $value->contrat_assurance_id = $contrat_assurance->id;
                     $value->save();
-    
+
                 }
             }
         }
@@ -90,27 +90,36 @@ class ContratAssuranceController extends Controller
             $isEmptyGlobalContrat = ContratAssurance::where('global', 1)->count() == 1;
 
             if($isEmptyGlobalContrat){
-                $contrat_assurance->defaut = !$contrat_assurance->defaut; 
+                $contrat_assurance->defaut = !$contrat_assurance->defaut;
                 $contrat_assurance->save();
             }
         }
-        
-     
+
+
 
         $contrat_assurance = ContratAssurance::with(['compagnie_assurance', 'courtier', 'vehicules'])->withCount(['vehicules'])
                                              ->find($contrat_assurance->id);
-        
+
         $vehicules = Vehicule::with(['entite_comptable', 'entite_physique',
         'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
          'chauffeur_atitre', 'contrat_assurance', 'energie'])->orderBy('id', 'desc')->get();
-       
+
          return response()->json([
             'vehicules' => $vehicules,
             'contrat_assurance' => $contrat_assurance
         ]);
     }
 
-    
+    // ajouter un contrat pour vehicule spécifique
+    public function store_pour_vehicule(Request $request) {
+        $contrat = new ContratAssurance;
+        $creation = $contrat->create($request->only($contrat->fillable));
+
+        return response()->json(ContratAssurance::with(['compagnie_assurance', 'courtier', 'vehicules'])
+                                     ->find($creation->id));
+    }
+
+
     public function marquerContratDefaut($contrat_id){
         $contrats = ContratAssurance::get();
 
@@ -118,7 +127,7 @@ class ContratAssuranceController extends Controller
             if($value->defaut){
                 $value->defaut = !$value->defaut;
              $value->save();
-            }   
+            }
         }
 
         $contrat = ContratAssurance::find($contrat_id);
@@ -128,6 +137,25 @@ class ContratAssuranceController extends Controller
        // return $this->model->show($tva->id);
         return $this->index();
 
+    }
+
+    // marquer le contrat du vehicule encour
+    public function marquerContratEncour($contrat_id, $vehicule_id) {
+        $contrats = ContratAssurance::where('vehicule_id', $vehicule_id)->get();
+
+        foreach ($contrats as $key => $value) {
+            if($value->encour_vehicule){
+                $value->encour_vehicule = !$value->encour_vehicule;
+             $value->save();
+            }
+        }
+
+        $contrat = ContratAssurance::find($contrat_id);
+        $contrat->encour_vehicule = !$contrat->encour_vehicule;
+        $contrat->save();
+
+       // return $this->model->show($tva->id);
+        return $this->index();
     }
 
     /**
@@ -172,7 +200,7 @@ class ContratAssuranceController extends Controller
         // $contratInputs = $request->only(['contrat_objet']);
          $contratInputs = $request->get('contrat_objet');
         // dd($contratInputs);
- 
+
          $contrat_assurance->numero_contrat_police  = $contratInputs['numero_contrat_police'];
          $contrat_assurance->date_contrat  = $contratInputs['date_contrat'];
          $contrat_assurance->periode_date_debut  = $contratInputs['periode_date_debut'];
@@ -186,11 +214,11 @@ class ContratAssuranceController extends Controller
          $contrat_assurance->pourcentage_assiete  = $contratInputs['pourcentage_assiete'];
          $contrat_assurance->montant_franchise  = $contratInputs['montant_franchise'];
          $contrat_assurance->global  = $contratInputs['global'];
- 
+
         // $creation = $contrat_assurance->create($request->only($contrat_assurance->fillable));
          $contrat_assurance->save();
        // dd($request->get('vehicules'));
-         
+
          if($request->get('vehicules')){
                  $veh = Vehicule::find($request->get('vehicules'));
 
@@ -205,18 +233,28 @@ class ContratAssuranceController extends Controller
             }
         }
 
- 
+
          $contrat_assurance = ContratAssurance::with(['compagnie_assurance', 'courtier', 'vehicules'])->withCount(['vehicules'])
                                               ->find($contrat_assurance->id);
-         
+
          $vehicules = Vehicule::with(['entite_comptable', 'entite_physique',
          'demandeur', 'categorie', 'marque', 'tiers', 'detenteur',
           'chauffeur_atitre', 'contrat_assurance', 'energie'])->orderBy('id', 'desc')->get();
-        
+
           return response()->json([
              'vehicules' => $vehicules,
              'contrat_assurance' => $contrat_assurance
          ]);
+    }
+
+    // modifier contrat assurance spécifique du véhicule
+    public function update_pour_vehicule(Request $request, $id) {
+
+        $this->model->update($request->only($this->model->getModel()->fillable), $id);
+
+        return response()->json(BudgetEntite::with(['compagnie_assurance', 'courtier', 'vehicules'])->find($id));
+
+
     }
 
     /**

@@ -9,32 +9,22 @@ import Select from 'react-select';
 import { colourStyles } from '../../../utils/Repository';
 import inputStyle from '../../../utils/inputStyle'
 
+import GoogleMapreact from 'google-map-react'
 
-const formatOptionVehicule = data => (
-    <div style={groupStyles}>
-        <span>{data.immatriculation}</span>
-    </div>
-);
 
-const formatOptionTiers = data => (
-    <div style={groupStyles}>
-        <span>{data.code}</span>
-    </div>
-);
-
-// const inputStyle = {
-//     // backgroundColor: '#85b9e9' FEBFD2
-//     backgroundColor: '#FEBFD2'
-
-// }
-
-// const date = new Date();
-
-//  const today = date.getFullYear().toString() + '-' + (date.getMonth() + 1).toString().padStart(2, 0) +
-//     '-' + date.getDate().toString().padStart(2, 0);
 
 
 class ModifierVehicule extends Component {
+
+    static defaultProps = {
+        center: {
+            lat: 5.316667,
+            lng: -4.033333
+        },
+
+        zoom: 11
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -465,6 +455,13 @@ class ModifierVehicule extends Component {
                         <a role="tab" className="nav-link" id="tab-4"
                             data-toggle="tab" href="#tab_photo_vehicule">
                             <span>Photo du véhicule</span>
+                        </a>
+                    </li>
+
+                    <li className="nav-item">
+                        <a role="tab" className="nav-link" id="tab-4"
+                            data-toggle="tab" href="#tab_geolocalisation">
+                            <span>Géolocalisation</span>
                         </a>
                     </li>
                     {/*
@@ -2035,7 +2032,7 @@ class ModifierVehicule extends Component {
                                                         name="contrat_assurance_id"
                                                         placeholder="Selectionnez un Contrat"
                                                         noOptionsMessage={() => "Aucun Aucun contrat pour l'instant"}
-                                                        options={this.props.contrat_assurances}
+                                                        options={this.props.contrat_assurances.filter(cont => cont.global && (Date.parse(today) < Date.parse(cont.periode_date_fin) ))}
                                                         getOptionLabel={option => `${option.numero_contrat_police}`}
                                                         getOptionValue={option => option.id}
                                                         defaultValue={objetEdit.contrat_assurance ? objetEdit.contrat_assurance : this.props.contrat_assurances.find(contrat => contrat.defaut) ? this.props.contrat_assurances.find(contrat => contrat.defaut) : null  }
@@ -2176,6 +2173,32 @@ class ModifierVehicule extends Component {
 
                                 {/** fin photo vehicule */}
 
+                                   {/*  Géolocalisation */}
+
+                           <div className="tab-pane tabs-animation fade" id="tab_geolocalisation" role="tabpanel">
+
+
+                            <div className="main-card mb-3 card" style={{height: '100vh', width: '100%'}}>
+                                <GoogleMapreact
+                                    bootstrapURLKeys={{key: 'AIzaSyCnwSwHJCxLnNYvXf5EVJTpKyBbsIBS-rI'}}
+                                defaultCenter={this.props.center}
+                                defaultZoom={this.props.zoom}
+                                >
+                                    <Comp
+                                    lat={5.357367}
+                                    lng={-3.994934}
+                                    text="Ma Position"
+                                        />
+                                </GoogleMapreact>
+                            </div>
+
+
+
+
+                            </div>
+
+                            {/** fin Géolocalisation */}
+
 
 
 
@@ -2207,6 +2230,9 @@ class ModifierVehicule extends Component {
         )
     }
 }
+
+const Comp = ({text}) => <div>{text}</div>
+
 
 const mapStateToProps = state => {
     return {
