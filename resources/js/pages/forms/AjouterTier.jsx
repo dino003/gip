@@ -247,6 +247,8 @@ import inputStyle from '../../utils/inputStyle';
 
                                             <option >ASSUREUR</option>
                                             <option >CONCESIONNAIRE</option>
+                                            <option >COURSIER</option>
+
 
                                             <option >GARAGISTE</option>
                                             <option >STATION ESSENCE</option>
