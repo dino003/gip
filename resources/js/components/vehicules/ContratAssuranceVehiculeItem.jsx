@@ -48,7 +48,7 @@ import { formatageSomme } from '../../utils/Repository';
 
              <td className="sticky-col first-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.numero_contrat_police || ''}</td>
 
-            <td className="sticky-col second-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.compagnie_assurance ? item.compagnie_assurance.code : ''}</td>
+            <td className="sticky-col second-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.compagnie_assurance ? item.compagnie_assurance.libelle : ''}</td>
             <td className="sticky-col third-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.periode_date_debut ? moment(item.periode_date_debut).format('DD/MM/YYYY')  : ''}</td>
             <td className="sticky-col thour-col" onDoubleClick={this.props.onEdit.bind(this, item.id)}>{item.periode_date_fin ? moment(item.periode_date_fin).format('DD/MM/YYYY')  : ''}</td>
 

@@ -9,7 +9,7 @@ import Select from 'react-select';
 
 import '../components/table.css'
 import VehiculeFiltreItem from '../components/vehicules/VehiculeFiltreItem'
-import { formatageNombre, formatageSomme } from '../utils/Repository';
+import { formatageNombre, formatageSomme, calculSommeColonneSommeIntervention, calculSommeColonneSommeConso, calculSommeColonneSommeAmende } from '../utils/Repository';
 import moment from 'moment';
 
 const calculSommeColonneKilometrageVehicule = (tableau) => {
@@ -100,6 +100,53 @@ class FiltreVehicules extends Component {
         let obj = {};
         obj[name] = value;
         this.setState(obj, () => this.checkOtherStateVehicules());
+    }
+
+    getCoutTotalIntervention = () => {
+        const {vehicules_visibles_actuelement} = this.state;
+        let interventions = [];
+
+        vehicules_visibles_actuelement.map(veh => {
+             interventions = [...interventions, ...this.props.interventions.filter(int => int.vehicule.id == veh.id)];
+             return interventions;
+        })
+
+        return calculSommeColonneSommeIntervention(interventions);
+    }
+
+    getCoutTotalConsommations = () => {
+        const {vehicules_visibles_actuelement} = this.state;
+        let consommations = [];
+
+        vehicules_visibles_actuelement.map(veh => {
+             consommations = [...consommations, ...this.props.consommations.filter(int => int.vehicule.id == veh.id)];
+             return consommations;
+        })
+
+        return calculSommeColonneSommeConso(consommations);
+    }
+
+    getCoutTotalAmendes = () => {
+        const {vehicules_visibles_actuelement} = this.state;
+        let amendes = [];
+
+        vehicules_visibles_actuelement.map(veh => {
+             amendes = [...amendes, ...this.props.amendes.filter(int => int.vehicule.id == veh.id)];
+             return amendes;
+        })
+
+        return calculSommeColonneSommeAmende(amendes);
+    }
+
+    getCoutTotalDesDepenses = () => {
+        const {vehicules_visibles_actuelement } = this.state;
+        const cout_total = Number(this.getCoutTotalAmendes()
+         + this.getCoutTotalConsommations() +
+          this.getCoutTotalIntervention() + calculSommeColonneCoutAchat(vehicules_visibles_actuelement)
+          + calculSommeColonneCoutLeasing(vehicules_visibles_actuelement)
+          + calculSommeColonneCoutTotalFranchise(vehicules_visibles_actuelement) )
+
+       return formatageSomme(cout_total);
     }
 
     checkOtherStateVehicules(){
@@ -1364,7 +1411,8 @@ class FiltreVehicules extends Component {
 
                     <div className="main-card mb-3 card">
                         <div className="no-gutters row">
-                            <div className="col-md-4">
+
+                        <div className="col-md-4">
                                 <div className="pt-0 pb-0 card-body">
                                     <ul className="list-group list-group-flush">
                                         <li className="list-group-item">
@@ -1400,6 +1448,8 @@ class FiltreVehicules extends Component {
                                     </ul>
                                 </div>
                             </div>
+
+
                             <div className="col-md-4">
                                 <div className="pt-0 pb-0 card-body">
                                     <ul className="list-group list-group-flush">
@@ -1408,7 +1458,43 @@ class FiltreVehicules extends Component {
                                                 <div className="widget-content-outer">
                                                     <div className="widget-content-wrapper">
                                                         <div className="widget-content-left">
-                                                            <div className="widget-heading">Kilometrage</div>
+                                                            <div className="widget-heading">Coût total des Intervetions</div>
+                                                            <span className="text-success" style={{fontSize: '1.4em'}}>
+                                                            {formatageSomme( this.getCoutTotalIntervention() )}
+                                                            </span>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li className="list-group-item">
+                                            <div className="widget-content p-0">
+                                                <div className="widget-content-outer">
+                                                    <div className="widget-content-wrapper">
+                                                        <div className="widget-content-left">
+                                                            <div className="widget-heading">Coût total des consommations</div>
+                                                            <span className="text-success" style={{fontSize: '1.2em'}}>
+                                                                {formatageSomme( this.getCoutTotalConsommations() )}
+                                                                </span>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div className="col-md-4">
+                                <div className="pt-0 pb-0 card-body">
+                                    <ul className="list-group list-group-flush">
+                                        <li className="list-group-item">
+                                            <div className="widget-content p-0">
+                                                <div className="widget-content-outer">
+                                                    <div className="widget-content-wrapper">
+                                                        <div className="widget-content-left">
+                                                            <div className="widget-heading">Kilometres parcourus</div>
                                                             <span className="text-success" style={{fontSize: '1.4em'}}>
                                                             {formatageNombre( calculSommeColonneKilometrageVehicule(this.state.vehicules_visibles_actuelement)  )}
                                                             </span>
@@ -1454,24 +1540,59 @@ class FiltreVehicules extends Component {
                                                 </div>
                                             </div>
                                         </li>
-                                      {/*   <li className="list-group-item">
+
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div className="col-md-4">
+                                <div className="pt-0 pb-0 card-body">
+                                    <ul className="list-group list-group-flush">
+
+                                       <li className="list-group-item">
                                             <div className="widget-content p-0">
                                                 <div className="widget-content-outer">
                                                     <div className="widget-content-wrapper">
                                                         <div className="widget-content-left">
-                                                            <div className="widget-heading">Coût total franchise</div>
+                                                            <div className="widget-heading">Coût total des Amendes</div>
                                                             <span className="text-success" style={{fontSize: '1.2em'}}>
-                                                                250.9856.158.025 F CFA
+                                                                {formatageSomme( this.getCoutTotalAmendes() )}
                                                                 </span>
                                                         </div>
 
                                                     </div>
                                                 </div>
                                             </div>
-                                        </li> */}
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
+
+
+                            <div className="col-md-4">
+                                <div className="pt-0 pb-0 card-body">
+                                    <ul className="list-group list-group-flush">
+
+                                       <li className="list-group-item">
+                                            <div className="widget-content p-0">
+                                                <div className="widget-content-outer">
+                                                    <div className="widget-content-wrapper">
+                                                        <div className="widget-content-left">
+                                                            <div className="widget-heading">Coût total des Dépenses</div>
+                                                            <span className="text-success" style={{fontSize: '1.2em'}}>
+                                                                {this.getCoutTotalDesDepenses()}
+                                                                </span>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+
                         </div>
                     </div>
                 </div> : null}
@@ -1502,7 +1623,10 @@ const mapStateToProps = state => {
         structure_geographiques: state.structure_geographiques.items,
         structure_organisationnelles: state.structure_organisationnelles.items,
         structure_vehicules: state.structure_vehicules.items,
-        plan_vehicules: state.plan_vehicules.items
+        plan_vehicules: state.plan_vehicules.items,
+        interventions: state.interventions.items,
+        amendes: state.amendes.items,
+        consommations: state.consommations.items,
 
 
 

@@ -12,11 +12,12 @@ import '../../components/table.css'
 import Select from 'react-select'
 import moment from 'moment';
 import FicheVehiculeItem from '../../components/vehicules/FicheVehiculeItem';
-import { formatageSomme, calculSommeColonneSommeIntervention, calculSommeColonneSommeAmende, calculSommeColonneSommeConso } from '../../utils/Repository';
+import { formatageSomme, calculSommeColonneSommeIntervention, calculSommeColonneSommeAssurance, calculSommeColonneSommeAmende, calculSommeColonneSommeConso } from '../../utils/Repository';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import FicheVehiculeAmendeItem from '../../components/vehicules/FicheVehiculeAmendeItem';
 import FicheVehiculeConsoItem from '../../components/vehicules/FicheVehiculeConsoItem';
+import FicheVehiculeAssuranceItem from '../../components/vehicules/FicheVehiculeAssuranceItem';
 
 const date = new Date();
 
@@ -34,6 +35,7 @@ const date = new Date();
             interventions_visibles: [],
             amendes_visibles: [],
             conso_visibles: [],
+            assurances_visibles: [],
             loading: false,
             vehicule: null,
             date_traite1: null,
@@ -91,10 +93,13 @@ const date = new Date();
             interventions_visibles: null,
             amendes_visibles: null,
             conso_visibles: null,
+            assurances_visibles: null,
             date_traite1: null,
             date_traite2: null,
             date_amende_1: null,
-            date_amende_2: null
+            date_amende_2: null,
+            date_assur_1: null,
+            date_assur_2: null
         })
       }else{
         var debut = this.state.date_traite1 ? Date.parse(this.state.date_traite1) : null
@@ -137,10 +142,25 @@ const date = new Date();
 
         })
 
+        let debutCont = this.state.date_assur_1 ? Date.parse(this.state.date_assur_1) : null
+        let finCont = this.state.date_assur_2 ? Date.parse(this.state.date_assur_2) : null
+
+        const resultat_assurances = this.props.contrat_assurances.filter(ut => {
+            let date_du_contrat = Date.parse(ut.periode_date_debut)
+
+            return (ut.vehicule_id == this.state.vehicule.id)
+            &&
+            (debutCont && finCont ? debutCont <= date_du_contrat && date_du_contrat <= finCont  : true )
+
+
+        })
+
         this.setState({
             interventions_visibles: resultat_interventions,
             amendes_visibles: resultat_amendes,
-            conso_visibles: resultat_conso
+            conso_visibles: resultat_conso,
+            assurances_visibles: resultat_assurances
+
         })
       }
 
@@ -208,24 +228,29 @@ const date = new Date();
 
 
     render() {
-        const {vehicule, interventions_visibles, date_traite1, date_traite2, amendes_visibles, date_amende_2, date_amende_1, conso_visibles, date_conso_1, date_conso_2 } = this.state
-        var pourcentage_global = 0
-       var cout_de_reviens_global = 0
-       var cout_de_reviens_periode = 0 //intervention
-       var cout_acquisition_vehicule =  0
-       var les_interventions_globales_du_vehicule = []
+        const {vehicule, interventions_visibles, date_traite1, date_traite2, amendes_visibles, date_amende_2, date_amende_1, conso_visibles, date_conso_1, date_conso_2, assurances_visibles, date_assur_1, date_assur_2 } = this.state
+        let pourcentage_global = 0
+       let cout_de_reviens_global = 0
+       let cout_de_reviens_periode = 0 //intervention
+       let cout_acquisition_vehicule =  0
+       let les_interventions_globales_du_vehicule = []
 
 
-       var les_amendes_globales_du_vehicules = [];
-       var pourcentage_periode_amende = 0;
-      var pourcentage_global_amende = 0;
-        var cout_de_reviens_periode_amende = 0
-       var pourcentage_periode = 0
+       let les_amendes_globales_du_vehicules = [];
+       let pourcentage_periode_amende = 0;
+      let pourcentage_global_amende = 0;
+        let cout_de_reviens_periode_amende = 0
+       let pourcentage_periode = 0
 
-       var les_conso_globales_du_vehicules = [];
-       var pourcentage_periode_conso = 0;
-       var pourcentage_global_conso = 0;
-       var cout_de_reviens_periode_conso = 0
+       let les_conso_globales_du_vehicules = [];
+       let pourcentage_periode_conso = 0;
+       let pourcentage_global_conso = 0;
+       let cout_de_reviens_periode_conso = 0
+
+       let les_assurance_globales_du_vehicules = [];
+       let pourcentage_periode_assurance = 0;
+       let pourcentage_global_assurance = 0;
+       let cout_de_reviens_periode_assurance = 0
 
 
       if(vehicule){
@@ -248,6 +273,24 @@ const date = new Date();
 
          }
          // fin conso
+
+            // assurances
+            les_assurance_globales_du_vehicules = this.props.contrat_assurances.filter(am => am.vehicule_id == this.state.vehicule.id)
+            let sommeTotalAssurance = calculSommeColonneSommeAssurance(les_assurance_globales_du_vehicules)
+
+            let rapport_pourcentage_global_assurance = cout_acquisition_vehicule > 0 ? (Number(sommeTotalAssurance) * 100) / Number(cout_acquisition_vehicule) : 0
+            pourcentage_global_conso = parseFloat(rapport_pourcentage_global_assurance).toFixed(1);
+
+            let sommeTotalAssurancePeriode = calculSommeColonneSommeAssurance(assurances_visibles)
+
+            let rapport_pourcentage_periode_assurance = cout_acquisition_vehicule > 0 ? (Number(sommeTotalAssurancePeriode) * 100) / Number(cout_acquisition_vehicule) : 0
+            pourcentage_periode_conso = parseFloat(rapport_pourcentage_periode_assurance).toFixed(1);
+
+            if(date_assur_1 && date_assur_2){
+                cout_de_reviens_periode_assurance = parseFloat(Number(cout_acquisition_vehicule) + Number(sommeTotalAssurancePeriode))
+
+            }
+            // fin assurances
 
         // amendes
         les_amendes_globales_du_vehicules = this.props.amendes.filter(am => am.vehicule.id == this.state.vehicule.id)
@@ -273,16 +316,16 @@ const date = new Date();
           let sommeTotalIntervention = calculSommeColonneSommeIntervention(les_interventions_globales_du_vehicule)
 
 
-        let rapport_pourcentage = cout_acquisition_vehicule > 0 ? (Number(sommeTotalIntervention) * 100) / Number(cout_acquisition_vehicule) : 0
+        let rapport_pourcentage = cout_acquisition_vehicule > 0 ? (Number(sommeTotalIntervention + sommeTotalAmende + sommeTotalConso + sommeTotalAssurance) * 100) / Number(cout_acquisition_vehicule) : 0
         pourcentage_global = parseFloat(rapport_pourcentage).toFixed(1);
 
         let sommeTotalInterventionPeriode = calculSommeColonneSommeIntervention(interventions_visibles)
 
-        let rapport_pourcentage_periode = cout_acquisition_vehicule > 0 ? (Number(sommeTotalInterventionPeriode) * 100) / Number(cout_acquisition_vehicule) : 0
+        let rapport_pourcentage_periode = cout_acquisition_vehicule > 0 ? (Number(sommeTotalInterventionPeriode + sommeTotalAmendePeriode + sommeTotalConsoPeriode + sommeTotalAssurancePeriode) * 100) / Number(cout_acquisition_vehicule) : 0
         pourcentage_periode = parseFloat(rapport_pourcentage_periode).toFixed(1);
 
 
-        cout_de_reviens_global = parseFloat(Number(cout_acquisition_vehicule) + Number(sommeTotalIntervention))
+        cout_de_reviens_global = parseFloat(Number(cout_acquisition_vehicule) + Number(sommeTotalIntervention + sommeTotalAmende + sommeTotalConso + sommeTotalAssurance))
         // fin interventions
         if(date_traite1 && date_traite2){
             cout_de_reviens_periode = parseFloat(Number(cout_acquisition_vehicule) + Number(sommeTotalInterventionPeriode))
@@ -312,7 +355,7 @@ const date = new Date();
 
                             {/* formulaire de filtre */}
                                 <div className="row">
-                                    <div className="col-md-8">
+                                    <div className="col-md-10">
                                         <label htmlFor="">Sélectionnez un véhicule</label>
                                         <Select
                                                 name="vehicule"
@@ -322,7 +365,7 @@ const date = new Date();
                                                 noOptionsMessage={() => "Aucun véhicule pour l'instat"}
                                                 options={this.props.vehicules}
                                                 getOptionLabel={option => {
-                                                  return `${option.immatriculation} --- Interventions.(${this.props.interventions.filter(veh => veh.vehicule.id == option.id).length}) --- Amendes.(${this.props.amendes.filter(veh => veh.vehicule.id == option.id).length}) --- Consommations.(${this.props.consommations.filter(veh => veh.vehicule.id == option.id).length})`
+                                                  return `${option.immatriculation} --- Interventions.(${this.props.interventions.filter(veh => veh.vehicule.id == option.id).length}) --- Amendes.(${this.props.amendes.filter(veh => veh.vehicule.id == option.id).length}) --- Consommations.(${this.props.consommations.filter(veh => veh.vehicule.id == option.id).length}) --- Assurances.(${this.props.contrat_assurances.filter(cont => cont.vehicule_id == option.id).length})`
                                                 }}
                                                 getOptionValue={option => option.id}
                                                 // formatOptionLabel={formatOptionVehicule}
@@ -337,9 +380,9 @@ const date = new Date();
 
                                     <div className="row">
                                     {this.state.vehicule ? <React.Fragment>
-                                        <div className="col-md-3">
+                                        <div className="col-md-2">
                                     <div className="position-relative form-group">
-                                        <label className="center">Type de dépense ==></label>
+                                        <label className="center">Type de dépense</label>
                                     </div>
                                 </div>
 
@@ -374,10 +417,21 @@ const date = new Date();
                                                 value="3" className="" /></label>
                                     </div>
                                 </div>
+
                                 <div className="col-md-2">
                                     <div className="position-relative form-group">
                                         <label className="form-check-label">
-                                            Les Trois  <input type="radio" name="type_cout"
+                                            Assurances  <input type="radio" name="type_cout"
+                                                onChange={this.setField}
+                                                checked={this.state.type_cout === "4"}
+                                                value="4" className="" /></label>
+                                    </div>
+                                </div>
+
+                                <div className="col-md-2">
+                                    <div className="position-relative form-group">
+                                        <label className="form-check-label">
+                                            Tous  <input type="radio" name="type_cout"
 
                                                 onChange={this.setField}
                                                 checked={this.state.type_cout === "2"}
@@ -444,6 +498,25 @@ const date = new Date();
                                     </div>
                                     <div className="col-md-1"></div>
                                 </div> : null}
+                                <br />
+
+                                {this.state.type_cout == "2" || this.state.type_cout == "4" ?    <div className="row">
+                                    <div className="col-md-4">
+                                        <label htmlFor="">Date du Contrat d'assurance est comprise entre :</label>
+                                    </div>
+
+                                    <div className="col-md-3">
+                                        <input type="date"  onChange={this.setField} className="form-control" name="date_assur_1" id=""/>
+                                    </div>
+                                        <div className="col-md-1">
+                                            <label htmlFor="">ET</label>
+                                        </div>
+                                    <div className="col-md-3">
+                                        <input type="date"  onChange={this.setField} className="form-control" name="date_assur_2" id=""/>
+                                    </div>
+                                    <div className="col-md-1"></div>
+                                </div> : null}
+                                <br />
                                 </React.Fragment>
                                 : null}
 
@@ -546,6 +619,21 @@ const date = new Date();
                                                 <div className="widget-heading">Coût global des Consommations</div>
                                                {this.state.vehicule ?  <span className="text-success" style={{fontSize: '1.2em'}}>
                                                     { formatageSomme( calculSommeColonneSommeConso(les_conso_globales_du_vehicules) )}
+                                                </span> : null}
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> : null}
+
+                            {this.state.type_cout == "2" || this.state.type_cout == "4" ?    <div className="col-md-4">
+                                <div className="card mb-3 widget-content">
+                                    <div className="widget-content-outer">
+                                        <div className="widget-content-wrapper">
+                                        <div className="widget-content-left">
+                                                <div className="widget-heading">Coût global des Contrats d'assurances</div>
+                                               {this.state.vehicule ?  <span className="text-success" style={{fontSize: '1.2em'}}>
+                                                    { formatageSomme( calculSommeColonneSommeAssurance(les_assurance_globales_du_vehicules) )}
                                                 </span> : null}
                                         </div>
                                         </div>
@@ -721,6 +809,64 @@ const date = new Date();
                                                 <div className="widget-numbers text-danger">
                                                    {this.state.vehicule ?  <span>
                                                     { pourcentage_periode_conso}%
+                                                    </span> : null}
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <br />
+                        </React.Fragment> : null}
+
+                        {this.state.date_assur_1 && this.state.date_assur_2 && (this.state.type_cout == "4" || this.state.type_cout == "2") ? <React.Fragment>
+                            <hr />
+                        <p style={{textAlign: 'center'}}>Les Contrats d'assurances Pour la période du {moment(this.state.date_assur_1).format('DD/MM/YYYY')} au {moment(this.state.date_assur_2).format('DD/MM/YYYY')}</p>
+                        <hr />
+                        <div className="row">
+                            <div className="col-md-6 col-xl-4">
+                                <div className="card mb-3 widget-content">
+                                    <div className="widget-content-outer">
+                                        <div className="widget-content-wrapper">
+                                            <div className="widget-content-left">
+                                                <div className="widget-heading">Coût de revient du véhicule</div>
+                                               {this.state.vehicule ?  <span className="text-success" style={{fontSize: '1.2em'}}>
+                                                    { formatageSomme(cout_de_reviens_periode_assurance ) }
+                                                </span> : null}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-6 col-xl-4">
+                                <div className="card mb-3 widget-content">
+                                    <div className="widget-content-outer">
+                                        <div className="widget-content-wrapper">
+                                        <div className="widget-content-left">
+                                                <div className="widget-heading">Coût total des Contrats d'assurances</div>
+                                               {this.state.vehicule ?  <span className="text-success" style={{fontSize: '1.2em'}}>
+                                                    {formatageSomme(calculSommeColonneSommeAssurance(this.state.assurances_visibles) )}
+                                                </span> : null}
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-6 col-xl-4">
+                                <div className="card mb-3 widget-content">
+                                    <div className="widget-content-outer">
+                                        <div className="widget-content-wrapper">
+                                            <div className="widget-content-left">
+                                                <div className="widget-heading">%  dépenses</div>
+                                                <div className="widget-subheading"><span style={{fontSize: '0.8em'}}>Par rapport au cout d'acquisition</span></div>
+                                            </div>
+                                            <div className="widget-content-right">
+                                                <div className="widget-numbers text-danger">
+                                                   {this.state.vehicule ?  <span>
+                                                    { pourcentage_periode_assurance}%
                                                     </span> : null}
                                                     </div>
                                             </div>
@@ -984,6 +1130,94 @@ const date = new Date();
                         </div> : null}
                             {/* Fin tableau consommations */}
 
+
+                                 {/* tableau Assurances */}
+                                 {this.state.type_cout == "4" ?     <div className="row">
+                            <div className="col-md-12">
+                                {this.state.vehicule ?
+                                <div className="main-card mb-3 card">
+                                    <div className="card-header">Contrats d'assurances {this.state.assurances_visibles ? this.state.assurances_visibles.length : null}
+                                        <div className="btn-actions-pane-right">
+                                            <div role="group" className="btn-group-sm btn-group">
+                                               {/*  <button className="active btn btn-focus">Last Week</button>
+                                                <button className="btn btn-focus">All Month</button> */}
+                                                 <button disabled={!this.state.assurances_visibles || !this.state.assurances_visibles.length} onClick={this.createP} className="btn-wide btn btn-success">Exporter</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="table-responsive">
+                                    <table className="mb-0 table table-bordered" id="complex-table">
+                                    {this.state.vehicule ?
+                                     <thead>
+                                <tr>
+                                    <th colSpan="4" >Vehicule : {this.state.vehicule.immatriculation}</th>
+                                    <th colSpan="4" >Fiche de Dépense du {today} </th>
+                                 </tr>
+
+                                 <tr>
+                                  {this.state.date_assur_1 && this.state.date_assur_2 ? <td >
+                                 <strong>Période traitée:  </strong>
+                                    du {this.state.date_assur_1 && this.state.date_assur_2 ? moment(this.state.date_assur_1).format('DD/MM/YYYY') + ' au ' + moment(this.state.date_assur_2).format('DD/MM/YYYY')  : null}
+                                   </td> : null}
+
+
+                                </tr>
+
+
+                                </thead> : null}
+
+                                <tbody>
+                                    <tr>
+                                    <th className="">Numero de contrat</th>
+                                    <th className="">Compagnie</th>
+                                    <th className="">Début</th>
+
+                                    <th className="">Fin</th>
+                                    <th>Date Contrat</th>
+                                    <th>Effet</th>
+                                    <th>Montant franchise</th>
+
+                                    <th>Status</th>
+
+                             </tr>
+                                    </tbody>
+
+                                {this.state.assurances_visibles && this.state.assurances_visibles.length ?
+
+                                <React.Fragment>
+
+                                <tbody>
+                                      {this.state.assurances_visibles.map(contrat =>
+                                        <React.Fragment key={contrat.id}>
+                                              <FicheVehiculeAssuranceItem  item={contrat} />
+                                      {this.state.assurances_visibles[this.state.assurances_visibles.length - 1].id == contrat.id ?
+                                        <tr style={{ backgroundColor: 'yellow' }}>
+                                            <th colSpan="6">Coût Total des Franchises : {' '}
+                                            <span style={{ fontWeight: 'bold' }}>
+                                                { formatageSomme( calculSommeColonneSommeAssurance(this.state.assurances_visibles) )}
+                                                </span> </th>
+                                        </tr>
+                                        : null}
+                                        </React.Fragment>
+                                      )}
+
+
+                                    </tbody>
+
+                                </React.Fragment> : <span>Aucun Contrat d'assurance trouvé</span>}
+
+
+
+
+                            </table>
+                                    </div>
+
+                                </div> : null }
+                            </div>
+                        </div> : null}
+                            {/* Fin tableau Assurances */}
+
                             {/* les 2 tableaux */}
                                 {this.state.type_cout == "2" ? <React.Fragment>
 
@@ -1005,6 +1239,12 @@ const date = new Date();
                         <a role="tab" className="nav-link" id="tab-1"
                             data-toggle="tab" href="#tab_consommations">
                             <span>Consommations</span>
+                        </a>
+                    </li>
+
+                    <li className="nav-item">
+                        <a href="#tab_assurances" data-toggle="tab" role="tab" className="nav-link">
+                            <span>Assurances</span>
                         </a>
                     </li>
 
@@ -1262,6 +1502,99 @@ const date = new Date();
                         </div>
                     </div>
 
+
+                    <div className="tab-pane tabs-animation fade show " id="tab_assurances" role="tabpanel">
+
+                           {/* tableau Assurances */}
+                             <div className="row">
+                            <div className="col-md-12">
+                                {this.state.vehicule ?
+                                <div className="main-card mb-3 card">
+                                    <div className="card-header">Contrats d'assurances {this.state.assurances_visibles ? this.state.assurances_visibles.length : null}
+                                        <div className="btn-actions-pane-right">
+                                            <div role="group" className="btn-group-sm btn-group">
+                                               {/*  <button className="active btn btn-focus">Last Week</button>
+                                                <button className="btn btn-focus">All Month</button> */}
+                                                 <button disabled={!this.state.assurances_visibles || !this.state.assurances_visibles.length} onClick={this.createP} className="btn-wide btn btn-success">Exporter</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="table-responsive">
+                                    <table className="mb-0 table table-bordered" id="complex-table">
+                                    {this.state.vehicule ?
+                                     <thead>
+                                <tr>
+                                    <th colSpan="4" >Vehicule : {this.state.vehicule.immatriculation}</th>
+                                    <th colSpan="4" >Fiche de Dépense du {today} </th>
+                                 </tr>
+
+                                 <tr>
+                                  {this.state.date_assur_1 && this.state.date_assur_2 ? <td >
+                                 <strong>Période traitée:  </strong>
+                                    du {this.state.date_assur_1 && this.state.date_assur_2 ? moment(this.state.date_assur_1).format('DD/MM/YYYY') + ' au ' + moment(this.state.date_assur_2).format('DD/MM/YYYY')  : null}
+                                   </td> : null}
+
+
+                                </tr>
+
+
+                                </thead> : null}
+
+                                <tbody>
+                                    <tr>
+                                    <th className="">Numero de contrat</th>
+                                    <th className="">Compagnie</th>
+                                    <th className="">Début</th>
+
+                                    <th className="">Fin</th>
+                                    <th>Date Contrat</th>
+                                    <th>Effet</th>
+                                    <th>Montant franchise</th>
+
+                                    <th>Status</th>
+
+                             </tr>
+                                    </tbody>
+
+                                {this.state.assurances_visibles && this.state.assurances_visibles.length ?
+
+                                <React.Fragment>
+
+                                <tbody>
+                                      {this.state.assurances_visibles.map(contrat =>
+                                        <React.Fragment key={contrat.id}>
+                                              <FicheVehiculeAssuranceItem  item={contrat} />
+                                      {this.state.assurances_visibles[this.state.assurances_visibles.length - 1].id == contrat.id ?
+                                        <tr style={{ backgroundColor: 'yellow' }}>
+                                            <th colSpan="6">Coût Total des Franchises : {' '}
+                                            <span style={{ fontWeight: 'bold' }}>
+                                                { formatageSomme( calculSommeColonneSommeAssurance(this.state.assurances_visibles) )}
+                                                </span> </th>
+                                        </tr>
+                                        : null}
+                                        </React.Fragment>
+                                      )}
+
+
+                                    </tbody>
+
+                                </React.Fragment> : <span>Aucun Contrat d'assurance trouvé</span>}
+
+
+
+
+                            </table>
+                                    </div>
+
+                                </div> : null }
+                            </div>
+                        </div>
+                            {/* Fin tableau Assurances */}
+
+
+                    </div>
+
                          </div>
 
 
@@ -1379,6 +1712,7 @@ const mapStateToProps = state => {
         vehicules: state.vehicules.items,
         amendes: state.amendes.items,
         consommations: state.consommations.items,
+        contrat_assurances: state.contrat_assurances.items,
 
         loading: state.interventions.loading,
         vehiculeSeleted: state.vehiculeSeleted.vehicule
