@@ -33,7 +33,7 @@ import { formatageSomme, formatageNombre } from '../../utils/Repository';
              <tr >
             <td className="sticky-col first-col" >{item.immatriculation || ''}</td>
 
-            <td className="sticky-col second-col" >{item.entite_comptable ? item.entite_comptable.nom_entite : ''}</td>
+            <td className="sticky-col second-col" >{item.affectation_geographique ? item.affectation_geographique.libelle : ''}</td>
             <td className="sticky-col third-col" >{item.type_vehicule_statut || ''}</td>
             <td className="sticky-col thour-col" >{item.mode_acquisition == "0" ? 'Achat' : item.mode_acquisition == "1" ? 'Leasing' : 'Prêt'}</td>
             <td >{item.plan_vehicule ? item.plan_vehicule.libelle : ''}</td>
