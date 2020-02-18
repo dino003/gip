@@ -411,7 +411,7 @@ class ModifierVehicule extends Component {
 
     render() {
         const objetEdit = this.props.vehicules.find(vehicule => vehicule.id == this.props.match.params.vehicule_id)
-
+        const contrat_en_cour = this.props.contrat_assurances.find(contrat => contrat.vehicule_id == objetEdit.id && contrat.encour_vehicule) ? this.props.contrat_assurances.find(contrat => contrat.vehicule_id == objetEdit.id && contrat.encour_vehicule) : this.props.contrat_assurances.find(contrat => contrat.defaut) ? this.props.contrat_assurances.find(contrat => contrat.defaut) : null
         const {param_vehicule} = this.props;
         return (
             <div className="app-main__inner">
@@ -2013,114 +2013,194 @@ class ModifierVehicule extends Component {
 
                         <div className="tab-pane tabs-animation fade" id="tab_assurance" role="tabpanel">
 
-
+                        {contrat_en_cour ?
                             <div className="main-card mb-3 card">
                                 <div className="card-body">
-                                    <h5 className="card-title">Assurance</h5>
-                                    {!this.props.contrat_assurances.length ?
-                                    <h4>Les éléments du contrat doivent obligatoirement avoir été creés dans la gestion des contrats,
-                                        Vous pouvez cependant saisir hors contrat les valeurs assurées et primes spécifiques
-                                    </h4> : null }
-
-                                    <div className="form-row">
-
-                                        <div className="col-md-5">
-                                            <div className="position-relative form-group">
-                                                <label >N° Contrat Assurance</label>
-                                                {this.props.contrat_assurances.length ?
-                                                    <Select
-                                                        name="contrat_assurance_id"
-                                                        placeholder="Selectionnez un Contrat"
-                                                        noOptionsMessage={() => "Aucun Aucun contrat pour l'instant"}
-                                                        options={this.props.contrat_assurances.filter(cont => cont.global && (Date.parse(today) < Date.parse(cont.periode_date_fin) ))}
-                                                        getOptionLabel={option => `${option.numero_contrat_police}`}
-                                                        getOptionValue={option => option.id}
-                                                        defaultValue={this.props.contrat_assurances.find(contrat => contrat.vehicule_id == objetEdit.id && contrat.encour_vehicule) ? this.props.contrat_assurances.find(contrat => contrat.vehicule_id == objetEdit.id && contrat.encour_vehicule) : this.props.contrat_assurances.find(contrat => contrat.defaut) ? this.props.contrat_assurances.find(contrat => contrat.defaut) : null }
-                                                        styles={colourStyles}
-
-                                                        // formatOptionLabel={formatOptionVehicule}
-                                                        onChange={this.setFieldSelect.bind(this, "contrat_assurance_id")}
-                                                    /> : <input name="contrat_ass"
-                                                        readOnly
-                                                        defaultValue="Vous devez creer un contrat d'assurance"
-                                                        type="text" className="form-control" />}
-                                            </div>
-                                        </div>
-
-                                        {/* <div className="col-md-4">
-                                            <div className="position-relative form-group">
-                                                <label >Compagnie</label>
-
-                                                {this.contrat_assurance_id && this.props.contrat_assurances.length && this.contrat_assurance_id.value != '' ? <input name="tech_couleur"
-                                                    readOnly
-                                                    defaultValue={this.props.contrat_assurances.find(cont => cont.id == this.contrat_assurance_id.value).compagnie_assurance.code}
-                                                    type="text" className="form-control" /> : <input name="tech_couleur"
-                                                        readOnly
-                                                        type="text" className="form-control" />}
-                                            </div>
-                                        </div> */}
-
-                                        {/* <div className="col-md-2">
-                                            <div className="position-relative form-group">
-                                                <label >Courtier</label>
-                                                <input name="tech_couleur_interieure"
-                                                readOnly
-                                                    ref={tech_couleur_interieure => this.tech_couleur_interieure = tech_couleur_interieure}
-                                                    type="text" className="form-control" /></div>
-                                        </div> */}
-
-
-
-                                    </div>
-
-
 
                                     <div className="form-row">
 
 
+                                    <div className="col-md-5">
+                                        <div className="position-relative form-group">
+                                            <label >N° de contrat/Police * </label>
+                                            <input name="numero_contrat_police"  type="text"
+                                            onChange={this.setField}
+                                            defaultValue={contrat_en_cour.numero_contrat_police}
+                                            readOnly
+                                            style={inputStyle}
+                                            ref={numero_contrat_police => this.numero_contrat_police = numero_contrat_police}
+                                             className="form-control" />
+                                             </div>
+                                    </div>
 
-                                        <div className="col-md-3">
-                                            <div className="position-relative form-group">
-                                                <label >Valeur Assurée (contrat)</label>
-                                                <input name="assurance_valeur_assuree_contrat"
-                                                    defaultValue={objetEdit.assurance_valeur_assuree_contrat}
+                                    <div className="col-md-4">
+                                        <div className="position-relative form-group">
+                                            <label >Date du contrat *</label>
+                                            <input name="date_contrat"  type="date"
+                                            style={inputStyle}
+                                            defaultValue={contrat_en_cour.date_contrat}
 
-                                                    ref={assurance_valeur_assuree_contrat => this.assurance_valeur_assuree_contrat = assurance_valeur_assuree_contrat}
-                                                    type="number" className="form-control" /></div>
+                                            onChange={this.setFieldDateContrat}
+                                            ref={date_contrat => this.date_contrat = date_contrat}
+                                             className="form-control" />
+                                             </div>
+                                    </div>
+
+
+
+
+                                </div>
+
+                                <div className="form-row">
+                                <div className="col-md-2">
+                                        <div className="position-relative form-group">
+                                            <label >Période de validité ===></label>
+
+                                             </div>
+                                    </div>
+                                    <div className="col-md-3">
+                                        <div className="position-relative form-group">
+                                            <label >Date de debut *</label>
+                                            <input name="periode_date_debut"  type="date"
+                                            style={inputStyle}
+                                            readOnly
+                                            defaultValue={contrat_en_cour.periode_date_debut}
+                                            readOnly
+                                            onChange={this.setField}
+                                            ref={periode_date_debut => this.periode_date_debut = periode_date_debut}
+                                             className="form-control" />
+                                             </div>
+                                    </div>
+
+                                    <div className="col-md-3">
+                                        <div className="position-relative form-group">
+                                            <label >Date de fin *</label>
+                                            <input name="periode_date_fin"  type="date"
+                                            style={inputStyle}
+                                            defaultValue={contrat_en_cour.periode_date_fin}
+                                            readOnly
+                                            onChange={this.setField}
+                                            ref={periode_date_fin => this.periode_date_fin = periode_date_fin}
+                                             className="form-control" />
+                                             </div>
+                                    </div>
+
+                                    <div className="col-md-3">
+                                        <div className="position-relative form-group">
+                                            <label >Date de prise d'effet *</label>
+                                            <input name="date_prise_effet"  type="date"
+                                            style={inputStyle}
+                                            onChange={this.setField}
+                                            defaultValue={contrat_en_cour.date_prise_effet}
+                                            readOnly
+                                            ref={date_prise_effet => this.date_prise_effet = date_prise_effet}
+                                             className="form-control" />
+                                             </div>
+                                    </div>
+
+                                </div>
+
+                                <div className="form-row">
+
+                                <div className="col-md-3">
+                                         <label  className="">Compagnie d'assurance</label>
+
+
+                                        <Select
+                                        name="compagnie_assurance"
+                                        placeholder="Selectionnez la compagnie"
+                                        noOptionsMessage={() => "Aucun Tiers pour l'instant"}
+                                        options={this.props.tiers.filter(tier => tier.type_tiers == "ASSUREUR")}
+                                        getOptionLabel={option => option.code}
+                                        getOptionValue={option => option.id}
+                                        onChange={this.setFieldCompagnie}
+                                        isDisabled
+                                        defaultValue={contrat_en_cour.compagnie_assurance ? contrat_en_cour.compagnie_assurance : null}
+                                        styles={colourStyles}
+                                      />
+
                                         </div>
 
                                         <div className="col-md-3">
-                                            <div className="position-relative form-group">
-                                                <label >Valeur Assurée (si spécifique)</label>
-                                                <input name="assurance_valeur_assuree_specifique"
-                                                    defaultValue={objetEdit.assurance_valeur_assuree_specifique}
+                                         <label  className="">Courtier</label>
+                                        <select name="courtier" onChange={this.setField}
+                                            ref={courtier => this.courtier = courtier}
+                                            defaultValue={contrat_en_cour.courtier ? contrat_en_cour.courtier.id : null}
+                                            readOnly
+                                          className="form-control">
 
-                                                    ref={assurance_valeur_assuree_specifique => this.assurance_valeur_assuree_specifique = assurance_valeur_assuree_specifique}
-                                                    type="number" className="form-control" /></div>
+                                        <option defaultValue={null}></option>
+
+                                        {this.props.tiers.filter(ti => ti.type_tiers == "COURSIER").map(tier =>
+                                                <option key={tier.id} value={tier.id}>{tier.code} </option>
+
+                                                )}
+                                        </select>
+
+                                        </div>
+
+
+                                        <div className="col-md-3">
+                                            <label >Valeur assurée</label>
+
+                                            <input name="valeur_assuree"
+                                             defaultValue={contrat_en_cour.valeur_assuree}
+                                             readOnly
+                                            ref={valeur_assuree => this.valeur_assuree = valeur_assuree}
+                                              type="number" className="form-control" />
                                         </div>
 
                                         <div className="col-md-3">
-                                            <div className="position-relative form-group">
-                                                <label >Prime annuelle d'Assurance (contrat)</label>
-                                                <input name="assurance_prime_annuelle_contrat"
-                                                    defaultValue={objetEdit.assurance_prime_annuelle_contrat}
+                                            <label >Montant assuré des objets</label>
 
-                                                    ref={assurance_prime_annuelle_contrat => this.assurance_prime_annuelle_contrat = assurance_prime_annuelle_contrat}
-                                                    type="number" className="form-control" /></div>
-                                        </div>
-
-                                        <div className="col-md-3">
-                                            <div className="position-relative form-group">
-                                                <label >Prime annuelle d'Assurance (Si spécifique)</label>
-                                                <input name="assurance_prime_annuelle_specifique"
-                                                    defaultValue={objetEdit.assurance_prime_annuelle_specifique}
-
-                                                    ref={assurance_prime_annuelle_specifique => this.assurance_prime_annuelle_specifique = assurance_prime_annuelle_specifique}
-                                                    type="number" className="form-control" /></div>
+                                            <input name="montant_assuree"
+                                            defaultValue={contrat_en_cour.montant_assuree}
+                                            readOnly
+                                                onChange={this.setField}
+                                            ref={montant_assuree => this.montant_assuree = montant_assuree}
+                                              type="number" className="form-control" />
                                         </div>
 
 
                                     </div>
+
+                                <div className="form-row">
+                                    <div className="col-md-3">
+                                        <div className="position-relative form-group">
+                                            <label >Montant de la prime</label>
+                                            <input name="montant_prime"  type="number"
+                                            defaultValue={contrat_en_cour.montant_prime}
+                                            readOnly
+                                            ref={montant_prime => this.montant_prime = montant_prime}
+                                             className="form-control" />
+                                             </div>
+                                    </div>
+                                    <div className="col-md-3">
+                                        <div className="position-relative form-group">
+                                            <label >Pourcentage assiète</label>
+
+                                            <input name="pourcentage_assiete"
+                                            defaultValue={contrat_en_cour.pourcentage_assiete}
+
+                                            ref={pourcentage_assiete => this.pourcentage_assiete = pourcentage_assiete}
+                                            readOnly
+                                              type="number" className="form-control" /></div>
+                                    </div>
+
+                                    <div className="col-md-3">
+                                        <div className="position-relative form-group">
+                                            <label >Montant franchise</label>
+
+                                            <input name="montant_franchise"
+                                            defaultValue={contrat_en_cour.montant_franchise}
+
+                                            ref={montant_franchise => this.montant_franchise = montant_franchise}
+                                            readOnly
+                                              type="number" className="form-control" /></div>
+                                    </div>
+
+
+                                </div>
 
 
 
@@ -2128,7 +2208,7 @@ class ModifierVehicule extends Component {
 
 
                                 </div>
-                            </div>
+                            </div> : null }
                         </div>
 
                         {/** fin assurance */}
