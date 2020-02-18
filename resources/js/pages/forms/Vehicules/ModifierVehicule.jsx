@@ -261,11 +261,11 @@ class ModifierVehicule extends Component {
             /**
              *  Assurance
              */
-            assurance_valeur_assuree_contrat: this.assurance_valeur_assuree_contrat.value,
-            assurance_valeur_assuree_specifique: this.assurance_valeur_assuree_specifique.value,
-            assurance_prime_annuelle_contrat: this.assurance_prime_annuelle_contrat.value,
-            assurance_prime_annuelle_specifique: this.assurance_prime_annuelle_specifique.value,
-            contrat_assurance_id: this.state.contrat_assurance_id ? this.state.contrat_assurance_id.id : objetEdit.contrat_assurance ? objetEdit.contrat_assurance.id : this.props.contrat_assurances.length ? this.props.contrat_assurances.find(contrat => contrat.defaut).id : null,
+           // assurance_valeur_assuree_contrat: this.assurance_valeur_assuree_contrat.value,
+           // assurance_valeur_assuree_specifique: this.assurance_valeur_assuree_specifique.value,
+          //  assurance_prime_annuelle_contrat: this.assurance_prime_annuelle_contrat.value,
+          //  assurance_prime_annuelle_specifique: this.assurance_prime_annuelle_specifique.value,
+           // contrat_assurance_id: this.state.contrat_assurance_id ? this.state.contrat_assurance_id.id : objetEdit.contrat_assurance ? objetEdit.contrat_assurance.id : this.props.contrat_assurances.length ? this.props.contrat_assurances.find(contrat => contrat.defaut).id : null,
 
         }).then(response => {
             if(this.state.file != null){

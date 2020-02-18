@@ -248,12 +248,12 @@ class AjouterVehicule extends Component {
             /**
              *  Assurance
              */
-            assurance_valeur_assuree_contrat: this.assurance_valeur_assuree_contrat.value,
+        /*     assurance_valeur_assuree_contrat: this.assurance_valeur_assuree_contrat.value,
             assurance_valeur_assuree_specifique: this.assurance_valeur_assuree_specifique.value,
             assurance_prime_annuelle_contrat: this.assurance_prime_annuelle_contrat.value,
             assurance_prime_annuelle_specifique: this.assurance_prime_annuelle_specifique.value,
             contrat_assurance_id: this.state.contrat_assurance_id ? this.state.contrat_assurance_id.id : this.props.contrat_assurances.length ? this.props.contrat_assurances.find(contrat => contrat.defaut).id : null,
-
+ */
         }).then(response => {
 
             const action = { type: "ADD_VEHICULE", value: response.data }
@@ -427,13 +427,13 @@ class AjouterVehicule extends Component {
                             <span>Acquisition</span>
                         </a>
                     </li>
-
+{/*
                     <li className="nav-item">
                         <a role="tab" className="nav-link" id="tab-4"
                             data-toggle="tab" href="#tab_assurance">
                             <span>Assurance</span>
                         </a>
-                    </li>
+                    </li> */}
 
                     <li className="nav-item">
                         <a role="tab" className="nav-link" id="tab-4"
@@ -1642,7 +1642,7 @@ class AjouterVehicule extends Component {
 
                         {/*  assurance */}
 
-                        <div className="tab-pane tabs-animation fade" id="tab_assurance" role="tabpanel">
+                      {/*   <div className="tab-pane tabs-animation fade" id="tab_assurance" role="tabpanel">
 
 
                             <div className="main-card mb-3 card">
@@ -1668,7 +1668,6 @@ class AjouterVehicule extends Component {
                                                         getOptionValue={option => option.id}
                                                         defaultValue={this.props.contrat_assurances.find(contrat => contrat.defaut)  || null}
                                                         styles={colourStyles}
-                                                        // formatOptionLabel={formatOptionVehicule}
                                                         onChange={this.setFieldSelect.bind(this, "contrat_assurance_id")}
                                                     /> : <input name="tech_couleur"
                                                         readOnly
@@ -1677,27 +1676,7 @@ class AjouterVehicule extends Component {
                                             </div>
                                         </div>
 
-                                        {/* <div className="col-md-4">
-                                            <div className="position-relative form-group">
-                                                <label >Compagnie</label>
 
-                                                {this.contrat_assurance_id && this.props.contrat_assurances.length && this.contrat_assurance_id.value != '' ? <input name="tech_couleur"
-                                                    readOnly
-                                                    defaultValue={this.props.contrat_assurances.find(cont => cont.id == this.contrat_assurance_id.value).compagnie_assurance.code}
-                                                    type="text" className="form-control" /> : <input name="tech_couleur"
-                                                        readOnly
-                                                        type="text" className="form-control" />}
-                                            </div>
-                                        </div> */}
-
-                                        {/* <div className="col-md-2">
-                                            <div className="position-relative form-group">
-                                                <label >Courtier</label>
-                                                <input name="tech_couleur_interieure"
-                                                readOnly
-                                                    ref={tech_couleur_interieure => this.tech_couleur_interieure = tech_couleur_interieure}
-                                                    type="text" className="form-control" /></div>
-                                        </div> */}
 
 
 
@@ -1751,7 +1730,7 @@ class AjouterVehicule extends Component {
 
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
 
                         {/** fin assurance */}
 
