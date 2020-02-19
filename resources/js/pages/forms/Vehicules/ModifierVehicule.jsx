@@ -10,6 +10,7 @@ import { colourStyles } from '../../../utils/Repository';
 import inputStyle from '../../../utils/inputStyle'
 
 import GoogleMapreact from 'google-map-react'
+import MatriculeInput from '../../../components/MatriculeInput';
 
 
 
@@ -415,6 +416,16 @@ class ModifierVehicule extends Component {
         const {param_vehicule} = this.props;
         return (
             <div className="app-main__inner">
+                <div className="row">
+                    <div className="col-md-1"></div>
+                    <div className="col-md-1"></div>
+                    <div className="col-md-10">
+                    {this.props.vehicules.length &&
+                            <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}/>
+                            }
+                    </div>
+
+                </div>
                 {objetEdit ?  <React.Fragment>
                 <ul className="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
                     <li className="nav-item">
