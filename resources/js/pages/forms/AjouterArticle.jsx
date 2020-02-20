@@ -15,10 +15,10 @@ import inputStyle from '../../utils/inputStyle'
         this.state = {
             isFormSubmitted: false
         }
-      
+
     }
 
-   
+
     setField = (event) => {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -29,7 +29,7 @@ import inputStyle from '../../utils/inputStyle'
         });
     }
 
-  
+
 
     setFieldFamille = (event) => {
         const target = event.target;
@@ -47,9 +47,9 @@ import inputStyle from '../../utils/inputStyle'
         return famille.famille
     }
 
-    
 
-  
+
+
 
 
 
@@ -108,15 +108,15 @@ import inputStyle from '../../utils/inputStyle'
                         tva: this.tva.value != '' ? this.tva.value : 0,
                        // valorisation_hors_taxe: this.valorisation_hors_taxe.value,
                        // valorisation_ttc: this.valorisation_ttc.value,
-        
+
                     })
-                    .then(response => { 
+                    .then(response => {
                        const action = {type: "ADD_ARTICLE", value: response.data}
                          this.props.dispatch(action)
                         this.setState({isFormSubmitted: false})
                        this.props.history.goBack();
-        
-                     
+
+
                     }).catch(error => console.log(error))
                 }
             }else{
@@ -137,16 +137,16 @@ import inputStyle from '../../utils/inputStyle'
                     tva: this.tva.value != '' ? this.tva.value : 0,
                    // valorisation_hors_taxe: this.valorisation_hors_taxe.value,
                    // valorisation_ttc: this.valorisation_ttc.value,
-    
+
                 })
-                .then(response => { 
+                .then(response => {
                    const action = {type: "ADD_ARTICLE", value: response.data}
                      this.props.dispatch(action)
                     this.setState({isFormSubmitted: false})
                    this.props.history.goBack();
-    
-                 
-                }).catch(error => { 
+
+
+                }).catch(error => {
                     this.setState({isFormSubmitted: false})
                     console.log(error) } )
             }
@@ -157,25 +157,53 @@ import inputStyle from '../../utils/inputStyle'
                 position: toast.POSITION.BOTTOM_CENTER
               });
           }
-     
+
 
        // console.log(yea)
       }
-    
+
+      getNiveauxPlanVehicules = () => {
+        const events = [];
+        this.props.structure_vehicules.map(event => {
+            if(!event.niveau) return;
+            return events.push(event.niveau)
+        })
+
+        return events
+    }
+
+    getMaximumNiveauPlanVehicule = () => {
+        var niveau = Math.max(...this.getNiveauxPlanVehicules())
+        if (niveau == 0) return 1;
+        return Number(niveau );
+
+    }
+
+    getStructureVehiculeDernierNiveau = () => {
+        if(!this.getPlanVehiculesDerniersNiveau().length) return undefined;
+        else{
+            return this.props.structure_vehicules.find(st => st.niveau == this.getPlanVehiculesDerniersNiveau()[0].structure_vehicule.niveau)
+        }
+    }
+
+    getPlanVehiculesDerniersNiveau = () => {
+        return this.props.plan_vehicules.filter(elm => elm.structure_vehicule ? elm.structure_vehicule.niveau == this.getMaximumNiveauPlanVehicule() : false)
+    }
+
 
     render() {
        // console.log(this.numero_contrat_police)
         return (
             <div className="app-main__inner">
-              
+
                     <div className="main-card mb-3 card">
                         <div className="card-body">
                             <h5 className="card-title">Ajout d'article
-                                                         
+
                           </h5>
                             <form className="" onChange={this.setField}  onSubmit={this.enregistrerIntervention}>
-                          
-                               
+
+
                                 <div className="form-row">
 
                                 <div className="col-md-2">
@@ -199,12 +227,12 @@ import inputStyle from '../../utils/inputStyle'
                                           className="form-control">
                                         <option value={null}></option>
 
-                                        {this.props.famille_pieces_detaches.map(piece => 
+                                        {this.props.famille_pieces_detaches.map(piece =>
                                                 <option key={piece.id} value={piece.id}>{piece.famille} </option>
 
                                                 )}
                                         </select>
-                                
+
                                         </div>
 
                                         <div className="col-md-3">
@@ -216,12 +244,12 @@ import inputStyle from '../../utils/inputStyle'
                                         <option value={1}>Pièce détachée</option>
                                         <option value={2}>Consommable</option>
 
-                                       
+
                                         </select>
-                                
+
                                         </div>
 
-                                 
+
 
                                     <div className="col-md-4">
                                         <div className="position-relative form-group">
@@ -234,10 +262,38 @@ import inputStyle from '../../utils/inputStyle'
                                              </div>
                                     </div>
 
-                                  
+
                                 </div>
 
                                 <div className="form-row">
+
+                                {this.getStructureVehiculeDernierNiveau() ?
+                                        <div className="col-md-3">
+                                            <label className="">{this.getStructureVehiculeDernierNiveau().libelle} </label>
+
+
+                                            <Select
+                                                name="plan_vehicule_id"
+                                                isDisabled={!this.getStructureVehiculeDernierNiveau()}
+                                                placeholder={`Sélection  ${this.getStructureVehiculeDernierNiveau().libelle}`}
+                                                noOptionsMessage={() => `Pas de ${this.getStructureVehiculeDernierNiveau().libelle} pour l'instant`}
+                                                options={this.getPlanVehiculesDerniersNiveau()}
+                                                getOptionLabel={option => option.libelle}
+                                                getOptionValue={option => option.id}
+                                                // formatOptionLabel={formatOptionVehicule}
+                                                onChange={this.setFieldSelect.bind(this, "plan_vehicule_id")}
+                                                styles={colourStyles}
+                                            />
+
+                                        </div> :
+
+
+                                        <div className="col-md-3">
+                                            <label className=""> Modèle</label>
+
+                                            <input readOnly className="form-control" value="Veuillez creer la structure véhicule" />
+
+                                        </div>}
 
                                 <div className="col-md-3">
                                             <label  className="">Marque</label>
@@ -246,7 +302,7 @@ import inputStyle from '../../utils/inputStyle'
                                             className="form-control">
                                             <option value={null}></option>
 
-                                            {this.props.marques.map(marque => 
+                                            {this.props.marques.map(marque =>
                                                     <option key={marque.id} value={marque.id}>{marque.nom_marque}  </option>
 
                                                     )}
@@ -259,13 +315,13 @@ import inputStyle from '../../utils/inputStyle'
                                                 <label >Modèle </label>
                                                 <input name="modele"  type="text"
                                                 onChange={this.setField}
-                                                
+
                                                 ref={modele => this.modele = modele}
                                                 className="form-control" />
                                                 </div>
                                         </div>
 
-                                 
+
                                         <div className="col-md-3">
                                             <label  className="">Fournisseur</label>
                                             <select name="fournisseur_id" onChange={this.setField}
@@ -274,16 +330,16 @@ import inputStyle from '../../utils/inputStyle'
                                             className="form-control">
                                             <option value={null}></option>
 
-                                            {this.props.tiers.map(tier => 
+                                            {this.props.tiers.map(tier =>
                                                     <option key={tier.id} value={tier.id}>{tier.code}  </option>
 
                                                     )}
                                             </select>
 
                                             </div>
-                                          
 
-                                    
+
+
 
                                         <div className="col-md-3">
                                             <div className="position-relative form-group">
@@ -295,14 +351,14 @@ import inputStyle from '../../utils/inputStyle'
                                                 </div>
                                         </div>
 
-                                    
+
                                     </div>
 
                                 <div className="form-row">
                                 <div className="col-md-2">
                                         <div className="position-relative form-group">
                                             <label >Quantités ===></label>
-                                           
+
                                              </div>
                                     </div>
                                     {/* <div className="col-md-2">
@@ -337,18 +393,18 @@ import inputStyle from '../../utils/inputStyle'
                                              </div>
                                     </div>
 
-                                  
-                                   
+
+
                                 </div>
 
                                 <div className="form-row">
 
                                 <div className="col-md-3">
                                         <div className="position-relative form-group">
-                                           
+
                                              </div>
                                     </div>
-                                        
+
                                     <div className="col-md-3">
                                             <div className="position-relative form-group">
                                                 <label >Prix de l'article </label>
@@ -363,7 +419,7 @@ import inputStyle from '../../utils/inputStyle'
                                         <div className="col-md-2">
                                             <div className="position-relative form-group">
                                                 <label >Taux TVA %</label>
-                                                
+
                                                 {this.props.tva.length ?  <input name="tva"  type="number"
                                                 onChange={this.setField}
                                                 defaultValue={ this.props.tva.find(tva => tva.defaut).taux || 18}
@@ -383,7 +439,7 @@ import inputStyle from '../../utils/inputStyle'
                                 <div className="col-md-3">
                                         <div className="position-relative form-group">
                                             <label >Valorisation du stock ===></label>
-                                           
+
                                              </div>
                                     </div>
 
@@ -410,22 +466,22 @@ import inputStyle from '../../utils/inputStyle'
                                                     </div>
                                             </div>
 
-                                    
+
                                         </div> */}
 
-                                      
 
-                            
-                          
+
+
+
 
                             <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
-                          
+
                                 <span onClick={() => this.props.history.goBack()}
                                  className="mt-2 btn btn-warning pull-right">Retour</span>
                             </form>
                         </div>
                     </div>
-                
+
                     <ToastContainer autoClose={4000} />
        </div>
         )
@@ -440,6 +496,8 @@ const mapStateToProps = state => {
         famille_pieces_detaches: state.famille_pieces_detaches.items,
         articles: state.articles.items,
         tva: state.tva.items,
+        structure_vehicules: state.structure_vehicules.items,
+        plan_vehicules: state.plan_vehicules.items,
 
     }
   }
