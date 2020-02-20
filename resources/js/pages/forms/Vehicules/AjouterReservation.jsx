@@ -18,30 +18,30 @@ import Select from 'react-select'
         this.state = {
             isFormSubmitted: false
          }
-      
+
     }
 
 
     setFieldSelectDepartEtDestination(name, value) {
-     
+
         let obj = {};
         obj[name] = value;
         this.setState(obj);
     }
 
-          
+
     getNiveauxPlanGeographiques = () => {
         const events = [];
         this.props.structure_geographiques.map(event => {
             if(!event.niveau) return;
             return events.push(event.niveau)
         })
-        
+
         return events
     }
 
     getMaximumNiveauPlanGeographique = () => {
-        var niveau = Math.max(...this.getNiveauxPlanGeographiques()) 
+        var niveau = Math.max(...this.getNiveauxPlanGeographiques())
         if (niveau == 0) return 1;
         return Number(niveau );
 
@@ -55,23 +55,23 @@ import Select from 'react-select'
     }
 
     getPlanGeographiquesDerniersNiveau = () => {
-        return this.props.plan_geographiques.filter(elm => elm.structure_geographique ? elm.structure_geographique.niveau == this.getMaximumNiveauPlanGeographique() : false) 
+        return this.props.plan_geographiques.filter(elm => elm.structure_geographique ? elm.structure_geographique.niveau == this.getMaximumNiveauPlanGeographique() : false)
     }
 
- 
+
 
         setVehiculeSelectedAuRechargement = () => {
             if(this.props.vehiculeSeleted == undefined){
                 if(this.props.vehicules.length){
                     let vehicule = this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
-                
+
                     const action = {type: "EDIT_SELECTED", value: vehicule}
                     this.props.dispatch(action)
                 }
             }
         }
 
-   
+
     setField = (event) => {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -109,12 +109,12 @@ import Select from 'react-select'
           }
       }
 
-      
+
 
       checkIfReservationIsPossible = (debut, fin) => {
         var vehicule = this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)
         var lesReservationsDuVehicule = this.props.reservations.filter(reser => reser.vehicule.id == vehicule.id && !reser.abandonne && !reser.transforme_en_utilisation)
-       
+
         var tab = []
         var debut = Date.parse(debut)
         var fin = Date.parse(fin)
@@ -126,8 +126,8 @@ import Select from 'react-select'
             tab.push(fin >= dateDebutDejaReserve && fin <= dateFinDejaReserve)
             tab.push(debut <= dateDebutDejaReserve && fin >= dateFinDejaReserve)
         })
- 
-        return (tab.includes(true)) ? 'Il y\'a déja une réservation pour ce véhicule et pour cette période' : null 
+
+        return (tab.includes(true)) ? 'Il y\'a déja une réservation pour ce véhicule et pour cette période' : null
       }
 
       getEntiteDuPerrsonnelReservant = () => {
@@ -136,9 +136,9 @@ import Select from 'react-select'
                 var personne = this.props.personnels.find(per => per.id == this.personne_reservant.value)
                if(personne) return (personne.default) ? 'SIEGE' : personne.entite_affectation.entite
               }
-           
+
           }
-         
+
       }
 
       enregistrerReservation = (e) => {
@@ -163,8 +163,8 @@ import Select from 'react-select'
                     date_debut_reservation: this.date_debut_reservation.value,
                     heure_debut_reservation: this.heure_debut_reservation.value,
                     lieu_depart_id: this.state.lieu_depart ? this.state.lieu_depart.id : null,
-                    destination_id: this.state.destination ? this.state.destination.id : null,   
-   
+                    destination_id: this.state.destination ? this.state.destination.id : null,
+
                    // lieu_depart: this.lieu_depart.value,
                     nombre_personne_dans_vehicule: this.nombre_personne_dans_vehicule.value,
                     kilometrage_prevu: this.kilometrage_prevu.value,
@@ -179,9 +179,9 @@ import Select from 'react-select'
                     numero_carte_peage: this.numero_carte_peage.value,
                     infos_complementaire: this.infos_complementaire.value,
                     date_reservation: today,
-                   
+
                 })
-                .then(response => { 
+                .then(response => {
                    const action = {type: "ADD_RESERVATION", value: response.data}
                      this.props.dispatch(action)
                      if(mission != undefined){
@@ -189,7 +189,7 @@ import Select from 'react-select'
                         if(conf){
                             axios.get('/api/marquer_ordre_mission_termine/' + mission.id).then(response => {
                                const action2 = {type: "EDIT_MISSION", value: response.data}
-                                this.props.dispatch(action2) 
+                                this.props.dispatch(action2)
                             })
                             this.setState({isFormSubmitted: false})
                             this.props.history.goBack();
@@ -197,19 +197,19 @@ import Select from 'react-select'
                         }else{
                             this.setState({isFormSubmitted: false})
                             this.props.history.goBack();
-  
+
                         }
                      }else{
                          this.setState({isFormSubmitted: false})
                         this.props.history.goBack();
 
                      }
-                   
 
-                 
+
+
                 }).catch(error => console.log(error))
-               
-    
+
+
               }else{
                   //console.log(this.verificationFormulaire())
                   toast.error(this.verificationFormulaire(), {
@@ -219,13 +219,13 @@ import Select from 'react-select'
         }else{
             toast.error(this.checkIfReservationIsPossible(this.date_debut_reservation.value, this.date_fin_reservation.value), {
                 position: toast.POSITION.BOTTOM_CENTER
-              });  
+              });
         }
-       
+
 
        // console.log(this.date_debut.value)
       }
-    
+
 
     render() {
         const personeParDefaut = this.props.personnels.find(per => per.default)
@@ -236,10 +236,10 @@ import Select from 'react-select'
                     <div className="main-card mb-3 card">
                         <div className="card-body">
                             <h5 className="card-title">Gestion des Reservations du véhicule
-                           
-                            {this.props.vehicules.length && 
+
+                            {this.props.vehicules.length &&
                             <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}/>
-                            }                              
+                            }
                           </h5>
                           <br />
                             <form className="" onChange={this.setField}  onSubmit={this.enregistrerReservation}>
@@ -274,7 +274,7 @@ import Select from 'react-select'
 
                                                 )}
                                         </select>}
-                                
+
                                         </div>
 
                                         <div className="col-md-3">
@@ -298,15 +298,15 @@ import Select from 'react-select'
                                           className="form-control">
                                         <option defaultValue={null}></option>
 
-                                        {this.props.natures_reservations.map(nature => 
+                                        {this.props.natures_reservations.map(nature =>
                                                 <option key={nature.id} value={nature.id}>{nature.libelle}</option>
 
                                                 )}
                                         </select>
-                                
+
                                         </div>
 
-                                       
+
                                             {mission != undefined &&  <div className="col-md-3">
                                         <div className="position-relative form-group">
                                             <label >Numero de l'ordre de mission </label>
@@ -318,9 +318,9 @@ import Select from 'react-select'
                                              className="form-control" />
                                              </div>
                                     </div>}
-                                  
 
-                                  
+
+
                                 </div>
 
                                 <div className="form-row">
@@ -339,7 +339,7 @@ import Select from 'react-select'
                                     <div className="col-md-2">
                                         <div className="position-relative form-group">
                                             <label >Heure de début *</label>
-                                            <InputMask mask="99:99" maskChar={null} 
+                                            <InputMask mask="99:99" maskChar={null}
                                             style={inputStyle}
                                             defaultValue={mission != undefined ? mission.heure_debut_mission.slice(0, 5) : '08:00'}
                                             inputRef={heure_debut_reservation => this.heure_debut_reservation = heure_debut_reservation}
@@ -365,7 +365,7 @@ import Select from 'react-select'
                                     <div className="col-md-2">
                                         <div className="position-relative form-group">
                                             <label >Heure de fin *</label>
-                                            <InputMask mask="99:99" maskChar={null} 
+                                            <InputMask mask="99:99" maskChar={null}
                                             style={inputStyle}
                                             defaultValue={mission != undefined ? mission.heure_fin_mission.slice(0, 5) : '18:00'}
                                             inputRef={heure_fin_reservation => this.heure_fin_reservation = heure_fin_reservation}
@@ -383,7 +383,7 @@ import Select from 'react-select'
                                         <option value="0">Non</option>
                                         <option value="1">Oui</option>
                                         </select>
-                                
+
                                         </div>
 
                                         <div className="col-md-1">
@@ -394,20 +394,20 @@ import Select from 'react-select'
                                         <option value="0">Non</option>
                                         <option value="1">Oui</option>
                                         </select>
-                                
+
                                         </div> */}
 
-                                    
+
                                 </div>
 
-                    
+
 
                                 <div className="form-row">
 
                                 {this.getStructureGeographiqueDernierNiveau() ?
                                           <div className="col-md-6">
                                               <label >Lieu de Départ</label>
-                                      
+
 
                                               <Select
                                                   name="lieu_depart"
@@ -425,7 +425,7 @@ import Select from 'react-select'
 
                                           <div className="col-md-6">
                                               <label >Lieu Départ</label>
-                                      
+
                                               <input readOnly className="form-control" value="Veuillez creer la structure Géographique" />
 
                                           </div>}
@@ -434,7 +434,7 @@ import Select from 'react-select'
                                   {this.getStructureGeographiqueDernierNiveau() ?
                                           <div className="col-md-6">
                                               <label >Destination</label>
-                                      
+
 
                                               <Select
                                                   name="destination"
@@ -454,13 +454,13 @@ import Select from 'react-select'
 
                                           <div className="col-md-6">
                                               <label >Destination</label>
-                                      
+
                                               <input readOnly className="form-control" value="Veuillez creer la structure Géographique" />
 
                                           </div>}
-                                     
-                                   
-                              
+
+
+
 
                                      {/*    <div className="col-md-3">
                                             <label >Destination: Département</label>
@@ -483,7 +483,7 @@ import Select from 'react-select'
                                               type="text" className="form-control" />
                                         </div> */}
 
-                                     
+
                                     </div>
 
                                     <div className="form-row">
@@ -529,7 +529,7 @@ import Select from 'react-select'
                                         <option value="0">Non</option>
                                         <option value="1">Oui</option>
                                         </select>
-                                
+
                                         </div>
 
                                         <div className="col-md-2">
@@ -540,7 +540,7 @@ import Select from 'react-select'
                                         <option value="0">Non</option>
                                         <option value="1">Oui</option>
                                         </select>
-                                
+
                                         </div>
 
                                         <div className="col-md-2">
@@ -551,10 +551,10 @@ import Select from 'react-select'
                                         <option value="0">Non</option>
                                         <option value="1">Oui</option>
                                         </select>
-                                
+
                                         </div>
 
-                                  
+
                                 </div>
                                 <div className="form-row">
                                 <div className="col-md-3">
@@ -586,7 +586,7 @@ import Select from 'react-select'
                                         </div>
                                     </div>
                                 </div>
-                                 
+
 
                                 <button disabled={this.state.isFormSubmitted} type="submit" className="mt-2 btn btn-primary">{this.state.isFormSubmitted ? (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>) : 'Enregistrer'}</button>
                                 <span  onClick={() => this.props.history.goBack()}
@@ -594,7 +594,7 @@ import Select from 'react-select'
                             </form>
                         </div>
                     </div>
-                
+
                     <ToastContainer autoClose={4000} />
        </div>
         )
