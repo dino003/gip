@@ -349,6 +349,26 @@ class ModifierVehicule extends Component {
         }
     }
 
+    getAvantDernierPlanVehiculeEnQuestion = () => {
+       // const objetEdit = this.props.vehicules.find(vehicule => vehicule.id == this.props.match.params.vehicule_id)
+
+     // return  this.getPlanVehiculesAvantDerniersNiveau().find(elm => elm.id == objetEdit.plan_vehicule_id)
+
+      return this.props.plan_vehicules.find(pl => pl.id == this.getDernierPlanVehiculeEnQuestion().parent)
+
+    }
+
+
+    getDernierPlanVehiculeEnQuestion = () => {
+        const objetEdit = this.props.vehicules.find(vehicule => vehicule.id == this.props.match.params.vehicule_id)
+
+       return this.getPlanVehiculesDerniersNiveau().find(elm => elm.id == objetEdit.plan_vehicule_id)
+    }
+
+    getPlanVehiculesAvantDerniersNiveau = () => {
+        return this.props.plan_vehicules.filter(elm => elm.structure_vehicule ? elm.structure_vehicule.niveau == Number(this.getMaximumNiveauPlanVehicule() - 1) : false)
+    }
+
     getPlanVehiculesDerniersNiveau = () => {
         return this.props.plan_vehicules.filter(elm => elm.structure_vehicule ? elm.structure_vehicule.niveau == this.getMaximumNiveauPlanVehicule() : false)
     }
@@ -414,16 +434,19 @@ class ModifierVehicule extends Component {
         const objetEdit = this.props.vehicules.find(vehicule => vehicule.id == this.props.match.params.vehicule_id)
         const contrat_en_cour = this.props.contrat_assurances.find(contrat => contrat.vehicule_id == objetEdit.id && contrat.encour_vehicule) ? this.props.contrat_assurances.find(contrat => contrat.vehicule_id == objetEdit.id && contrat.encour_vehicule) : this.props.contrat_assurances.find(contrat => contrat.defaut) ? this.props.contrat_assurances.find(contrat => contrat.defaut) : null
         const {param_vehicule} = this.props;
+        //console.log(this.getPlanVehiculesAvantDerniersNiveau())
         return (
             <div className="app-main__inner">
                 <div className="row">
-                    <div className="col-md-1"></div>
-                    <div className="col-md-1"></div>
-                    <div className="col-md-10">
+
+                    <div className="col-md-8">
                     {this.props.vehicules.length &&
                             <MatriculeInput vehicule={this.props.vehicules.find(veh => veh.id == this.props.match.params.vehicule_id)}/>
                             }
                     </div>
+
+                    <div className="col-md-2">{this.getAvantDernierPlanVehiculeEnQuestion() ? this.getAvantDernierPlanVehiculeEnQuestion().libelle : null}</div>
+                    <div className="col-md-2"> {this.getDernierPlanVehiculeEnQuestion() ? this.getDernierPlanVehiculeEnQuestion().libelle : null} </div>
 
                 </div>
                 {objetEdit ?  <React.Fragment>
