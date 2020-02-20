@@ -20,6 +20,13 @@ import Select from 'react-select'
 
     }
 
+    setFieldSelect(name, value) {
+
+        let obj = {};
+        obj[name] = value;
+        this.setState(obj);
+    }
+
 
     setField = (event) => {
         const target = event.target;
