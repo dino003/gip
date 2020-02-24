@@ -1458,7 +1458,7 @@ class FiltreVehicules extends Component {
                                                 <div className="widget-content-outer">
                                                     <div className="widget-content-wrapper">
                                                         <div className="widget-content-left">
-                                                            <div className="widget-heading">Coût total des Intervetions</div>
+                                                            <div className="widget-heading">Coût total des Interventions</div>
                                                             <span className="text-success" style={{fontSize: '1.4em'}}>
                                                             {formatageSomme( this.getCoutTotalIntervention() )}
                                                             </span>
@@ -1494,7 +1494,7 @@ class FiltreVehicules extends Component {
                                                 <div className="widget-content-outer">
                                                     <div className="widget-content-wrapper">
                                                         <div className="widget-content-left">
-                                                            <div className="widget-heading">Kilometres parcourus</div>
+                                                            <div className="widget-heading">Kilomêtres parcourus</div>
                                                             <span className="text-success" style={{fontSize: '1.4em'}}>
                                                             {formatageNombre( calculSommeColonneKilometrageVehicule(this.state.vehicules_visibles_actuelement)  )}
                                                             </span>
