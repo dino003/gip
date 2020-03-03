@@ -529,74 +529,9 @@ class ModifierVehicule extends Component {
                                                     className="form-control" />
                                                     </div>
                             </div>
-                            {this.getStructureGeographiqueDernierNiveau() ?
-                            <div className="col-md-5">
-                                <label className="">{this.getStructureGeographiqueDernierNiveau().libelle}  </label>
 
 
-                                <Select
-                                    name="affectation_geographique_id"
-                                    isDisabled={!this.getStructureGeographiqueDernierNiveau()}
-                                    placeholder={`Sélection de ${this.getStructureGeographiqueDernierNiveau().libelle}`}
-                                    noOptionsMessage={() => `Pas de ${this.getStructureGeographiqueDernierNiveau().libelle} pour l'instant`}
-                                    options={this.getPlanGeographiquesDerniersNiveau()}
-                                    getOptionLabel={option => option.libelle}
-                                    getOptionValue={option => option.id}
-                                    defaultValue={objetEdit.affectation_geographique ? objetEdit.affectation_geographique : null}
-
-                                    // formatOptionLabel={formatOptionVehicule}
-                                    onChange={this.setFieldSelect.bind(this, "affectation_geographique_id")}
-                                    styles={param_vehicule.zonne_geographique_obligatoire && colourStyles}
-                                />
-
-                            </div> :
-
-
-                            <div className="col-md-5">
-                                <label className=""> Affectation Géographique</label>
-
-                                <input readOnly className="form-control" value="Veuillez creer la structure Géographique" />
-
-                            </div>}
-
-                            {this.getStructureOrganisationnelDernierNiveau() ?
-                            <div className="col-md-5">
-                                <label className="">{this.getStructureOrganisationnelDernierNiveau().libelle} d'affectation *</label>
-
-
-                                <Select
-                                    name="affectation_organisationnel_id"
-                                    isDisabled={!this.getStructureOrganisationnelDernierNiveau()}
-                                    placeholder={`Sélection de ${this.getStructureOrganisationnelDernierNiveau().libelle}`}
-                                    noOptionsMessage={() => `Pas de ${this.getStructureOrganisationnelDernierNiveau().libelle} pour l'instant`}
-                                    options={this.getPlanOrgaDernierNiveau()}
-                                    getOptionLabel={option => option.libelle}
-                                    getOptionValue={option => option.id}
-                                    defaultValue={objetEdit.affectation_organisationnel ? objetEdit.affectation_organisationnel : null}
-
-                                    // formatOptionLabel={formatOptionVehicule}
-                                    onChange={this.setFieldSelect.bind(this, "affectation_organisationnel_id")}
-                                    styles={param_vehicule.zone_organisationnelle_obligatoire && colourStyles }
-                                />
-
-                            </div> :
-
-
-                            <div className="col-md-5">
-                                <label className=""> Affectation Organisationnelle</label>
-
-                                <input readOnly className="form-control" value="Veuillez creer la structure Organisationnelle" />
-
-                            </div>}
-
-
-                        </div>
-
-
-
-                                    <div className="form-row">
-
-                                    {this.getStructureVehiculeDernierNiveau() ?
+                            {this.getStructureVehiculeDernierNiveau() ?
                                         <div className="col-md-4">
                                             <label className="">{this.getStructureVehiculeDernierNiveau().libelle} </label>
 
@@ -643,7 +578,7 @@ class ModifierVehicule extends Component {
                                         </div>
 
                                         <div className="col-md-2">
-                                            <label className=""> Etat du véhicule *</label>
+                                            <label className=""> Status *</label>
                                             <select name="etat_vehicule_status"
                                                  defaultValue={objetEdit.etat_vehicule_status}
 
@@ -676,8 +611,21 @@ class ModifierVehicule extends Component {
 
                                         </div>
 
-                                        <div className="col-md-3">
-                                            <label className="">Type </label>
+
+
+
+                        </div>
+
+
+
+
+
+
+                                    <div className="form-row">
+
+
+                                    <div className="col-md-3">
+                                            <label className="">Appartenance </label>
                                             <select name="mode_acquisition_type_vehicule"
                                                     defaultValue={objetEdit.mode_acquisition_type_vehicule}
 
@@ -690,84 +638,6 @@ class ModifierVehicule extends Component {
                                             </select>
 
                                         </div>
-
-
-
-                                    </div>
-
-
-                                    <div className="form-row">
-
-
-
-                                        <div className="col-md-2">
-                                            <div className="position-relative form-group">
-                                                <label >Commandé le</label>
-                                                <input name="date_commande"
-                                                    defaultValue={objetEdit.date_commande}
-
-                                                    ref={date_commande => this.date_commande = date_commande}
-                                                    type="date" className="form-control" /></div>
-                                        </div>
-
-                                        <div className="col-md-3">
-                                            <div className="position-relative form-group">
-                                                <label >Numero de la commande</label>
-                                                <input name="numero_commande"
-                                                    defaultValue={objetEdit.numero_commande}
-
-                                                    ref={numero_commande => this.numero_commande = numero_commande}
-                                                    type="text" className="form-control" /></div>
-                                        </div>
-
-
-
-                                        <div className="col-md-3">
-                                            <label className="">Demandeur </label>
-
-                                            <Select
-                                                name="demandeur"
-                                                placeholder="Selectionnez une personne"
-                                                noOptionsMessage={() => "Aucune personne pour l'instant"}
-                                                options={this.props.personnels}
-                                                getOptionLabel={option => `${option.nom} ${option.prenom.slice(0, 15)}`}
-                                                getOptionValue={option => option.id}
-                                                // formatOptionLabel={formatOptionVehicule}
-                                                defaultValue={objetEdit.demandeur ? objetEdit.demandeur : null}
-
-                                                onChange={this.setFieldSelect.bind(this, "demandeur")}
-                                            />
-
-                                        </div>
-
-                                        <div className="col-md-2">
-                                            <div className="position-relative form-group">
-                                                <label >Livraison prévue</label>
-                                                <input name="date_livraison_previsionelle"
-                                                    defaultValue={objetEdit.date_livraison_previsionelle}
-
-                                                    ref={date_livraison_previsionelle => this.date_livraison_previsionelle = date_livraison_previsionelle}
-                                                    type="date" className="form-control" /></div>
-                                        </div>
-
-                                        <div className="col-md-2">
-                                            <div className="position-relative form-group">
-                                                <label >Livré le</label>
-                                                <input name="date_livraison_reele"
-                                                    defaultValue={objetEdit.date_livraison_reele}
-
-                                                    ref={date_livraison_reele => this.date_livraison_reele = date_livraison_reele}
-                                                    type="date" className="form-control" /></div>
-                                        </div>
-
-
-
-
-
-
-                                    </div>
-
-                                    <div className="form-row">
 
 
 
@@ -998,6 +868,68 @@ class ModifierVehicule extends Component {
 
 
 
+                                    </div>
+
+                                    <div className="form-row">
+                                    {this.getStructureGeographiqueDernierNiveau() ?
+                            <div className="col-md-6">
+                                <label className="">{this.getStructureGeographiqueDernierNiveau().libelle}  </label>
+
+
+                                <Select
+                                    name="affectation_geographique_id"
+                                    isDisabled={!this.getStructureGeographiqueDernierNiveau()}
+                                    placeholder={`Sélection de ${this.getStructureGeographiqueDernierNiveau().libelle}`}
+                                    noOptionsMessage={() => `Pas de ${this.getStructureGeographiqueDernierNiveau().libelle} pour l'instant`}
+                                    options={this.getPlanGeographiquesDerniersNiveau()}
+                                    getOptionLabel={option => option.libelle}
+                                    getOptionValue={option => option.id}
+                                    defaultValue={objetEdit.affectation_geographique ? objetEdit.affectation_geographique : null}
+
+                                    // formatOptionLabel={formatOptionVehicule}
+                                    onChange={this.setFieldSelect.bind(this, "affectation_geographique_id")}
+                                    styles={param_vehicule.zonne_geographique_obligatoire && colourStyles}
+                                />
+
+                            </div> :
+
+
+                            <div className="col-md-6">
+                                <label className=""> Affectation Géographique</label>
+
+                                <input readOnly className="form-control" value="Veuillez creer la structure Géographique" />
+
+                            </div>}
+
+                            {this.getStructureOrganisationnelDernierNiveau() ?
+                            <div className="col-md-6">
+                                <label className="">{this.getStructureOrganisationnelDernierNiveau().libelle} d'affectation *</label>
+
+
+                                <Select
+                                    name="affectation_organisationnel_id"
+                                    isDisabled={!this.getStructureOrganisationnelDernierNiveau()}
+                                    placeholder={`Sélection de ${this.getStructureOrganisationnelDernierNiveau().libelle}`}
+                                    noOptionsMessage={() => `Pas de ${this.getStructureOrganisationnelDernierNiveau().libelle} pour l'instant`}
+                                    options={this.getPlanOrgaDernierNiveau()}
+                                    getOptionLabel={option => option.libelle}
+                                    getOptionValue={option => option.id}
+                                    defaultValue={objetEdit.affectation_organisationnel ? objetEdit.affectation_organisationnel : null}
+
+                                    // formatOptionLabel={formatOptionVehicule}
+                                    onChange={this.setFieldSelect.bind(this, "affectation_organisationnel_id")}
+                                    styles={param_vehicule.zone_organisationnelle_obligatoire && colourStyles }
+                                />
+
+                            </div> :
+
+
+                            <div className="col-md-6">
+                                <label className=""> Affectation Organisationnelle</label>
+
+                                <input readOnly className="form-control" value="Veuillez creer la structure Organisationnelle" />
+
+                            </div>}
                                     </div>
 
 
@@ -1587,6 +1519,78 @@ class ModifierVehicule extends Component {
                                             />
 
                                         </div>
+                                    </div>
+
+
+                                    <div className="form-row">
+
+
+
+                                        <div className="col-md-2">
+                                            <div className="position-relative form-group">
+                                                <label >Commandé le</label>
+                                                <input name="date_commande"
+                                                    defaultValue={objetEdit.date_commande}
+
+                                                    ref={date_commande => this.date_commande = date_commande}
+                                                    type="date" className="form-control" /></div>
+                                        </div>
+
+                                        <div className="col-md-3">
+                                            <div className="position-relative form-group">
+                                                <label >Numero de la commande</label>
+                                                <input name="numero_commande"
+                                                    defaultValue={objetEdit.numero_commande}
+
+                                                    ref={numero_commande => this.numero_commande = numero_commande}
+                                                    type="text" className="form-control" /></div>
+                                        </div>
+
+
+
+                                        <div className="col-md-3">
+                                            <label className="">Demandeur </label>
+
+                                            <Select
+                                                name="demandeur"
+                                                placeholder="Selectionnez une personne"
+                                                noOptionsMessage={() => "Aucune personne pour l'instant"}
+                                                options={this.props.personnels}
+                                                getOptionLabel={option => `${option.nom} ${option.prenom.slice(0, 15)}`}
+                                                getOptionValue={option => option.id}
+                                                // formatOptionLabel={formatOptionVehicule}
+                                                defaultValue={objetEdit.demandeur ? objetEdit.demandeur : null}
+
+                                                onChange={this.setFieldSelect.bind(this, "demandeur")}
+                                            />
+
+                                        </div>
+
+                                        <div className="col-md-2">
+                                            <div className="position-relative form-group">
+                                                <label >Livraison prévue</label>
+                                                <input name="date_livraison_previsionelle"
+                                                    defaultValue={objetEdit.date_livraison_previsionelle}
+
+                                                    ref={date_livraison_previsionelle => this.date_livraison_previsionelle = date_livraison_previsionelle}
+                                                    type="date" className="form-control" /></div>
+                                        </div>
+
+                                        <div className="col-md-2">
+                                            <div className="position-relative form-group">
+                                                <label >Livré le</label>
+                                                <input name="date_livraison_reele"
+                                                    defaultValue={objetEdit.date_livraison_reele}
+
+                                                    ref={date_livraison_reele => this.date_livraison_reele = date_livraison_reele}
+                                                    type="date" className="form-control" /></div>
+                                        </div>
+
+
+
+
+
+
                                     </div>
                                 </div>
                             </div>

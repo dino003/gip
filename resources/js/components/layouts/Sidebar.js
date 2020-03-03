@@ -7,6 +7,23 @@ const active = {
 };
 
 class Sidebar extends Component {
+
+    constructor(props) {
+        super(props)
+
+        this.isBookingPosible = this.isBookingPosible.bind(this);
+    }
+
+    isBookingPosible(vehicule) {  // return Boolean
+        const {
+            vehiculeSeleted,
+            param_generaux_modules,
+            param_generaux_reservation_ordre
+        } = this.props;
+
+
+    }
+
     render() {
         const {
             vehiculeSeleted,
@@ -127,8 +144,7 @@ class Sidebar extends Component {
                                         </li> : null
                                     }
 
-{param_generaux_modules.reservations ==
-                                        1 ?
+                                {param_generaux_modules.reservations == 1 ?
                                         <li>
                                             {vehiculeSeleted != undefined ? (
                                                 !param_generaux_reservation_ordre.vehicule_fonction_reservable &&
@@ -143,7 +159,14 @@ class Sidebar extends Component {
                                                         <i className="metismenu-state-icon "></i>
                                                     </a>
                                                 ) : (
-                                                    <NavLink
+                                                    !vehiculeSeleted.reservable ? (    <a
+                                                        disabled
+                                                        title="Ce véhicule n'est pas pris en compte pour les réservations"
+                                                    >
+                                                        <i className="metismenu-icon pe-7s-repeat"></i>
+                                                        Réservations
+                                                        <i className="metismenu-state-icon "></i>
+                                                    </a>) : (<NavLink
                                                         exact
                                                         activeStyle={active}
                                                         to={{
@@ -153,7 +176,7 @@ class Sidebar extends Component {
                                                         <i className="metismenu-icon pe-7s-repeat"></i>
                                                         Réservations
                                                         <i className="metismenu-state-icon "></i>
-                                                    </NavLink>
+                                                    </NavLink>)
                                                 )
                                             ) : (
                                                 <a

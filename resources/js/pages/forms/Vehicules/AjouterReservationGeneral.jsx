@@ -280,7 +280,7 @@ import { colourStyles } from '../../../utils/Repository';
                                                 options={this.props.vehicules}
                                                 getOptionLabel={option => option.immatriculation}
                                                 getOptionValue={option => option.id}
-                                                isOptionDisabled={option => !this.props.param_generaux_reservation_ordre.vehicule_fonction_reservable && option.type_vehicule_statut === 'Fonction'}
+                                                isOptionDisabled={option => !this.props.param_generaux_reservation_ordre.vehicule_fonction_reservable && option.type_vehicule_statut === 'Fonction' || !option.reservable}
                                                 // formatOptionLabel={formatOptionVehicule}
                                                 onChange={this.setFieldSelectVehicule.bind(this, "vehicule")}
                                                 styles={colourStyles}
