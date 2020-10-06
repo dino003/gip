@@ -405,7 +405,7 @@ class AjouterVehicule extends Component {
                     <li className="nav-item">
                         <a role="tab" className="nav-link active" id="tab-0"
                             data-toggle="tab" href="#tab_description1">
-                            <span>Description 1</span>
+                            <span>Description </span>
                         </a>
                     </li>
                     <li className="nav-item">
