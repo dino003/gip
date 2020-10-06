@@ -397,6 +397,7 @@ class AjouterVehicule extends Component {
     render() {
   // console.log(this.getPlanOrgaDernierNiveau(), this.getPlanGeographiquesDerniersNiveau())
   console.log(this.getStructureGeographiqueDernierNiveau())
+  console.log(this.getPlanGeographiquesDerniersNiveau())
  //this.getStructureOrganisationnelDernierNiveau()
         const {param_vehicule} = this.props
         return (
