@@ -29,7 +29,7 @@
         "@react-pdf/renderer": "^1.6.8",
         "google-map-react": "^1.1.6",
         "housecall": "^1.4.1",
-        "jspdf": "^1.5.3",
+        "jspdf": "^2.3.1",
         "jspdf-autotable": "^3.2.11",
         "moment": "^2.24.0",
         "prop-types": "^15.7.2",
